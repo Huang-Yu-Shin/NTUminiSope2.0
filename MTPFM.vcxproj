@@ -1,0 +1,244 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Project DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup Label="ProjectConfigurations">
+    <ProjectConfiguration Include="Debug|Win32">
+      <Configuration>Debug</Configuration>
+      <Platform>Win32</Platform>
+    </ProjectConfiguration>
+    <ProjectConfiguration Include="Release|Win32">
+      <Configuration>Release</Configuration>
+      <Platform>Win32</Platform>
+    </ProjectConfiguration>
+    <ProjectConfiguration Include="Debug|x64">
+      <Configuration>Debug</Configuration>
+      <Platform>x64</Platform>
+    </ProjectConfiguration>
+    <ProjectConfiguration Include="Release|x64">
+      <Configuration>Release</Configuration>
+      <Platform>x64</Platform>
+    </ProjectConfiguration>
+  </ItemGroup>
+  <PropertyGroup Label="Globals">
+    <VCProjectVersion>17.0</VCProjectVersion>
+    <ProjectGuid>{A632D458-D67D-4FF1-8009-7CBBC536F6AE}</ProjectGuid>
+    <EnableManagedPackageReferenceSupport>true</EnableManagedPackageReferenceSupport>
+    <TargetFrameworkVersion>v4.7.2</TargetFrameworkVersion>
+    <Keyword>ManagedCProj</Keyword>
+    <RootNamespace>MTPFM</RootNamespace>
+    <WindowsTargetPlatformVersion>10.0</WindowsTargetPlatformVersion>
+  </PropertyGroup>
+  <Import Project="$(VCTargetsPath)\Microsoft.Cpp.Default.props" />
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'" Label="Configuration">
+    <ConfigurationType>Application</ConfigurationType>
+    <UseDebugLibraries>true</UseDebugLibraries>
+    <PlatformToolset>v143</PlatformToolset>
+    <CLRSupport>true</CLRSupport>
+    <CharacterSet>Unicode</CharacterSet>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'" Label="Configuration">
+    <ConfigurationType>Application</ConfigurationType>
+    <UseDebugLibraries>false</UseDebugLibraries>
+    <PlatformToolset>v143</PlatformToolset>
+    <CLRSupport>true</CLRSupport>
+    <CharacterSet>Unicode</CharacterSet>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'" Label="Configuration">
+    <ConfigurationType>Application</ConfigurationType>
+    <UseDebugLibraries>true</UseDebugLibraries>
+    <PlatformToolset>v143</PlatformToolset>
+    <CLRSupport>true</CLRSupport>
+    <CharacterSet>Unicode</CharacterSet>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'" Label="Configuration">
+    <ConfigurationType>Application</ConfigurationType>
+    <UseDebugLibraries>false</UseDebugLibraries>
+    <PlatformToolset>v143</PlatformToolset>
+    <CLRSupport>true</CLRSupport>
+    <CharacterSet>MultiByte</CharacterSet>
+  </PropertyGroup>
+  <Import Project="$(VCTargetsPath)\Microsoft.Cpp.props" />
+  <ImportGroup Label="ExtensionSettings">
+    <Import Project="$(VCTargetsPath)\BuildCustomizations\CUDA 12.3.props" />
+  </ImportGroup>
+  <ImportGroup Label="Shared">
+  </ImportGroup>
+  <ImportGroup Label="PropertySheets" Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
+    <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
+  </ImportGroup>
+  <ImportGroup Label="PropertySheets" Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
+    <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
+  </ImportGroup>
+  <ImportGroup Label="PropertySheets" Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
+    <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
+  </ImportGroup>
+  <ImportGroup Label="PropertySheets" Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
+    <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
+  </ImportGroup>
+  <PropertyGroup Label="UserMacros" />
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
+    <IncludePath>$(IncludePath)</IncludePath>
+  </PropertyGroup>
+  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
+    <ClCompile>
+      <WarningLevel>Level3</WarningLevel>
+      <PreprocessorDefinitions>_DEBUG;_ALLOW_COMPILER_AND_STL_VERSION_MISMATCH;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+    </ClCompile>
+    <Link>
+      <AdditionalDependencies />
+    </Link>
+  </ItemDefinitionGroup>
+  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
+    <ClCompile>
+      <WarningLevel>Level3</WarningLevel>
+      <PreprocessorDefinitions>WIN32;_DEBUG;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+    </ClCompile>
+    <Link>
+      <AdditionalDependencies />
+    </Link>
+  </ItemDefinitionGroup>
+  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
+    <ClCompile>
+      <WarningLevel>Level3</WarningLevel>
+      <PreprocessorDefinitions>WIN32;NDEBUG;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+    </ClCompile>
+    <Link>
+      <AdditionalDependencies />
+    </Link>
+  </ItemDefinitionGroup>
+  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
+    <ClCompile>
+      <WarningLevel>Level3</WarningLevel>
+      <PreprocessorDefinitions>NDEBUG;WIN64;_CONSOLE;_MTIDATAEXPORT;_SILENCE_TR1_NAMESPACE_DEPRECATION_WARNING;_USE_MATH_DEFINES;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <AdditionalIncludeDirectories>./Include;C:\Ian\openCV_workspace\build\install\include;C:\Program Files\NVIDIA GPU Computing Toolkit\CUDA\v12.3\include</AdditionalIncludeDirectories>
+      <LanguageStandard>Default</LanguageStandard>
+    </ClCompile>
+    <Link>
+      <AdditionalDependencies>MTIDevice64.lib;AtsApi.lib;opencv_world490.lib;ComCasp64.lib;NIDAQmx.lib;cudart.lib</AdditionalDependencies>
+      <SubSystem>NotSet</SubSystem>
+      <EntryPointSymbol>
+      </EntryPointSymbol>
+      <AdditionalLibraryDirectories>./Lib;C:\Ian\openCV_workspace\build\install\lib</AdditionalLibraryDirectories>
+    </Link>
+    <CudaCompile>
+      <AdditionalCompilerOptions>
+      </AdditionalCompilerOptions>
+      <CodeGeneration>compute_86,sm_86</CodeGeneration>
+      <Include>%(Include)</Include>
+      <Defines>_ALLOW_COMPILER_AND_STL_VERSION_MISMATCH;%(Defines)</Defines>
+    </CudaCompile>
+  </ItemDefinitionGroup>
+  <ItemGroup>
+    <Reference Include="Google.Protobuf">
+      <HintPath>NuGetHelper\bin\Release\Google.Protobuf.dll</HintPath>
+    </Reference>
+    <Reference Include="OpenCvSharp.Extensions">
+      <HintPath>packages\OpenCvSharp4.Extensions.4.9.0.20240103\lib\net6.0\OpenCvSharp.Extensions.dll</HintPath>
+    </Reference>
+    <Reference Include="System" />
+    <Reference Include="System.Buffers">
+      <HintPath>NuGetHelper\bin\Release\System.Buffers.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Data" />
+    <Reference Include="System.Drawing" />
+    <Reference Include="System.Memory">
+      <HintPath>NuGetHelper\bin\Release\System.Memory.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Numerics.Vectors">
+      <HintPath>NuGetHelper\bin\Release\System.Numerics.Vectors.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Runtime.CompilerServices.Unsafe">
+      <HintPath>NuGetHelper\bin\Release\System.Runtime.CompilerServices.Unsafe.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Windows.Forms" />
+    <Reference Include="System.Windows.Forms.DataVisualization" />
+    <Reference Include="System.Xml" />
+    <Reference Include="Zaber.Motion">
+      <HintPath>NuGetHelper\bin\Release\Zaber.Motion.dll</HintPath>
+    </Reference>
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="Additional.h" />
+    <ClInclude Include="Loading.h">
+      <FileType>CppForm</FileType>
+    </ClInclude>
+    <ClInclude Include="MTPFM.h">
+      <FileType>CppForm</FileType>
+    </ClInclude>
+    <ClInclude Include="NTUcore.h" />
+    <ClInclude Include="resource.h" />
+    <ClInclude Include="Tokens.h" />
+    <ClInclude Include="YSCalculatePara.cuh" />
+    <ClInclude Include="YScore.h" />
+    <ClInclude Include="YSMapping.h" />
+    <ClInclude Include="YSImagemerge.h" />
+    <ClInclude Include="YSMotionCorrection.h" />
+    <ClInclude Include="YSNTUcore.h" />
+    <ClInclude Include="YSPostprocessing.h">
+      <FileType>CppForm</FileType>
+    </ClInclude>
+    <ClInclude Include="YSScan.h" />
+  </ItemGroup>
+  <ItemGroup>
+    <ClCompile Include="Additional.cpp" />
+    <ClCompile Include="AlazarTest.cpp" />
+    <ClCompile Include="Configure.cpp" />
+    <ClCompile Include="ETL.cpp" />
+    <ClCompile Include="Loading.cpp" />
+    <ClCompile Include="Management.cpp" />
+    <ClCompile Include="MEMS.cpp" />
+    <ClCompile Include="MTPFM.cpp" />
+    <ClCompile Include="Preview.cpp" />
+    <ClCompile Include="Processing.cpp" />
+    <ClCompile Include="Resolution_shift.cpp" />
+    <ClCompile Include="Save.cpp" />
+    <ClCompile Include="Scan.cpp" />
+    <ClCompile Include="volumetric.cpp" />
+    <ClCompile Include="Stage.cpp" />
+    <ClCompile Include="Stream.cpp" />
+    <ClCompile Include="YScore.cpp" />
+    <ClCompile Include="YSMapping.cpp" />
+    <ClCompile Include="YSImagemerge.cpp" />
+    <ClCompile Include="YSMotionCorrection.cpp" />
+    <ClCompile Include="YSPostprocessing.cpp" />
+    <ClCompile Include="YSScan.cpp" />
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="Loading.resx">
+      <DependentUpon>Loading.h</DependentUpon>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="MTPFM.resx">
+      <DependentUpon>MTPFM.h</DependentUpon>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="YSPostprocessing.resx">
+      <DependentUpon>YSPostprocessing.h</DependentUpon>
+    </EmbeddedResource>
+  </ItemGroup>
+  <ItemGroup>
+    <ResourceCompile Include="MTPFM.rc" />
+  </ItemGroup>
+  <ItemGroup>
+    <Image Include="Resources\Folder.jpg" />
+    <Image Include="Resources\NTU_logo.png" />
+    <Image Include="Resources\Picture_NTU_miniScope.ico" />
+    <Image Include="Resources\TEST.png" />
+    <Image Include="Resources\UFO_picture.jpg" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="CustomControls\CustomControls.csproj">
+      <Project>{1348fde4-aaf0-4d29-94dd-dcb909ecbe4e}</Project>
+    </ProjectReference>
+  </ItemGroup>
+  <ItemGroup>
+    <CudaCompile Include="YSCalculatePara.cu" />
+    <CudaCompile Include="YSReconstruct.cu">
+      <FileType>Document</FileType>
+    </CudaCompile>
+    <ClInclude Include="YSReconstruct.cuh" />
+  </ItemGroup>
+  <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
+  <ImportGroup Label="ExtensionTargets">
+    <Import Project="$(VCTargetsPath)\BuildCustomizations\CUDA 12.3.targets" />
+  </ImportGroup>
+</Project>

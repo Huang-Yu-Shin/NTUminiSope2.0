@@ -1,0 +1,356 @@
+//Sacn.cpp
+// start_scan()
+
+	//// IF UNIDIRECTIONAL SCANNING
+	//else
+	//{
+	//	// Configure the board to make an NPT AutoDMA acquisition
+	//	retCode = AlazarBeforeAsyncRead(boardHandle, channel_Mask, -(long)preTriggerSamples,
+	//		samplesPerRecord, recordPerBuffer, recordsPerAcquisition, admaFlag);
+	//	if (retCode != ApiSuccess)
+	//	{
+	//		// Updating Scan Status
+	//		sprintf(ScanStatus, "Error: AlazarBeforeAsyncRead Failed --- %s", AlazarErrorToText(retCode));
+	//		if (debug_window)	_cprintf("Error: AlazarBeforeAsyncRead Failed --- %s\n", AlazarErrorToText(retCode));
+
+	//		// Rearming ATS for Acquisition
+	//		reArm();
+	//		NTUscope::TerminateAll();
+	//		running_loops = false;
+	//		return;
+	//	}
+
+	//	// Add the buffers to a list of buffers available to be filled by the board
+	//	for (bufferIndex = 0; (bufferIndex < BUFFER_COUNT); bufferIndex++)
+	//	{
+	//		U16* pBuffer = BufferArray[bufferIndex];
+	//		retCode = AlazarPostAsyncBuffer(boardHandle, pBuffer, bytesPerBuffer);
+	//		if (retCode != ApiSuccess)
+	//		{
+	//			// Updating Scan Status
+	//			sprintf(ScanStatus, "Error: AlazarPostAsyncBuffer Failed --- %s", AlazarErrorToText(retCode));
+	//			if (debug_window)	_cprintf("Error: AlazarPostAsyncBuffer Failed --- %s\n", AlazarErrorToText(retCode));
+
+	//			// Rearming ATS for Acquisition
+	//			reArm();
+	//			NTUscope::TerminateAll();
+	//			running_loops = false;
+	//			return;
+	//		}
+	//	}
+
+	//	// Starting or Resetting the stopwatch : for frame rate
+	//	starting_time = std::chrono::high_resolution_clock::now();
+
+	//	// BEGIN: ACQUISITION : STANDBY
+	//	retCode = AlazarStartCapture(boardHandle);
+	//	if (retCode != ApiSuccess)
+	//	{
+	//		// Updating Scan Status
+	//		sprintf(ScanStatus, "Error: Capture Failed --- %s", AlazarErrorToText(retCode));
+	//		if (debug_window)	_cprintf("Error: Capture Failed --- %s\n", AlazarErrorToText(retCode));
+
+	//		// Rearming ATS for Acquisition
+	//		reArm();
+	//		NTUscope::TerminateAll();
+	//		running_loops = false;
+	//		return;
+	//	}
+
+	//	// First frame requesting
+	//	forceTrigRequest = true;
+
+	//	// ENTERING TO THE REAL SCANNING LOOP : SMALLER IMAGE : HIGH FRAME RATE
+	//	while (running_loops)
+	//	{
+	//		// Updating calibration size
+	//		PixelCALIB[0] = calibration_value;
+
+	//		// Updating frame averaging
+	//		num_avg_frame = num_avg_frame_new;
+
+	//		// Waits until previous frame is saved : if necessary
+	//		if (activate_frame_savinng_confirm || (!received_first_frame))
+	//		{
+	//			// Disable for next time (if needed enabled later)
+	//			activate_frame_savinng_confirm = false;
+
+	//			// ENSURING IF PREVIOUS FRAME IS SAVED
+	//			if (frames_saving_cond_chan_1)
+	//			{
+	//				if (received_first_frame == false)
+	//				{
+	//					if (image_array_1_filled)
+	//					{
+	//						//while (!chan_1_frame_saving_status) {}
+	//						received_first_frame = true;
+	//						chan_1_frame_saving_status = false;
+	//					}
+	//				}
+	//				else
+	//				{
+	//					while (!chan_1_frame_saving_status) {}
+	//					chan_1_frame_saving_status = false;
+	//				}
+	//			}
+	//		}
+
+	//		// RESETTING THE LINES NUMBER
+	//		lines_filled_array_1 = 0;
+	//		lines_filled_array_2 = 0;
+	//		U16 backward_lines_count = y_length - 1;
+
+	//		// WAITS IF GALVO IS NOT YET RE-POSITIONED (FOR SAFETY!)
+	//		while (!mems_repositioned) {}
+	//		while (!memsModeShifted) {}
+	//		mems_repositioned = false;
+
+	//		// IF FRAME SHIFTING IS NEEDED
+	//		if (memshiftEnable == false && memshiftStarted == true)
+	//		{
+	//			RShiftMemsHandle(false);
+	//			memshiftStarted = false;
+	//			break;
+	//		}
+
+	//		// Wait for the buffer at the head of the list of available buffers to be filled by the board
+	//		bufferIndex = buffersCompleted % BUFFER_COUNT;
+	//		U16* pBuffer = BufferArray[bufferIndex];
+
+	//		// WAITING FOR THE CURRENT BUFFER TO BE FILLED
+	//		retCode = AlazarWaitAsyncBufferComplete(boardHandle, pBuffer, ATS_WAIT_MS);
+	//		if (retCode != ApiSuccess)
+	//		{
+	//			// Updating Scan Status
+	//			sprintf(ScanStatus, "Error: AlazarWaitAsyncBufferComplete Failed --- %s", AlazarErrorToText(retCode));
+	//			if (debug_window)	_cprintf("Error: AlazarWaitAsyncBufferComplete Failed --- %s\n", AlazarErrorToText(retCode));
+
+	//			// Rearming ATS for Acquisition
+	//			reArm();
+	//			NTUscope::TerminateAll();
+	//			running_loops = false;
+	//			return;
+	//		}
+
+	//		// The buffer is full and has been removed from the list of buffers available for the board
+	//		buffersCompleted++;
+
+	//		// ACQUISITION FINISHED HERE : MOVING THE Z-AXIS
+	//		//if (Z_movement_cond)
+	//		//{
+	//		//	if (!frame_averaging)
+	//		//	{
+	//		//		if ((num_frames_saved_chan_1) && !frame_saving_aborted)
+	//		//		{
+	//		//			// SENDING COMMAND
+	//		//			double Z_StageStep_temp = axial_movement_direction ? -Z_StageStep : Z_StageStep;
+	//		//			if (!moveStage(axis_axial, (axis_axial_invert ? -Z_StageStep_temp : Z_StageStep_temp), StageTYPE_acq))
+	//		//			{
+	//		//				// Register Error
+	//		//				stageError = true;
+	//		//			}
+	//		//		}
+	//		//	}
+	//		//	else
+	//		//	{
+	//		//		if ((num_frames_saved_chan_1 ) && !frame_saving_aborted)
+	//		//		{
+	//		//			// FOR THE FIRST FRAME
+	//		//			if (first_avg_frame)
+	//		//			{
+	//		//				// SENDING COMMAND
+	//		//				double Z_StageStep_temp = axial_movement_direction ? -Z_StageStep : Z_StageStep;
+	//		//				if (!moveStage(axis_axial, (axis_axial_invert ? -Z_StageStep_temp : Z_StageStep_temp), StageTYPE_acq))
+	//		//				{
+	//		//					// Register Error
+	//		//					stageError = true;
+	//		//				}
+	//		//				first_avg_frame = false;
+	//		//			}
+	//		//			else
+	//		//			{
+	//		//				count_completed_frames++;
+	//		//			}
+
+	//		//			// FOR THE NEXT FRAMES
+	//		//			if ((count_completed_frames == num_avg_frame) || first_avg_frame)
+	//		//			{
+	//		//				// SENDING COMMAND
+	//		//				double Z_StageStep_temp = axial_movement_direction ? -Z_StageStep : Z_StageStep;
+	//		//				if (!moveStage(axis_axial, (axis_axial_invert ? -Z_StageStep_temp : Z_StageStep_temp), StageTYPE_acq))
+	//		//				{
+	//		//					// Register Error
+	//		//					stageError = true;
+	//		//				}
+	//		//				count_completed_frames = 0;
+	//		//			}
+	//		//		}
+	//		//	}
+	//		//}
+
+	//		// REQUESTING FOR NEXT ACQUISITION
+	//		forceTrigRequest = true;
+
+	//		// TIME MEASUREMENTS
+	//		elapsed_time = std::chrono::high_resolution_clock::now();
+	//		one_frame_duration = std::chrono::duration<double>(elapsed_time - starting_time);
+	//		starting_time = elapsed_time;
+	//		AcqTime = double(one_frame_duration.count());
+	//		FrameRate = 1.0 / AcqTime;
+
+	//		// Process sample data in this buffer
+	//		// 0x0000 represents a negative full scale input signal
+	//		// 0x8000 represents a ~0V signal
+	//		// 0xFFFF represents a positive full scale input signal
+	//		// GETTING THE POINTER INDEX
+	//		U16* pRecord = pBuffer;
+
+	//		// IF FRAME AVERAGING IS DISABLED
+	//		// Check for previous frame saved or not
+	//		activate_frame_savinng_confirm = true;
+
+	//		// FORWARD FRAME : IF ARRAY_1 IS FILLED
+	//		if (image_array_1_filled == true)
+	//		{
+	//			for (U32 record = 0; (record < recordPerBuffer); record++)
+	//			{
+	//				for (U32 samples = 0; samples < samplesPerRecord; samples++)
+	//				{
+	//					chan_1_image_array_2[lines_filled_array_2][samples] = *pRecord++;
+	//				}
+
+	//				// Updating number of lines acquired
+	//				lines_filled_array_2++;
+	//			}
+	//		}
+
+	//		// BACKWARD FRAME: IF ARRAY_2 IS FILLED
+	//		else if (image_array_2_filled == true)
+	//		{
+	//			for (U32 record = 0; (record < recordPerBuffer); record++)
+	//			{
+	//				for (U32 samples = 0; samples < samplesPerRecord; samples++)
+	//				{
+	//					chan_1_image_array_1[backward_lines_count][samples] = *pRecord++;
+	//				}
+
+	//				// Updating number of lines acquired
+	//				backward_lines_count--;
+	//				lines_filled_array_1++;
+	//			}
+	//		}
+	//				
+
+	//		// ONE BUFFER : COMPLETED : UPDATING THE STATUS OF DATA CONTAINERS
+	//		if (image_array_1_filled == true)
+	//		{
+	//			image_array_2_filled = true;
+	//			image_array_1_filled = false;
+	//			filled_array_2 = true;
+
+	//			// Executing frame saving
+	//			if (frames_saving_init)
+	//			{
+	//				if (!frame_averaging)		num_avg_frame_temp = 1;
+	//				else						num_avg_frame_temp = num_avg_frame;
+	//				frame_saving_aborted = false;
+	//				num_frames_saved_chan_1 = 0;
+	//				countMoveAction = 0;
+	//				frames_saving_init = true;
+	//				first_avg_frame = true;
+
+	//				// FOR CHANNEL 1
+	//				if (save_data_chan_1)
+	//				{
+	//					chan_1_frame_saving_status = true;
+	//					frame_saving_progress_chan_1 = 0;
+	//					frames_saving_cond_chan_1 = true;
+	//				}
+
+	//				// Otger bools
+	//				lines_filled_array_1 = 0;
+	//				lines_filled_array_2 = 0;
+	//				received_first_frame = false;
+	//				frames_saving_init = false;
+	//			}
+
+	//			if (!frame_averaging)	one_frame_completed = true;
+	//		}
+
+	//		// ONE BUFFER : COMPLETED : FILLING AVAILABLE DATA CONTAINERS	
+	//		else if (image_array_2_filled == true)
+	//		{
+	//			image_array_1_filled = true;
+	//			image_array_2_filled = false;
+	//			filled_array_2 = false;
+
+	//			// Executing frame saving
+	//			if (frames_saving_init)
+	//			{
+	//				if (!frame_averaging)		num_avg_frame_temp = 1;
+	//				else						num_avg_frame_temp = num_avg_frame;
+	//				frame_saving_aborted = false;
+	//				num_frames_saved_chan_1 = 0;
+	//				countMoveAction = 0;
+	//				frames_saving_init = true;
+	//				first_avg_frame = true;
+
+	//				// FOR CHANNEL 1
+	//				if (save_data_chan_1)
+	//				{
+	//					chan_1_frame_saving_status = true;
+	//					frame_saving_progress_chan_1 = 0;
+	//					frames_saving_cond_chan_1 = true;
+	//				}
+
+	//				// Otger bools
+	//				lines_filled_array_1 = 0;
+	//				lines_filled_array_2 = 0;
+	//				received_first_frame = false;
+	//				frames_saving_init = false;
+	//			}
+
+	//			if (!frame_averaging)	one_frame_completed = true;
+	//		}
+
+	//		// Confirm that trigger is finished
+	//		while (forceTrigRequest && running_loops) {}
+
+	//		// Add the buffer to the end of the list of available buffers.
+	//		if (running_loops)
+	//		{
+	//			retCode = AlazarPostAsyncBuffer(boardHandle, pBuffer, bytesPerBuffer);
+	//			if (retCode != ApiSuccess)
+	//			{
+	//				// Updating Scan Status
+	//				sprintf(ScanStatus, "Error: AlazarPostAsyncBuffer Failed --- %s", AlazarErrorToText(retCode));
+	//				if (debug_window)	_cprintf("Error: AlazarPostAsyncBuffer Failed --- %s\n", AlazarErrorToText(retCode));
+
+	//				// Rearming ATS for Acquisition
+	//				reArm();
+	//				NTUscope::TerminateAll();
+	//				running_loops = false;
+	//				return;
+	//			}
+	//		}
+	//		else
+	//		{
+	//			break;
+	//		}
+	//	}
+
+	//	// STOPPED : ABORT ACQUISITION
+	//	retCode = AlazarAbortAsyncRead(boardHandle);
+	//	if (retCode != ApiSuccess)
+	//	{
+	//		// Updating Scan Status
+	//		sprintf(ScanStatus, "Error: AlazarAbortAsyncRead Failed --- %s", AlazarErrorToText(retCode));
+	//		if (debug_window)	_cprintf("Error: AlazarAbortAsyncRead Failed --- %s\n", AlazarErrorToText(retCode));
+
+	//		// Rearming ATS for Acquisition
+	//		reArm();
+	//		NTUscope::TerminateAll();
+	//		running_loops = false;
+	//		return;
+	//	}
+	//}

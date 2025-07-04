@@ -1,0 +1,5 @@
+Prev_Y = 128
+Prev_sampPerRec = 49984
+MEMS_COM = 3
+FOV_X = 0.1
+FOV_Y = 0.18
