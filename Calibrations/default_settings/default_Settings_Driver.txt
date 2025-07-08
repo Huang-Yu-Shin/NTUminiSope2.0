@@ -1,7 +1,7 @@
 zpixelnumber:8
 MEMSfilter:132000
 MEMSfilter_high:210000
-MEMSampratio(X/Y):1.07
+MEMSampratio(X/Y):1.068
 NItriggerdelay:0.000292
 NItriggerdelay_high:0.0001883
 AlazarpreTriggerSamples:0

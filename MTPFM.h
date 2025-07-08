@@ -586,10 +586,10 @@ private: System::Windows::Forms::Label^ label55;
 private: System::Windows::Forms::Label^ label_offsetvalueSP;
 
 private: System::Windows::Forms::TrackBar^ trackBar_offsetvalueSP;
-private: System::Windows::Forms::TabPage^ tabPage20;
-private: System::Windows::Forms::Button^ button_memo_clear;
 
-private: System::Windows::Forms::TextBox^ textBox_memo;
+
+
+
 private: System::Windows::Forms::Label^ label54;
 private: System::Windows::Forms::TextBox^ textBox_initial_position;
 private: CustomControls::DefineControls::ToggleButtons^ toggleButtons_initial_position;
@@ -600,6 +600,12 @@ private: CustomControls::DefineControls::ToggleButtons^ toggleButtons_DCE;
 private: System::Windows::Forms::ComboBox^ YScomboBox_inputrange;
 
 private: System::Windows::Forms::Label^ label57;
+private: CustomControls::DefineControls::ToggleButtons^ toggleButtons_Binning;
+private: System::Windows::Forms::Label^ label16;
+private: System::Windows::Forms::Label^ label58;
+private: CustomControls::DefineControls::ToggleButtons^ toggleButtons_equalhistogram;
+
+
 
 
 
@@ -1100,6 +1106,8 @@ private:
 			this->label_frame_num = (gcnew System::Windows::Forms::Label());
 			this->tabControl4 = (gcnew System::Windows::Forms::TabControl());
 			this->tabPage12 = (gcnew System::Windows::Forms::TabPage());
+			this->label16 = (gcnew System::Windows::Forms::Label());
+			this->toggleButtons_Binning = (gcnew CustomControls::DefineControls::ToggleButtons());
 			this->toggleButtons_signalproxessing = (gcnew CustomControls::DefineControls::ToggleButtons());
 			this->label52 = (gcnew System::Windows::Forms::Label());
 			this->label_multiplySP = (gcnew System::Windows::Forms::Label());
@@ -1150,9 +1158,6 @@ private:
 			this->trackBar_tile_grid_H = (gcnew System::Windows::Forms::TrackBar());
 			this->trackBar_clip_limit = (gcnew System::Windows::Forms::TrackBar());
 			this->toggleButtons_CLAHE = (gcnew CustomControls::DefineControls::ToggleButtons());
-			this->tabPage20 = (gcnew System::Windows::Forms::TabPage());
-			this->button_memo_clear = (gcnew System::Windows::Forms::Button());
-			this->textBox_memo = (gcnew System::Windows::Forms::TextBox());
 			this->tabPage11 = (gcnew System::Windows::Forms::TabPage());
 			this->textBox1_open_image = (gcnew System::Windows::Forms::TextBox());
 			this->button_start_frames_saving = (gcnew System::Windows::Forms::Button());
@@ -1265,7 +1270,9 @@ private:
 			this->timer_refresh_UI = (gcnew System::Windows::Forms::Timer(this->components));
 			this->tabControl5 = (gcnew System::Windows::Forms::TabControl());
 			this->tabPage18 = (gcnew System::Windows::Forms::TabPage());
+			this->label57 = (gcnew System::Windows::Forms::Label());
 			this->label50 = (gcnew System::Windows::Forms::Label());
+			this->YScomboBox_inputrange = (gcnew System::Windows::Forms::ComboBox());
 			this->YStextBox__ExtClockFreq = (gcnew System::Windows::Forms::TextBox());
 			this->label30 = (gcnew System::Windows::Forms::Label());
 			this->YScomboBox_headmount = (gcnew System::Windows::Forms::ComboBox());
@@ -1306,8 +1313,8 @@ private:
 			this->label_y_posi = (gcnew System::Windows::Forms::Label());
 			this->label_x_posi = (gcnew System::Windows::Forms::Label());
 			this->button1_manual_control = (gcnew System::Windows::Forms::Button());
-			this->YScomboBox_inputrange = (gcnew System::Windows::Forms::ComboBox());
-			this->label57 = (gcnew System::Windows::Forms::Label());
+			this->label58 = (gcnew System::Windows::Forms::Label());
+			this->toggleButtons_equalhistogram = (gcnew CustomControls::DefineControls::ToggleButtons());
 			this->panel_real_time->SuspendLayout();
 			this->panel1->SuspendLayout();
 			this->panel_Stage->SuspendLayout();
@@ -1343,7 +1350,6 @@ private:
 			(cli::safe_cast<System::ComponentModel::ISupportInitialize^>(this->trackBar_tile_grid_V))->BeginInit();
 			(cli::safe_cast<System::ComponentModel::ISupportInitialize^>(this->trackBar_tile_grid_H))->BeginInit();
 			(cli::safe_cast<System::ComponentModel::ISupportInitialize^>(this->trackBar_clip_limit))->BeginInit();
-			this->tabPage20->SuspendLayout();
 			this->tabPage11->SuspendLayout();
 			(cli::safe_cast<System::ComponentModel::ISupportInitialize^>(this->trackBar_BiD_align_bin))->BeginInit();
 			this->tabControl1->SuspendLayout();
@@ -2531,7 +2537,6 @@ private:
 			this->tabControl4->Controls->Add(this->tabPage6);
 			this->tabControl4->Controls->Add(this->tabPage7);
 			this->tabControl4->Controls->Add(this->tabPage10);
-			this->tabControl4->Controls->Add(this->tabPage20);
 			this->tabControl4->Controls->Add(this->tabPage11);
 			this->tabControl4->Location = System::Drawing::Point(8, 614);
 			this->tabControl4->Name = L"tabControl4";
@@ -2542,6 +2547,8 @@ private:
 			// tabPage12
 			// 
 			this->tabPage12->BackColor = System::Drawing::Color::DimGray;
+			this->tabPage12->Controls->Add(this->label16);
+			this->tabPage12->Controls->Add(this->toggleButtons_Binning);
 			this->tabPage12->Controls->Add(this->toggleButtons_signalproxessing);
 			this->tabPage12->Controls->Add(this->label52);
 			this->tabPage12->Controls->Add(this->label_multiplySP);
@@ -2554,6 +2561,33 @@ private:
 			this->tabPage12->Size = System::Drawing::Size(420, 183);
 			this->tabPage12->TabIndex = 8;
 			this->tabPage12->Text = L"Signal Processing";
+			// 
+			// label16
+			// 
+			this->label16->AutoSize = true;
+			this->label16->Font = (gcnew System::Drawing::Font(L"Segoe UI", 11.25F, System::Drawing::FontStyle::Bold, System::Drawing::GraphicsUnit::Point,
+				static_cast<System::Byte>(0)));
+			this->label16->ForeColor = System::Drawing::Color::White;
+			this->label16->Location = System::Drawing::Point(60, 131);
+			this->label16->Name = L"label16";
+			this->label16->Size = System::Drawing::Size(63, 20);
+			this->label16->TabIndex = 76;
+			this->label16->Text = L"Binning";
+			// 
+			// toggleButtons_Binning
+			// 
+			this->toggleButtons_Binning->Location = System::Drawing::Point(7, 130);
+			this->toggleButtons_Binning->MinimumSize = System::Drawing::Size(45, 22);
+			this->toggleButtons_Binning->Name = L"toggleButtons_Binning";
+			this->toggleButtons_Binning->OffBackColor = System::Drawing::Color::WhiteSmoke;
+			this->toggleButtons_Binning->OffToggleColor = System::Drawing::Color::Gainsboro;
+			this->toggleButtons_Binning->OnBackColor = System::Drawing::Color::WhiteSmoke;
+			this->toggleButtons_Binning->OnToggleColor = System::Drawing::Color::DodgerBlue;
+			this->toggleButtons_Binning->Size = System::Drawing::Size(47, 25);
+			this->toggleButtons_Binning->SolidStyle = false;
+			this->toggleButtons_Binning->TabIndex = 75;
+			this->toggleButtons_Binning->UseVisualStyleBackColor = true;
+			this->toggleButtons_Binning->CheckedChanged += gcnew System::EventHandler(this, &MTPFM::toggleButtons_Binning_CheckedChanged);
 			// 
 			// toggleButtons_signalproxessing
 			// 
@@ -2857,6 +2891,8 @@ private:
 			// tabPage9
 			// 
 			this->tabPage9->BackColor = System::Drawing::Color::DimGray;
+			this->tabPage9->Controls->Add(this->label58);
+			this->tabPage9->Controls->Add(this->toggleButtons_equalhistogram);
 			this->tabPage9->Controls->Add(this->toggleButtons_minmax);
 			this->tabPage9->Controls->Add(this->label53);
 			this->tabPage9->Controls->Add(this->label_MaxVal);
@@ -2872,7 +2908,7 @@ private:
 			// 
 			// toggleButtons_minmax
 			// 
-			this->toggleButtons_minmax->Location = System::Drawing::Point(8, 24);
+			this->toggleButtons_minmax->Location = System::Drawing::Point(8, 29);
 			this->toggleButtons_minmax->MinimumSize = System::Drawing::Size(45, 22);
 			this->toggleButtons_minmax->Name = L"toggleButtons_minmax";
 			this->toggleButtons_minmax->OffBackColor = System::Drawing::Color::WhiteSmoke;
@@ -2914,13 +2950,13 @@ private:
 			this->trackBar_MaxVal->BackColor = System::Drawing::Color::DimGray;
 			this->trackBar_MaxVal->LargeChange = 500;
 			this->trackBar_MaxVal->Location = System::Drawing::Point(136, 75);
-			this->trackBar_MaxVal->Maximum = 32768;
+			this->trackBar_MaxVal->Maximum = 52768;
 			this->trackBar_MaxVal->Name = L"trackBar_MaxVal";
 			this->trackBar_MaxVal->Size = System::Drawing::Size(219, 20);
 			this->trackBar_MaxVal->SmallChange = 50;
 			this->trackBar_MaxVal->TabIndex = 65;
 			this->trackBar_MaxVal->TickFrequency = 25;
-			this->trackBar_MaxVal->Value = 32768;
+			this->trackBar_MaxVal->Value = 52768;
 			this->trackBar_MaxVal->Scroll += gcnew System::EventHandler(this, &MTPFM::trackBar_MaxVal_Scroll);
 			// 
 			// label51
@@ -3233,40 +3269,6 @@ private:
 			this->toggleButtons_CLAHE->TabIndex = 51;
 			this->toggleButtons_CLAHE->UseVisualStyleBackColor = true;
 			this->toggleButtons_CLAHE->CheckedChanged += gcnew System::EventHandler(this, &MTPFM::toggleButtons_CLAHE_CheckedChanged);
-			// 
-			// tabPage20
-			// 
-			this->tabPage20->BackColor = System::Drawing::Color::DimGray;
-			this->tabPage20->Controls->Add(this->button_memo_clear);
-			this->tabPage20->Controls->Add(this->textBox_memo);
-			this->tabPage20->Location = System::Drawing::Point(4, 24);
-			this->tabPage20->Name = L"tabPage20";
-			this->tabPage20->Size = System::Drawing::Size(420, 183);
-			this->tabPage20->TabIndex = 9;
-			this->tabPage20->Text = L"Memo";
-			// 
-			// button_memo_clear
-			// 
-			this->button_memo_clear->Font = (gcnew System::Drawing::Font(L"Segoe UI", 11.25F, System::Drawing::FontStyle::Bold, System::Drawing::GraphicsUnit::Point,
-				static_cast<System::Byte>(0)));
-			this->button_memo_clear->ForeColor = System::Drawing::Color::RoyalBlue;
-			this->button_memo_clear->Location = System::Drawing::Point(340, 7);
-			this->button_memo_clear->Name = L"button_memo_clear";
-			this->button_memo_clear->Size = System::Drawing::Size(73, 30);
-			this->button_memo_clear->TabIndex = 110;
-			this->button_memo_clear->Text = L"Clear";
-			this->button_memo_clear->UseVisualStyleBackColor = true;
-			this->button_memo_clear->Click += gcnew System::EventHandler(this, &MTPFM::button_memo_clear_Click);
-			// 
-			// textBox_memo
-			// 
-			this->textBox_memo->ImeMode = System::Windows::Forms::ImeMode::Off;
-			this->textBox_memo->Location = System::Drawing::Point(7, 5);
-			this->textBox_memo->Multiline = true;
-			this->textBox_memo->Name = L"textBox_memo";
-			this->textBox_memo->ScrollBars = System::Windows::Forms::ScrollBars::Both;
-			this->textBox_memo->Size = System::Drawing::Size(325, 168);
-			this->textBox_memo->TabIndex = 0;
 			// 
 			// tabPage11
 			// 
@@ -3634,6 +3636,7 @@ private:
 			this->YScheckBox_extclock->TabIndex = 99;
 			this->YScheckBox_extclock->Text = L"Ext. clock";
 			this->YScheckBox_extclock->UseVisualStyleBackColor = true;
+			this->YScheckBox_extclock->CheckedChanged += gcnew System::EventHandler(this, &MTPFM::YScheckBox_extclock_CheckedChanged);
 			// 
 			// YScheckBox_intclock
 			// 
@@ -3648,6 +3651,7 @@ private:
 			this->YScheckBox_intclock->TabIndex = 100;
 			this->YScheckBox_intclock->Text = L"Int. clock";
 			this->YScheckBox_intclock->UseVisualStyleBackColor = true;
+			this->YScheckBox_intclock->CheckedChanged += gcnew System::EventHandler(this, &MTPFM::YScheckBox_intclock_CheckedChanged);
 			// 
 			// YSbutton_lissajous_setamp
 			// 
@@ -4777,6 +4781,18 @@ private:
 			this->tabPage18->TabIndex = 1;
 			this->tabPage18->Text = L"Driver";
 			// 
+			// label57
+			// 
+			this->label57->AutoSize = true;
+			this->label57->Font = (gcnew System::Drawing::Font(L"Segoe UI", 11.25F, System::Drawing::FontStyle::Bold, System::Drawing::GraphicsUnit::Point,
+				static_cast<System::Byte>(0)));
+			this->label57->ForeColor = System::Drawing::Color::White;
+			this->label57->Location = System::Drawing::Point(5, 51);
+			this->label57->Name = L"label57";
+			this->label57->Size = System::Drawing::Size(95, 20);
+			this->label57->TabIndex = 109;
+			this->label57->Text = L"Input Range";
+			// 
 			// label50
 			// 
 			this->label50->AutoSize = true;
@@ -4788,6 +4804,19 @@ private:
 			this->label50->Size = System::Drawing::Size(45, 20);
 			this->label50->TabIndex = 107;
 			this->label50->Text = L"MS/s";
+			// 
+			// YScomboBox_inputrange
+			// 
+			this->YScomboBox_inputrange->BackColor = System::Drawing::SystemColors::ScrollBar;
+			this->YScomboBox_inputrange->FlatStyle = System::Windows::Forms::FlatStyle::Popup;
+			this->YScomboBox_inputrange->Font = (gcnew System::Drawing::Font(L"Segoe UI", 9.75F, System::Drawing::FontStyle::Regular, System::Drawing::GraphicsUnit::Point,
+				static_cast<System::Byte>(0)));
+			this->YScomboBox_inputrange->FormattingEnabled = true;
+			this->YScomboBox_inputrange->Items->AddRange(gcnew cli::array< System::Object^  >(3) { L"500 mV", L"800 mV", L"1000 mV" });
+			this->YScomboBox_inputrange->Location = System::Drawing::Point(103, 49);
+			this->YScomboBox_inputrange->Name = L"YScomboBox_inputrange";
+			this->YScomboBox_inputrange->Size = System::Drawing::Size(73, 25);
+			this->YScomboBox_inputrange->TabIndex = 108;
 			// 
 			// YStextBox__ExtClockFreq
 			// 
@@ -5329,30 +5358,32 @@ private:
 			this->button1_manual_control->UseVisualStyleBackColor = false;
 			this->button1_manual_control->Click += gcnew System::EventHandler(this, &MTPFM::button1_manual_control_Click);
 			// 
-			// YScomboBox_inputrange
+			// label58
 			// 
-			this->YScomboBox_inputrange->BackColor = System::Drawing::SystemColors::ScrollBar;
-			this->YScomboBox_inputrange->FlatStyle = System::Windows::Forms::FlatStyle::Popup;
-			this->YScomboBox_inputrange->Font = (gcnew System::Drawing::Font(L"Segoe UI", 9.75F, System::Drawing::FontStyle::Regular, System::Drawing::GraphicsUnit::Point,
+			this->label58->AutoSize = true;
+			this->label58->Font = (gcnew System::Drawing::Font(L"Segoe UI", 11.25F, System::Drawing::FontStyle::Bold, System::Drawing::GraphicsUnit::Point,
 				static_cast<System::Byte>(0)));
-			this->YScomboBox_inputrange->FormattingEnabled = true;
-			this->YScomboBox_inputrange->Items->AddRange(gcnew cli::array< System::Object^  >(3) { L"500 mV", L"800 mV", L"1000 mV" });
-			this->YScomboBox_inputrange->Location = System::Drawing::Point(103, 49);
-			this->YScomboBox_inputrange->Name = L"YScomboBox_inputrange";
-			this->YScomboBox_inputrange->Size = System::Drawing::Size(73, 25);
-			this->YScomboBox_inputrange->TabIndex = 108;
+			this->label58->ForeColor = System::Drawing::Color::White;
+			this->label58->Location = System::Drawing::Point(61, 112);
+			this->label58->Name = L"label58";
+			this->label58->Size = System::Drawing::Size(172, 20);
+			this->label58->TabIndex = 78;
+			this->label58->Text = L"Histogram equalization";
 			// 
-			// label57
+			// toggleButtons_equalhistogram
 			// 
-			this->label57->AutoSize = true;
-			this->label57->Font = (gcnew System::Drawing::Font(L"Segoe UI", 11.25F, System::Drawing::FontStyle::Bold, System::Drawing::GraphicsUnit::Point,
-				static_cast<System::Byte>(0)));
-			this->label57->ForeColor = System::Drawing::Color::White;
-			this->label57->Location = System::Drawing::Point(5, 51);
-			this->label57->Name = L"label57";
-			this->label57->Size = System::Drawing::Size(95, 20);
-			this->label57->TabIndex = 109;
-			this->label57->Text = L"Input Range";
+			this->toggleButtons_equalhistogram->Location = System::Drawing::Point(8, 111);
+			this->toggleButtons_equalhistogram->MinimumSize = System::Drawing::Size(45, 22);
+			this->toggleButtons_equalhistogram->Name = L"toggleButtons_equalhistogram";
+			this->toggleButtons_equalhistogram->OffBackColor = System::Drawing::Color::WhiteSmoke;
+			this->toggleButtons_equalhistogram->OffToggleColor = System::Drawing::Color::Gainsboro;
+			this->toggleButtons_equalhistogram->OnBackColor = System::Drawing::Color::WhiteSmoke;
+			this->toggleButtons_equalhistogram->OnToggleColor = System::Drawing::Color::DodgerBlue;
+			this->toggleButtons_equalhistogram->Size = System::Drawing::Size(47, 25);
+			this->toggleButtons_equalhistogram->SolidStyle = false;
+			this->toggleButtons_equalhistogram->TabIndex = 77;
+			this->toggleButtons_equalhistogram->UseVisualStyleBackColor = true;
+			this->toggleButtons_equalhistogram->CheckedChanged += gcnew System::EventHandler(this, &MTPFM::toggleButtons_equalhistogram_CheckedChanged);
 			// 
 			// MTPFM
 			// 
@@ -5429,8 +5460,6 @@ private:
 			(cli::safe_cast<System::ComponentModel::ISupportInitialize^>(this->trackBar_tile_grid_V))->EndInit();
 			(cli::safe_cast<System::ComponentModel::ISupportInitialize^>(this->trackBar_tile_grid_H))->EndInit();
 			(cli::safe_cast<System::ComponentModel::ISupportInitialize^>(this->trackBar_clip_limit))->EndInit();
-			this->tabPage20->ResumeLayout(false);
-			this->tabPage20->PerformLayout();
 			this->tabPage11->ResumeLayout(false);
 			this->tabPage11->PerformLayout();
 			(cli::safe_cast<System::ComponentModel::ISupportInitialize^>(this->trackBar_BiD_align_bin))->EndInit();
@@ -7237,7 +7266,7 @@ private: void Run2DRaster() {
 private: System::Void trackBar_MinVal_Scroll(System::Object^ sender, System::EventArgs^ e) {
 	int MinVal = this->trackBar_MinVal->Value;
 	int MaxVal = this->trackBar_MaxVal->Value;
-	MaxVal += 32768;
+	MaxVal += 12767;
 	if (MaxVal > MinVal) {
 		aYSNTU->minVal16bit = MinVal;
 		this->label_MinVal->Text = MinVal.ToString();
@@ -7248,7 +7277,7 @@ private: System::Void trackBar_MinVal_Scroll(System::Object^ sender, System::Eve
 private: System::Void trackBar_MaxVal_Scroll(System::Object^ sender, System::EventArgs^ e) {
 	int MinVal = this->trackBar_MinVal->Value;
 	int MaxVal = this->trackBar_MaxVal->Value;
-	MaxVal += 32768;
+	MaxVal += 12767;
 	if (MaxVal > MinVal) {
 		aYSNTU->minVal16bit = MinVal;
 		this->label_MinVal->Text = MinVal.ToString();
@@ -7270,7 +7299,7 @@ private: System::Void toggleButtons_minmax_CheckedChanged(System::Object^ sender
 	}
 	int MinVal = this->trackBar_MinVal->Value;
 	int MaxVal = this->trackBar_MaxVal->Value;
-	MaxVal += 32768;
+	MaxVal += 12767;
 	if (MaxVal > MinVal) {
 		aYSNTU->minVal16bit = MinVal;
 		this->label_MinVal->Text = MinVal.ToString();
@@ -7319,9 +7348,6 @@ private: System::Void trackBar_multiplySP_Scroll(System::Object^ sender, System:
 	this->label_multiplySP->Text = aYSNTU->YSmultiplySP.ToString();
 }
 
-private: System::Void button_memo_clear_Click(System::Object^ sender, System::EventArgs^ e) {
-	this->textBox_memo->Text = "";
-}
 private: System::Void toggleButtons_initial_position_CheckedChanged(System::Object^ sender, System::EventArgs^ e) {
 	if (this->toggleButtons_initial_position->Checked == true) {
 		this->textBox_initial_position->Text = this->textBox_current_position->Text;
@@ -7352,5 +7378,41 @@ private: System::Void trackBar_DCE_Scroll(System::Object^ sender, System::EventA
 	label_DCE->Text = aYSNTU->YSalpha_DCE.ToString();
 }
 
+private: System::Void toggleButtons_Binning_CheckedChanged(System::Object^ sender, System::EventArgs^ e) {
+	aYSNTU->YSapply_binning = toggleButtons_Binning->Checked;
+	if (aYSNTU->YSapply_binning == true)
+	{
+		status->ForeColor = Color::LightGreen;
+		status->Text = "Binning : Activated";
+	}
+	else
+	{
+		status->ForeColor = Color::LightGreen;
+		status->Text = "Binning : Dectivated";
+	}
+}
+private: System::Void YScheckBox_extclock_CheckedChanged(System::Object^ sender, System::EventArgs^ e) {
+	if (YScheckBox_extclock->Checked ==true) {
+		YScheckBox_intclock->Checked = false;
+	}
+}
+private: System::Void YScheckBox_intclock_CheckedChanged(System::Object^ sender, System::EventArgs^ e) {
+	if (YScheckBox_intclock->Checked == true) {
+		YScheckBox_extclock->Checked = false;
+	}
+}
+private: System::Void toggleButtons_equalhistogram_CheckedChanged(System::Object^ sender, System::EventArgs^ e) {
+	aYSNTU->YSapply_equalizehistogram = toggleButtons_equalhistogram->Checked;
+	if (aYSNTU->YSapply_equalizehistogram == true)
+	{
+		status->ForeColor = Color::LightGreen;
+		status->Text = "Histogram equalization : Activated";
+	}
+	else
+	{
+		status->ForeColor = Color::LightGreen;
+		status->Text = "Histogram equalization : Dectivated";
+	}
+}
 };
 }

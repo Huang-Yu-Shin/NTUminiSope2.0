@@ -104,6 +104,7 @@ namespace NTU
 		bool YSapply_signalprocessing = false;
 		bool YSapply_binning = false;
 		bool YSapply_DCE = false;
+		bool YSapply_equalizehistogram = false;
 		int YSoffsetvalueSP = 32768;
 		double YSmultiplySP = 2.0;
 

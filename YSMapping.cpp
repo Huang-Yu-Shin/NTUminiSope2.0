@@ -779,7 +779,6 @@ namespace NTU {
 
         //Save images
         if (ntuscope->savestate == true && SavedCount < ntuscope->save_num) {
-            //SaveBufferdataBin(frameorder,Buffer,"raw");
             lock_guard<mutex> lock(saveMutex);
             image_save = Img16bit.clone();
             gpu_image_pre.download(image_saveraw);
@@ -787,9 +786,6 @@ namespace NTU {
             saveQueue.emplace_back(image_save,image_saveraw, buffer_vector, starttime_system);
             SavedCount++;
             saveCondition.notify_one();
-            //if (ntuscope->saverawstate){
-            //    SaveBufferdata(frameorder, Buffer);
-            //}
         }
 
         //Average
@@ -846,6 +842,23 @@ namespace NTU {
         gpu_image.convertTo(gpu_8bit, CV_8UC1, 1/257.0, 0, stream);
         stream.waitForCompletion();
 
+        // Pre Imaging Processing
+        //cv::Mat LUT_matrix_pre(1, 256, CV_8UC1);
+        //uchar* pointer_pre = LUT_matrix_pre.ptr();
+        //for (int i = 0; i < 256; i++) {
+        //    pointer_pre[i] = (int)(pow((double)(i / 255.0), 1.1) * 255.0);
+        //}
+        //cv::Ptr<cv::cuda::LookUpTable> cudaLookUpTable_pre = cv::cuda::createLookUpTable(LUT_matrix_pre);
+        //cudaLookUpTable_pre->transform(gpu_8bit, gpu_8bit, stream);
+        //gpu_8bit.cv::cuda::GpuMat::convertTo(gpu_8bit, -1, 2.6, 0, stream);
+        //stream.waitForCompletion();
+
+        //Histogram equalize
+        if (ntuscope->YSapply_equalizehistogram) {
+            cv::cuda::equalizeHist(gpu_8bit, gpu_8bit, stream);
+            stream.waitForCompletion();
+        }
+
         //Constrat IN GPU
         if (ntuscope->YSapply_contrast) {
             cv::Mat LUT_matrix(1, 256, CV_8UC1);
@@ -859,7 +872,7 @@ namespace NTU {
             gpu_8bit.cv::cuda::GpuMat::convertTo(gpu_8bit, -1, ntuscope->YSconstrat, ntuscope->YSbrightness - 150, stream);
             stream.waitForCompletion();
         }
-
+        
         //Filter apply
         ApplyFilter(gpu_8bit, stream);
         stream.waitForCompletion();
@@ -1310,6 +1323,23 @@ namespace NTU {
                 //cv::fastNlMeansDenoising(averageImage_8U, denoised, 10.0, 7, 21);
                 //AvgImg8bit_gpu.upload(denoised);
 
+                // Pre Imaging Processing
+                //cv::Mat LUT_matrix_pre(1, 256, CV_8UC1);
+                //uchar* pointer_pre = LUT_matrix_pre.ptr();
+                //for (int i = 0; i < 256; i++) {
+                //    pointer_pre[i] = (int)(pow((double)(i / 255.0), 1.1) * 255.0);
+                //}
+                //cv::Ptr<cv::cuda::LookUpTable> cudaLookUpTable_pre = cv::cuda::createLookUpTable(LUT_matrix_pre);
+                //cudaLookUpTable_pre->transform(AvgImg8bit_gpu, AvgImg8bit_gpu, stream);
+                //AvgImg8bit_gpu.cv::cuda::GpuMat::convertTo(AvgImg8bit_gpu, -1, 2.6, 0, stream);
+                //stream.waitForCompletion();
+
+                //Histogram equalize
+                if (ntuscope->YSapply_equalizehistogram) {
+                    cv::cuda::equalizeHist(AvgImg8bit_gpu, AvgImg8bit_gpu, stream);
+                    stream.waitForCompletion();
+                }
+
                 // Constrat IN GPU
                 if (ntuscope->YSapply_contrast) {
                     cv::Mat LUT_matrix(1, 256, CV_8UC1);
@@ -1320,6 +1350,7 @@ namespace NTU {
                     cv::Ptr<cv::cuda::LookUpTable> cudaLookUpTable = cv::cuda::createLookUpTable(LUT_matrix);
                     cudaLookUpTable->transform(AvgImg8bit_gpu, AvgImg8bit_gpu, stream);
                     AvgImg8bit_gpu.cv::cuda::GpuMat::convertTo(AvgImg8bit_gpu, -1, ntuscope->YSconstrat, ntuscope->YSbrightness - 150, stream);
+                    stream.waitForCompletion();
                 }
 
                 cv::Size clahe_tile_grid(8,8);
@@ -1499,6 +1530,15 @@ namespace NTU {
                 file << "phase," << ntuscope->lissajous_phase << endl;
                 file << "samplingrate," << ntuscope->samplesPerSec << endl;
                 file << "num of samples," << int(samplesPerBuffer) << endl;
+                if (ntuscope->inputrangetype == INPUT_RANGE_PM_500_MV) {
+                    file << "inputrange," << 500 << endl;
+                }
+                else if (ntuscope->inputrangetype == INPUT_RANGE_PM_800_MV) {
+                    file << "inputrange," << 800 << endl;
+                }
+                else if (ntuscope->inputrangetype == INPUT_RANGE_PM_1_V) {
+                    file << "inputrange," << 1000 << endl;
+                }
                 file.close();
                 cout << "CSV file created successfully at: " << csvpath << endl;
             }
@@ -1511,6 +1551,15 @@ namespace NTU {
             rawfile << "phase," << ntuscope->lissajous_phase << endl;
             rawfile << "samplingrate," << ntuscope->samplesPerSec << endl;
             rawfile << "num of samples," << int(samplesPerBuffer) << endl;
+            if (ntuscope->inputrangetype == INPUT_RANGE_PM_500_MV) {
+                rawfile << "inputrange," << 500 << endl;
+            }
+            else if (ntuscope->inputrangetype == INPUT_RANGE_PM_800_MV) {
+                rawfile << "inputrange," << 800 << endl;
+            }
+            else if (ntuscope->inputrangetype == INPUT_RANGE_PM_1_V) {
+                rawfile << "inputrange," << 1000 << endl;
+            }
             rawfile.close();
             cout << "CSV file created successfully at: " << rawcsvpath << endl;
         }
@@ -1523,6 +1572,15 @@ namespace NTU {
             file << "yamp," << ntuscope->MEMS_yamp << endl;
             file << "samplingrate," << ntuscope->samplesPerSec << endl;
             file << "num of samples," << int(samplesPerBuffer) << endl;
+            if (ntuscope->inputrangetype == INPUT_RANGE_PM_500_MV) {
+                file << "inputrange," << 500 << endl;
+            }
+            else if (ntuscope->inputrangetype == INPUT_RANGE_PM_800_MV) {
+                file << "inputrange," << 800 << endl;
+            }
+            else if (ntuscope->inputrangetype == INPUT_RANGE_PM_1_V) {
+                file << "inputrange," << 1000 << endl;
+            }
             file.close();
             cout << "CSV file created successfully at: " << csvpath << endl;
             string rawcsvpath = ntuscope->folderPathRaw + "\\scan_spec.csv";
@@ -1533,6 +1591,15 @@ namespace NTU {
             rawfile << "yamp," << ntuscope->MEMS_yamp << endl;
             rawfile << "samplingrate," << ntuscope->samplesPerSec << endl;
             rawfile << "num of samples," << int(samplesPerBuffer) << endl;
+            if (ntuscope->inputrangetype == INPUT_RANGE_PM_500_MV) {
+                rawfile << "inputrange," << 500 << endl;
+            }
+            else if (ntuscope->inputrangetype == INPUT_RANGE_PM_800_MV) {
+                rawfile << "inputrange," << 800 << endl;
+            }
+            else if (ntuscope->inputrangetype == INPUT_RANGE_PM_1_V) {
+                rawfile << "inputrange," << 1000 << endl;
+            }
             rawfile.close();
             cout << "CSV file created successfully at: " << rawcsvpath << endl;
         }
@@ -1547,6 +1614,15 @@ namespace NTU {
             file << "yamp," << ntuscope->MEMS_yamp << endl;
             file << "samplingrate," << ntuscope->samplesPerSec << endl;
             file << "num of samples," << int(samplesPerBuffer) << endl;
+            if (ntuscope->inputrangetype == INPUT_RANGE_PM_500_MV) {
+                file << "inputrange," << 500 << endl;
+            }
+            else if (ntuscope->inputrangetype == INPUT_RANGE_PM_800_MV) {
+                file << "inputrange," << 800 << endl;
+            }
+            else if (ntuscope->inputrangetype == INPUT_RANGE_PM_1_V) {
+                file << "inputrange," << 1000 << endl;
+            }
             file.close();
             cout << "CSV file created successfully at: " << csvpath << endl;
             string rawcsvpath = ntuscope->folderPathRaw + "\\scan_spec.csv";
@@ -1559,6 +1635,15 @@ namespace NTU {
             rawfile << "yamp," << ntuscope->MEMS_yamp << endl;
             rawfile << "samplingrate," << ntuscope->samplesPerSec << endl;
             rawfile << "num of samples," << int(samplesPerBuffer) << endl;
+            if (ntuscope->inputrangetype == INPUT_RANGE_PM_500_MV) {
+                rawfile << "inputrange," << 500 << endl;
+            }
+            else if (ntuscope->inputrangetype == INPUT_RANGE_PM_800_MV) {
+                rawfile << "inputrange," << 800 << endl;
+            }
+            else if (ntuscope->inputrangetype == INPUT_RANGE_PM_1_V) {
+                rawfile << "inputrange," << 1000 << endl;
+            }
             rawfile.close();
             cout << "CSV file created successfully at: " << rawcsvpath << endl;
         }
