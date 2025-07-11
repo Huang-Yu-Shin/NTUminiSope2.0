@@ -71,6 +71,7 @@ namespace NTU
 		string titleFolder;
 		bool savestate = false;
 		bool saverawstate = false;
+		bool saverawbinstate = false;
 		int save_num = 0;
 		bool avgstate = false;
 		int avgcount = 1;

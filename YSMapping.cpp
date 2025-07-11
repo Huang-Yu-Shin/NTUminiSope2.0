@@ -936,7 +936,9 @@ namespace NTU {
             CreateDirectoryA(ntuscope->folderPath.c_str(), NULL);
             if (ntuscope->saverawstate) {
                 CreateDirectoryA(ntuscope->folderPathRaw.c_str(), NULL);
-                CreateDirectoryA(ntuscope->folderPathRawBin.c_str(), NULL);
+                if (ntuscope->saverawbinstate == true) {
+                    CreateDirectoryA(ntuscope->folderPathRawBin.c_str(), NULL);
+                }
             }
                 
         }
@@ -987,18 +989,21 @@ namespace NTU {
                 cerr << "Error: Unable to save pixel data to " << filePathraw.str() << endl;
                 return false;
             }
+
             //final_display_raw_bin
-            FILE* fpData = fopen(filePathrawbin.str().c_str(), "wb");
-            if (fpData) {
-                size_t bytesPerBuffer = samplesPerBuffer * sizeof(U16);
-                size_t bytesWritten = fwrite(buffer_save.data(), sizeof(BYTE), bytesPerBuffer, fpData);
-                fclose(fpData);
-                if (bytesWritten != bytesPerBuffer) {
+            if (ntuscope->saverawbinstate == true) {
+                FILE* fpData = fopen(filePathrawbin.str().c_str(), "wb");
+                if (fpData) {
+                    size_t bytesPerBuffer = samplesPerBuffer * sizeof(U16);
+                    size_t bytesWritten = fwrite(buffer_save.data(), sizeof(BYTE), bytesPerBuffer, fpData);
+                    fclose(fpData);
+                    if (bytesWritten != bytesPerBuffer) {
+                        return false;
+                    }
+                }
+                else {
                     return false;
                 }
-            }
-            else {
-                return false;
             }
         }
 
