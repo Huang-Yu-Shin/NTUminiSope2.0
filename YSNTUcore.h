@@ -70,6 +70,7 @@ namespace NTU
 		string folderPathRawBin;
 		string titleFolder;
 		bool savestate = false;
+		bool saveprocessedstate = false;
 		bool saverawstate = false;
 		bool saverawbinstate = false;
 		int save_num = 0;
@@ -94,6 +95,8 @@ namespace NTU
 		double YSgamma = 1.1;
 		int minVal16bit = 0;
 		int maxVal16bit = 65535;
+		int normalize_alpha = 0;
+		int normalize_beta = 65535;
 		float YSalpha_DCE = 4.0;
 		bool YSapply_contrast = false;
 		bool YSapply_gaussian = false;
@@ -104,6 +107,7 @@ namespace NTU
 		bool YSapply_minmax = false;
 		bool YSapply_signalprocessing = false;
 		bool YSapply_binning = false;
+		bool YSapply_normalize = false;
 		bool YSapply_DCE = false;
 		bool YSapply_equalizehistogram = false;
 		int YSoffsetvalueSP = 32768;

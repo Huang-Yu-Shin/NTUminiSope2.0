@@ -586,20 +586,6 @@ namespace NTU {
         cv::Mat Img16bit;
         gpu_image.download(Img16bit);
 
-        //to save
-        if (ntuscope->savestate == true && SavedCount < ntuscope->save_num) {
-            cv::Mat saveraw = cv::Mat(1, int(samplesPerBuffer), CV_16UC1, Buffer);
-            lock_guard<mutex> lock(saveMutex);
-            image_save = Img16bit.clone();
-            image_saveraw = saveraw.clone();
-            saveLissajousQueue.emplace_back(image_save, image_saveraw, starttime_system);
-            SavedCount++;
-            saveCondition.notify_one();
-            //if (ntuscope->saverawstate){
-            //    SaveBufferdata(frameorder, Buffer);
-            //}
-        }
-
         //Average
         if (ntuscope->avgstate == true) {
             lock_guard<mutex> lock(queueMutex);
@@ -635,6 +621,11 @@ namespace NTU {
             cv::cuda::threshold(gpu_image, gpu_image, 0, 0, cv::THRESH_TOZERO, stream);
         }
 
+        //Normalize
+        if (ntuscope->YSapply_normalize == true) {
+            cv::cuda::normalize(gpu_image, gpu_image, ntuscope->normalize_alpha, ntuscope->normalize_beta, cv::NORM_MINMAX, -1, cv::noArray(), stream);
+        }
+
         //Convert to 8-bit
         cv::cuda::GpuMat gpu_8bit;
         gpu_image.convertTo(gpu_8bit, CV_8UC1, 1 / 257.0, 0, stream);
@@ -661,6 +652,25 @@ namespace NTU {
         cv::cuda::GpuMat gpu_8bitresizedImage;
         cv::cuda::resize(gpu_8bit, gpu_8bitresizedImage, cv::Size(ntuscope->Xpixelsize_display, ntuscope->Ypixelsize_display), 0, 0, cv::INTER_LINEAR);
         stream.waitForCompletion();
+
+        //to save
+        if (ntuscope->savestate == true && SavedCount < ntuscope->save_num) {
+            cv::Mat saveraw = cv::Mat(1, int(samplesPerBuffer), CV_16UC1, Buffer);
+            lock_guard<mutex> lock(saveMutex);
+            if (ntuscope->saveprocessedstate == true) {
+                gpu_8bitresizedImage.download(image_save);
+            }
+            else if (ntuscope->saveprocessedstate == false) {
+                image_save = Img16bit.clone();
+            }
+            image_saveraw = saveraw.clone();
+            saveLissajousQueue.emplace_back(image_save, image_saveraw, starttime_system);
+            SavedCount++;
+            saveCondition.notify_one();
+            //if (ntuscope->saverawstate){
+            //    SaveBufferdata(frameorder, Buffer);
+            //}
+        }
 
         //Convert to RGB
         cv::cuda::GpuMat gpu_8bitRGB;
@@ -777,17 +787,6 @@ namespace NTU {
         cv::Mat Img16bit;
         gpu_image.download(Img16bit);
 
-        //Save images
-        if (ntuscope->savestate == true && SavedCount < ntuscope->save_num) {
-            lock_guard<mutex> lock(saveMutex);
-            image_save = Img16bit.clone();
-            gpu_image_pre.download(image_saveraw);
-            vector<U16> buffer_vector(Buffer, Buffer + samplesPerBuffer);
-            saveQueue.emplace_back(image_save,image_saveraw, buffer_vector, starttime_system);
-            SavedCount++;
-            saveCondition.notify_one();
-        }
-
         //Average
         if (ntuscope->avgstate == true) {
             lock_guard<mutex> lock(queueMutex);
@@ -816,6 +815,11 @@ namespace NTU {
             gpu_image.convertTo(gpu_image, -1, scale, shift, stream);
             cv::cuda::threshold(gpu_image, gpu_image, 65535, 65535, cv::THRESH_TRUNC, stream);
             cv::cuda::threshold(gpu_image, gpu_image, 0, 0, cv::THRESH_TOZERO, stream);
+        }
+
+        //Normalize
+        if (ntuscope->YSapply_normalize == true) {
+            cv::cuda::normalize(gpu_image, gpu_image, ntuscope->normalize_alpha, ntuscope->normalize_beta, cv::NORM_MINMAX, -1, cv::noArray(), stream);
         }
 
         //Binning
@@ -881,6 +885,22 @@ namespace NTU {
         cv::cuda::GpuMat gpu_8bitresizedImage;
         cv::cuda::resize(gpu_8bit, gpu_8bitresizedImage, cv::Size(ntuscope->Xpixelsize_display, ntuscope->Ypixelsize_display), 0, 0, cv::INTER_AREA);//cv::INTER_AREAcv::INTER_LINEAR
         stream.waitForCompletion();
+
+        //Save images
+        if (ntuscope->savestate == true && SavedCount < ntuscope->save_num) {
+            lock_guard<mutex> lock(saveMutex);
+            if (ntuscope->saveprocessedstate == true) {
+                gpu_8bitresizedImage.download(image_save);
+            }
+            else if (ntuscope->saveprocessedstate == false) {
+                image_save = Img16bit.clone();
+            }
+            gpu_image_pre.download(image_saveraw);
+            vector<U16> buffer_vector(Buffer, Buffer + samplesPerBuffer);
+            saveQueue.emplace_back(image_save, image_saveraw, buffer_vector, starttime_system);
+            SavedCount++;
+            saveCondition.notify_one();
+        }
 
         //Convert to RGB
         cv::cuda::GpuMat gpu_8bitRGB;
@@ -955,15 +975,23 @@ namespace NTU {
 
         //final_display_img
         //resize
-        cv::cuda::GpuMat gpu_Image;
-        cv::cuda::GpuMat gpu_resizedImage;
-        gpu_Image.upload(final_display_img);
-        cv::cuda::resize(gpu_Image, gpu_resizedImage, cv::Size(ntuscope->Xpixelsize_save, ntuscope->Ypixelsize_save), 0, 0, cv::INTER_LINEAR);
-        cv::Mat finalImage;
-        gpu_resizedImage.download(finalImage);
-        if (!cv::imwrite(filePath.str(), finalImage)) {
-            cerr << "Error: Unable to save image to " << filePath.str() << endl;
-            return false;
+        if (ntuscope->saveprocessedstate == true) {
+            if (!cv::imwrite(filePath.str(), final_display_img)) {
+                cerr << "Error: Unable to save image to " << filePath.str() << endl;
+                return false;
+            }
+        }
+        else if (ntuscope->saveprocessedstate == false) {
+            cv::cuda::GpuMat gpu_Image;
+            cv::cuda::GpuMat gpu_resizedImage;
+            gpu_Image.upload(final_display_img);
+            cv::cuda::resize(gpu_Image, gpu_resizedImage, cv::Size(ntuscope->Xpixelsize_save, ntuscope->Ypixelsize_save), 0, 0, cv::INTER_LINEAR);
+            cv::Mat finalImage;
+            gpu_resizedImage.download(finalImage);
+            if (!cv::imwrite(filePath.str(), finalImage)) {
+                cerr << "Error: Unable to save image to " << filePath.str() << endl;
+                return false;
+            }
         }
 
         //final_display_raw
@@ -1295,6 +1323,11 @@ namespace NTU {
                     cv::cuda::threshold(AvgImg16bit_gpu, AvgImg16bit_gpu, 65535, 65535, cv::THRESH_TRUNC, stream);
                     cv::cuda::threshold(AvgImg16bit_gpu, AvgImg16bit_gpu, 0, 0, cv::THRESH_TOZERO, stream);
                     stream.waitForCompletion();
+                }
+
+                //Normalize
+                if (ntuscope->YSapply_normalize == true) {
+                    cv::cuda::normalize(AvgImg16bit_gpu, AvgImg16bit_gpu, ntuscope->normalize_alpha, ntuscope->normalize_beta, cv::NORM_MINMAX, -1, cv::noArray(), stream);
                 }
 
                 //Binning

@@ -605,6 +605,19 @@ private: System::Windows::Forms::Label^ label16;
 private: System::Windows::Forms::Label^ label58;
 private: CustomControls::DefineControls::ToggleButtons^ toggleButtons_equalhistogram;
 private: System::Windows::Forms::CheckBox^ YScheckBox_saverawbin;
+private: CustomControls::DefineControls::ToggleButtons^ toggleButtons_normalize;
+
+private: System::Windows::Forms::Label^ label59;
+private: System::Windows::Forms::Label^ label_normalizeMax;
+
+private: System::Windows::Forms::TrackBar^ trackBar_normalizeMax;
+
+private: System::Windows::Forms::Label^ label61;
+private: System::Windows::Forms::Label^ label_normalizeMin;
+
+private: System::Windows::Forms::TrackBar^ trackBar_normalizeMin;
+private: System::Windows::Forms::CheckBox^ checkBox_saveprocessedimage;
+
 
 
 
@@ -810,7 +823,7 @@ private: System::Windows::Forms::CheckBox^ YScheckBox_saverawbin;
 			load_obj->send_progress(75);
 
 			YSCORE->initialize();
-			this->YScomboBox_inputrange->SelectedIndex = 1;
+			this->YScomboBox_inputrange->SelectedIndex = 2;
 			this->YScomboBox_intclock->SelectedIndex = 3;
 			this->YScomboBox__raster_linefreq->SelectedIndex = 9;
 			this->YScomboBox__raster_yline->SelectedIndex = 5;
@@ -1072,6 +1085,7 @@ private:
 			this->label12 = (gcnew System::Windows::Forms::Label());
 			this->tabControl3 = (gcnew System::Windows::Forms::TabControl());
 			this->tabPage13 = (gcnew System::Windows::Forms::TabPage());
+			this->checkBox_saveprocessedimage = (gcnew System::Windows::Forms::CheckBox());
 			this->YScheckBox_saverawbin = (gcnew System::Windows::Forms::CheckBox());
 			this->YSbutton_clear = (gcnew System::Windows::Forms::Button());
 			this->label25 = (gcnew System::Windows::Forms::Label());
@@ -1134,6 +1148,13 @@ private:
 			this->trackBar_brightness_beta = (gcnew System::Windows::Forms::TrackBar());
 			this->trackBar_adjust_gamma = (gcnew System::Windows::Forms::TrackBar());
 			this->tabPage9 = (gcnew System::Windows::Forms::TabPage());
+			this->toggleButtons_normalize = (gcnew CustomControls::DefineControls::ToggleButtons());
+			this->label59 = (gcnew System::Windows::Forms::Label());
+			this->label_normalizeMax = (gcnew System::Windows::Forms::Label());
+			this->trackBar_normalizeMax = (gcnew System::Windows::Forms::TrackBar());
+			this->label61 = (gcnew System::Windows::Forms::Label());
+			this->label_normalizeMin = (gcnew System::Windows::Forms::Label());
+			this->trackBar_normalizeMin = (gcnew System::Windows::Forms::TrackBar());
 			this->label58 = (gcnew System::Windows::Forms::Label());
 			this->toggleButtons_equalhistogram = (gcnew CustomControls::DefineControls::ToggleButtons());
 			this->toggleButtons_minmax = (gcnew CustomControls::DefineControls::ToggleButtons());
@@ -1341,6 +1362,8 @@ private:
 			(cli::safe_cast<System::ComponentModel::ISupportInitialize^>(this->trackBar_brightness_beta))->BeginInit();
 			(cli::safe_cast<System::ComponentModel::ISupportInitialize^>(this->trackBar_adjust_gamma))->BeginInit();
 			this->tabPage9->SuspendLayout();
+			(cli::safe_cast<System::ComponentModel::ISupportInitialize^>(this->trackBar_normalizeMax))->BeginInit();
+			(cli::safe_cast<System::ComponentModel::ISupportInitialize^>(this->trackBar_normalizeMin))->BeginInit();
 			(cli::safe_cast<System::ComponentModel::ISupportInitialize^>(this->trackBar_MaxVal))->BeginInit();
 			(cli::safe_cast<System::ComponentModel::ISupportInitialize^>(this->trackBar_MinVal))->BeginInit();
 			this->tabPage6->SuspendLayout();
@@ -2067,6 +2090,7 @@ private:
 			// tabPage13
 			// 
 			this->tabPage13->BackColor = System::Drawing::Color::DimGray;
+			this->tabPage13->Controls->Add(this->checkBox_saveprocessedimage);
 			this->tabPage13->Controls->Add(this->YScheckBox_saverawbin);
 			this->tabPage13->Controls->Add(this->YSbutton_clear);
 			this->tabPage13->Controls->Add(this->label25);
@@ -2085,6 +2109,18 @@ private:
 			this->tabPage13->Size = System::Drawing::Size(420, 113);
 			this->tabPage13->TabIndex = 3;
 			this->tabPage13->Text = L"YS Image acq.";
+			// 
+			// checkBox_saveprocessedimage
+			// 
+			this->checkBox_saveprocessedimage->AutoSize = true;
+			this->checkBox_saveprocessedimage->Font = (gcnew System::Drawing::Font(L"Segoe UI", 11.25F, System::Drawing::FontStyle::Bold, System::Drawing::GraphicsUnit::Point,
+				static_cast<System::Byte>(0)));
+			this->checkBox_saveprocessedimage->Location = System::Drawing::Point(157, 62);
+			this->checkBox_saveprocessedimage->Name = L"checkBox_saveprocessedimage";
+			this->checkBox_saveprocessedimage->Size = System::Drawing::Size(181, 24);
+			this->checkBox_saveprocessedimage->TabIndex = 111;
+			this->checkBox_saveprocessedimage->Text = L"Save processed image";
+			this->checkBox_saveprocessedimage->UseVisualStyleBackColor = true;
 			// 
 			// YScheckBox_saverawbin
 			// 
@@ -2719,7 +2755,7 @@ private:
 			this->tabPage19->Location = System::Drawing::Point(4, 24);
 			this->tabPage19->Name = L"tabPage19";
 			this->tabPage19->Padding = System::Windows::Forms::Padding(3);
-			this->tabPage19->Size = System::Drawing::Size(420, 165);
+			this->tabPage19->Size = System::Drawing::Size(420, 180);
 			this->tabPage19->TabIndex = 6;
 			this->tabPage19->Text = L"CONTRAST";
 			// 
@@ -2909,6 +2945,13 @@ private:
 			// tabPage9
 			// 
 			this->tabPage9->BackColor = System::Drawing::Color::DimGray;
+			this->tabPage9->Controls->Add(this->toggleButtons_normalize);
+			this->tabPage9->Controls->Add(this->label59);
+			this->tabPage9->Controls->Add(this->label_normalizeMax);
+			this->tabPage9->Controls->Add(this->trackBar_normalizeMax);
+			this->tabPage9->Controls->Add(this->label61);
+			this->tabPage9->Controls->Add(this->label_normalizeMin);
+			this->tabPage9->Controls->Add(this->trackBar_normalizeMin);
 			this->tabPage9->Controls->Add(this->label58);
 			this->tabPage9->Controls->Add(this->toggleButtons_equalhistogram);
 			this->tabPage9->Controls->Add(this->toggleButtons_minmax);
@@ -2920,9 +2963,99 @@ private:
 			this->tabPage9->Controls->Add(this->trackBar_MinVal);
 			this->tabPage9->Location = System::Drawing::Point(4, 24);
 			this->tabPage9->Name = L"tabPage9";
-			this->tabPage9->Size = System::Drawing::Size(420, 165);
+			this->tabPage9->Size = System::Drawing::Size(420, 180);
 			this->tabPage9->TabIndex = 7;
 			this->tabPage9->Text = L"MinMax Value";
+			// 
+			// toggleButtons_normalize
+			// 
+			this->toggleButtons_normalize->Location = System::Drawing::Point(8, 121);
+			this->toggleButtons_normalize->MinimumSize = System::Drawing::Size(45, 22);
+			this->toggleButtons_normalize->Name = L"toggleButtons_normalize";
+			this->toggleButtons_normalize->OffBackColor = System::Drawing::Color::WhiteSmoke;
+			this->toggleButtons_normalize->OffToggleColor = System::Drawing::Color::Gainsboro;
+			this->toggleButtons_normalize->OnBackColor = System::Drawing::Color::WhiteSmoke;
+			this->toggleButtons_normalize->OnToggleColor = System::Drawing::Color::DodgerBlue;
+			this->toggleButtons_normalize->Size = System::Drawing::Size(47, 25);
+			this->toggleButtons_normalize->SolidStyle = false;
+			this->toggleButtons_normalize->TabIndex = 85;
+			this->toggleButtons_normalize->UseVisualStyleBackColor = true;
+			this->toggleButtons_normalize->CheckedChanged += gcnew System::EventHandler(this, &MTPFM::toggleButtons_normalize_CheckedChanged);
+			// 
+			// label59
+			// 
+			this->label59->AutoSize = true;
+			this->label59->Font = (gcnew System::Drawing::Font(L"Segoe UI", 11.25F, System::Drawing::FontStyle::Bold, System::Drawing::GraphicsUnit::Point,
+				static_cast<System::Byte>(0)));
+			this->label59->ForeColor = System::Drawing::Color::White;
+			this->label59->Location = System::Drawing::Point(58, 155);
+			this->label59->Name = L"label59";
+			this->label59->Size = System::Drawing::Size(81, 20);
+			this->label59->TabIndex = 82;
+			this->label59->Text = L"Max Value";
+			// 
+			// label_normalizeMax
+			// 
+			this->label_normalizeMax->AutoSize = true;
+			this->label_normalizeMax->Font = (gcnew System::Drawing::Font(L"Segoe UI", 12, System::Drawing::FontStyle::Bold, System::Drawing::GraphicsUnit::Point,
+				static_cast<System::Byte>(0)));
+			this->label_normalizeMax->Location = System::Drawing::Point(361, 155);
+			this->label_normalizeMax->Name = L"label_normalizeMax";
+			this->label_normalizeMax->Size = System::Drawing::Size(55, 21);
+			this->label_normalizeMax->TabIndex = 83;
+			this->label_normalizeMax->Text = L"65535";
+			// 
+			// trackBar_normalizeMax
+			// 
+			this->trackBar_normalizeMax->AutoSize = false;
+			this->trackBar_normalizeMax->BackColor = System::Drawing::Color::DimGray;
+			this->trackBar_normalizeMax->LargeChange = 500;
+			this->trackBar_normalizeMax->Location = System::Drawing::Point(136, 156);
+			this->trackBar_normalizeMax->Maximum = 52768;
+			this->trackBar_normalizeMax->Name = L"trackBar_normalizeMax";
+			this->trackBar_normalizeMax->Size = System::Drawing::Size(219, 20);
+			this->trackBar_normalizeMax->SmallChange = 50;
+			this->trackBar_normalizeMax->TabIndex = 84;
+			this->trackBar_normalizeMax->TickFrequency = 25;
+			this->trackBar_normalizeMax->Value = 52768;
+			this->trackBar_normalizeMax->Scroll += gcnew System::EventHandler(this, &MTPFM::trackBar_normalizeMax_Scroll);
+			// 
+			// label61
+			// 
+			this->label61->AutoSize = true;
+			this->label61->Font = (gcnew System::Drawing::Font(L"Segoe UI", 11.25F, System::Drawing::FontStyle::Bold, System::Drawing::GraphicsUnit::Point,
+				static_cast<System::Byte>(0)));
+			this->label61->ForeColor = System::Drawing::Color::White;
+			this->label61->Location = System::Drawing::Point(58, 125);
+			this->label61->Name = L"label61";
+			this->label61->Size = System::Drawing::Size(78, 20);
+			this->label61->TabIndex = 79;
+			this->label61->Text = L"Min Value";
+			// 
+			// label_normalizeMin
+			// 
+			this->label_normalizeMin->AutoSize = true;
+			this->label_normalizeMin->Font = (gcnew System::Drawing::Font(L"Segoe UI", 12, System::Drawing::FontStyle::Bold, System::Drawing::GraphicsUnit::Point,
+				static_cast<System::Byte>(0)));
+			this->label_normalizeMin->Location = System::Drawing::Point(362, 127);
+			this->label_normalizeMin->Name = L"label_normalizeMin";
+			this->label_normalizeMin->Size = System::Drawing::Size(19, 21);
+			this->label_normalizeMin->TabIndex = 80;
+			this->label_normalizeMin->Text = L"0";
+			// 
+			// trackBar_normalizeMin
+			// 
+			this->trackBar_normalizeMin->AutoSize = false;
+			this->trackBar_normalizeMin->BackColor = System::Drawing::Color::DimGray;
+			this->trackBar_normalizeMin->LargeChange = 500;
+			this->trackBar_normalizeMin->Location = System::Drawing::Point(136, 128);
+			this->trackBar_normalizeMin->Maximum = 32768;
+			this->trackBar_normalizeMin->Name = L"trackBar_normalizeMin";
+			this->trackBar_normalizeMin->Size = System::Drawing::Size(220, 20);
+			this->trackBar_normalizeMin->SmallChange = 50;
+			this->trackBar_normalizeMin->TabIndex = 81;
+			this->trackBar_normalizeMin->TickFrequency = 25;
+			this->trackBar_normalizeMin->Scroll += gcnew System::EventHandler(this, &MTPFM::trackBar_normalizeMin_Scroll);
 			// 
 			// label58
 			// 
@@ -2930,7 +3063,7 @@ private:
 			this->label58->Font = (gcnew System::Drawing::Font(L"Segoe UI", 11.25F, System::Drawing::FontStyle::Bold, System::Drawing::GraphicsUnit::Point,
 				static_cast<System::Byte>(0)));
 			this->label58->ForeColor = System::Drawing::Color::White;
-			this->label58->Location = System::Drawing::Point(61, 96);
+			this->label58->Location = System::Drawing::Point(61, 78);
 			this->label58->Name = L"label58";
 			this->label58->Size = System::Drawing::Size(172, 20);
 			this->label58->TabIndex = 78;
@@ -2938,7 +3071,7 @@ private:
 			// 
 			// toggleButtons_equalhistogram
 			// 
-			this->toggleButtons_equalhistogram->Location = System::Drawing::Point(8, 95);
+			this->toggleButtons_equalhistogram->Location = System::Drawing::Point(8, 77);
 			this->toggleButtons_equalhistogram->MinimumSize = System::Drawing::Size(45, 22);
 			this->toggleButtons_equalhistogram->Name = L"toggleButtons_equalhistogram";
 			this->toggleButtons_equalhistogram->OffBackColor = System::Drawing::Color::WhiteSmoke;
@@ -2972,7 +3105,7 @@ private:
 			this->label53->Font = (gcnew System::Drawing::Font(L"Segoe UI", 11.25F, System::Drawing::FontStyle::Bold, System::Drawing::GraphicsUnit::Point,
 				static_cast<System::Byte>(0)));
 			this->label53->ForeColor = System::Drawing::Color::White;
-			this->label53->Location = System::Drawing::Point(58, 58);
+			this->label53->Location = System::Drawing::Point(58, 41);
 			this->label53->Name = L"label53";
 			this->label53->Size = System::Drawing::Size(81, 20);
 			this->label53->TabIndex = 63;
@@ -2983,7 +3116,7 @@ private:
 			this->label_MaxVal->AutoSize = true;
 			this->label_MaxVal->Font = (gcnew System::Drawing::Font(L"Segoe UI", 12, System::Drawing::FontStyle::Bold, System::Drawing::GraphicsUnit::Point,
 				static_cast<System::Byte>(0)));
-			this->label_MaxVal->Location = System::Drawing::Point(361, 58);
+			this->label_MaxVal->Location = System::Drawing::Point(361, 41);
 			this->label_MaxVal->Name = L"label_MaxVal";
 			this->label_MaxVal->Size = System::Drawing::Size(55, 21);
 			this->label_MaxVal->TabIndex = 64;
@@ -2994,7 +3127,7 @@ private:
 			this->trackBar_MaxVal->AutoSize = false;
 			this->trackBar_MaxVal->BackColor = System::Drawing::Color::DimGray;
 			this->trackBar_MaxVal->LargeChange = 500;
-			this->trackBar_MaxVal->Location = System::Drawing::Point(136, 59);
+			this->trackBar_MaxVal->Location = System::Drawing::Point(136, 42);
 			this->trackBar_MaxVal->Maximum = 52768;
 			this->trackBar_MaxVal->Name = L"trackBar_MaxVal";
 			this->trackBar_MaxVal->Size = System::Drawing::Size(219, 20);
@@ -3054,7 +3187,7 @@ private:
 			this->tabPage6->Location = System::Drawing::Point(4, 24);
 			this->tabPage6->Name = L"tabPage6";
 			this->tabPage6->Padding = System::Windows::Forms::Padding(3);
-			this->tabPage6->Size = System::Drawing::Size(420, 165);
+			this->tabPage6->Size = System::Drawing::Size(420, 180);
 			this->tabPage6->TabIndex = 0;
 			this->tabPage6->Text = L"Gaussian Blur";
 			// 
@@ -3160,7 +3293,7 @@ private:
 			this->tabPage7->Location = System::Drawing::Point(4, 24);
 			this->tabPage7->Name = L"tabPage7";
 			this->tabPage7->Padding = System::Windows::Forms::Padding(3);
-			this->tabPage7->Size = System::Drawing::Size(420, 165);
+			this->tabPage7->Size = System::Drawing::Size(420, 180);
 			this->tabPage7->TabIndex = 1;
 			this->tabPage7->Text = L"Median Blur";
 			// 
@@ -3218,7 +3351,7 @@ private:
 			this->tabPage10->Location = System::Drawing::Point(4, 24);
 			this->tabPage10->Name = L"tabPage10";
 			this->tabPage10->Padding = System::Windows::Forms::Padding(3);
-			this->tabPage10->Size = System::Drawing::Size(420, 165);
+			this->tabPage10->Size = System::Drawing::Size(420, 180);
 			this->tabPage10->TabIndex = 4;
 			this->tabPage10->Text = L"CLAHE";
 			// 
@@ -3328,7 +3461,7 @@ private:
 			this->tabPage11->Location = System::Drawing::Point(4, 24);
 			this->tabPage11->Name = L"tabPage11";
 			this->tabPage11->Padding = System::Windows::Forms::Padding(3);
-			this->tabPage11->Size = System::Drawing::Size(420, 165);
+			this->tabPage11->Size = System::Drawing::Size(420, 180);
 			this->tabPage11->TabIndex = 5;
 			this->tabPage11->Text = L"Post Processing";
 			// 
@@ -5463,6 +5596,8 @@ private:
 			(cli::safe_cast<System::ComponentModel::ISupportInitialize^>(this->trackBar_adjust_gamma))->EndInit();
 			this->tabPage9->ResumeLayout(false);
 			this->tabPage9->PerformLayout();
+			(cli::safe_cast<System::ComponentModel::ISupportInitialize^>(this->trackBar_normalizeMax))->EndInit();
+			(cli::safe_cast<System::ComponentModel::ISupportInitialize^>(this->trackBar_normalizeMin))->EndInit();
 			(cli::safe_cast<System::ComponentModel::ISupportInitialize^>(this->trackBar_MaxVal))->EndInit();
 			(cli::safe_cast<System::ComponentModel::ISupportInitialize^>(this->trackBar_MinVal))->EndInit();
 			this->tabPage6->ResumeLayout(false);
@@ -7236,6 +7371,7 @@ private: System::Void YSbutton_save_Click(System::Object^ sender, System::EventA
 		status->ForeColor = Color::LightGreen;
 		status->Text = "Save : Image";
 	}
+	aYSNTU->saveprocessedstate = checkBox_saveprocessedimage->Checked;
 	YSCORE->saveimg(savenum_value);
 	this->YSbutton_save->Enabled = false;
 	this->YSbutton_clear->Enabled = false;
@@ -7432,6 +7568,50 @@ private: System::Void toggleButtons_equalhistogram_CheckedChanged(System::Object
 	{
 		status->ForeColor = Color::LightGreen;
 		status->Text = "Histogram equalization : Dectivated";
+	}
+}
+private: System::Void toggleButtons_normalize_CheckedChanged(System::Object^ sender, System::EventArgs^ e) {
+	aYSNTU->YSapply_normalize = toggleButtons_normalize->Checked;
+	if (aYSNTU->YSapply_normalize == true)
+	{
+		status->ForeColor = Color::LightGreen;
+		status->Text = "Normalize : Activated";
+	}
+	else
+	{
+		status->ForeColor = Color::LightGreen;
+		status->Text = "Normalize : Dectivated";
+	}
+	int MinValalpha = this->trackBar_normalizeMin->Value;
+	int MaxValbeta = this->trackBar_normalizeMax->Value;
+	MaxValbeta += 12767;
+	if (MaxValbeta > MinValalpha) {
+		aYSNTU->normalize_alpha = MinValalpha;
+		this->label_normalizeMin->Text = MinValalpha.ToString();
+		aYSNTU->normalize_beta = MaxValbeta;
+		this->label_normalizeMax->Text = MaxValbeta.ToString();
+	}
+}
+private: System::Void trackBar_normalizeMin_Scroll(System::Object^ sender, System::EventArgs^ e) {
+	int MinValalpha = this->trackBar_normalizeMin->Value;
+	int MaxValbeta = this->trackBar_normalizeMax->Value;
+	MaxValbeta += 12767;
+	if (MaxValbeta > MinValalpha) {
+		aYSNTU->normalize_alpha = MinValalpha;
+		this->label_normalizeMin->Text = MinValalpha.ToString();
+		aYSNTU->normalize_beta = MaxValbeta;
+		this->label_normalizeMax->Text = MaxValbeta.ToString();
+	}
+}
+private: System::Void trackBar_normalizeMax_Scroll(System::Object^ sender, System::EventArgs^ e) {
+	int MinValalpha = this->trackBar_normalizeMin->Value;
+	int MaxValbeta = this->trackBar_normalizeMax->Value;
+	MaxValbeta += 12767;
+	if (MaxValbeta > MinValalpha) {
+		aYSNTU->normalize_alpha = MinValalpha;
+		this->label_normalizeMin->Text = MinValalpha.ToString();
+		aYSNTU->normalize_beta = MaxValbeta;
+		this->label_normalizeMax->Text = MaxValbeta.ToString();
 	}
 }
 };

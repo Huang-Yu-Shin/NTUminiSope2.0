@@ -665,7 +665,7 @@ namespace NTU {
 		cv::Mat image8U;
 		image16U.convertTo(image8U, CV_8UC1, 1.0 / 257); 
 		cv::imshow("Reconstruct Image", image8U);
-		cv::waitKey(1);
+		cv::waitKey(0);
 		delete[] LissajoustempData;
 		delete[] Image;
 	}
