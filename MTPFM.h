@@ -617,6 +617,8 @@ private: System::Windows::Forms::Label^ label_normalizeMin;
 
 private: System::Windows::Forms::TrackBar^ trackBar_normalizeMin;
 private: System::Windows::Forms::CheckBox^ checkBox_saveprocessedimage;
+private: System::Windows::Forms::Label^ label60;
+private: CustomControls::DefineControls::ToggleButtons^ toggleButtons_defaltimageprocessing;
 
 
 
@@ -1081,6 +1083,8 @@ private:
 			this->label5 = (gcnew System::Windows::Forms::Label());
 			this->button2_co_ex = (gcnew System::Windows::Forms::Button());
 			this->panelCollapse = (gcnew System::Windows::Forms::Panel());
+			this->label60 = (gcnew System::Windows::Forms::Label());
+			this->toggleButtons_defaltimageprocessing = (gcnew CustomControls::DefineControls::ToggleButtons());
 			this->checkBox_Export16BIT = (gcnew System::Windows::Forms::CheckBox());
 			this->label12 = (gcnew System::Windows::Forms::Label());
 			this->tabControl3 = (gcnew System::Windows::Forms::TabControl());
@@ -2037,6 +2041,8 @@ private:
 			// 
 			// panelCollapse
 			// 
+			this->panelCollapse->Controls->Add(this->label60);
+			this->panelCollapse->Controls->Add(this->toggleButtons_defaltimageprocessing);
 			this->panelCollapse->Controls->Add(this->checkBox_Export16BIT);
 			this->panelCollapse->Controls->Add(this->label12);
 			this->panelCollapse->Controls->Add(this->tabControl3);
@@ -2049,6 +2055,33 @@ private:
 			this->panelCollapse->Name = L"panelCollapse";
 			this->panelCollapse->Size = System::Drawing::Size(445, 825);
 			this->panelCollapse->TabIndex = 24;
+			// 
+			// label60
+			// 
+			this->label60->AutoSize = true;
+			this->label60->Font = (gcnew System::Drawing::Font(L"Segoe UI", 11.25F, System::Drawing::FontStyle::Bold, System::Drawing::GraphicsUnit::Point,
+				static_cast<System::Byte>(0)));
+			this->label60->ForeColor = System::Drawing::Color::White;
+			this->label60->Location = System::Drawing::Point(242, 594);
+			this->label60->Name = L"label60";
+			this->label60->Size = System::Drawing::Size(178, 20);
+			this->label60->TabIndex = 77;
+			this->label60->Text = L"Defalt image processing";
+			// 
+			// toggleButtons_defaltimageprocessing
+			// 
+			this->toggleButtons_defaltimageprocessing->Location = System::Drawing::Point(191, 593);
+			this->toggleButtons_defaltimageprocessing->MinimumSize = System::Drawing::Size(45, 22);
+			this->toggleButtons_defaltimageprocessing->Name = L"toggleButtons_defaltimageprocessing";
+			this->toggleButtons_defaltimageprocessing->OffBackColor = System::Drawing::Color::WhiteSmoke;
+			this->toggleButtons_defaltimageprocessing->OffToggleColor = System::Drawing::Color::Gainsboro;
+			this->toggleButtons_defaltimageprocessing->OnBackColor = System::Drawing::Color::WhiteSmoke;
+			this->toggleButtons_defaltimageprocessing->OnToggleColor = System::Drawing::Color::DodgerBlue;
+			this->toggleButtons_defaltimageprocessing->Size = System::Drawing::Size(47, 25);
+			this->toggleButtons_defaltimageprocessing->SolidStyle = false;
+			this->toggleButtons_defaltimageprocessing->TabIndex = 75;
+			this->toggleButtons_defaltimageprocessing->UseVisualStyleBackColor = true;
+			this->toggleButtons_defaltimageprocessing->CheckedChanged += gcnew System::EventHandler(this, &MTPFM::toggleButtons_defaltimageprocessing_CheckedChanged);
 			// 
 			// checkBox_Export16BIT
 			// 
@@ -2990,9 +3023,9 @@ private:
 			this->label59->ForeColor = System::Drawing::Color::White;
 			this->label59->Location = System::Drawing::Point(58, 155);
 			this->label59->Name = L"label59";
-			this->label59->Size = System::Drawing::Size(81, 20);
+			this->label59->Size = System::Drawing::Size(124, 20);
 			this->label59->TabIndex = 82;
-			this->label59->Text = L"Max Value";
+			this->label59->Text = L"Normalized Max";
 			// 
 			// label_normalizeMax
 			// 
@@ -3010,10 +3043,10 @@ private:
 			this->trackBar_normalizeMax->AutoSize = false;
 			this->trackBar_normalizeMax->BackColor = System::Drawing::Color::DimGray;
 			this->trackBar_normalizeMax->LargeChange = 500;
-			this->trackBar_normalizeMax->Location = System::Drawing::Point(136, 156);
+			this->trackBar_normalizeMax->Location = System::Drawing::Point(179, 156);
 			this->trackBar_normalizeMax->Maximum = 52768;
 			this->trackBar_normalizeMax->Name = L"trackBar_normalizeMax";
-			this->trackBar_normalizeMax->Size = System::Drawing::Size(219, 20);
+			this->trackBar_normalizeMax->Size = System::Drawing::Size(177, 20);
 			this->trackBar_normalizeMax->SmallChange = 50;
 			this->trackBar_normalizeMax->TabIndex = 84;
 			this->trackBar_normalizeMax->TickFrequency = 25;
@@ -3028,9 +3061,9 @@ private:
 			this->label61->ForeColor = System::Drawing::Color::White;
 			this->label61->Location = System::Drawing::Point(58, 125);
 			this->label61->Name = L"label61";
-			this->label61->Size = System::Drawing::Size(78, 20);
+			this->label61->Size = System::Drawing::Size(121, 20);
 			this->label61->TabIndex = 79;
-			this->label61->Text = L"Min Value";
+			this->label61->Text = L"Normalized Min";
 			// 
 			// label_normalizeMin
 			// 
@@ -3048,10 +3081,10 @@ private:
 			this->trackBar_normalizeMin->AutoSize = false;
 			this->trackBar_normalizeMin->BackColor = System::Drawing::Color::DimGray;
 			this->trackBar_normalizeMin->LargeChange = 500;
-			this->trackBar_normalizeMin->Location = System::Drawing::Point(136, 128);
+			this->trackBar_normalizeMin->Location = System::Drawing::Point(179, 128);
 			this->trackBar_normalizeMin->Maximum = 32768;
 			this->trackBar_normalizeMin->Name = L"trackBar_normalizeMin";
-			this->trackBar_normalizeMin->Size = System::Drawing::Size(220, 20);
+			this->trackBar_normalizeMin->Size = System::Drawing::Size(177, 20);
 			this->trackBar_normalizeMin->SmallChange = 50;
 			this->trackBar_normalizeMin->TabIndex = 81;
 			this->trackBar_normalizeMin->TickFrequency = 25;
@@ -7612,6 +7645,45 @@ private: System::Void trackBar_normalizeMax_Scroll(System::Object^ sender, Syste
 		this->label_normalizeMin->Text = MinValalpha.ToString();
 		aYSNTU->normalize_beta = MaxValbeta;
 		this->label_normalizeMax->Text = MaxValbeta.ToString();
+	}
+}
+private: System::Void toggleButtons_defaltimageprocessing_CheckedChanged(System::Object^ sender, System::EventArgs^ e) {
+	if (toggleButtons_defaltimageprocessing->Checked==true) {
+		toggleButtons_contrast->Checked = true;
+		toggleButtons_CLAHE->Checked = true;
+
+		this->trackBar_MinVal->Value=0;
+		this->trackBar_MaxVal->Value=39233;
+		int MinVal = this->trackBar_MinVal->Value;
+		int MaxVal = this->trackBar_MaxVal->Value;
+		MaxVal += 12767;
+		if (MaxVal > MinVal) {
+			aYSNTU->minVal16bit = MinVal;
+			this->label_MinVal->Text = MinVal.ToString();
+			aYSNTU->maxVal16bit = MaxVal;
+			this->label_MaxVal->Text = MaxVal.ToString();
+		}
+		toggleButtons_minmax->Checked = true;
+
+		this->trackBar_normalizeMin->Value =0;
+		this->trackBar_normalizeMax->Value = 52768;
+		int MinValalpha = this->trackBar_normalizeMin->Value;
+		int MaxValbeta = this->trackBar_normalizeMax->Value;
+		MaxValbeta += 12767;
+		if (MaxValbeta > MinValalpha) {
+			aYSNTU->normalize_alpha = MinValalpha;
+			this->label_normalizeMin->Text = MinValalpha.ToString();
+			aYSNTU->normalize_beta = MaxValbeta;
+			this->label_normalizeMax->Text = MaxValbeta.ToString();
+		}
+		toggleButtons_normalize->Checked = true;
+
+	}
+	else if (toggleButtons_defaltimageprocessing->Checked == false) {
+		toggleButtons_contrast->Checked = false;
+		toggleButtons_CLAHE->Checked = false;
+		toggleButtons_minmax->Checked = false;
+		toggleButtons_normalize->Checked = false;
 	}
 }
 };

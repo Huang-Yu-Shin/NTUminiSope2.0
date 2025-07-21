@@ -668,6 +668,9 @@ namespace NTU {
         else if (xAmp == 1.5 && yAmp == 1.5) {
             filename = "C:\\Ian\\MTPFM\\Calibrations\\default_settings\\FCLK_Calibration_Raster_Driver_132000-1_5amp.txt";
         }
+        else if (xAmp == 2 && yAmp == 2) {
+            filename = "C:\\Ian\\MTPFM\\Calibrations\\default_settings\\FCLK_Calibration_Raster_Driver_132000-2amp.txt";
+        }
         else {
             filename = "C:\\Ian\\MTPFM\\Calibrations\\default_settings\\FCLK_Calibration_Raster_Driver_132000-0_5amp.txt";
         }
