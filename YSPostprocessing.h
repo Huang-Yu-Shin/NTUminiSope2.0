@@ -621,7 +621,7 @@ private: System::ComponentModel::IContainer^ components;
 			// 
 			this->button_up->Image = (cli::safe_cast<System::Drawing::Image^>(resources->GetObject(L"button_up.Image")));
 			this->button_up->Location = System::Drawing::Point(321, 263);
-			this->button_up->Margin = System::Windows::Forms::Padding(4, 4, 4, 4);
+			this->button_up->Margin = System::Windows::Forms::Padding(4);
 			this->button_up->Name = L"button_up";
 			this->button_up->Size = System::Drawing::Size(43, 28);
 			this->button_up->TabIndex = 15;
@@ -632,7 +632,7 @@ private: System::ComponentModel::IContainer^ components;
 			// 
 			this->button_down->Image = (cli::safe_cast<System::Drawing::Image^>(resources->GetObject(L"button_down.Image")));
 			this->button_down->Location = System::Drawing::Point(321, 331);
-			this->button_down->Margin = System::Windows::Forms::Padding(4, 4, 4, 4);
+			this->button_down->Margin = System::Windows::Forms::Padding(4);
 			this->button_down->Name = L"button_down";
 			this->button_down->Size = System::Drawing::Size(43, 28);
 			this->button_down->TabIndex = 16;
@@ -643,7 +643,7 @@ private: System::ComponentModel::IContainer^ components;
 			// 
 			this->button_left->Image = (cli::safe_cast<System::Drawing::Image^>(resources->GetObject(L"button_left.Image")));
 			this->button_left->Location = System::Drawing::Point(283, 295);
-			this->button_left->Margin = System::Windows::Forms::Padding(4, 4, 4, 4);
+			this->button_left->Margin = System::Windows::Forms::Padding(4);
 			this->button_left->Name = L"button_left";
 			this->button_left->Size = System::Drawing::Size(31, 39);
 			this->button_left->TabIndex = 17;
@@ -654,7 +654,7 @@ private: System::ComponentModel::IContainer^ components;
 			// 
 			this->button_right->Image = (cli::safe_cast<System::Drawing::Image^>(resources->GetObject(L"button_right.Image")));
 			this->button_right->Location = System::Drawing::Point(369, 295);
-			this->button_right->Margin = System::Windows::Forms::Padding(4, 4, 4, 4);
+			this->button_right->Margin = System::Windows::Forms::Padding(4);
 			this->button_right->Name = L"button_right";
 			this->button_right->Size = System::Drawing::Size(31, 39);
 			this->button_right->TabIndex = 18;
@@ -728,7 +728,6 @@ private: System::ComponentModel::IContainer^ components;
 			// 
 			// textBox_LOADLISSAJOUS
 			// 
-			this->textBox_LOADLISSAJOUS->Enabled = false;
 			this->textBox_LOADLISSAJOUS->Font = (gcnew System::Drawing::Font(L"Microsoft Sans Serif", 9.75F, System::Drawing::FontStyle::Bold,
 				System::Drawing::GraphicsUnit::Point, static_cast<System::Byte>(0)));
 			this->textBox_LOADLISSAJOUS->Location = System::Drawing::Point(203, 224);
@@ -760,7 +759,6 @@ private: System::ComponentModel::IContainer^ components;
 			// 
 			// textBox__LOADLISSAJOUSFOLDER2
 			// 
-			this->textBox__LOADLISSAJOUSFOLDER2->Enabled = false;
 			this->textBox__LOADLISSAJOUSFOLDER2->Font = (gcnew System::Drawing::Font(L"Microsoft Sans Serif", 9.75F, System::Drawing::FontStyle::Bold,
 				System::Drawing::GraphicsUnit::Point, static_cast<System::Byte>(0)));
 			this->textBox__LOADLISSAJOUSFOLDER2->Location = System::Drawing::Point(203, 290);
@@ -837,7 +835,7 @@ private: System::ComponentModel::IContainer^ components;
 			// 
 			this->progressBar_reconstruct->ForeColor = System::Drawing::Color::LimeGreen;
 			this->progressBar_reconstruct->Location = System::Drawing::Point(245, 414);
-			this->progressBar_reconstruct->Margin = System::Windows::Forms::Padding(4, 4, 4, 4);
+			this->progressBar_reconstruct->Margin = System::Windows::Forms::Padding(4);
 			this->progressBar_reconstruct->Name = L"progressBar_reconstruct";
 			this->progressBar_reconstruct->Size = System::Drawing::Size(367, 28);
 			this->progressBar_reconstruct->Step = 5;
@@ -879,7 +877,7 @@ private: System::ComponentModel::IContainer^ components;
 			// 
 			this->progressBar_scanmodemerge->ForeColor = System::Drawing::Color::LimeGreen;
 			this->progressBar_scanmodemerge->Location = System::Drawing::Point(279, 412);
-			this->progressBar_scanmodemerge->Margin = System::Windows::Forms::Padding(4, 4, 4, 4);
+			this->progressBar_scanmodemerge->Margin = System::Windows::Forms::Padding(4);
 			this->progressBar_scanmodemerge->Name = L"progressBar_scanmodemerge";
 			this->progressBar_scanmodemerge->Size = System::Drawing::Size(312, 28);
 			this->progressBar_scanmodemerge->Step = 5;
@@ -1002,7 +1000,7 @@ private: System::ComponentModel::IContainer^ components;
 			this->panel3->Controls->Add(this->label12);
 			this->panel3->Controls->Add(this->label11);
 			this->panel3->Location = System::Drawing::Point(699, 393);
-			this->panel3->Margin = System::Windows::Forms::Padding(4, 4, 4, 4);
+			this->panel3->Margin = System::Windows::Forms::Padding(4);
 			this->panel3->Name = L"panel3";
 			this->panel3->Size = System::Drawing::Size(529, 246);
 			this->panel3->TabIndex = 105;
@@ -1138,7 +1136,7 @@ private: System::ComponentModel::IContainer^ components;
 			this->checkBox_CalPara_linepoints->AutoSize = true;
 			this->checkBox_CalPara_linepoints->Font = (gcnew System::Drawing::Font(L"Segoe UI", 11.25F, System::Drawing::FontStyle::Bold));
 			this->checkBox_CalPara_linepoints->Location = System::Drawing::Point(291, 140);
-			this->checkBox_CalPara_linepoints->Margin = System::Windows::Forms::Padding(4, 4, 4, 4);
+			this->checkBox_CalPara_linepoints->Margin = System::Windows::Forms::Padding(4);
 			this->checkBox_CalPara_linepoints->Name = L"checkBox_CalPara_linepoints";
 			this->checkBox_CalPara_linepoints->Size = System::Drawing::Size(174, 29);
 			this->checkBox_CalPara_linepoints->TabIndex = 60;
@@ -1239,7 +1237,7 @@ private: System::ComponentModel::IContainer^ components;
 			// 
 			this->button_CalPara_right->Image = (cli::safe_cast<System::Drawing::Image^>(resources->GetObject(L"button_CalPara_right.Image")));
 			this->button_CalPara_right->Location = System::Drawing::Point(627, 105);
-			this->button_CalPara_right->Margin = System::Windows::Forms::Padding(4, 4, 4, 4);
+			this->button_CalPara_right->Margin = System::Windows::Forms::Padding(4);
 			this->button_CalPara_right->Name = L"button_CalPara_right";
 			this->button_CalPara_right->Size = System::Drawing::Size(31, 39);
 			this->button_CalPara_right->TabIndex = 44;
@@ -1250,7 +1248,7 @@ private: System::ComponentModel::IContainer^ components;
 			// 
 			this->button_CalPara_left->Image = (cli::safe_cast<System::Drawing::Image^>(resources->GetObject(L"button_CalPara_left.Image")));
 			this->button_CalPara_left->Location = System::Drawing::Point(540, 105);
-			this->button_CalPara_left->Margin = System::Windows::Forms::Padding(4, 4, 4, 4);
+			this->button_CalPara_left->Margin = System::Windows::Forms::Padding(4);
 			this->button_CalPara_left->Name = L"button_CalPara_left";
 			this->button_CalPara_left->Size = System::Drawing::Size(31, 39);
 			this->button_CalPara_left->TabIndex = 43;
@@ -1272,7 +1270,7 @@ private: System::ComponentModel::IContainer^ components;
 			// 
 			this->button_CalPara_down->Image = (cli::safe_cast<System::Drawing::Image^>(resources->GetObject(L"button_CalPara_down.Image")));
 			this->button_CalPara_down->Location = System::Drawing::Point(579, 140);
-			this->button_CalPara_down->Margin = System::Windows::Forms::Padding(4, 4, 4, 4);
+			this->button_CalPara_down->Margin = System::Windows::Forms::Padding(4);
 			this->button_CalPara_down->Name = L"button_CalPara_down";
 			this->button_CalPara_down->Size = System::Drawing::Size(43, 28);
 			this->button_CalPara_down->TabIndex = 42;
@@ -1294,7 +1292,7 @@ private: System::ComponentModel::IContainer^ components;
 			// 
 			this->button_CalPara_up->Image = (cli::safe_cast<System::Drawing::Image^>(resources->GetObject(L"button_CalPara_up.Image")));
 			this->button_CalPara_up->Location = System::Drawing::Point(579, 73);
-			this->button_CalPara_up->Margin = System::Windows::Forms::Padding(4, 4, 4, 4);
+			this->button_CalPara_up->Margin = System::Windows::Forms::Padding(4);
 			this->button_CalPara_up->Name = L"button_CalPara_up";
 			this->button_CalPara_up->Size = System::Drawing::Size(43, 28);
 			this->button_CalPara_up->TabIndex = 41;
@@ -1477,25 +1475,25 @@ private: System::ComponentModel::IContainer^ components;
 			this->tableLayoutPanel_CalPara_result->Name = L"tableLayoutPanel_CalPara_result";
 			this->tableLayoutPanel_CalPara_result->RowCount = 1;
 			this->tableLayoutPanel_CalPara_result->RowStyles->Add((gcnew System::Windows::Forms::RowStyle(System::Windows::Forms::SizeType::Absolute,
-				465)));
+				466)));
 			this->tableLayoutPanel_CalPara_result->RowStyles->Add((gcnew System::Windows::Forms::RowStyle(System::Windows::Forms::SizeType::Absolute,
-				465)));
+				466)));
 			this->tableLayoutPanel_CalPara_result->RowStyles->Add((gcnew System::Windows::Forms::RowStyle(System::Windows::Forms::SizeType::Absolute,
-				465)));
+				466)));
 			this->tableLayoutPanel_CalPara_result->RowStyles->Add((gcnew System::Windows::Forms::RowStyle(System::Windows::Forms::SizeType::Absolute,
-				465)));
+				466)));
 			this->tableLayoutPanel_CalPara_result->RowStyles->Add((gcnew System::Windows::Forms::RowStyle(System::Windows::Forms::SizeType::Absolute,
-				465)));
+				466)));
 			this->tableLayoutPanel_CalPara_result->RowStyles->Add((gcnew System::Windows::Forms::RowStyle(System::Windows::Forms::SizeType::Absolute,
-				465)));
+				466)));
 			this->tableLayoutPanel_CalPara_result->RowStyles->Add((gcnew System::Windows::Forms::RowStyle(System::Windows::Forms::SizeType::Absolute,
-				465)));
+				466)));
 			this->tableLayoutPanel_CalPara_result->RowStyles->Add((gcnew System::Windows::Forms::RowStyle(System::Windows::Forms::SizeType::Absolute,
-				465)));
+				466)));
 			this->tableLayoutPanel_CalPara_result->RowStyles->Add((gcnew System::Windows::Forms::RowStyle(System::Windows::Forms::SizeType::Absolute,
-				465)));
+				466)));
 			this->tableLayoutPanel_CalPara_result->RowStyles->Add((gcnew System::Windows::Forms::RowStyle(System::Windows::Forms::SizeType::Absolute,
-				465)));
+				466)));
 			this->tableLayoutPanel_CalPara_result->Size = System::Drawing::Size(495, 212);
 			this->tableLayoutPanel_CalPara_result->TabIndex = 51;
 			// 
@@ -1518,7 +1516,7 @@ private: System::ComponentModel::IContainer^ components;
 			this->tabControl1->Controls->Add(this->tabPage5);
 			this->tabControl1->Font = (gcnew System::Drawing::Font(L"Segoe UI", 8.25F));
 			this->tabControl1->Location = System::Drawing::Point(3, 366);
-			this->tabControl1->Margin = System::Windows::Forms::Padding(4, 4, 4, 4);
+			this->tabControl1->Margin = System::Windows::Forms::Padding(4);
 			this->tabControl1->Name = L"tabControl1";
 			this->tabControl1->SelectedIndex = 0;
 			this->tabControl1->Size = System::Drawing::Size(687, 490);
@@ -1547,9 +1545,9 @@ private: System::ComponentModel::IContainer^ components;
 			this->tabPage2->Controls->Add(this->label8);
 			this->tabPage2->Font = (gcnew System::Drawing::Font(L"Segoe UI", 8.25F));
 			this->tabPage2->Location = System::Drawing::Point(4, 28);
-			this->tabPage2->Margin = System::Windows::Forms::Padding(4, 4, 4, 4);
+			this->tabPage2->Margin = System::Windows::Forms::Padding(4);
 			this->tabPage2->Name = L"tabPage2";
-			this->tabPage2->Padding = System::Windows::Forms::Padding(4, 4, 4, 4);
+			this->tabPage2->Padding = System::Windows::Forms::Padding(4);
 			this->tabPage2->Size = System::Drawing::Size(679, 458);
 			this->tabPage2->TabIndex = 1;
 			this->tabPage2->Text = L"Lissajous Raw Data Phase Offset";
@@ -1658,9 +1656,9 @@ private: System::ComponentModel::IContainer^ components;
 			this->tabPage1->Controls->Add(this->button_LOADLISSAJOUSFOLDER);
 			this->tabPage1->ForeColor = System::Drawing::Color::Black;
 			this->tabPage1->Location = System::Drawing::Point(4, 28);
-			this->tabPage1->Margin = System::Windows::Forms::Padding(4, 4, 4, 4);
+			this->tabPage1->Margin = System::Windows::Forms::Padding(4);
 			this->tabPage1->Name = L"tabPage1";
-			this->tabPage1->Padding = System::Windows::Forms::Padding(4, 4, 4, 4);
+			this->tabPage1->Padding = System::Windows::Forms::Padding(4);
 			this->tabPage1->Size = System::Drawing::Size(679, 458);
 			this->tabPage1->TabIndex = 0;
 			this->tabPage1->Text = L"ScanMode Merge";
@@ -1688,7 +1686,7 @@ private: System::ComponentModel::IContainer^ components;
 			this->tabPage5->Controls->Add(this->textBox_LOADRASTER_EK);
 			this->tabPage5->Controls->Add(this->button_LOADLISSAJOUSFOLDER2);
 			this->tabPage5->Location = System::Drawing::Point(4, 28);
-			this->tabPage5->Margin = System::Windows::Forms::Padding(4, 4, 4, 4);
+			this->tabPage5->Margin = System::Windows::Forms::Padding(4);
 			this->tabPage5->Name = L"tabPage5";
 			this->tabPage5->Size = System::Drawing::Size(679, 458);
 			this->tabPage5->TabIndex = 2;
@@ -1925,7 +1923,7 @@ private: System::ComponentModel::IContainer^ components;
 			this->tabControl2->Controls->Add(this->tabPage4);
 			this->tabControl2->Font = (gcnew System::Drawing::Font(L"Segoe UI", 8.25F));
 			this->tabControl2->Location = System::Drawing::Point(3, 62);
-			this->tabControl2->Margin = System::Windows::Forms::Padding(4, 4, 4, 4);
+			this->tabControl2->Margin = System::Windows::Forms::Padding(4);
 			this->tabControl2->Name = L"tabControl2";
 			this->tabControl2->SelectedIndex = 0;
 			this->tabControl2->Size = System::Drawing::Size(687, 297);
@@ -1965,9 +1963,9 @@ private: System::ComponentModel::IContainer^ components;
 			this->tabPage3->Controls->Add(this->button_CalPara_up);
 			this->tabPage3->Font = (gcnew System::Drawing::Font(L"Segoe UI", 8.25F));
 			this->tabPage3->Location = System::Drawing::Point(4, 28);
-			this->tabPage3->Margin = System::Windows::Forms::Padding(4, 4, 4, 4);
+			this->tabPage3->Margin = System::Windows::Forms::Padding(4);
 			this->tabPage3->Name = L"tabPage3";
-			this->tabPage3->Padding = System::Windows::Forms::Padding(4, 4, 4, 4);
+			this->tabPage3->Padding = System::Windows::Forms::Padding(4);
 			this->tabPage3->Size = System::Drawing::Size(679, 265);
 			this->tabPage3->TabIndex = 0;
 			this->tabPage3->Text = L"Lissajous Parameter Calculation";
@@ -2004,9 +2002,9 @@ private: System::ComponentModel::IContainer^ components;
 			this->tabPage4->Controls->Add(this->button_ScanPreview_LOADRASTER);
 			this->tabPage4->Controls->Add(this->textBox_ScanPreview_LOADRASTER);
 			this->tabPage4->Location = System::Drawing::Point(4, 28);
-			this->tabPage4->Margin = System::Windows::Forms::Padding(4, 4, 4, 4);
+			this->tabPage4->Margin = System::Windows::Forms::Padding(4);
 			this->tabPage4->Name = L"tabPage4";
-			this->tabPage4->Padding = System::Windows::Forms::Padding(4, 4, 4, 4);
+			this->tabPage4->Padding = System::Windows::Forms::Padding(4);
 			this->tabPage4->Size = System::Drawing::Size(679, 265);
 			this->tabPage4->TabIndex = 1;
 			this->tabPage4->Text = L"Scan Preview";
@@ -2041,7 +2039,7 @@ private: System::ComponentModel::IContainer^ components;
 			// 
 			this->button_ScanPreview_rightphase->Image = (cli::safe_cast<System::Drawing::Image^>(resources->GetObject(L"button_ScanPreview_rightphase.Image")));
 			this->button_ScanPreview_rightphase->Location = System::Drawing::Point(584, 176);
-			this->button_ScanPreview_rightphase->Margin = System::Windows::Forms::Padding(4, 4, 4, 4);
+			this->button_ScanPreview_rightphase->Margin = System::Windows::Forms::Padding(4);
 			this->button_ScanPreview_rightphase->Name = L"button_ScanPreview_rightphase";
 			this->button_ScanPreview_rightphase->Size = System::Drawing::Size(31, 39);
 			this->button_ScanPreview_rightphase->TabIndex = 56;
@@ -2052,7 +2050,7 @@ private: System::ComponentModel::IContainer^ components;
 			// 
 			this->button_ScanPreview_leftphase->Image = (cli::safe_cast<System::Drawing::Image^>(resources->GetObject(L"button_ScanPreview_leftphase.Image")));
 			this->button_ScanPreview_leftphase->Location = System::Drawing::Point(508, 176);
-			this->button_ScanPreview_leftphase->Margin = System::Windows::Forms::Padding(4, 4, 4, 4);
+			this->button_ScanPreview_leftphase->Margin = System::Windows::Forms::Padding(4);
 			this->button_ScanPreview_leftphase->Name = L"button_ScanPreview_leftphase";
 			this->button_ScanPreview_leftphase->Size = System::Drawing::Size(31, 39);
 			this->button_ScanPreview_leftphase->TabIndex = 55;
@@ -2209,7 +2207,7 @@ private: System::ComponentModel::IContainer^ components;
 			this->button_shut_down->Font = (gcnew System::Drawing::Font(L"Segoe UI", 15, static_cast<System::Drawing::FontStyle>((System::Drawing::FontStyle::Bold | System::Drawing::FontStyle::Italic))));
 			this->button_shut_down->ForeColor = System::Drawing::Color::DarkGoldenrod;
 			this->button_shut_down->Location = System::Drawing::Point(1085, 15);
-			this->button_shut_down->Margin = System::Windows::Forms::Padding(4, 4, 4, 4);
+			this->button_shut_down->Margin = System::Windows::Forms::Padding(4);
 			this->button_shut_down->Name = L"button_shut_down";
 			this->button_shut_down->Size = System::Drawing::Size(132, 41);
 			this->button_shut_down->TabIndex = 112;

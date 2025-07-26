@@ -104,7 +104,7 @@ namespace NTU {
             totalsample = int(ntuscope->samplesPerSec / (2 * ntuscope->xfreq) * ntuscope->num_lines);
         }
         else if (scanmode == LISSAJOUS_2D) {
-            if (ntuscope->MEMS_yamp>=0.5 || ntuscope->MEMS_xamp>=0.5) {
+            if (ntuscope->MEMS_yamp<=0.5 || ntuscope->MEMS_xamp<=0.5) {
                 ntuscope->Pixelnumx = 256;
             }
             else {
@@ -316,14 +316,14 @@ namespace NTU {
 
         //samplemapsave
         if (ntuscope->samplemapsave) {
-            string filename = "C:\\YuShin\\sampleMapImage_"+to_string(int(ntuscope->xfreq))+"_" + to_string(int(ntuscope->yfreq)) +".png";
+            string filename = "C:\\YuShin\\sampleMapImage" + to_string(int(ntuscope->Pixelnumx)) +"_" +to_string(int(ntuscope->xfreq))+"_" + to_string(int(ntuscope->yfreq)) +".tif";
             if (!cv::imwrite(filename, sampleMapImage)) {
                 cerr << "Error: Unable to save image to " << filename << endl;
                 return false;
             }
             cout << "Sample map saved as image: " << filename << endl;
             
-            string filename_csv = "C:\\YuShin\\sampleMapImage_" + to_string(int(ntuscope->xfreq)) + "_" + to_string(int(ntuscope->yfreq)) + ".csv";
+            string filename_csv = "C:\\YuShin\\sampleMapImage" + to_string(int(ntuscope->Pixelnumx)) +"_" + to_string(int(ntuscope->xfreq)) + "_" + to_string(int(ntuscope->yfreq)) + ".csv";
             ofstream outFile(filename_csv);
             for (int y = 0; y < ntuscope->Pixelnumy; ++y) {
                 for (int x = 0; x < ntuscope->Pixelnumx; ++x) {
@@ -1917,59 +1917,69 @@ namespace NTU {
     }
 
     void YSMapping::Dynamic_Contrast_Enhancement_CUDA(cv::cuda::GpuMat& IMGDP16_GPU, cv::cuda::GpuMat& IMGDP16OUTPUT_GPU, float alpha_max) {
-        // === Convert to float32 ===
         IMGDP16_GPU.convertTo(IMGDP16_GPU, CV_32F);
 
-        // === Downscale 10x & blur ===
-        cv::cuda::GpuMat temp1;
-        cv::cuda::resize(IMGDP16_GPU, temp1, cv::Size(), 0.1, 0.1, cv::INTER_AREA); // temp1 is 1/10 size, 32F
+        // === LAY1 ===
+        cv::cuda::GpuMat RES1;
+        cv::cuda::resize(IMGDP16_GPU, RES1, cv::Size(), 0.1, 0.1, cv::INTER_AREA);  
 
+        cv::cuda::GpuMat BLR1;
         cv::Ptr<cv::cuda::Filter> gauss29 = cv::cuda::createGaussianFilter(CV_32F, CV_32F, cv::Size(29, 29), 0);
-        gauss29->apply(temp1, temp1); // reuse temp1 for blur result
+        gauss29->apply(RES1, BLR1); 
 
-        // === Gain map ===
-        cv::cuda::add(temp1, cv::Scalar(1.0f), temp1); // temp1 += 1
-        cv::cuda::GpuMat gain;
-        cv::cuda::divide(0.9f * 65535.0f, temp1, gain);
-        cv::cuda::min(gain, cv::Scalar(alpha_max), gain);  // clamp
+        cv::cuda::add(BLR1, cv::Scalar(1.0f), BLR1);  
+        
+        cv::cuda::GpuMat RES2;
+        cv::cuda::resize(BLR1,RES2, cv::Size(IMGDP16_GPU.cols, IMGDP16_GPU.rows),0,0, cv::INTER_AREA);  
 
-        // === Upscale gain to original ===
-        cv::cuda::resize(gain, temp1, IMGDP16_GPU.size(), 0, 0, cv::INTER_LINEAR); // temp1 = gain_up
+        cv::cuda::GpuMat DIV;
+        cv::cuda::divide(0.9f * 65535.0f, RES2, DIV);
 
-        // === AMP1: original * gain ===
-        cv::cuda::GpuMat amp1;
-        cv::cuda::multiply(IMGDP16_GPU, temp1, amp1);
+        cv::cuda::GpuMat LAY1;
+        cv::cuda::min(DIV, cv::Scalar(alpha_max), LAY1);  
 
-        // === RES3: downscale 3x & blur again ===
-        cv::cuda::resize(IMGDP16_GPU, gain, cv::Size(), 1.0 / 3.0, 1.0 / 3.0, cv::INTER_AREA); // reuse gain
-        gauss29->apply(gain, gain);  // blurred 3x down
+        // === LAY2 ===
+        cv::cuda::GpuMat AMP1;
+        cv::cuda::multiply(IMGDP16_GPU, LAY1, AMP1);
 
-        // === Resize gain map to match downsampled ===
-        cv::cuda::GpuMat gain3;
-        cv::cuda::resize(temp1, gain3, gain.size(), 0, 0, cv::INTER_LINEAR);
-        cv::cuda::multiply(gain, gain3, gain); // reuse gain
+        cv::cuda::GpuMat RES3;
+        cv::cuda::resize(AMP1, RES3, cv::Size(), 1.0 / 3.0, 1.0 / 3.0, cv::INTER_AREA);
 
-        // === Resize amp2 up to original ===
-        cv::cuda::resize(gain, gain3, IMGDP16_GPU.size(), 0, 0, cv::INTER_LINEAR); // gain3 = amp2_up
+        cv::cuda::GpuMat BLR2;
+        gauss29->apply(RES3, BLR2);
 
-        // === AMP3 input ===
-        cv::cuda::GpuMat sub;
-        cv::cuda::subtract(IMGDP16_GPU, gain3, sub); // sub = input - amp2_up
+        cv::cuda::GpuMat RES4;
+        cv::cuda::resize(RES3, RES4, cv::Size(IMGDP16_GPU.cols, IMGDP16_GPU.rows), 0, 0, cv::INTER_AREA);
+
+        cv::cuda::GpuMat SUB1;
+        cv::cuda::subtract(RES4, AMP1, SUB1);
+
+        cv::Ptr<cv::cuda::Filter> gauss7 = cv::cuda::createGaussianFilter(CV_32F, CV_32F, cv::Size(ntuscope->YSkernel_DCE, ntuscope->YSkernel_DCE), 0);
+        cv::cuda::GpuMat BLR3;
+        gauss7->apply(SUB1, BLR3);
+
+        cv::cuda::GpuMat SUB2;
+        cv::cuda::subtract(cv::Scalar(1.25f * alpha_max), LAY1, SUB2);
+
+        cv::cuda::GpuMat AMP2;
+        cv::cuda::multiply(BLR3, SUB2, AMP2);
+
+        cv::cuda::GpuMat SUB3;
+        cv::cuda::subtract(IMGDP16_GPU,AMP2,SUB3);
 
         // === LAY3 ===
-        cv::cuda::divide(temp1, cv::Scalar(4.0f), temp1); // temp1 = gain / 4
-        cv::cuda::multiply(temp1, temp1, temp1);          // temp1 = (gain / 4)^2
-        cv::cuda::add(temp1, cv::Scalar(0.9f), temp1);    // temp1 = lay3
+        cv::cuda::GpuMat LAY3;
+        cv::cuda::divide(LAY1, cv::Scalar(4.0f),LAY3); 
+        cv::cuda::multiply(LAY3, LAY3, LAY3);        
+        cv::cuda::add(LAY3, cv::Scalar(0.9f), LAY3);   
 
-        // === Final multiply ===
-        cv::cuda::multiply(sub, temp1, sub);  // sub = AMP3
+        cv::cuda::GpuMat AMP3;
+        cv::cuda::multiply(SUB3, LAY3,AMP3);  
 
         // === Clamp and convert to 16-bit ===
-        cv::cuda::threshold(sub, sub, 65535, 65535, cv::THRESH_TRUNC);
-        cv::cuda::threshold(sub, sub, 0, 0, cv::THRESH_TOZERO);
-        sub.convertTo(IMGDP16OUTPUT_GPU, CV_16UC1);
-        //cv::cuda::subtract(65535, IMGDP16OUTPUT_GPU, IMGDP16OUTPUT_GPU, cv::noArray(), -1, stream);
-        //cv::cuda::threshold(IMGDP16OUTPUT_GPU, IMGDP16OUTPUT_GPU, 65535, 0, cv::THRESH_TRUNC, stream);
+        cv::cuda::threshold(AMP3, AMP3, 65535, 65535, cv::THRESH_TRUNC);
+        cv::cuda::threshold(AMP3, AMP3, 0, 0, cv::THRESH_TOZERO);
+        AMP3.convertTo(IMGDP16OUTPUT_GPU, CV_16UC1);
     }
 
     void YSMapping::LissajousRepairment(cv::Mat& IMGDP8_MAT, cv::cuda::GpuMat& IMGDP8) {

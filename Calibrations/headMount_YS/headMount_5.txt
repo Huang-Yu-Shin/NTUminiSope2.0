@@ -1,2 +1,2 @@
-xOFFSET = 1.5
-yOFFSET = 1.7
+xOFFSET = 0.6
+yOFFSET = 1.2

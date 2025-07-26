@@ -98,6 +98,7 @@ namespace NTU
 		int normalize_alpha = 0;
 		int normalize_beta = 65535;
 		float YSalpha_DCE = 4.0;
+		int YSkernel_DCE = 7;
 		bool YSapply_contrast = false;
 		bool YSapply_gaussian = false;
 		bool YSapply_median = false;
