@@ -105,10 +105,10 @@ namespace NTU {
         }
         else if (scanmode == LISSAJOUS_2D) {
             if (ntuscope->MEMS_yamp<=0.5 || ntuscope->MEMS_xamp<=0.5) {
-                ntuscope->Pixelnumx = 256;
+                ntuscope->Pixelnumx = 128;
             }
             else {
-                ntuscope->Pixelnumx = 512;
+                ntuscope->Pixelnumx = 256;
             }
             ntuscope->Pixelnumy = int(double(ntuscope->Pixelnumx) * double(ntuscope->MEMS_yamp / ntuscope->MEMS_xamp));
             ntuscope->Ypixelsize_display= int(double(ntuscope->Xpixelsize_display) * double(ntuscope->MEMS_yamp / ntuscope->MEMS_xamp));

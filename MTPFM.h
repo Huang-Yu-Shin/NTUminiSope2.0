@@ -831,7 +831,7 @@ private: System::Windows::Forms::TrackBar^ trackBar_DCEkernel;
 			this->YScomboBox_inputrange->SelectedIndex = 2;
 			this->YScomboBox_intclock->SelectedIndex = 3;
 			this->YScomboBox__raster_linefreq->SelectedIndex = 9;
-			this->YScomboBox__raster_yline->SelectedIndex = 5;
+			this->YScomboBox__raster_yline->SelectedIndex = 4;
 			// Loading progress
 			load_obj->send_progress(85);
 
@@ -2165,8 +2165,6 @@ private:
 			// YScheckBox_saverawbin
 			// 
 			this->YScheckBox_saverawbin->AutoSize = true;
-			this->YScheckBox_saverawbin->Checked = true;
-			this->YScheckBox_saverawbin->CheckState = System::Windows::Forms::CheckState::Checked;
 			this->YScheckBox_saverawbin->Font = (gcnew System::Drawing::Font(L"Segoe UI", 11.25F, System::Drawing::FontStyle::Bold, System::Drawing::GraphicsUnit::Point,
 				static_cast<System::Byte>(0)));
 			this->YScheckBox_saverawbin->Location = System::Drawing::Point(6, 60);
@@ -2210,8 +2208,6 @@ private:
 			// YScheckBox_saveraw
 			// 
 			this->YScheckBox_saveraw->AutoSize = true;
-			this->YScheckBox_saveraw->Checked = true;
-			this->YScheckBox_saveraw->CheckState = System::Windows::Forms::CheckState::Checked;
 			this->YScheckBox_saveraw->Font = (gcnew System::Drawing::Font(L"Segoe UI", 11.25F, System::Drawing::FontStyle::Bold, System::Drawing::GraphicsUnit::Point,
 				static_cast<System::Byte>(0)));
 			this->YScheckBox_saveraw->Location = System::Drawing::Point(7, 36);
