@@ -124,6 +124,10 @@ namespace NTU {
             cout << "Configure NIDAQ and ETL : Success" << endl;
             cout << "---------------------" << endl;
         }
+        if (mapping->Generate2D_RASTER_SampleMap()) {
+            cout << "Configure SampleMap : Success" << endl;
+            cout << "---------------------" << endl;
+        }
     }
 
     void YSCore::TWODRaster_slow_configure(double focaloffset, double xfreq, double MEMSXamplitude, double MEMSYamplitude, int num_lines, double midx, double midy, int clocktype) {

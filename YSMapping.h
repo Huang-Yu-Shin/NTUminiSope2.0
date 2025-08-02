@@ -37,6 +37,7 @@ namespace NTU {
 
         bool ConfigureBoard(ScanMode mode);
         bool Generate2D_LISSAJOUS_SampleMap();
+        bool Generate2D_RASTER_SampleMap();
         bool ProcessBufferAndFill_2DLissajousImage(U16* Buffer, high_resolution_clock::time_point starttime, system_clock::time_point starttime_system, U32 frameorder);
         bool ProcessBufferAndFill_2DLissajousImage_highspeed(U16* Buffer, high_resolution_clock::time_point starttime, system_clock::time_point starttime_system, U32 frameorder);
         bool ProcessBufferAndFill_2DRasterImage(U16* Buffer, high_resolution_clock::time_point starttime, system_clock::time_point starttime_system, U32 frameorder);
@@ -74,7 +75,9 @@ namespace NTU {
         BOOL success; //configure state to notify StartAcquireData
         mutex mtx;
         U16* sampleMap_1D;
-        RETURN_CODE retCode;
+        RETURN_CODE retCode; 
+        cv::Mat sin_weight;
+
 
         //average state
         deque<cv::Mat> imageQueue;

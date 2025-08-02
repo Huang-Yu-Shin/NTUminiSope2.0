@@ -340,6 +340,28 @@ namespace NTU {
         return true;
     }
 
+    bool YSMapping::Generate2D_RASTER_SampleMap() {
+        sin_weight.create(ntuscope->Pixelnumy,1024, CV_32FC1);
+        sin_weight.setTo(cv::Scalar(0));
+        for (int line = 0; line < ntuscope->Pixelnumy; line++) {
+            bool is_forward = (line % 2 == 0);
+
+            for (int sample = 0; sample < int(samplesPerRecord); sample++) {
+                float t = float(sample) / float(samplesPerRecord - 1);  // normalized sample [0,1]
+                float angle = is_forward
+                    ? (CV_PI * t - 0.5f * CV_PI)            // -π/2 to +π/2
+                    : (CV_PI * (1.0f - t) - 0.5f * CV_PI);  // +π/2 to -π/2
+                float x = 0.5f * (1.0f + sinf(angle));      // mapped to [0,1]
+                int x_idx = int(x * (1024 - 1));
+
+                if (x_idx >= 0 && x_idx < 1024) {
+                    sin_weight.at<float>(line, x_idx) += 1.0f;
+                }
+            }
+        }
+        return true;
+    }
+
 //Copy to transient buffer
     void YSMapping::Accelerate(U16* Buffer, int bufferIndex, high_resolution_clock::time_point starttime, system_clock::time_point starttime_system) {
         //lock_guard<mutex> lock(bufferMutex[bufferIndex]);
@@ -723,6 +745,10 @@ namespace NTU {
 
     bool YSMapping::ProcessBufferAndFill_2DRasterImage(U16* Buffer, high_resolution_clock::time_point starttime, system_clock::time_point starttime_system, U32 frameorder) {
         //Mapping
+
+        cv::cuda::GpuMat gpu_image;
+
+        //sample mapping
         U16* h_image = new U16[int(samplesPerBuffer)];
         memset(h_image, 0, int(samplesPerBuffer) * sizeof(U16));
 
@@ -752,8 +778,57 @@ namespace NTU {
 
         cv::cuda::GpuMat gpu_image_pre(ntuscope->Pixelnumy, int(samplesPerRecord), CV_16UC1);
         gpu_image_pre.upload(cv::Mat(ntuscope->Pixelnumy, int(samplesPerRecord), CV_16UC1, h_image));
-        cv::cuda::GpuMat gpu_image;
-        cv::cuda::resize(gpu_image_pre, gpu_image, cv::Size(1024, 1024), 0, 0, cv::INTER_AREA);
+        /*cv::cuda::GpuMat gpu_image;*/
+        /*cv::cuda::resize(gpu_image_pre, gpu_image, cv::Size(1024, 1024), 0, 0, cv::INTER_AREA);*/
+
+        //sine wave mapping
+        cv::Mat sin_image(ntuscope->Pixelnumy, 1024, CV_32FC1, cv::Scalar(0));
+        U16* buffer_ptr_new = Buffer;
+        U16* buffer_end_new = Buffer + U16(samplesPerBuffer);
+
+        for (int line = 0; line < ntuscope->Pixelnumy; line++) {
+            bool is_forward = (line % 2 == 0);
+
+            for (int sample = 0; sample < int(samplesPerRecord); sample++) {
+                float t = float(sample) / float(samplesPerRecord - 1);  // normalized sample [0,1]
+                float angle = is_forward
+                    ? (CV_PI * t - 0.5f * CV_PI)            // -π/2 to +π/2
+                    : (CV_PI * (1.0f - t) - 0.5f * CV_PI);  // +π/2 to -π/2
+                float x = 0.5f * (1.0f + sinf(angle));      // mapped to [0,1]
+                int x_idx = int(x * (1024 - 1));
+
+                if (x_idx >= 0 && x_idx < 1024) {
+                    if (is_forward == true && sample < ntuscope->raster_phase) {
+                        sin_image.at<float>(line, x_idx) += 32768.0f;
+                    }
+                    else {
+                        sin_image.at<float>(line, x_idx) += float(*buffer_ptr_new);
+                        buffer_ptr_new++;
+                    }
+
+                }
+            }
+
+            if (is_forward == true) {
+                buffer_ptr_new = buffer_ptr_new + ntuscope->raster_phase;
+            }
+        }
+        cv::Mat sin_image_u16(ntuscope->Pixelnumy, 1024, CV_16UC1);
+        for (int y = 0; y < ntuscope->Pixelnumy; y++) {
+            for (int x = 0; x < 1024; x++) {
+                float weight = sin_weight.at<float>(y, x);
+                float val = sin_image.at<float>(y, x);
+                if (weight > 0) {
+                    val /= weight;
+                }
+                val = std::min(std::max(val, 0.0f), 65535.0f);
+                sin_image_u16.at<U16>(y, x) = static_cast<U16>(val);
+
+            }
+        }
+        cv::cuda::GpuMat gpu_image_prepre;
+        gpu_image_prepre.upload(sin_image_u16);
+        cv::cuda::resize(gpu_image_prepre, gpu_image, cv::Size(1024, 1024), 0, 0, cv::INTER_AREA);
 
         //If raster fast scan need to flip
         if (scanmode == RASTER) {
