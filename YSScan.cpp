@@ -98,8 +98,8 @@ namespace NTU {
             }
             float64 framerate = float64(_Gcd(ntuscope->xfreq, ntuscope->yfreq));
             ntuscope->framerate = double(framerate);
-            ntuscope->FOVx = ntuscope->MEMS_xamp * 250;
-            ntuscope->FOVy = ntuscope->MEMS_yamp * 250;
+            ntuscope->FOVx = ntuscope->MEMS_xamp * 90;
+            ntuscope->FOVy = ntuscope->MEMS_yamp * 90;
             ntuscope->samplingRate = 500000;
             int samplingratio = int(ntuscope->samplingRate / int(framerate));
             ntuscope->samplingRate = int(framerate) * samplingratio;
@@ -201,8 +201,8 @@ namespace NTU {
             total_samples = samples_per_line * ntuscope->num_lines;
             double framerate = double(ntuscope->samplingRate) / double(total_samples);
             ntuscope->framerate = framerate;
-            ntuscope->FOVx = ntuscope->MEMS_xamp * 250;
-            ntuscope->FOVy = ntuscope->MEMS_yamp * 250;
+            ntuscope->FOVx = ntuscope->MEMS_xamp * 90;
+            ntuscope->FOVy = ntuscope->MEMS_yamp * 90;
             float64 real_xamp = ntuscope->MEMS_xamp * MEMS_Xampratio_clk_raster * MEMSampratio* MEMS_Xampratio_headmount;
             float64 real_yamp = ntuscope->MEMS_yamp * MEMS_Yampratio_clk_raster * MEMS_Yampratio_headmount;
             cout << "NI Sampling rate: " << ntuscope->samplingRate << endl;
@@ -312,8 +312,8 @@ namespace NTU {
             total_samples = samples_per_line * ntuscope->num_lines;
             double framerate = double(ntuscope->samplingRate) / double(total_samples);
             ntuscope->framerate = framerate;
-            ntuscope->FOVx = ntuscope->MEMS_xamp * 250;
-            ntuscope->FOVy = ntuscope->MEMS_yamp * 250;
+            ntuscope->FOVx = ntuscope->MEMS_xamp * 90;
+            ntuscope->FOVy = ntuscope->MEMS_yamp * 90;
             float64 real_xamp = ntuscope->MEMS_xamp * MEMS_Xampratio_clk_raster * MEMSampratio * MEMS_Xampratio_headmount;
             float64 real_yamp = ntuscope->MEMS_yamp * MEMS_Yampratio_clk_raster * MEMS_Yampratio_headmount;
             cout << "NI Sampling rate: " << ntuscope->samplingRate << endl;

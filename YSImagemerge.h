@@ -38,6 +38,9 @@ namespace NTU {
 		YSImageMerge(NTU::CudaCalPara* cudacalpara);
 		~YSImageMerge();
 
+		//Processimage
+		void processImage(std::string& input_path);
+
 		//Scanmode merge & Reconstruct
 		void LOADspec(string path);
 		void ConvertBinToTiff();

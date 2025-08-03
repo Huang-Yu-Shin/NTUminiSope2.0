@@ -179,6 +179,17 @@ private: System::Windows::Forms::Button^ button_LOADLISSAJOUS_RAWBIN;
 private: System::Windows::Forms::Button^ button_TRANSFERTOTIFF;
 private: System::Windows::Forms::TextBox^ textBox_LOADLISSAJOUSBIN;
 private: System::Windows::Forms::Label^ label41;
+private: System::Windows::Forms::TabPage^ tabPage6;
+private: System::Windows::Forms::Label^ label_processimage;
+
+private: System::Windows::Forms::Button^ buttom_loadprocessfolder;
+private: System::Windows::Forms::Button^ button_processimage;
+
+
+
+
+private: System::Windows::Forms::TextBox^ textBox_processfolderpath;
+
 
 
 
@@ -480,6 +491,11 @@ private: System::ComponentModel::IContainer^ components;
 			this->button_LOADRASTER2 = (gcnew System::Windows::Forms::Button());
 			this->textBox_LOADRASTER_EK = (gcnew System::Windows::Forms::TextBox());
 			this->button_LOADLISSAJOUSFOLDER2 = (gcnew System::Windows::Forms::Button());
+			this->tabPage6 = (gcnew System::Windows::Forms::TabPage());
+			this->label_processimage = (gcnew System::Windows::Forms::Label());
+			this->buttom_loadprocessfolder = (gcnew System::Windows::Forms::Button());
+			this->button_processimage = (gcnew System::Windows::Forms::Button());
+			this->textBox_processfolderpath = (gcnew System::Windows::Forms::TextBox());
 			this->tabControl2 = (gcnew System::Windows::Forms::TabControl());
 			this->tabPage3 = (gcnew System::Windows::Forms::TabPage());
 			this->label39 = (gcnew System::Windows::Forms::Label());
@@ -513,6 +529,7 @@ private: System::ComponentModel::IContainer^ components;
 			this->tabPage5->SuspendLayout();
 			(cli::safe_cast<System::ComponentModel::ISupportInitialize^>(this->trackBar_ExtractKymograph_endpixel))->BeginInit();
 			(cli::safe_cast<System::ComponentModel::ISupportInitialize^>(this->trackBar_ExtractKymograph_startpixel))->BeginInit();
+			this->tabPage6->SuspendLayout();
 			this->tabControl2->SuspendLayout();
 			this->tabPage3->SuspendLayout();
 			this->tabPage4->SuspendLayout();
@@ -1475,25 +1492,25 @@ private: System::ComponentModel::IContainer^ components;
 			this->tableLayoutPanel_CalPara_result->Name = L"tableLayoutPanel_CalPara_result";
 			this->tableLayoutPanel_CalPara_result->RowCount = 1;
 			this->tableLayoutPanel_CalPara_result->RowStyles->Add((gcnew System::Windows::Forms::RowStyle(System::Windows::Forms::SizeType::Absolute,
-				466)));
+				470)));
 			this->tableLayoutPanel_CalPara_result->RowStyles->Add((gcnew System::Windows::Forms::RowStyle(System::Windows::Forms::SizeType::Absolute,
-				466)));
+				470)));
 			this->tableLayoutPanel_CalPara_result->RowStyles->Add((gcnew System::Windows::Forms::RowStyle(System::Windows::Forms::SizeType::Absolute,
-				466)));
+				470)));
 			this->tableLayoutPanel_CalPara_result->RowStyles->Add((gcnew System::Windows::Forms::RowStyle(System::Windows::Forms::SizeType::Absolute,
-				466)));
+				470)));
 			this->tableLayoutPanel_CalPara_result->RowStyles->Add((gcnew System::Windows::Forms::RowStyle(System::Windows::Forms::SizeType::Absolute,
-				466)));
+				470)));
 			this->tableLayoutPanel_CalPara_result->RowStyles->Add((gcnew System::Windows::Forms::RowStyle(System::Windows::Forms::SizeType::Absolute,
-				466)));
+				470)));
 			this->tableLayoutPanel_CalPara_result->RowStyles->Add((gcnew System::Windows::Forms::RowStyle(System::Windows::Forms::SizeType::Absolute,
-				466)));
+				470)));
 			this->tableLayoutPanel_CalPara_result->RowStyles->Add((gcnew System::Windows::Forms::RowStyle(System::Windows::Forms::SizeType::Absolute,
-				466)));
+				470)));
 			this->tableLayoutPanel_CalPara_result->RowStyles->Add((gcnew System::Windows::Forms::RowStyle(System::Windows::Forms::SizeType::Absolute,
-				466)));
+				470)));
 			this->tableLayoutPanel_CalPara_result->RowStyles->Add((gcnew System::Windows::Forms::RowStyle(System::Windows::Forms::SizeType::Absolute,
-				466)));
+				470)));
 			this->tableLayoutPanel_CalPara_result->Size = System::Drawing::Size(495, 212);
 			this->tableLayoutPanel_CalPara_result->TabIndex = 51;
 			// 
@@ -1514,6 +1531,7 @@ private: System::ComponentModel::IContainer^ components;
 			this->tabControl1->Controls->Add(this->tabPage2);
 			this->tabControl1->Controls->Add(this->tabPage1);
 			this->tabControl1->Controls->Add(this->tabPage5);
+			this->tabControl1->Controls->Add(this->tabPage6);
 			this->tabControl1->Font = (gcnew System::Drawing::Font(L"Segoe UI", 8.25F));
 			this->tabControl1->Location = System::Drawing::Point(3, 366);
 			this->tabControl1->Margin = System::Windows::Forms::Padding(4);
@@ -1917,6 +1935,67 @@ private: System::ComponentModel::IContainer^ components;
 			this->button_LOADLISSAJOUSFOLDER2->UseVisualStyleBackColor = true;
 			this->button_LOADLISSAJOUSFOLDER2->Click += gcnew System::EventHandler(this, &YSPostprocessing::button_LOADLISSAJOUSFOLDER2_Click_1);
 			// 
+			// tabPage6
+			// 
+			this->tabPage6->BackColor = System::Drawing::Color::LightSteelBlue;
+			this->tabPage6->Controls->Add(this->label_processimage);
+			this->tabPage6->Controls->Add(this->buttom_loadprocessfolder);
+			this->tabPage6->Controls->Add(this->button_processimage);
+			this->tabPage6->Controls->Add(this->textBox_processfolderpath);
+			this->tabPage6->Location = System::Drawing::Point(4, 28);
+			this->tabPage6->Name = L"tabPage6";
+			this->tabPage6->Size = System::Drawing::Size(679, 458);
+			this->tabPage6->TabIndex = 3;
+			this->tabPage6->Text = L"Process Image";
+			// 
+			// label_processimage
+			// 
+			this->label_processimage->AutoSize = true;
+			this->label_processimage->Font = (gcnew System::Drawing::Font(L"Segoe UI", 11.25F, System::Drawing::FontStyle::Bold));
+			this->label_processimage->Location = System::Drawing::Point(503, 93);
+			this->label_processimage->Name = L"label_processimage";
+			this->label_processimage->Size = System::Drawing::Size(28, 25);
+			this->label_processimage->TabIndex = 119;
+			this->label_processimage->Text = L"--";
+			// 
+			// buttom_loadprocessfolder
+			// 
+			this->buttom_loadprocessfolder->Font = (gcnew System::Drawing::Font(L"Segoe UI", 10, System::Drawing::FontStyle::Bold));
+			this->buttom_loadprocessfolder->Location = System::Drawing::Point(23, 16);
+			this->buttom_loadprocessfolder->Margin = System::Windows::Forms::Padding(3, 2, 3, 2);
+			this->buttom_loadprocessfolder->Name = L"buttom_loadprocessfolder";
+			this->buttom_loadprocessfolder->Size = System::Drawing::Size(184, 62);
+			this->buttom_loadprocessfolder->TabIndex = 116;
+			this->buttom_loadprocessfolder->Text = L"Load FOLDER";
+			this->buttom_loadprocessfolder->UseVisualStyleBackColor = true;
+			this->buttom_loadprocessfolder->Click += gcnew System::EventHandler(this, &YSPostprocessing::buttom_loadprocessfolder_Click);
+			// 
+			// button_processimage
+			// 
+			this->button_processimage->Font = (gcnew System::Drawing::Font(L"Segoe UI", 12, System::Drawing::FontStyle::Bold));
+			this->button_processimage->Location = System::Drawing::Point(25, 82);
+			this->button_processimage->Margin = System::Windows::Forms::Padding(3, 2, 3, 2);
+			this->button_processimage->Name = L"button_processimage";
+			this->button_processimage->Size = System::Drawing::Size(472, 44);
+			this->button_processimage->TabIndex = 118;
+			this->button_processimage->Text = L"Process images";
+			this->button_processimage->UseVisualStyleBackColor = true;
+			this->button_processimage->Click += gcnew System::EventHandler(this, &YSPostprocessing::button_processimage_Click);
+			// 
+			// textBox_processfolderpath
+			// 
+			this->textBox_processfolderpath->Enabled = false;
+			this->textBox_processfolderpath->Font = (gcnew System::Drawing::Font(L"Microsoft Sans Serif", 9.75F, System::Drawing::FontStyle::Bold,
+				System::Drawing::GraphicsUnit::Point, static_cast<System::Byte>(0)));
+			this->textBox_processfolderpath->Location = System::Drawing::Point(213, 21);
+			this->textBox_processfolderpath->Margin = System::Windows::Forms::Padding(3, 2, 3, 2);
+			this->textBox_processfolderpath->Multiline = true;
+			this->textBox_processfolderpath->Name = L"textBox_processfolderpath";
+			this->textBox_processfolderpath->ReadOnly = true;
+			this->textBox_processfolderpath->ScrollBars = System::Windows::Forms::ScrollBars::Vertical;
+			this->textBox_processfolderpath->Size = System::Drawing::Size(443, 56);
+			this->textBox_processfolderpath->TabIndex = 117;
+			// 
 			// tabControl2
 			// 
 			this->tabControl2->Controls->Add(this->tabPage3);
@@ -2246,6 +2325,8 @@ private: System::ComponentModel::IContainer^ components;
 			this->tabPage5->PerformLayout();
 			(cli::safe_cast<System::ComponentModel::ISupportInitialize^>(this->trackBar_ExtractKymograph_endpixel))->EndInit();
 			(cli::safe_cast<System::ComponentModel::ISupportInitialize^>(this->trackBar_ExtractKymograph_startpixel))->EndInit();
+			this->tabPage6->ResumeLayout(false);
+			this->tabPage6->PerformLayout();
 			this->tabControl2->ResumeLayout(false);
 			this->tabPage3->ResumeLayout(false);
 			this->tabPage3->PerformLayout();
@@ -2643,6 +2724,22 @@ private: System::Void toggleButtons_ExtractKymograph_choosedisplay_CheckedChange
 	}
 }
 
+private: System::Void buttom_loadprocessfolder_Click(System::Object^ sender, System::EventArgs^ e) {
+	if (this->LOAD_LISSAJOUSRAW_FOLDER->ShowDialog() == System::Windows::Forms::DialogResult::OK) {
+		System::String^ selectedPath = this->LOAD_LISSAJOUSRAW_FOLDER->SelectedPath;
+		this->textBox_processfolderpath->Text = selectedPath;
+
+		this->button_TRANSFERTOTIFF->Enabled = true;
+		this->label_TRANSFERTOTIFF->Text = "--";
+	}
+}
+
+private: System::Void button_processimage_Click(System::Object^ sender, System::EventArgs^ e) {
+	this->button_TRANSFERTOTIFF->Enabled = false;
+	std::string path = msclr::interop::marshal_as<std::string>(this->textBox_processfolderpath->Text);
+	imagemerge->processImage(path);
+	this->label_TRANSFERTOTIFF->Text = "Complete";
+}
 
 private: System::Void timer_refresh_UI_Tick(System::Object^ sender, System::EventArgs^ e) {
 	this->progressBar_reconstruct->Value = int(imagemerge->progresspercentage);
@@ -2663,6 +2760,8 @@ private: System::Void timer_refresh_UI_Tick(System::Object^ sender, System::Even
 private: System::Void button_shut_down_Click(System::Object^ sender, System::EventArgs^ e) {
 	imagemerge->~YSImageMerge();
 }
+
+
 
 
 

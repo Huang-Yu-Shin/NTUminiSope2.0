@@ -15,6 +15,76 @@ namespace NTU {
 		cv::destroyAllWindows();
 	}
 
+	//Process image
+	void YSImageMerge::processImage(std::string& input_path) {
+		std::string output_folder = input_path + "\\process";
+		CreateDirectoryA(output_folder.c_str(), NULL);
+
+		string FolderPathwithtiff = input_path + "\\*.tiff";
+		// Store valid filenames
+		vector<string> filenames;
+		WIN32_FIND_DATA findFileData;
+		HANDLE hFind = FindFirstFile(FolderPathwithtiff.c_str(), &findFileData);
+		if (hFind == INVALID_HANDLE_VALUE) {
+			cout << "Error: No .tiff files found in directory: " << FolderPathwithtiff << endl;
+			return;
+		}
+		// Collect all valid filenames
+		do {
+			filenames.push_back(findFileData.cFileName);
+		} while (FindNextFile(hFind, &findFileData) != 0);
+		FindClose(hFind);
+		// Sort filenames based on the numeric part
+		sort(filenames.begin(), filenames.end(), [this](const string& a, const string& b) {
+			return extractNumber(a) < extractNumber(b);
+			});
+
+		int total_count = filenames.size();
+
+
+		for (const auto& filename : filenames) {
+			string fullPath = input_path + "\\" + filename;
+
+			cv::Mat img = cv::imread(fullPath, cv::IMREAD_UNCHANGED);
+			if (img.empty()) {
+				std::cerr << "Failed to load: " << fullPath << std::endl;
+				continue;
+			}
+
+			cv::cuda::GpuMat gpu_image;
+			gpu_image.upload(img, stream);
+
+			double scale = 65535.0 / (50000.0 - 0.0);
+			double shift = 0.0 * scale;
+			gpu_image.convertTo(gpu_image, -1, scale, shift, stream);
+			cv::cuda::threshold(gpu_image, gpu_image, 65535, 65535, cv::THRESH_TRUNC, stream);
+			cv::cuda::threshold(gpu_image, gpu_image, 0, 0, cv::THRESH_TOZERO, stream);
+
+			cv::cuda::GpuMat gpu_8bit;
+			gpu_image.convertTo(gpu_8bit, CV_8UC1, 1.0 / 257.0, 0.0, stream);
+
+			cv::Mat LUT_matrix(1, 256, CV_8UC1);
+			uchar* pointer = LUT_matrix.ptr();
+			for (int i = 0; i < 256; i++) {
+				pointer[i] = (int)(pow((double)(i / 255.0), 1.1) * 255.0);
+			}
+			cv::Ptr<cv::cuda::LookUpTable> cudaLookUpTable = cv::cuda::createLookUpTable(LUT_matrix);
+			cudaLookUpTable->transform(gpu_8bit, gpu_8bit, stream);
+			//cv::cuda::equalizeHist(gpu_8bit, gpu_8bit, stream);
+			gpu_8bit.cv::cuda::GpuMat::convertTo(gpu_8bit, -1, 5, 150 - 150, stream);
+			stream.waitForCompletion();
+
+			cv::Mat result;
+			gpu_8bit.download(result, stream);
+			stream.waitForCompletion();
+			std::string output_path = output_folder + "\\" + filename;
+			cv::imwrite(output_path, result);
+			std::cout << "Saved: " << output_path << std::endl;
+		}
+
+		std::cout << "All TIFFs processed." << std::endl;
+	}
+
 	//Calculate Parameter
 	void YSImageMerge::CreateCUDACalPara(string Path,int width, int height, double samplingrate) {
 		calpara->width = width;
