@@ -1652,6 +1652,7 @@ namespace NTU {
                 else if (ntuscope->inputrangetype == INPUT_RANGE_PM_1_V) {
                     file << "inputrange," << 1000 << endl;
                 }
+                file << "chopperfreq," << ntuscope->chopperfreq << endl;
                 file.close();
                 cout << "CSV file created successfully at: " << csvpath << endl;
             }
@@ -1673,6 +1674,7 @@ namespace NTU {
             else if (ntuscope->inputrangetype == INPUT_RANGE_PM_1_V) {
                 rawfile << "inputrange," << 1000 << endl;
             }
+            rawfile << "chopperfreq," << ntuscope->chopperfreq << endl;
             rawfile.close();
             cout << "CSV file created successfully at: " << rawcsvpath << endl;
         }
@@ -1694,6 +1696,7 @@ namespace NTU {
             else if (ntuscope->inputrangetype == INPUT_RANGE_PM_1_V) {
                 file << "inputrange," << 1000 << endl;
             }
+            file << "chopperfreq," << ntuscope->chopperfreq << endl;
             file.close();
             cout << "CSV file created successfully at: " << csvpath << endl;
             string rawcsvpath = ntuscope->folderPathRaw + "\\scan_spec.csv";
@@ -1713,6 +1716,7 @@ namespace NTU {
             else if (ntuscope->inputrangetype == INPUT_RANGE_PM_1_V) {
                 rawfile << "inputrange," << 1000 << endl;
             }
+            rawfile << "chopperfreq," << ntuscope->chopperfreq << endl;
             rawfile.close();
             cout << "CSV file created successfully at: " << rawcsvpath << endl;
         }
@@ -1736,6 +1740,7 @@ namespace NTU {
             else if (ntuscope->inputrangetype == INPUT_RANGE_PM_1_V) {
                 file << "inputrange," << 1000 << endl;
             }
+            file << "chopperfreq," << ntuscope->chopperfreq << endl;
             file.close();
             cout << "CSV file created successfully at: " << csvpath << endl;
             string rawcsvpath = ntuscope->folderPathRaw + "\\scan_spec.csv";
@@ -1757,6 +1762,7 @@ namespace NTU {
             else if (ntuscope->inputrangetype == INPUT_RANGE_PM_1_V) {
                 rawfile << "inputrange," << 1000 << endl;
             }
+            rawfile << "chopperfreq," << ntuscope->chopperfreq << endl;
             rawfile.close();
             cout << "CSV file created successfully at: " << rawcsvpath << endl;
         }

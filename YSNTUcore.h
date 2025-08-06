@@ -57,6 +57,7 @@ namespace NTU
 		double lissajous_phase = 0;
 		int num_lines = 256;
 		bool firstinitialize = true;
+		int chopperdownscale = 1;
 
 		//ETL
 		double zoffset = 47;
@@ -123,6 +124,7 @@ namespace NTU
 		double framerate = 0;
 		double refreshtime = 0;
 		double saveprogress = 0;
+		int chopperfreq = 0;
 
 		//3D data
 		double zduration_per_change[TRANSIENT_BUFFER_COUNT] = { NULL };

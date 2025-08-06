@@ -165,15 +165,37 @@ namespace NTU {
 
             //MEMS TTL setup
             DAQmxErrChk(DAQmxCreateDOChan(taskHandleTTL, "Dev1/port0/line0", "", DAQmx_Val_ChanPerLine));
+            DAQmxErrChk(DAQmxCreateDOChan(taskHandleTTL, "Dev1/port0/line2", "", DAQmx_Val_ChanPerLine));
             DAQmxErrChk(DAQmxCfgSampClkTiming(taskHandleTTL, "/Dev1/ao/SampleClock", ntuscope->samplingRate, DAQmx_Val_Rising, DAQmx_Val_ContSamps, total_samples));
-            ttldata = new uInt8[total_samples];
+            ttldata = new uInt8[total_samples*2];
+            fill(ttldata, ttldata + (total_samples * 2), 0);
             int risingEdgeDelaySamples = static_cast<int>(ntuscope->samplingRate * NItriggerdelay);
+            int numPulses;
+            if (framerate > 120.0) {
+                numPulses = 1;
+            }
+            else {
+                numPulses = 2;
+            }
+            ntuscope->chopperfreq = int(ntuscope->framerate) * numPulses;
+            int pulsewidth_frame = (total_samples - risingEdgeDelaySamples) / 2;
+            int gap = (total_samples - risingEdgeDelaySamples) / numPulses;
+            int pulseWidth_chopper = gap / 2;
+            //frame trigger
             for (int i = 0; i < total_samples; i++) {
-                if (i >= risingEdgeDelaySamples && i < risingEdgeDelaySamples + int(total_samples / 2)) {
-                    ttldata[i] = 1;
+                if (i >= risingEdgeDelaySamples && i < risingEdgeDelaySamples + pulsewidth_frame) {
+                    ttldata[i * 2 + 0] = 1;
                 }
                 else {
-                    ttldata[i] = 0;
+                    ttldata[i * 2 + 0] = 0;
+                }
+            }
+            //chopper trigger
+            for (int pulse = 0; pulse < numPulses; pulse++) {
+                int pulse_start = risingEdgeDelaySamples + pulse * gap;
+                int pulse_end = min(pulse_start + pulseWidth_chopper, total_samples);
+                for (int i = pulse_start; i < pulse_end; ++i) {
+                    ttldata[i * 2 + 1] = 1;
                 }
             }
             DAQmxErrChk(DAQmxWriteDigitalLines(taskHandleTTL, total_samples, FALSE, 10, DAQmx_Val_GroupByScanNumber, ttldata, NULL, NULL));
@@ -259,9 +281,11 @@ namespace NTU {
             //MEMS TTL setup (line.frame trigger)            
             DAQmxErrChk(DAQmxCreateDOChan(taskHandleTTL, "Dev1/port0/line1", "", DAQmx_Val_ChanPerLine));
             DAQmxErrChk(DAQmxCreateDOChan(taskHandleTTL, "Dev1/port0/line0", "", DAQmx_Val_ChanPerLine));
+            DAQmxErrChk(DAQmxCreateDOChan(taskHandleTTL, "Dev1/port0/line2", "", DAQmx_Val_ChanPerLine));
             DAQmxErrChk(DAQmxCfgSampClkTiming(taskHandleTTL, "/Dev1/ao/SampleClock", ntuscope->samplingRate, DAQmx_Val_Rising, DAQmx_Val_ContSamps, total_samples * 2));
-            ttldata = new uInt8[total_samples * 2 * 2];
-            fill(ttldata, ttldata + (total_samples * 2 * 2), 0);
+            int numberofchannel = 3;
+            ttldata = new uInt8[total_samples * 2 * numberofchannel];
+            fill(ttldata, ttldata + (total_samples * 2 * numberofchannel), 0);
             int risingEdgeDelaySamples = static_cast<int>(ntuscope->samplingRate * NItriggerdelay);
             int risingEdgeDelaySamples_frame = risingEdgeDelaySamples - 100;
 
@@ -271,7 +295,7 @@ namespace NTU {
                 int frame_startIndex = frame_offset + risingEdgeDelaySamples_frame;
                 int frame_endIndex = frame_startIndex + int((total_samples - risingEdgeDelaySamples_frame) / 2);
                 for (int i = frame_startIndex; i < frame_endIndex; i++) {
-                    ttldata[i * 2 + 0] = 1;
+                    ttldata[i * numberofchannel + 0] = 1;
                 }
             }
             //line trigger
@@ -282,7 +306,22 @@ namespace NTU {
                     int line_endIndex = line_startIndex + int((samples_per_line - risingEdgeDelaySamples) / 2);
                     int line_endBoundary = frame_offset + (line + 1) * samples_per_line;
                     for (int i = line_startIndex; i < line_endIndex && i < line_endBoundary; i++) {
-                        ttldata[i * 2 + 1] = 1;
+                        ttldata[i * numberofchannel + 1] = 1;
+                    }
+                }
+            }
+            //chopper trigger
+            ntuscope->chopperfreq =int(int(2 * ntuscope->xfreq) / ntuscope->chopperdownscale);
+            for (int frame = 0; frame < 2; frame++) {
+                int frame_offset = frame * total_samples;
+                for (int line = 0; line < ntuscope->num_lines; ++line) {
+                    if (line % ntuscope->chopperdownscale == 0) {
+                        int chopper_index = frame_offset + line * samples_per_line + risingEdgeDelaySamples;
+                        int chopper_endIndex = chopper_index + int((samples_per_line - risingEdgeDelaySamples) / 2 * ntuscope->chopperdownscale);
+                        int chopper_boundary = frame_offset + (line + 1) * samples_per_line * ntuscope->chopperdownscale;
+                        for (int i = chopper_index; i < chopper_endIndex && i < chopper_boundary; i++) {
+                            ttldata[i * numberofchannel + 2] = 1;
+                        }
                     }
                 }
             }
