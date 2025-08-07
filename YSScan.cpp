@@ -171,7 +171,7 @@ namespace NTU {
             fill(ttldata, ttldata + (total_samples * 2), 0);
             int risingEdgeDelaySamples = static_cast<int>(ntuscope->samplingRate * NItriggerdelay);
             int numPulses;
-            if (framerate > 120.0) {
+            if (framerate > 120.0 && framerate < 1000.0) {
                 numPulses = 1;
             }
             else {

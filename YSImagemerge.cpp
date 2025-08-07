@@ -243,14 +243,21 @@ namespace NTU {
 		image_resized.convertTo(raster_8U, CV_8UC1, 1.0 / 257.0, 0.0);
 		cv::Mat displayimage;
 		cv::cvtColor(raster_8U, displayimage, cv::COLOR_GRAY2BGR);
-		cv::namedWindow("ScanPreview", cv::WINDOW_AUTOSIZE);
-		cv::imshow("ScanPreview", displayimage);
-		cv::waitKey(1);
+		rasterImage = displayimage.clone();
 	}
 
 	void YSImageMerge::ScanmodePreview() {
+		cout << chopper_phase << endl;
 		cv::Mat DisplayIMG = rasterImage.clone();
 		double duration = 1.0 / double(framerate_SP);
+		bool isChopperFreqDouble;
+		if (framerate_SP > 120 && framerate_SP<1000) {
+			isChopperFreqDouble = false;
+		}
+		else {
+			isChopperFreqDouble = true;
+		}
+
 		int totalSamples = int(samplingrate_SP * duration);
 		totalSamples = totalSamples - (totalSamples % 128);
 		for (int i = 0; i < totalSamples; ++i) {
@@ -259,11 +266,64 @@ namespace NTU {
 			int yPixel = int(round((height_SP / 2) * (1 - sin((2 * M_PI * double(yfreq_SP) * t) + phase_SP))));
 
 			if (xPixel >= 0 && xPixel < width_SP && yPixel >= 0 && yPixel < height_SP) {
-				DisplayIMG.at<cv::Vec3b>(yPixel, xPixel) = cv::Vec3b(0, 0, 255);
+
+				if (apply_chopper == true) {
+					if (GetChopperTTLSignal(i, totalSamples,isChopperFreqDouble)) {
+						DisplayIMG.at<cv::Vec3b>(yPixel, xPixel) = cv::Vec3b(0, 0, 255);
+					}
+					else {
+						DisplayIMG.at<cv::Vec3b>(yPixel, xPixel) = cv::Vec3b(0, 255, 0);
+					}
+				}
+				else {
+					DisplayIMG.at<cv::Vec3b>(yPixel, xPixel) = cv::Vec3b(0, 0, 255);
+				}
+
 			}
 		}
+
 		cv::imshow("ScanPreview", DisplayIMG);
 		cv::waitKey(0);
+	}
+
+	bool YSImageMerge::GetChopperTTLSignal(int sampleIndex, int totalSamples, bool chopperdoublefreq) {
+		int samplesPerSegment =0;
+		if (chopperdoublefreq == true) {
+			samplesPerSegment = totalSamples / 4;
+		}
+		else if (chopperdoublefreq == false) {
+			samplesPerSegment = totalSamples / 2;
+		}
+
+		double adjustedPhase = (-chopper_phase + 180.0) / 360.0;  
+		int shiftedIndex = sampleIndex + int(adjustedPhase * totalSamples);
+		if (shiftedIndex >= totalSamples) {
+			shiftedIndex -= totalSamples;  
+		}
+
+		if (chopperdoublefreq == true) {
+			if (shiftedIndex < samplesPerSegment) {
+				return false; 
+			}
+			else if (shiftedIndex < 2 * samplesPerSegment) {
+				return true; 
+			}
+			else if (shiftedIndex < 3 * samplesPerSegment) {
+				return false;
+			}
+			else {
+				return true;
+			}
+		}
+		else if (chopperdoublefreq == false) {
+			if (shiftedIndex < samplesPerSegment) {
+				return true; 
+			}
+			else {
+				return false;   
+			}
+		}
+
 	}
 
 	//Scan mode merge

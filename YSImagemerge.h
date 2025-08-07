@@ -90,9 +90,12 @@ namespace NTU {
 		double phase_SP = 0;
 		int framerate_SP = 500;
 		int phaseindex_SP = 0;
+		int chopper_phase = 0;
 		bool loaddata = false;
+		bool apply_chopper = false;
 		void CreateScanPreview(string Path);
 		void ScanmodePreview();
+		bool GetChopperTTLSignal(int sampleIndex, int totalSamples, bool chopperdoublefreq);
 
 		//Extract hymograph
 		string RASTERPath_EK, LISSAJOUSPath_EK;

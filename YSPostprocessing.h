@@ -116,7 +116,7 @@ namespace MTPFM {
 	private: System::Windows::Forms::Label^ label9;
 	private: System::Windows::Forms::Label^ label24;
 	private: System::Windows::Forms::TextBox^ textBox_ScanPreview_xpixel;
-	private: System::Windows::Forms::TextBox^ textBox_ScanPreview_ypixel;
+
 	private: System::Windows::Forms::Button^ button_ScanPreview_LOADRASTER;
 	private: System::Windows::Forms::TextBox^ textBox_ScanPreview_LOADRASTER;
 	private: System::Windows::Forms::Button^ button_ScanPreview_rightphase;
@@ -189,6 +189,18 @@ private: System::Windows::Forms::Button^ button_processimage;
 
 
 private: System::Windows::Forms::TextBox^ textBox_processfolderpath;
+private: System::Windows::Forms::TextBox^ textBox_ScanPreview_ypixel;
+private: System::Windows::Forms::Panel^ panel1;
+private: System::Windows::Forms::CheckBox^ checkBox_applychopper;
+private: System::Windows::Forms::Button^ button_setchopperphase;
+private: System::Windows::Forms::Button^ button_ScanPreview_rightchopperphase;
+
+
+private: System::Windows::Forms::Button^ button_ScanPreview_leftchopperphase;
+
+private: System::Windows::Forms::TextBox^ textBox_chopperphase;
+
+private: System::Windows::Forms::Label^ label42;
 
 
 
@@ -500,6 +512,14 @@ private: System::ComponentModel::IContainer^ components;
 			this->tabPage3 = (gcnew System::Windows::Forms::TabPage());
 			this->label39 = (gcnew System::Windows::Forms::Label());
 			this->tabPage4 = (gcnew System::Windows::Forms::TabPage());
+			this->panel1 = (gcnew System::Windows::Forms::Panel());
+			this->button_setchopperphase = (gcnew System::Windows::Forms::Button());
+			this->button_ScanPreview_rightchopperphase = (gcnew System::Windows::Forms::Button());
+			this->button_ScanPreview_leftchopperphase = (gcnew System::Windows::Forms::Button());
+			this->textBox_chopperphase = (gcnew System::Windows::Forms::TextBox());
+			this->label42 = (gcnew System::Windows::Forms::Label());
+			this->checkBox_applychopper = (gcnew System::Windows::Forms::CheckBox());
+			this->textBox_ScanPreview_ypixel = (gcnew System::Windows::Forms::TextBox());
 			this->label40 = (gcnew System::Windows::Forms::Label());
 			this->comboBox_ScanPreview_xyfreq = (gcnew System::Windows::Forms::ComboBox());
 			this->button_ScanPreview_rightphase = (gcnew System::Windows::Forms::Button());
@@ -514,7 +534,6 @@ private: System::ComponentModel::IContainer^ components;
 			this->label9 = (gcnew System::Windows::Forms::Label());
 			this->label24 = (gcnew System::Windows::Forms::Label());
 			this->textBox_ScanPreview_xpixel = (gcnew System::Windows::Forms::TextBox());
-			this->textBox_ScanPreview_ypixel = (gcnew System::Windows::Forms::TextBox());
 			this->button_ScanPreview_LOADRASTER = (gcnew System::Windows::Forms::Button());
 			this->textBox_ScanPreview_LOADRASTER = (gcnew System::Windows::Forms::TextBox());
 			this->button_shut_down = (gcnew System::Windows::Forms::Button());
@@ -533,6 +552,7 @@ private: System::ComponentModel::IContainer^ components;
 			this->tabControl2->SuspendLayout();
 			this->tabPage3->SuspendLayout();
 			this->tabPage4->SuspendLayout();
+			this->panel1->SuspendLayout();
 			this->SuspendLayout();
 			// 
 			// label1
@@ -1492,25 +1512,25 @@ private: System::ComponentModel::IContainer^ components;
 			this->tableLayoutPanel_CalPara_result->Name = L"tableLayoutPanel_CalPara_result";
 			this->tableLayoutPanel_CalPara_result->RowCount = 1;
 			this->tableLayoutPanel_CalPara_result->RowStyles->Add((gcnew System::Windows::Forms::RowStyle(System::Windows::Forms::SizeType::Absolute,
-				470)));
+				479)));
 			this->tableLayoutPanel_CalPara_result->RowStyles->Add((gcnew System::Windows::Forms::RowStyle(System::Windows::Forms::SizeType::Absolute,
-				470)));
+				479)));
 			this->tableLayoutPanel_CalPara_result->RowStyles->Add((gcnew System::Windows::Forms::RowStyle(System::Windows::Forms::SizeType::Absolute,
-				470)));
+				479)));
 			this->tableLayoutPanel_CalPara_result->RowStyles->Add((gcnew System::Windows::Forms::RowStyle(System::Windows::Forms::SizeType::Absolute,
-				470)));
+				479)));
 			this->tableLayoutPanel_CalPara_result->RowStyles->Add((gcnew System::Windows::Forms::RowStyle(System::Windows::Forms::SizeType::Absolute,
-				470)));
+				479)));
 			this->tableLayoutPanel_CalPara_result->RowStyles->Add((gcnew System::Windows::Forms::RowStyle(System::Windows::Forms::SizeType::Absolute,
-				470)));
+				479)));
 			this->tableLayoutPanel_CalPara_result->RowStyles->Add((gcnew System::Windows::Forms::RowStyle(System::Windows::Forms::SizeType::Absolute,
-				470)));
+				479)));
 			this->tableLayoutPanel_CalPara_result->RowStyles->Add((gcnew System::Windows::Forms::RowStyle(System::Windows::Forms::SizeType::Absolute,
-				470)));
+				479)));
 			this->tableLayoutPanel_CalPara_result->RowStyles->Add((gcnew System::Windows::Forms::RowStyle(System::Windows::Forms::SizeType::Absolute,
-				470)));
+				479)));
 			this->tableLayoutPanel_CalPara_result->RowStyles->Add((gcnew System::Windows::Forms::RowStyle(System::Windows::Forms::SizeType::Absolute,
-				470)));
+				479)));
 			this->tableLayoutPanel_CalPara_result->Size = System::Drawing::Size(495, 212);
 			this->tableLayoutPanel_CalPara_result->TabIndex = 51;
 			// 
@@ -2063,6 +2083,8 @@ private: System::ComponentModel::IContainer^ components;
 			// tabPage4
 			// 
 			this->tabPage4->BackColor = System::Drawing::Color::PowderBlue;
+			this->tabPage4->Controls->Add(this->panel1);
+			this->tabPage4->Controls->Add(this->textBox_ScanPreview_ypixel);
 			this->tabPage4->Controls->Add(this->label40);
 			this->tabPage4->Controls->Add(this->comboBox_ScanPreview_xyfreq);
 			this->tabPage4->Controls->Add(this->button_ScanPreview_rightphase);
@@ -2077,7 +2099,6 @@ private: System::ComponentModel::IContainer^ components;
 			this->tabPage4->Controls->Add(this->label9);
 			this->tabPage4->Controls->Add(this->label24);
 			this->tabPage4->Controls->Add(this->textBox_ScanPreview_xpixel);
-			this->tabPage4->Controls->Add(this->textBox_ScanPreview_ypixel);
 			this->tabPage4->Controls->Add(this->button_ScanPreview_LOADRASTER);
 			this->tabPage4->Controls->Add(this->textBox_ScanPreview_LOADRASTER);
 			this->tabPage4->Location = System::Drawing::Point(4, 28);
@@ -2088,14 +2109,106 @@ private: System::ComponentModel::IContainer^ components;
 			this->tabPage4->TabIndex = 1;
 			this->tabPage4->Text = L"Scan Preview";
 			// 
+			// panel1
+			// 
+			this->panel1->BackColor = System::Drawing::Color::LightBlue;
+			this->panel1->Controls->Add(this->button_setchopperphase);
+			this->panel1->Controls->Add(this->button_ScanPreview_rightchopperphase);
+			this->panel1->Controls->Add(this->button_ScanPreview_leftchopperphase);
+			this->panel1->Controls->Add(this->textBox_chopperphase);
+			this->panel1->Controls->Add(this->label42);
+			this->panel1->Controls->Add(this->checkBox_applychopper);
+			this->panel1->Location = System::Drawing::Point(426, 134);
+			this->panel1->Name = L"panel1";
+			this->panel1->Size = System::Drawing::Size(246, 124);
+			this->panel1->TabIndex = 126;
+			// 
+			// button_setchopperphase
+			// 
+			this->button_setchopperphase->Font = (gcnew System::Drawing::Font(L"Segoe UI", 10, System::Drawing::FontStyle::Bold));
+			this->button_setchopperphase->Location = System::Drawing::Point(13, 76);
+			this->button_setchopperphase->Margin = System::Windows::Forms::Padding(3, 2, 3, 2);
+			this->button_setchopperphase->Name = L"button_setchopperphase";
+			this->button_setchopperphase->Size = System::Drawing::Size(84, 38);
+			this->button_setchopperphase->TabIndex = 59;
+			this->button_setchopperphase->Text = L"Set";
+			this->button_setchopperphase->UseVisualStyleBackColor = true;
+			this->button_setchopperphase->Click += gcnew System::EventHandler(this, &YSPostprocessing::button_setchopperphase_Click);
+			// 
+			// button_ScanPreview_rightchopperphase
+			// 
+			this->button_ScanPreview_rightchopperphase->Image = (cli::safe_cast<System::Drawing::Image^>(resources->GetObject(L"button_ScanPreview_rightchopperphase.Image")));
+			this->button_ScanPreview_rightchopperphase->Location = System::Drawing::Point(211, 38);
+			this->button_ScanPreview_rightchopperphase->Margin = System::Windows::Forms::Padding(4);
+			this->button_ScanPreview_rightchopperphase->Name = L"button_ScanPreview_rightchopperphase";
+			this->button_ScanPreview_rightchopperphase->Size = System::Drawing::Size(31, 39);
+			this->button_ScanPreview_rightchopperphase->TabIndex = 58;
+			this->button_ScanPreview_rightchopperphase->UseVisualStyleBackColor = true;
+			this->button_ScanPreview_rightchopperphase->Click += gcnew System::EventHandler(this, &YSPostprocessing::button_ScanPreview_rightchopperphase_Click);
+			// 
+			// button_ScanPreview_leftchopperphase
+			// 
+			this->button_ScanPreview_leftchopperphase->Image = (cli::safe_cast<System::Drawing::Image^>(resources->GetObject(L"button_ScanPreview_leftchopperphase.Image")));
+			this->button_ScanPreview_leftchopperphase->Location = System::Drawing::Point(172, 38);
+			this->button_ScanPreview_leftchopperphase->Margin = System::Windows::Forms::Padding(4);
+			this->button_ScanPreview_leftchopperphase->Name = L"button_ScanPreview_leftchopperphase";
+			this->button_ScanPreview_leftchopperphase->Size = System::Drawing::Size(31, 39);
+			this->button_ScanPreview_leftchopperphase->TabIndex = 57;
+			this->button_ScanPreview_leftchopperphase->UseVisualStyleBackColor = true;
+			this->button_ScanPreview_leftchopperphase->Click += gcnew System::EventHandler(this, &YSPostprocessing::button_ScanPreview_leftchopperphase_Click);
+			// 
+			// textBox_chopperphase
+			// 
+			this->textBox_chopperphase->Font = (gcnew System::Drawing::Font(L"Segoe UI", 11.25F, System::Drawing::FontStyle::Bold));
+			this->textBox_chopperphase->Location = System::Drawing::Point(72, 38);
+			this->textBox_chopperphase->Margin = System::Windows::Forms::Padding(3, 2, 3, 2);
+			this->textBox_chopperphase->Name = L"textBox_chopperphase";
+			this->textBox_chopperphase->Size = System::Drawing::Size(96, 32);
+			this->textBox_chopperphase->TabIndex = 53;
+			this->textBox_chopperphase->Text = L"0";
+			this->textBox_chopperphase->TextAlign = System::Windows::Forms::HorizontalAlignment::Center;
+			// 
+			// label42
+			// 
+			this->label42->AutoSize = true;
+			this->label42->Font = (gcnew System::Drawing::Font(L"Segoe UI", 11.25F, System::Drawing::FontStyle::Bold));
+			this->label42->Location = System::Drawing::Point(8, 41);
+			this->label42->Name = L"label42";
+			this->label42->Size = System::Drawing::Size(63, 25);
+			this->label42->TabIndex = 52;
+			this->label42->Text = L"Phase";
+			// 
+			// checkBox_applychopper
+			// 
+			this->checkBox_applychopper->AutoSize = true;
+			this->checkBox_applychopper->Font = (gcnew System::Drawing::Font(L"Segoe UI", 10.8F, System::Drawing::FontStyle::Bold, System::Drawing::GraphicsUnit::Point,
+				static_cast<System::Byte>(0)));
+			this->checkBox_applychopper->Location = System::Drawing::Point(13, 5);
+			this->checkBox_applychopper->Name = L"checkBox_applychopper";
+			this->checkBox_applychopper->Size = System::Drawing::Size(106, 29);
+			this->checkBox_applychopper->TabIndex = 0;
+			this->checkBox_applychopper->Text = L"Chopper";
+			this->checkBox_applychopper->UseVisualStyleBackColor = true;
+			this->checkBox_applychopper->CheckedChanged += gcnew System::EventHandler(this, &YSPostprocessing::checkBox_applychopper_CheckedChanged);
+			// 
+			// textBox_ScanPreview_ypixel
+			// 
+			this->textBox_ScanPreview_ypixel->Font = (gcnew System::Drawing::Font(L"Segoe UI", 11.25F, System::Drawing::FontStyle::Bold));
+			this->textBox_ScanPreview_ypixel->Location = System::Drawing::Point(270, 51);
+			this->textBox_ScanPreview_ypixel->Margin = System::Windows::Forms::Padding(3, 2, 3, 2);
+			this->textBox_ScanPreview_ypixel->Name = L"textBox_ScanPreview_ypixel";
+			this->textBox_ScanPreview_ypixel->Size = System::Drawing::Size(131, 32);
+			this->textBox_ScanPreview_ypixel->TabIndex = 125;
+			this->textBox_ScanPreview_ypixel->Text = L"512";
+			this->textBox_ScanPreview_ypixel->TextAlign = System::Windows::Forms::HorizontalAlignment::Center;
+			// 
 			// label40
 			// 
-			this->label40->AutoSize = true;
 			this->label40->Font = (gcnew System::Drawing::Font(L"Segoe UI", 8, System::Drawing::FontStyle::Bold));
 			this->label40->ForeColor = System::Drawing::Color::DarkRed;
-			this->label40->Location = System::Drawing::Point(344, 247);
+			this->label40->Location = System::Drawing::Point(483, 14);
 			this->label40->Name = L"label40";
-			this->label40->Size = System::Drawing::Size(314, 19);
+			this->label40->Size = System::Drawing::Size(193, 44);
 			this->label40->TabIndex = 124;
 			this->label40->Text = L"Note: Raster and Lissajous have the same FOV";
 			// 
@@ -2107,7 +2220,7 @@ private: System::ComponentModel::IContainer^ components;
 				L"(1500,2000)", L"(2000,2010)",
 					L"(2000,2100)", L"(2100,2160)", L"(2088,2160)", L"(2052,2160)", L"(1980,2160)", L"(1620,2160)", L"(2000,3000)"
 			});
-			this->comboBox_ScanPreview_xyfreq->Location = System::Drawing::Point(257, 135);
+			this->comboBox_ScanPreview_xyfreq->Location = System::Drawing::Point(227, 135);
 			this->comboBox_ScanPreview_xyfreq->Margin = System::Windows::Forms::Padding(3, 2, 3, 2);
 			this->comboBox_ScanPreview_xyfreq->Name = L"comboBox_ScanPreview_xyfreq";
 			this->comboBox_ScanPreview_xyfreq->Size = System::Drawing::Size(192, 33);
@@ -2117,7 +2230,7 @@ private: System::ComponentModel::IContainer^ components;
 			// button_ScanPreview_rightphase
 			// 
 			this->button_ScanPreview_rightphase->Image = (cli::safe_cast<System::Drawing::Image^>(resources->GetObject(L"button_ScanPreview_rightphase.Image")));
-			this->button_ScanPreview_rightphase->Location = System::Drawing::Point(584, 176);
+			this->button_ScanPreview_rightphase->Location = System::Drawing::Point(166, 210);
 			this->button_ScanPreview_rightphase->Margin = System::Windows::Forms::Padding(4);
 			this->button_ScanPreview_rightphase->Name = L"button_ScanPreview_rightphase";
 			this->button_ScanPreview_rightphase->Size = System::Drawing::Size(31, 39);
@@ -2128,7 +2241,7 @@ private: System::ComponentModel::IContainer^ components;
 			// button_ScanPreview_leftphase
 			// 
 			this->button_ScanPreview_leftphase->Image = (cli::safe_cast<System::Drawing::Image^>(resources->GetObject(L"button_ScanPreview_leftphase.Image")));
-			this->button_ScanPreview_leftphase->Location = System::Drawing::Point(508, 176);
+			this->button_ScanPreview_leftphase->Location = System::Drawing::Point(111, 210);
 			this->button_ScanPreview_leftphase->Margin = System::Windows::Forms::Padding(4);
 			this->button_ScanPreview_leftphase->Name = L"button_ScanPreview_leftphase";
 			this->button_ScanPreview_leftphase->Size = System::Drawing::Size(31, 39);
@@ -2140,7 +2253,7 @@ private: System::ComponentModel::IContainer^ components;
 			// 
 			this->textBox_ScanPreview_framerate->Enabled = false;
 			this->textBox_ScanPreview_framerate->Font = (gcnew System::Drawing::Font(L"Segoe UI", 11.25F, System::Drawing::FontStyle::Bold));
-			this->textBox_ScanPreview_framerate->Location = System::Drawing::Point(257, 175);
+			this->textBox_ScanPreview_framerate->Location = System::Drawing::Point(227, 175);
 			this->textBox_ScanPreview_framerate->Margin = System::Windows::Forms::Padding(3, 2, 3, 2);
 			this->textBox_ScanPreview_framerate->Name = L"textBox_ScanPreview_framerate";
 			this->textBox_ScanPreview_framerate->Size = System::Drawing::Size(131, 32);
@@ -2162,7 +2275,7 @@ private: System::ComponentModel::IContainer^ components;
 			// 
 			this->textBox_ScanPreview_phase->Enabled = false;
 			this->textBox_ScanPreview_phase->Font = (gcnew System::Drawing::Font(L"Segoe UI", 11.25F, System::Drawing::FontStyle::Bold));
-			this->textBox_ScanPreview_phase->Location = System::Drawing::Point(257, 210);
+			this->textBox_ScanPreview_phase->Location = System::Drawing::Point(227, 210);
 			this->textBox_ScanPreview_phase->Margin = System::Windows::Forms::Padding(3, 2, 3, 2);
 			this->textBox_ScanPreview_phase->Name = L"textBox_ScanPreview_phase";
 			this->textBox_ScanPreview_phase->Size = System::Drawing::Size(131, 32);
@@ -2208,7 +2321,7 @@ private: System::ComponentModel::IContainer^ components;
 				L"2 MS/s", L"10 MS/s",
 					L"20 MS/s", L"50 MS/s", L"100 MS/s", L"125 MS/s"
 			});
-			this->comboBox_ScanPreview_samplingrate->Location = System::Drawing::Point(253, 11);
+			this->comboBox_ScanPreview_samplingrate->Location = System::Drawing::Point(245, 11);
 			this->comboBox_ScanPreview_samplingrate->Margin = System::Windows::Forms::Padding(3, 2, 3, 2);
 			this->comboBox_ScanPreview_samplingrate->Name = L"comboBox_ScanPreview_samplingrate";
 			this->comboBox_ScanPreview_samplingrate->Size = System::Drawing::Size(131, 33);
@@ -2244,18 +2357,6 @@ private: System::ComponentModel::IContainer^ components;
 			this->textBox_ScanPreview_xpixel->TabIndex = 45;
 			this->textBox_ScanPreview_xpixel->Text = L"512";
 			this->textBox_ScanPreview_xpixel->TextAlign = System::Windows::Forms::HorizontalAlignment::Center;
-			// 
-			// textBox_ScanPreview_ypixel
-			// 
-			this->textBox_ScanPreview_ypixel->Font = (gcnew System::Drawing::Font(L"Segoe UI", 11.25F, System::Drawing::FontStyle::Bold));
-			this->textBox_ScanPreview_ypixel->Location = System::Drawing::Point(272, 52);
-			this->textBox_ScanPreview_ypixel->Margin = System::Windows::Forms::Padding(3, 2, 3, 2);
-			this->textBox_ScanPreview_ypixel->Name = L"textBox_ScanPreview_ypixel";
-			this->textBox_ScanPreview_ypixel->ReadOnly = true;
-			this->textBox_ScanPreview_ypixel->Size = System::Drawing::Size(131, 32);
-			this->textBox_ScanPreview_ypixel->TabIndex = 46;
-			this->textBox_ScanPreview_ypixel->Text = L"512";
-			this->textBox_ScanPreview_ypixel->TextAlign = System::Windows::Forms::HorizontalAlignment::Center;
 			// 
 			// button_ScanPreview_LOADRASTER
 			// 
@@ -2332,6 +2433,8 @@ private: System::ComponentModel::IContainer^ components;
 			this->tabPage3->PerformLayout();
 			this->tabPage4->ResumeLayout(false);
 			this->tabPage4->PerformLayout();
+			this->panel1->ResumeLayout(false);
+			this->panel1->PerformLayout();
 			this->ResumeLayout(false);
 			this->PerformLayout();
 
@@ -2654,6 +2757,34 @@ private: System::Void button_ScanPreview_leftphase_Click(System::Object^ sender,
 	this->textBox_ScanPreview_phase->Text = gcnew System::String(YSphasename_array_ScanPreview[imagemerge->phaseindex_SP].c_str());
 	imagemerge->ScanmodePreview();
 }
+private: System::Void checkBox_applychopper_CheckedChanged(System::Object^ sender, System::EventArgs^ e) {
+	if (checkBox_applychopper->Checked == true) {
+		imagemerge->apply_chopper = true;
+	}
+	else if (checkBox_applychopper->Checked == false) {
+		imagemerge->apply_chopper = false;
+	}
+	imagemerge->chopper_phase = System::Convert::ToInt32(this->textBox_chopperphase->Text);
+	imagemerge->ScanmodePreview();
+}
+private: System::Void button_setchopperphase_Click(System::Object^ sender, System::EventArgs^ e) {
+	imagemerge->chopper_phase = System::Convert::ToInt32(this->textBox_chopperphase->Text);
+	imagemerge->ScanmodePreview();
+}
+private: System::Void button_ScanPreview_leftchopperphase_Click(System::Object^ sender, System::EventArgs^ e) {
+	if (imagemerge->chopper_phase > -180) {
+		imagemerge->chopper_phase= imagemerge->chopper_phase-1;
+	}
+	this->textBox_chopperphase->Text = imagemerge->chopper_phase.ToString();
+	imagemerge->ScanmodePreview();
+}
+private: System::Void button_ScanPreview_rightchopperphase_Click(System::Object^ sender, System::EventArgs^ e) {
+	if (imagemerge->chopper_phase < 180) {
+		imagemerge->chopper_phase= imagemerge->chopper_phase+1;
+	}
+	this->textBox_chopperphase->Text = imagemerge->chopper_phase.ToString();
+	imagemerge->ScanmodePreview();
+}
 //Extract Kymograph
 private: System::Void button_LOADRASTER2_Click(System::Object^ sender, System::EventArgs^ e) {
 	if (this->LOAD_RASTER->ShowDialog() == System::Windows::Forms::DialogResult::OK) {
@@ -2760,6 +2891,11 @@ private: System::Void timer_refresh_UI_Tick(System::Object^ sender, System::Even
 private: System::Void button_shut_down_Click(System::Object^ sender, System::EventArgs^ e) {
 	imagemerge->~YSImageMerge();
 }
+
+
+
+
+
 
 
 
