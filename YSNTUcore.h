@@ -58,6 +58,8 @@ namespace NTU
 		int num_lines = 256;
 		bool firstinitialize = true;
 		int chopperdownscale = 1;
+		int chopperupscale = 1;
+		int chopperphase = 0;
 
 		//ETL
 		double zoffset = 47;
@@ -138,6 +140,7 @@ namespace NTU
 		double lissajous_delay = 0;
 		bool samplemapsave = false;
 		bool highspeedmode = false;
+		bool choppermapping = false;
 
 		//NI
 		int samplingRate = 0;

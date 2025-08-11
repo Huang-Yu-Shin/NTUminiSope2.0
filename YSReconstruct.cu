@@ -75,7 +75,7 @@ namespace NTU {
         int blocksPerGrid = (total_sample + threadsPerBlock - 1) / threadsPerBlock;
 
         // start running
-        invertBuffer << <blocksPerGrid, threadsPerBlock, 0, stream >> > (d_pBuffer, total_sample,ntuscope->YSapply_signalprocessing,ntuscope->YSoffsetvalueSP);
+        invertBuffer << <blocksPerGrid, threadsPerBlock, 0, stream >> > (d_pBuffer, total_sample,ntuscope->YSapply_signalprocessing,ntuscope->YSoffsetvalueSP, ntuscope->choppermapping);
         processSamples_LISSAJOUS << <blocksPerGrid, threadsPerBlock, 0, stream >> > (
             d_pBuffer, d_tempImage, d_sampleMap, ntuscope->Pixelnumx, ntuscope->Pixelnumy, total_sample,
             ntuscope->samplesPerSec, ntuscope->xfreq, ntuscope->yfreq, ntuscope->lissajous_phase
@@ -132,30 +132,40 @@ namespace NTU {
 //    }
 //}
 
-__global__ void invertBuffer(U16* Buffer, int totalsample, bool SPconduct, int SPoffsetvalue) {
+__global__ void invertBuffer(U16* Buffer, int totalsample, bool SPconduct, int SPoffsetvalue, bool choppermapping) {
     int i = blockIdx.x * blockDim.x + threadIdx.x;
     if (i < totalsample) {
-        if ((65535 - Buffer[i]) > 65535) {
-            Buffer[i] = 65535 - 32768;
-        }
-        else {
-            if (SPconduct == false) {
-                if ((65535 - Buffer[i] - 32768) < 0) {
-                    Buffer[i] = 0;
-                }
-                else {
-                    Buffer[i] = 65535 - Buffer[i] - 32768;
-                }
+        if (choppermapping == false) {
+            if ((65535 - Buffer[i]) > 65535) {
+                Buffer[i] = 65535 - 32768;
             }
-            else if (SPconduct == true) {
-                if ((65535 - Buffer[i] - SPoffsetvalue) < 0) {
-                    Buffer[i] = 0;
+            else {
+                if (SPconduct == false) {
+                    if ((65535 - Buffer[i] - 32768) < 0) {
+                        Buffer[i] = 0;
+                    }
+                    else {
+                        Buffer[i] = 65535 - Buffer[i] - 32768;
+                    }
                 }
-                else {
-                    Buffer[i] = 65535 - Buffer[i] - SPoffsetvalue;
+                else if (SPconduct == true) {
+                    if ((65535 - Buffer[i] - SPoffsetvalue) < 0) {
+                        Buffer[i] = 0;
+                    }
+                    else {
+                        Buffer[i] = 65535 - Buffer[i] - SPoffsetvalue;
+                    }
                 }
-            }
 
+            }
+        }
+        else if (choppermapping == true) {
+            if ((Buffer[i] - 32768) < 0) {
+                Buffer[i] = 0;
+            }
+            else {
+                Buffer[i] = Buffer[i] - 32768;
+            }
         }
         
     }

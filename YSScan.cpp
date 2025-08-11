@@ -171,11 +171,11 @@ namespace NTU {
             fill(ttldata, ttldata + (total_samples * 2), 0);
             int risingEdgeDelaySamples = static_cast<int>(ntuscope->samplingRate * NItriggerdelay);
             int numPulses;
-            if (framerate > 120.0 && framerate < 1000.0) {
+            if (framerate >= 120) {
                 numPulses = 1;
             }
             else {
-                numPulses = 2;
+                numPulses = 4;
             }
             ntuscope->chopperfreq = int(ntuscope->framerate) * numPulses;
             int pulsewidth_frame = (total_samples - risingEdgeDelaySamples) / 2;
@@ -191,11 +191,34 @@ namespace NTU {
                 }
             }
             //chopper trigger
+            int phase_offset_samples = static_cast<int>((ntuscope->chopperphase / 360.0) * gap);
+            //for (int pulse = 0; pulse < numPulses; pulse++) {
+            //    int pulse_start = risingEdgeDelaySamples + pulse * gap;
+            //    int pulse_end = min(pulse_start + pulseWidth_chopper, total_samples);
+            //    for (int i = pulse_start; i < pulse_end; ++i) {
+            //        ttldata[i * 2 + 1] = 1;
+            //    }
+            //}
+            phase_offset_samples = (phase_offset_samples % gap + gap) % gap;
             for (int pulse = 0; pulse < numPulses; pulse++) {
-                int pulse_start = risingEdgeDelaySamples + pulse * gap;
-                int pulse_end = min(pulse_start + pulseWidth_chopper, total_samples);
-                for (int i = pulse_start; i < pulse_end; ++i) {
-                    ttldata[i * 2 + 1] = 1;
+                int pulse_start = risingEdgeDelaySamples + (pulse * gap) + phase_offset_samples;
+                if (pulse_start >= total_samples) {
+                    pulse_start -= total_samples;
+                }
+
+                int pulse_end = pulse_start + pulseWidth_chopper;
+                if (pulse_end <= total_samples) {
+                    for (int i = pulse_start; i < pulse_end; ++i) {
+                        ttldata[i * 2 + 1] = 1;
+                    }
+                }
+                else {
+                    for (int i = pulse_start; i < total_samples; ++i) {
+                        ttldata[i * 2 + 1] = 1;
+                    }
+                    for (int i = 0; i < (pulse_end % total_samples); ++i) {
+                        ttldata[i * 2 + 1] = 1;
+                    }
                 }
             }
             DAQmxErrChk(DAQmxWriteDigitalLines(taskHandleTTL, total_samples, FALSE, 10, DAQmx_Val_GroupByScanNumber, ttldata, NULL, NULL));

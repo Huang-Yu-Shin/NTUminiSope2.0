@@ -247,15 +247,13 @@ namespace NTU {
 	}
 
 	void YSImageMerge::ScanmodePreview() {
-		cout << chopper_phase << endl;
 		cv::Mat DisplayIMG = rasterImage.clone();
 		double duration = 1.0 / double(framerate_SP);
-		bool isChopperFreqDouble;
-		if (framerate_SP > 120 && framerate_SP<1000) {
-			isChopperFreqDouble = false;
+		if (framerate_SP >= 120) {
+			chopper_freq_upscale = 1;
 		}
 		else {
-			isChopperFreqDouble = true;
+			chopper_freq_upscale = 4;
 		}
 
 		int totalSamples = int(samplingrate_SP * duration);
@@ -268,11 +266,11 @@ namespace NTU {
 			if (xPixel >= 0 && xPixel < width_SP && yPixel >= 0 && yPixel < height_SP) {
 
 				if (apply_chopper == true) {
-					if (GetChopperTTLSignal(i, totalSamples,isChopperFreqDouble)) {
+					if (GetChopperTTLSignal(i, totalSamples)) {
 						DisplayIMG.at<cv::Vec3b>(yPixel, xPixel) = cv::Vec3b(0, 0, 255);
 					}
 					else {
-						DisplayIMG.at<cv::Vec3b>(yPixel, xPixel) = cv::Vec3b(0, 255, 0);
+						DisplayIMG.at<cv::Vec3b>(yPixel, xPixel) = cv::Vec3b(0, 50, 0);
 					}
 				}
 				else {
@@ -280,48 +278,57 @@ namespace NTU {
 				}
 
 			}
+
+			//if (i % (totalSamples / 200000) == 0) {
+			//	cv::imshow("ScanPreview", DisplayIMG);
+			//	cv::waitKey(1);
+			//}
+
 		}
 
 		cv::imshow("ScanPreview", DisplayIMG);
 		cv::waitKey(0);
 	}
 
-	bool YSImageMerge::GetChopperTTLSignal(int sampleIndex, int totalSamples, bool chopperdoublefreq) {
-		int samplesPerSegment =0;
-		if (chopperdoublefreq == true) {
-			samplesPerSegment = totalSamples / 4;
-		}
-		else if (chopperdoublefreq == false) {
-			samplesPerSegment = totalSamples / 2;
-		}
+	bool YSImageMerge::GetChopperTTLSignal(int sampleIndex, int totalSamples) {
+		//cout << chopper_phase << endl;
+		if (chopper_freq_upscale == 1) {
+			int segments = 2;
+			int samplesPerSegment = totalSamples / segments;
+			if (samplesPerSegment <= 0) return true;
 
-		double adjustedPhase = (-chopper_phase + 180.0) / 360.0;  
-		int shiftedIndex = sampleIndex + int(adjustedPhase * totalSamples);
-		if (shiftedIndex >= totalSamples) {
-			shiftedIndex -= totalSamples;  
-		}
+			double ph = std::fmod(chopper_phase, 360.0);
+			if (ph < 0.0) ph += 360.0;
+			int shiftSamples = static_cast<int>(std::round(ph / 360.0 * totalSamples));
 
-		if (chopperdoublefreq == true) {
-			if (shiftedIndex < samplesPerSegment) {
-				return false; 
-			}
-			else if (shiftedIndex < 2 * samplesPerSegment) {
-				return true; 
-			}
-			else if (shiftedIndex < 3 * samplesPerSegment) {
-				return false;
-			}
-			else {
-				return true;
-			}
+			int shiftedIndex = (sampleIndex - shiftSamples) % totalSamples; 
+			if (shiftedIndex < 0) shiftedIndex += totalSamples;       
+
+			const int quarterSamples = totalSamples / 4;
+			int quarter = shiftedIndex / quarterSamples;  
+			bool isHigh = (quarter < 2);                
+
+			return isHigh;
 		}
-		else if (chopperdoublefreq == false) {
-			if (shiftedIndex < samplesPerSegment) {
-				return true; 
-			}
-			else {
-				return false;   
-			}
+		else if (chopper_freq_upscale == 4) {
+			int segments = 8;                            
+			int samplesPerSegment = totalSamples / segments;
+			if (samplesPerSegment <= 0) return true;
+
+
+			double ph = std::fmod(chopper_phase, 360.0);
+			if (ph < 0.0) ph += 360.0;
+
+			int samplesPerChopper = totalSamples / 4;    
+			int shiftSamples = static_cast<int>(std::round(ph / 360.0 * samplesPerChopper));
+
+
+			int shiftedIndex = (sampleIndex - shiftSamples) % totalSamples;
+			if (shiftedIndex < 0) shiftedIndex += totalSamples;
+
+			int segIdx = shiftedIndex / samplesPerSegment;
+			bool isHigh = (segIdx % 2) == 0;        
+			return isHigh;
 		}
 
 	}

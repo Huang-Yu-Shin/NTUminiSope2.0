@@ -128,96 +128,79 @@ namespace MTPFM {
 
 	private: System::Windows::Forms::Label^ label34;
 
-private: System::Windows::Forms::ComboBox^ comboBox_ScanPreview_xyfreq;
-private: System::Windows::Forms::TabPage^ tabPage5;
-private: System::Windows::Forms::TextBox^ textBox_LOADLISSAJOUSFOLDER_EK;
+	private: System::Windows::Forms::ComboBox^ comboBox_ScanPreview_xyfreq;
+	private: System::Windows::Forms::TabPage^ tabPage5;
+	private: System::Windows::Forms::TextBox^ textBox_LOADLISSAJOUSFOLDER_EK;
 
 
 
-private: System::Windows::Forms::Button^ button_LOADRASTER2;
-private: System::Windows::Forms::TextBox^ textBox_LOADRASTER_EK;
+	private: System::Windows::Forms::Button^ button_LOADRASTER2;
+	private: System::Windows::Forms::TextBox^ textBox_LOADRASTER_EK;
 
 
 
-private: System::Windows::Forms::Button^ button_LOADLISSAJOUSFOLDER2;
+	private: System::Windows::Forms::Button^ button_LOADLISSAJOUSFOLDER2;
 
 
 
-private: System::Windows::Forms::Button^ button_LOADLISSAJOUS;
-private: System::Windows::Forms::TextBox^ textBox_LOADLISSAJOUS_EK;
+	private: System::Windows::Forms::Button^ button_LOADLISSAJOUS;
+	private: System::Windows::Forms::TextBox^ textBox_LOADLISSAJOUS_EK;
 
 
 
-private: System::Windows::Forms::TextBox^ textBox_ExtractKymograph_endpixel;
+	private: System::Windows::Forms::TextBox^ textBox_ExtractKymograph_endpixel;
 
-private: System::Windows::Forms::TextBox^ textBox_ExtractKymograph_startpixel;
+	private: System::Windows::Forms::TextBox^ textBox_ExtractKymograph_startpixel;
 
-private: System::Windows::Forms::TrackBar^ trackBar_ExtractKymograph_endpixel;
+	private: System::Windows::Forms::TrackBar^ trackBar_ExtractKymograph_endpixel;
 
-private: System::Windows::Forms::TrackBar^ trackBar_ExtractKymograph_startpixel;
+	private: System::Windows::Forms::TrackBar^ trackBar_ExtractKymograph_startpixel;
 
-private: System::Windows::Forms::Label^ label32;
-private: System::Windows::Forms::Label^ label35;
-private: System::Windows::Forms::Button^ button_ExtractKymograph_extractkymograph;
+	private: System::Windows::Forms::Label^ label32;
+	private: System::Windows::Forms::Label^ label35;
+	private: System::Windows::Forms::Button^ button_ExtractKymograph_extractkymograph;
 
-private: System::Windows::Forms::Label^ label36;
-private: System::Windows::Forms::Label^ label37;
-private: System::Windows::Forms::Button^ button_ExtractKymograph_quickset;
-private: CustomControls::DefineControls::ToggleButtons^ toggleButtons_ExtractKymograph_choosedisplay;
-private: System::Windows::Forms::Label^ label_ExtractKymograph_choosedisplay;
-private: System::Windows::Forms::Label^ label38;
-private: System::Windows::Forms::Label^ label39;
-private: System::Windows::Forms::Label^ label40;
-private: System::Windows::Forms::Button^ button_shut_down;
-
-
-
-
-private: System::Windows::Forms::Label^ label3;
-private: System::Windows::Forms::Label^ label_TRANSFERTOTIFF;
-private: System::Windows::Forms::Button^ button_LOADLISSAJOUS_RAWBIN;
-private: System::Windows::Forms::Button^ button_TRANSFERTOTIFF;
-private: System::Windows::Forms::TextBox^ textBox_LOADLISSAJOUSBIN;
-private: System::Windows::Forms::Label^ label41;
-private: System::Windows::Forms::TabPage^ tabPage6;
-private: System::Windows::Forms::Label^ label_processimage;
-
-private: System::Windows::Forms::Button^ buttom_loadprocessfolder;
-private: System::Windows::Forms::Button^ button_processimage;
+	private: System::Windows::Forms::Label^ label36;
+	private: System::Windows::Forms::Label^ label37;
+	private: System::Windows::Forms::Button^ button_ExtractKymograph_quickset;
+	private: CustomControls::DefineControls::ToggleButtons^ toggleButtons_ExtractKymograph_choosedisplay;
+	private: System::Windows::Forms::Label^ label_ExtractKymograph_choosedisplay;
+	private: System::Windows::Forms::Label^ label38;
+	private: System::Windows::Forms::Label^ label39;
+	private: System::Windows::Forms::Label^ label40;
+	private: System::Windows::Forms::Button^ button_shut_down;
 
 
 
 
-private: System::Windows::Forms::TextBox^ textBox_processfolderpath;
-private: System::Windows::Forms::TextBox^ textBox_ScanPreview_ypixel;
-private: System::Windows::Forms::Panel^ panel1;
-private: System::Windows::Forms::CheckBox^ checkBox_applychopper;
-private: System::Windows::Forms::Button^ button_setchopperphase;
-private: System::Windows::Forms::Button^ button_ScanPreview_rightchopperphase;
+	private: System::Windows::Forms::Label^ label3;
+	private: System::Windows::Forms::Label^ label_TRANSFERTOTIFF;
+	private: System::Windows::Forms::Button^ button_LOADLISSAJOUS_RAWBIN;
+	private: System::Windows::Forms::Button^ button_TRANSFERTOTIFF;
+	private: System::Windows::Forms::TextBox^ textBox_LOADLISSAJOUSBIN;
+	private: System::Windows::Forms::Label^ label41;
+	private: System::Windows::Forms::TabPage^ tabPage6;
+	private: System::Windows::Forms::Label^ label_processimage;
 
-
-private: System::Windows::Forms::Button^ button_ScanPreview_leftchopperphase;
-
-private: System::Windows::Forms::TextBox^ textBox_chopperphase;
-
-private: System::Windows::Forms::Label^ label42;
-
+	private: System::Windows::Forms::Button^ buttom_loadprocessfolder;
+	private: System::Windows::Forms::Button^ button_processimage;
 
 
 
 
+	private: System::Windows::Forms::TextBox^ textBox_processfolderpath;
+	private: System::Windows::Forms::TextBox^ textBox_ScanPreview_ypixel;
+	private: System::Windows::Forms::Panel^ panel1;
+	private: System::Windows::Forms::CheckBox^ checkBox_applychopper;
+	private: System::Windows::Forms::Button^ button_setchopperphase;
+	private: System::Windows::Forms::Button^ button_ScanPreview_rightchopperphase;
 
 
+	private: System::Windows::Forms::Button^ button_ScanPreview_leftchopperphase;
 
+	private: System::Windows::Forms::TextBox^ textBox_chopperphase;
 
-
-
-
-
-
-
-
-
+	private: System::Windows::Forms::Label^ label42;
 
 
 
@@ -559,9 +542,10 @@ private: System::ComponentModel::IContainer^ components;
 			// 
 			this->label1->AutoSize = true;
 			this->label1->Font = (gcnew System::Drawing::Font(L"Segoe UI", 24.75F, System::Drawing::FontStyle::Bold));
-			this->label1->Location = System::Drawing::Point(12, 9);
+			this->label1->Location = System::Drawing::Point(9, 7);
+			this->label1->Margin = System::Windows::Forms::Padding(2, 0, 2, 0);
 			this->label1->Name = L"label1";
-			this->label1->Size = System::Drawing::Size(651, 57);
+			this->label1->Size = System::Drawing::Size(510, 45);
 			this->label1->TabIndex = 2;
 			this->label1->Text = L"NTU miniScope Post Processing";
 			// 
@@ -569,10 +553,10 @@ private: System::ComponentModel::IContainer^ components;
 			// 
 			this->checkBox_MergeScantrace->AutoSize = true;
 			this->checkBox_MergeScantrace->Font = (gcnew System::Drawing::Font(L"Segoe UI", 11.25F, System::Drawing::FontStyle::Bold));
-			this->checkBox_MergeScantrace->Location = System::Drawing::Point(24, 150);
-			this->checkBox_MergeScantrace->Margin = System::Windows::Forms::Padding(3, 2, 3, 2);
+			this->checkBox_MergeScantrace->Location = System::Drawing::Point(18, 122);
+			this->checkBox_MergeScantrace->Margin = System::Windows::Forms::Padding(2);
 			this->checkBox_MergeScantrace->Name = L"checkBox_MergeScantrace";
-			this->checkBox_MergeScantrace->Size = System::Drawing::Size(185, 29);
+			this->checkBox_MergeScantrace->Size = System::Drawing::Size(147, 24);
 			this->checkBox_MergeScantrace->TabIndex = 5;
 			this->checkBox_MergeScantrace->Text = L"Merge scan trace";
 			this->checkBox_MergeScantrace->UseVisualStyleBackColor = true;
@@ -582,9 +566,10 @@ private: System::ComponentModel::IContainer^ components;
 			// 
 			this->label5->AutoSize = true;
 			this->label5->Font = (gcnew System::Drawing::Font(L"Segoe UI", 11.25F, System::Drawing::FontStyle::Bold));
-			this->label5->Location = System::Drawing::Point(19, 292);
+			this->label5->Location = System::Drawing::Point(14, 237);
+			this->label5->Margin = System::Windows::Forms::Padding(2, 0, 2, 0);
 			this->label5->Name = L"label5";
-			this->label5->Size = System::Drawing::Size(82, 25);
+			this->label5->Size = System::Drawing::Size(67, 20);
 			this->label5->TabIndex = 7;
 			this->label5->Text = L"Offset X";
 			// 
@@ -592,19 +577,20 @@ private: System::ComponentModel::IContainer^ components;
 			// 
 			this->label6->AutoSize = true;
 			this->label6->Font = (gcnew System::Drawing::Font(L"Segoe UI", 11.25F, System::Drawing::FontStyle::Bold));
-			this->label6->Location = System::Drawing::Point(20, 331);
+			this->label6->Location = System::Drawing::Point(15, 269);
+			this->label6->Margin = System::Windows::Forms::Padding(2, 0, 2, 0);
 			this->label6->Name = L"label6";
-			this->label6->Size = System::Drawing::Size(82, 25);
+			this->label6->Size = System::Drawing::Size(66, 20);
 			this->label6->TabIndex = 8;
 			this->label6->Text = L"Offset Y";
 			// 
 			// textBox_offsetx
 			// 
 			this->textBox_offsetx->Font = (gcnew System::Drawing::Font(L"Segoe UI", 11.25F, System::Drawing::FontStyle::Bold));
-			this->textBox_offsetx->Location = System::Drawing::Point(128, 289);
-			this->textBox_offsetx->Margin = System::Windows::Forms::Padding(3, 2, 3, 2);
+			this->textBox_offsetx->Location = System::Drawing::Point(96, 235);
+			this->textBox_offsetx->Margin = System::Windows::Forms::Padding(2);
 			this->textBox_offsetx->Name = L"textBox_offsetx";
-			this->textBox_offsetx->Size = System::Drawing::Size(87, 32);
+			this->textBox_offsetx->Size = System::Drawing::Size(66, 27);
 			this->textBox_offsetx->TabIndex = 9;
 			this->textBox_offsetx->Text = L"0";
 			this->textBox_offsetx->TextAlign = System::Windows::Forms::HorizontalAlignment::Center;
@@ -612,10 +598,10 @@ private: System::ComponentModel::IContainer^ components;
 			// textBox_offsety
 			// 
 			this->textBox_offsety->Font = (gcnew System::Drawing::Font(L"Segoe UI", 11.25F, System::Drawing::FontStyle::Bold));
-			this->textBox_offsety->Location = System::Drawing::Point(128, 327);
-			this->textBox_offsety->Margin = System::Windows::Forms::Padding(3, 2, 3, 2);
+			this->textBox_offsety->Location = System::Drawing::Point(96, 266);
+			this->textBox_offsety->Margin = System::Windows::Forms::Padding(2);
 			this->textBox_offsety->Name = L"textBox_offsety";
-			this->textBox_offsety->Size = System::Drawing::Size(87, 32);
+			this->textBox_offsety->Size = System::Drawing::Size(66, 27);
 			this->textBox_offsety->TabIndex = 10;
 			this->textBox_offsety->Text = L"0";
 			this->textBox_offsety->TextAlign = System::Windows::Forms::HorizontalAlignment::Center;
@@ -624,9 +610,10 @@ private: System::ComponentModel::IContainer^ components;
 			// 
 			this->label7->AutoSize = true;
 			this->label7->Font = (gcnew System::Drawing::Font(L"Segoe UI", 11.25F, System::Drawing::FontStyle::Bold));
-			this->label7->Location = System::Drawing::Point(13, 377);
+			this->label7->Location = System::Drawing::Point(10, 306);
+			this->label7->Margin = System::Windows::Forms::Padding(2, 0, 2, 0);
 			this->label7->Name = L"label7";
-			this->label7->Size = System::Drawing::Size(255, 25);
+			this->label7->Size = System::Drawing::Size(202, 20);
 			this->label7->TabIndex = 12;
 			this->label7->Text = L"2D Lissajous image queue : ";
 			// 
@@ -634,10 +621,10 @@ private: System::ComponentModel::IContainer^ components;
 			// 
 			this->checkBox_save->AutoSize = true;
 			this->checkBox_save->Font = (gcnew System::Drawing::Font(L"Segoe UI", 11.25F, System::Drawing::FontStyle::Bold));
-			this->checkBox_save->Location = System::Drawing::Point(335, 377);
-			this->checkBox_save->Margin = System::Windows::Forms::Padding(3, 2, 3, 2);
+			this->checkBox_save->Location = System::Drawing::Point(251, 306);
+			this->checkBox_save->Margin = System::Windows::Forms::Padding(2);
 			this->checkBox_save->Name = L"checkBox_save";
-			this->checkBox_save->Size = System::Drawing::Size(75, 29);
+			this->checkBox_save->Size = System::Drawing::Size(60, 24);
 			this->checkBox_save->TabIndex = 13;
 			this->checkBox_save->Text = L"Save";
 			this->checkBox_save->UseVisualStyleBackColor = true;
@@ -645,10 +632,10 @@ private: System::ComponentModel::IContainer^ components;
 			// button_Merge_and_Display
 			// 
 			this->button_Merge_and_Display->Font = (gcnew System::Drawing::Font(L"Segoe UI", 10, System::Drawing::FontStyle::Bold));
-			this->button_Merge_and_Display->Location = System::Drawing::Point(19, 407);
-			this->button_Merge_and_Display->Margin = System::Windows::Forms::Padding(3, 2, 3, 2);
+			this->button_Merge_and_Display->Location = System::Drawing::Point(14, 331);
+			this->button_Merge_and_Display->Margin = System::Windows::Forms::Padding(2);
 			this->button_Merge_and_Display->Name = L"button_Merge_and_Display";
-			this->button_Merge_and_Display->Size = System::Drawing::Size(229, 34);
+			this->button_Merge_and_Display->Size = System::Drawing::Size(172, 28);
 			this->button_Merge_and_Display->TabIndex = 14;
 			this->button_Merge_and_Display->Text = L"Merge and Display";
 			this->button_Merge_and_Display->UseVisualStyleBackColor = true;
@@ -657,10 +644,9 @@ private: System::ComponentModel::IContainer^ components;
 			// button_up
 			// 
 			this->button_up->Image = (cli::safe_cast<System::Drawing::Image^>(resources->GetObject(L"button_up.Image")));
-			this->button_up->Location = System::Drawing::Point(321, 263);
-			this->button_up->Margin = System::Windows::Forms::Padding(4);
+			this->button_up->Location = System::Drawing::Point(241, 214);
 			this->button_up->Name = L"button_up";
-			this->button_up->Size = System::Drawing::Size(43, 28);
+			this->button_up->Size = System::Drawing::Size(32, 23);
 			this->button_up->TabIndex = 15;
 			this->button_up->UseVisualStyleBackColor = true;
 			this->button_up->Click += gcnew System::EventHandler(this, &YSPostprocessing::button_up_Click);
@@ -668,10 +654,9 @@ private: System::ComponentModel::IContainer^ components;
 			// button_down
 			// 
 			this->button_down->Image = (cli::safe_cast<System::Drawing::Image^>(resources->GetObject(L"button_down.Image")));
-			this->button_down->Location = System::Drawing::Point(321, 331);
-			this->button_down->Margin = System::Windows::Forms::Padding(4);
+			this->button_down->Location = System::Drawing::Point(241, 269);
 			this->button_down->Name = L"button_down";
-			this->button_down->Size = System::Drawing::Size(43, 28);
+			this->button_down->Size = System::Drawing::Size(32, 23);
 			this->button_down->TabIndex = 16;
 			this->button_down->UseVisualStyleBackColor = true;
 			this->button_down->Click += gcnew System::EventHandler(this, &YSPostprocessing::button_down_Click);
@@ -679,10 +664,9 @@ private: System::ComponentModel::IContainer^ components;
 			// button_left
 			// 
 			this->button_left->Image = (cli::safe_cast<System::Drawing::Image^>(resources->GetObject(L"button_left.Image")));
-			this->button_left->Location = System::Drawing::Point(283, 295);
-			this->button_left->Margin = System::Windows::Forms::Padding(4);
+			this->button_left->Location = System::Drawing::Point(212, 240);
 			this->button_left->Name = L"button_left";
-			this->button_left->Size = System::Drawing::Size(31, 39);
+			this->button_left->Size = System::Drawing::Size(23, 32);
 			this->button_left->TabIndex = 17;
 			this->button_left->UseVisualStyleBackColor = true;
 			this->button_left->Click += gcnew System::EventHandler(this, &YSPostprocessing::button_left_Click);
@@ -690,10 +674,9 @@ private: System::ComponentModel::IContainer^ components;
 			// button_right
 			// 
 			this->button_right->Image = (cli::safe_cast<System::Drawing::Image^>(resources->GetObject(L"button_right.Image")));
-			this->button_right->Location = System::Drawing::Point(369, 295);
-			this->button_right->Margin = System::Windows::Forms::Padding(4);
+			this->button_right->Location = System::Drawing::Point(277, 240);
 			this->button_right->Name = L"button_right";
-			this->button_right->Size = System::Drawing::Size(31, 39);
+			this->button_right->Size = System::Drawing::Size(23, 32);
 			this->button_right->TabIndex = 18;
 			this->button_right->UseVisualStyleBackColor = true;
 			this->button_right->Click += gcnew System::EventHandler(this, &YSPostprocessing::button_right_Click);
@@ -708,10 +691,10 @@ private: System::ComponentModel::IContainer^ components;
 			// button_LOADRASTER
 			// 
 			this->button_LOADRASTER->Font = (gcnew System::Drawing::Font(L"Segoe UI", 10, System::Drawing::FontStyle::Bold));
-			this->button_LOADRASTER->Location = System::Drawing::Point(13, 12);
-			this->button_LOADRASTER->Margin = System::Windows::Forms::Padding(3, 2, 3, 2);
+			this->button_LOADRASTER->Location = System::Drawing::Point(10, 10);
+			this->button_LOADRASTER->Margin = System::Windows::Forms::Padding(2);
 			this->button_LOADRASTER->Name = L"button_LOADRASTER";
-			this->button_LOADRASTER->Size = System::Drawing::Size(184, 62);
+			this->button_LOADRASTER->Size = System::Drawing::Size(138, 50);
 			this->button_LOADRASTER->TabIndex = 19;
 			this->button_LOADRASTER->Text = L"Load RASTER";
 			this->button_LOADRASTER->UseVisualStyleBackColor = true;
@@ -721,21 +704,21 @@ private: System::ComponentModel::IContainer^ components;
 			// 
 			this->textBox_LOADRASTER->Enabled = false;
 			this->textBox_LOADRASTER->Font = (gcnew System::Drawing::Font(L"Segoe UI", 9.75F, System::Drawing::FontStyle::Bold));
-			this->textBox_LOADRASTER->Location = System::Drawing::Point(203, 12);
-			this->textBox_LOADRASTER->Margin = System::Windows::Forms::Padding(3, 2, 3, 2);
+			this->textBox_LOADRASTER->Location = System::Drawing::Point(152, 10);
+			this->textBox_LOADRASTER->Margin = System::Windows::Forms::Padding(2);
 			this->textBox_LOADRASTER->Multiline = true;
 			this->textBox_LOADRASTER->Name = L"textBox_LOADRASTER";
 			this->textBox_LOADRASTER->ScrollBars = System::Windows::Forms::ScrollBars::Vertical;
-			this->textBox_LOADRASTER->Size = System::Drawing::Size(447, 54);
+			this->textBox_LOADRASTER->Size = System::Drawing::Size(336, 45);
 			this->textBox_LOADRASTER->TabIndex = 20;
 			// 
 			// button_LOADLISSAJOUSFOLDER
 			// 
 			this->button_LOADLISSAJOUSFOLDER->Font = (gcnew System::Drawing::Font(L"Segoe UI", 10, System::Drawing::FontStyle::Bold));
-			this->button_LOADLISSAJOUSFOLDER->Location = System::Drawing::Point(13, 78);
-			this->button_LOADLISSAJOUSFOLDER->Margin = System::Windows::Forms::Padding(3, 2, 3, 2);
+			this->button_LOADLISSAJOUSFOLDER->Location = System::Drawing::Point(10, 63);
+			this->button_LOADLISSAJOUSFOLDER->Margin = System::Windows::Forms::Padding(2);
 			this->button_LOADLISSAJOUSFOLDER->Name = L"button_LOADLISSAJOUSFOLDER";
-			this->button_LOADLISSAJOUSFOLDER->Size = System::Drawing::Size(184, 62);
+			this->button_LOADLISSAJOUSFOLDER->Size = System::Drawing::Size(138, 50);
 			this->button_LOADLISSAJOUSFOLDER->TabIndex = 21;
 			this->button_LOADLISSAJOUSFOLDER->Text = L"Load LISSAJOUS FOLDER";
 			this->button_LOADLISSAJOUSFOLDER->UseVisualStyleBackColor = true;
@@ -745,21 +728,22 @@ private: System::ComponentModel::IContainer^ components;
 			// 
 			this->textBox_LOADLISSAJOUSFOLDER->Enabled = false;
 			this->textBox_LOADLISSAJOUSFOLDER->Font = (gcnew System::Drawing::Font(L"Segoe UI", 9.75F, System::Drawing::FontStyle::Bold));
-			this->textBox_LOADLISSAJOUSFOLDER->Location = System::Drawing::Point(203, 78);
-			this->textBox_LOADLISSAJOUSFOLDER->Margin = System::Windows::Forms::Padding(3, 2, 3, 2);
+			this->textBox_LOADLISSAJOUSFOLDER->Location = System::Drawing::Point(152, 63);
+			this->textBox_LOADLISSAJOUSFOLDER->Margin = System::Windows::Forms::Padding(2);
 			this->textBox_LOADLISSAJOUSFOLDER->Multiline = true;
 			this->textBox_LOADLISSAJOUSFOLDER->Name = L"textBox_LOADLISSAJOUSFOLDER";
 			this->textBox_LOADLISSAJOUSFOLDER->ScrollBars = System::Windows::Forms::ScrollBars::Vertical;
-			this->textBox_LOADLISSAJOUSFOLDER->Size = System::Drawing::Size(447, 61);
+			this->textBox_LOADLISSAJOUSFOLDER->Size = System::Drawing::Size(336, 50);
 			this->textBox_LOADLISSAJOUSFOLDER->TabIndex = 22;
 			// 
 			// label8
 			// 
 			this->label8->AutoSize = true;
 			this->label8->Font = (gcnew System::Drawing::Font(L"Segoe UI", 11.25F, System::Drawing::FontStyle::Bold));
-			this->label8->Location = System::Drawing::Point(15, 361);
+			this->label8->Location = System::Drawing::Point(11, 293);
+			this->label8->Margin = System::Windows::Forms::Padding(2, 0, 2, 0);
 			this->label8->Name = L"label8";
-			this->label8->Size = System::Drawing::Size(65, 25);
+			this->label8->Size = System::Drawing::Size(53, 20);
 			this->label8->TabIndex = 23;
 			this->label8->Text = L"Offset";
 			// 
@@ -767,21 +751,21 @@ private: System::ComponentModel::IContainer^ components;
 			// 
 			this->textBox_LOADLISSAJOUS->Font = (gcnew System::Drawing::Font(L"Microsoft Sans Serif", 9.75F, System::Drawing::FontStyle::Bold,
 				System::Drawing::GraphicsUnit::Point, static_cast<System::Byte>(0)));
-			this->textBox_LOADLISSAJOUS->Location = System::Drawing::Point(203, 224);
-			this->textBox_LOADLISSAJOUS->Margin = System::Windows::Forms::Padding(3, 2, 3, 2);
+			this->textBox_LOADLISSAJOUS->Location = System::Drawing::Point(152, 182);
+			this->textBox_LOADLISSAJOUS->Margin = System::Windows::Forms::Padding(2);
 			this->textBox_LOADLISSAJOUS->Multiline = true;
 			this->textBox_LOADLISSAJOUS->Name = L"textBox_LOADLISSAJOUS";
 			this->textBox_LOADLISSAJOUS->ScrollBars = System::Windows::Forms::ScrollBars::Vertical;
-			this->textBox_LOADLISSAJOUS->Size = System::Drawing::Size(443, 54);
+			this->textBox_LOADLISSAJOUS->Size = System::Drawing::Size(333, 45);
 			this->textBox_LOADLISSAJOUS->TabIndex = 25;
 			// 
 			// button_LOADLISSAJOUS_RAW
 			// 
 			this->button_LOADLISSAJOUS_RAW->Font = (gcnew System::Drawing::Font(L"Segoe UI", 10, System::Drawing::FontStyle::Bold));
-			this->button_LOADLISSAJOUS_RAW->Location = System::Drawing::Point(13, 222);
-			this->button_LOADLISSAJOUS_RAW->Margin = System::Windows::Forms::Padding(3, 2, 3, 2);
+			this->button_LOADLISSAJOUS_RAW->Location = System::Drawing::Point(10, 180);
+			this->button_LOADLISSAJOUS_RAW->Margin = System::Windows::Forms::Padding(2);
 			this->button_LOADLISSAJOUS_RAW->Name = L"button_LOADLISSAJOUS_RAW";
-			this->button_LOADLISSAJOUS_RAW->Size = System::Drawing::Size(184, 62);
+			this->button_LOADLISSAJOUS_RAW->Size = System::Drawing::Size(138, 50);
 			this->button_LOADLISSAJOUS_RAW->TabIndex = 24;
 			this->button_LOADLISSAJOUS_RAW->Text = L"Load LISSAJOUS RAW";
 			this->button_LOADLISSAJOUS_RAW->UseVisualStyleBackColor = true;
@@ -798,21 +782,21 @@ private: System::ComponentModel::IContainer^ components;
 			// 
 			this->textBox__LOADLISSAJOUSFOLDER2->Font = (gcnew System::Drawing::Font(L"Microsoft Sans Serif", 9.75F, System::Drawing::FontStyle::Bold,
 				System::Drawing::GraphicsUnit::Point, static_cast<System::Byte>(0)));
-			this->textBox__LOADLISSAJOUSFOLDER2->Location = System::Drawing::Point(203, 290);
-			this->textBox__LOADLISSAJOUSFOLDER2->Margin = System::Windows::Forms::Padding(3, 2, 3, 2);
+			this->textBox__LOADLISSAJOUSFOLDER2->Location = System::Drawing::Point(152, 236);
+			this->textBox__LOADLISSAJOUSFOLDER2->Margin = System::Windows::Forms::Padding(2);
 			this->textBox__LOADLISSAJOUSFOLDER2->Multiline = true;
 			this->textBox__LOADLISSAJOUSFOLDER2->Name = L"textBox__LOADLISSAJOUSFOLDER2";
 			this->textBox__LOADLISSAJOUSFOLDER2->ScrollBars = System::Windows::Forms::ScrollBars::Vertical;
-			this->textBox__LOADLISSAJOUSFOLDER2->Size = System::Drawing::Size(443, 56);
+			this->textBox__LOADLISSAJOUSFOLDER2->Size = System::Drawing::Size(333, 46);
 			this->textBox__LOADLISSAJOUSFOLDER2->TabIndex = 27;
 			// 
 			// button_LOADLISSAJOUSRAWFOLDER
 			// 
 			this->button_LOADLISSAJOUSRAWFOLDER->Font = (gcnew System::Drawing::Font(L"Segoe UI", 10, System::Drawing::FontStyle::Bold));
-			this->button_LOADLISSAJOUSRAWFOLDER->Location = System::Drawing::Point(13, 286);
-			this->button_LOADLISSAJOUSRAWFOLDER->Margin = System::Windows::Forms::Padding(3, 2, 3, 2);
+			this->button_LOADLISSAJOUSRAWFOLDER->Location = System::Drawing::Point(10, 232);
+			this->button_LOADLISSAJOUSRAWFOLDER->Margin = System::Windows::Forms::Padding(2);
 			this->button_LOADLISSAJOUSRAWFOLDER->Name = L"button_LOADLISSAJOUSRAWFOLDER";
-			this->button_LOADLISSAJOUSRAWFOLDER->Size = System::Drawing::Size(184, 62);
+			this->button_LOADLISSAJOUSRAWFOLDER->Size = System::Drawing::Size(138, 50);
 			this->button_LOADLISSAJOUSRAWFOLDER->TabIndex = 26;
 			this->button_LOADLISSAJOUSRAWFOLDER->Text = L"Load LISSAJOUS RAW FOLDER";
 			this->button_LOADLISSAJOUSRAWFOLDER->UseVisualStyleBackColor = true;
@@ -821,10 +805,10 @@ private: System::ComponentModel::IContainer^ components;
 			// button_setphaseandsave
 			// 
 			this->button_setphaseandsave->Font = (gcnew System::Drawing::Font(L"Segoe UI", 10, System::Drawing::FontStyle::Bold));
-			this->button_setphaseandsave->Location = System::Drawing::Point(15, 407);
-			this->button_setphaseandsave->Margin = System::Windows::Forms::Padding(3, 2, 3, 2);
+			this->button_setphaseandsave->Location = System::Drawing::Point(11, 331);
+			this->button_setphaseandsave->Margin = System::Windows::Forms::Padding(2);
 			this->button_setphaseandsave->Name = L"button_setphaseandsave";
-			this->button_setphaseandsave->Size = System::Drawing::Size(223, 41);
+			this->button_setphaseandsave->Size = System::Drawing::Size(167, 33);
 			this->button_setphaseandsave->TabIndex = 28;
 			this->button_setphaseandsave->Text = L"Phase Offset and Save";
 			this->button_setphaseandsave->UseVisualStyleBackColor = true;
@@ -835,11 +819,11 @@ private: System::ComponentModel::IContainer^ components;
 			this->trackBar_lissajousoffset->AutoSize = false;
 			this->trackBar_lissajousoffset->BackColor = System::Drawing::Color::LightSteelBlue;
 			this->trackBar_lissajousoffset->LargeChange = 100;
-			this->trackBar_lissajousoffset->Location = System::Drawing::Point(91, 361);
-			this->trackBar_lissajousoffset->Margin = System::Windows::Forms::Padding(3, 2, 3, 2);
+			this->trackBar_lissajousoffset->Location = System::Drawing::Point(68, 293);
+			this->trackBar_lissajousoffset->Margin = System::Windows::Forms::Padding(2);
 			this->trackBar_lissajousoffset->Maximum = 100000;
 			this->trackBar_lissajousoffset->Name = L"trackBar_lissajousoffset";
-			this->trackBar_lissajousoffset->Size = System::Drawing::Size(492, 30);
+			this->trackBar_lissajousoffset->Size = System::Drawing::Size(369, 24);
 			this->trackBar_lissajousoffset->TabIndex = 99;
 			this->trackBar_lissajousoffset->TickFrequency = 5;
 			this->trackBar_lissajousoffset->Scroll += gcnew System::EventHandler(this, &YSPostprocessing::trackBar_lissajousoffset_Scroll);
@@ -852,9 +836,10 @@ private: System::ComponentModel::IContainer^ components;
 			// 
 			this->label_lissajousoffset->AutoSize = true;
 			this->label_lissajousoffset->Font = (gcnew System::Drawing::Font(L"Segoe UI", 11.25F, System::Drawing::FontStyle::Bold));
-			this->label_lissajousoffset->Location = System::Drawing::Point(589, 361);
+			this->label_lissajousoffset->Location = System::Drawing::Point(442, 293);
+			this->label_lissajousoffset->Margin = System::Windows::Forms::Padding(2, 0, 2, 0);
 			this->label_lissajousoffset->Name = L"label_lissajousoffset";
-			this->label_lissajousoffset->Size = System::Drawing::Size(23, 25);
+			this->label_lissajousoffset->Size = System::Drawing::Size(18, 20);
 			this->label_lissajousoffset->TabIndex = 100;
 			this->label_lissajousoffset->Text = L"0";
 			// 
@@ -862,29 +847,29 @@ private: System::ComponentModel::IContainer^ components;
 			// 
 			this->label_reconstruct->AutoSize = true;
 			this->label_reconstruct->Font = (gcnew System::Drawing::Font(L"Segoe UI", 11.25F, System::Drawing::FontStyle::Bold));
-			this->label_reconstruct->Location = System::Drawing::Point(615, 414);
+			this->label_reconstruct->Location = System::Drawing::Point(461, 336);
+			this->label_reconstruct->Margin = System::Windows::Forms::Padding(2, 0, 2, 0);
 			this->label_reconstruct->Name = L"label_reconstruct";
-			this->label_reconstruct->Size = System::Drawing::Size(23, 25);
+			this->label_reconstruct->Size = System::Drawing::Size(18, 20);
 			this->label_reconstruct->TabIndex = 105;
 			this->label_reconstruct->Text = L"0";
 			// 
 			// progressBar_reconstruct
 			// 
 			this->progressBar_reconstruct->ForeColor = System::Drawing::Color::LimeGreen;
-			this->progressBar_reconstruct->Location = System::Drawing::Point(245, 414);
-			this->progressBar_reconstruct->Margin = System::Windows::Forms::Padding(4);
+			this->progressBar_reconstruct->Location = System::Drawing::Point(184, 336);
 			this->progressBar_reconstruct->Name = L"progressBar_reconstruct";
-			this->progressBar_reconstruct->Size = System::Drawing::Size(367, 28);
+			this->progressBar_reconstruct->Size = System::Drawing::Size(275, 23);
 			this->progressBar_reconstruct->Step = 5;
 			this->progressBar_reconstruct->TabIndex = 104;
 			// 
 			// textBox_lissajouspixelnum
 			// 
 			this->textBox_lissajouspixelnum->Font = (gcnew System::Drawing::Font(L"Segoe UI", 11.25F, System::Drawing::FontStyle::Bold));
-			this->textBox_lissajouspixelnum->Location = System::Drawing::Point(247, 185);
-			this->textBox_lissajouspixelnum->Margin = System::Windows::Forms::Padding(3, 2, 3, 2);
+			this->textBox_lissajouspixelnum->Location = System::Drawing::Point(185, 150);
+			this->textBox_lissajouspixelnum->Margin = System::Windows::Forms::Padding(2);
 			this->textBox_lissajouspixelnum->Name = L"textBox_lissajouspixelnum";
-			this->textBox_lissajouspixelnum->Size = System::Drawing::Size(131, 32);
+			this->textBox_lissajouspixelnum->Size = System::Drawing::Size(99, 27);
 			this->textBox_lissajouspixelnum->TabIndex = 103;
 			this->textBox_lissajouspixelnum->Text = L"512";
 			this->textBox_lissajouspixelnum->TextAlign = System::Windows::Forms::HorizontalAlignment::Center;
@@ -894,9 +879,10 @@ private: System::ComponentModel::IContainer^ components;
 			// 
 			this->label16->AutoSize = true;
 			this->label16->Font = (gcnew System::Drawing::Font(L"Segoe UI", 11.25F, System::Drawing::FontStyle::Bold));
-			this->label16->Location = System::Drawing::Point(19, 190);
+			this->label16->Location = System::Drawing::Point(14, 154);
+			this->label16->Margin = System::Windows::Forms::Padding(2, 0, 2, 0);
 			this->label16->Name = L"label16";
-			this->label16->Size = System::Drawing::Size(194, 25);
+			this->label16->Size = System::Drawing::Size(152, 20);
 			this->label16->TabIndex = 102;
 			this->label16->Text = L"Image Pixel Number";
 			// 
@@ -904,29 +890,29 @@ private: System::ComponentModel::IContainer^ components;
 			// 
 			this->label_scanmodemerge->AutoSize = true;
 			this->label_scanmodemerge->Font = (gcnew System::Drawing::Font(L"Segoe UI", 11.25F, System::Drawing::FontStyle::Bold));
-			this->label_scanmodemerge->Location = System::Drawing::Point(597, 412);
+			this->label_scanmodemerge->Location = System::Drawing::Point(448, 335);
+			this->label_scanmodemerge->Margin = System::Windows::Forms::Padding(2, 0, 2, 0);
 			this->label_scanmodemerge->Name = L"label_scanmodemerge";
-			this->label_scanmodemerge->Size = System::Drawing::Size(23, 25);
+			this->label_scanmodemerge->Size = System::Drawing::Size(18, 20);
 			this->label_scanmodemerge->TabIndex = 109;
 			this->label_scanmodemerge->Text = L"0";
 			// 
 			// progressBar_scanmodemerge
 			// 
 			this->progressBar_scanmodemerge->ForeColor = System::Drawing::Color::LimeGreen;
-			this->progressBar_scanmodemerge->Location = System::Drawing::Point(279, 412);
-			this->progressBar_scanmodemerge->Margin = System::Windows::Forms::Padding(4);
+			this->progressBar_scanmodemerge->Location = System::Drawing::Point(209, 335);
 			this->progressBar_scanmodemerge->Name = L"progressBar_scanmodemerge";
-			this->progressBar_scanmodemerge->Size = System::Drawing::Size(312, 28);
+			this->progressBar_scanmodemerge->Size = System::Drawing::Size(234, 23);
 			this->progressBar_scanmodemerge->Step = 5;
 			this->progressBar_scanmodemerge->TabIndex = 108;
 			// 
 			// textBox_resizey
 			// 
 			this->textBox_resizey->Font = (gcnew System::Drawing::Font(L"Segoe UI", 11.25F, System::Drawing::FontStyle::Bold));
-			this->textBox_resizey->Location = System::Drawing::Point(547, 225);
-			this->textBox_resizey->Margin = System::Windows::Forms::Padding(3, 2, 3, 2);
+			this->textBox_resizey->Location = System::Drawing::Point(410, 183);
+			this->textBox_resizey->Margin = System::Windows::Forms::Padding(2);
 			this->textBox_resizey->Name = L"textBox_resizey";
-			this->textBox_resizey->Size = System::Drawing::Size(71, 32);
+			this->textBox_resizey->Size = System::Drawing::Size(54, 27);
 			this->textBox_resizey->TabIndex = 107;
 			this->textBox_resizey->Text = L"100";
 			this->textBox_resizey->TextAlign = System::Windows::Forms::HorizontalAlignment::Center;
@@ -934,10 +920,10 @@ private: System::ComponentModel::IContainer^ components;
 			// textBox_resizex
 			// 
 			this->textBox_resizex->Font = (gcnew System::Drawing::Font(L"Segoe UI", 11.25F, System::Drawing::FontStyle::Bold));
-			this->textBox_resizex->Location = System::Drawing::Point(547, 190);
-			this->textBox_resizex->Margin = System::Windows::Forms::Padding(3, 2, 3, 2);
+			this->textBox_resizex->Location = System::Drawing::Point(410, 154);
+			this->textBox_resizex->Margin = System::Windows::Forms::Padding(2);
 			this->textBox_resizex->Name = L"textBox_resizex";
-			this->textBox_resizex->Size = System::Drawing::Size(71, 32);
+			this->textBox_resizex->Size = System::Drawing::Size(54, 27);
 			this->textBox_resizex->TabIndex = 106;
 			this->textBox_resizex->Text = L"100";
 			this->textBox_resizex->TextAlign = System::Windows::Forms::HorizontalAlignment::Center;
@@ -945,10 +931,10 @@ private: System::ComponentModel::IContainer^ components;
 			// button_fastset
 			// 
 			this->button_fastset->Font = (gcnew System::Drawing::Font(L"Segoe UI", 10, System::Drawing::FontStyle::Bold));
-			this->button_fastset->Location = System::Drawing::Point(447, 305);
-			this->button_fastset->Margin = System::Windows::Forms::Padding(3, 2, 3, 2);
+			this->button_fastset->Location = System::Drawing::Point(335, 248);
+			this->button_fastset->Margin = System::Windows::Forms::Padding(2);
 			this->button_fastset->Name = L"button_fastset";
-			this->button_fastset->Size = System::Drawing::Size(191, 54);
+			this->button_fastset->Size = System::Drawing::Size(143, 44);
 			this->button_fastset->TabIndex = 105;
 			this->button_fastset->Text = L"Quick set";
 			this->button_fastset->UseVisualStyleBackColor = true;
@@ -958,9 +944,10 @@ private: System::ComponentModel::IContainer^ components;
 			// 
 			this->label_resizey->AutoSize = true;
 			this->label_resizey->Font = (gcnew System::Drawing::Font(L"Segoe UI", 11.25F, System::Drawing::FontStyle::Bold));
-			this->label_resizey->Location = System::Drawing::Point(619, 225);
+			this->label_resizey->Location = System::Drawing::Point(464, 183);
+			this->label_resizey->Margin = System::Windows::Forms::Padding(2, 0, 2, 0);
 			this->label_resizey->Name = L"label_resizey";
-			this->label_resizey->Size = System::Drawing::Size(28, 25);
+			this->label_resizey->Size = System::Drawing::Size(22, 20);
 			this->label_resizey->TabIndex = 104;
 			this->label_resizey->Text = L"%";
 			// 
@@ -968,11 +955,11 @@ private: System::ComponentModel::IContainer^ components;
 			// 
 			this->trackBar_resizey->AutoSize = false;
 			this->trackBar_resizey->BackColor = System::Drawing::Color::LightSteelBlue;
-			this->trackBar_resizey->Location = System::Drawing::Point(132, 224);
-			this->trackBar_resizey->Margin = System::Windows::Forms::Padding(3, 2, 3, 2);
+			this->trackBar_resizey->Location = System::Drawing::Point(99, 182);
+			this->trackBar_resizey->Margin = System::Windows::Forms::Padding(2);
 			this->trackBar_resizey->Maximum = 400;
 			this->trackBar_resizey->Name = L"trackBar_resizey";
-			this->trackBar_resizey->Size = System::Drawing::Size(415, 30);
+			this->trackBar_resizey->Size = System::Drawing::Size(311, 24);
 			this->trackBar_resizey->TabIndex = 103;
 			this->trackBar_resizey->TickFrequency = 5;
 			this->trackBar_resizey->Value = 100;
@@ -982,9 +969,10 @@ private: System::ComponentModel::IContainer^ components;
 			// 
 			this->label_resizex->AutoSize = true;
 			this->label_resizex->Font = (gcnew System::Drawing::Font(L"Segoe UI", 11.25F, System::Drawing::FontStyle::Bold));
-			this->label_resizex->Location = System::Drawing::Point(619, 191);
+			this->label_resizex->Location = System::Drawing::Point(464, 155);
+			this->label_resizex->Margin = System::Windows::Forms::Padding(2, 0, 2, 0);
 			this->label_resizex->Name = L"label_resizex";
-			this->label_resizex->Size = System::Drawing::Size(28, 25);
+			this->label_resizex->Size = System::Drawing::Size(22, 20);
 			this->label_resizex->TabIndex = 102;
 			this->label_resizex->Text = L"%";
 			// 
@@ -992,11 +980,11 @@ private: System::ComponentModel::IContainer^ components;
 			// 
 			this->trackBar_resizex->AutoSize = false;
 			this->trackBar_resizex->BackColor = System::Drawing::Color::LightSteelBlue;
-			this->trackBar_resizex->Location = System::Drawing::Point(132, 190);
-			this->trackBar_resizex->Margin = System::Windows::Forms::Padding(3, 2, 3, 2);
+			this->trackBar_resizex->Location = System::Drawing::Point(99, 154);
+			this->trackBar_resizex->Margin = System::Windows::Forms::Padding(2);
 			this->trackBar_resizex->Maximum = 400;
 			this->trackBar_resizex->Name = L"trackBar_resizex";
-			this->trackBar_resizex->Size = System::Drawing::Size(415, 30);
+			this->trackBar_resizex->Size = System::Drawing::Size(311, 24);
 			this->trackBar_resizex->TabIndex = 101;
 			this->trackBar_resizex->TickFrequency = 5;
 			this->trackBar_resizex->Value = 100;
@@ -1006,9 +994,10 @@ private: System::ComponentModel::IContainer^ components;
 			// 
 			this->label4->AutoSize = true;
 			this->label4->Font = (gcnew System::Drawing::Font(L"Segoe UI", 11.25F, System::Drawing::FontStyle::Bold));
-			this->label4->Location = System::Drawing::Point(17, 191);
+			this->label4->Location = System::Drawing::Point(13, 155);
+			this->label4->Margin = System::Windows::Forms::Padding(2, 0, 2, 0);
 			this->label4->Name = L"label4";
-			this->label4->Size = System::Drawing::Size(83, 25);
+			this->label4->Size = System::Drawing::Size(67, 20);
 			this->label4->TabIndex = 23;
 			this->label4->Text = L"Resize X";
 			// 
@@ -1016,9 +1005,10 @@ private: System::ComponentModel::IContainer^ components;
 			// 
 			this->label17->AutoSize = true;
 			this->label17->Font = (gcnew System::Drawing::Font(L"Segoe UI", 11.25F, System::Drawing::FontStyle::Bold));
-			this->label17->Location = System::Drawing::Point(19, 230);
+			this->label17->Location = System::Drawing::Point(14, 187);
+			this->label17->Margin = System::Windows::Forms::Padding(2, 0, 2, 0);
 			this->label17->Name = L"label17";
-			this->label17->Size = System::Drawing::Size(83, 25);
+			this->label17->Size = System::Drawing::Size(66, 20);
 			this->label17->TabIndex = 24;
 			this->label17->Text = L"Resize Y";
 			// 
@@ -1036,20 +1026,19 @@ private: System::ComponentModel::IContainer^ components;
 			this->panel3->Controls->Add(this->label13);
 			this->panel3->Controls->Add(this->label12);
 			this->panel3->Controls->Add(this->label11);
-			this->panel3->Location = System::Drawing::Point(699, 393);
-			this->panel3->Margin = System::Windows::Forms::Padding(4);
+			this->panel3->Location = System::Drawing::Point(524, 319);
 			this->panel3->Name = L"panel3";
-			this->panel3->Size = System::Drawing::Size(529, 246);
+			this->panel3->Size = System::Drawing::Size(397, 200);
 			this->panel3->TabIndex = 105;
 			// 
 			// textBox_lissajousphase
 			// 
 			this->textBox_lissajousphase->Enabled = false;
 			this->textBox_lissajousphase->Font = (gcnew System::Drawing::Font(L"Segoe UI", 11.25F, System::Drawing::FontStyle::Bold));
-			this->textBox_lissajousphase->Location = System::Drawing::Point(244, 123);
-			this->textBox_lissajousphase->Margin = System::Windows::Forms::Padding(3, 2, 3, 2);
+			this->textBox_lissajousphase->Location = System::Drawing::Point(183, 100);
+			this->textBox_lissajousphase->Margin = System::Windows::Forms::Padding(2);
 			this->textBox_lissajousphase->Name = L"textBox_lissajousphase";
-			this->textBox_lissajousphase->Size = System::Drawing::Size(131, 32);
+			this->textBox_lissajousphase->Size = System::Drawing::Size(99, 27);
 			this->textBox_lissajousphase->TabIndex = 17;
 			this->textBox_lissajousphase->TextAlign = System::Windows::Forms::HorizontalAlignment::Center;
 			// 
@@ -1057,9 +1046,10 @@ private: System::ComponentModel::IContainer^ components;
 			// 
 			this->label15->AutoSize = true;
 			this->label15->Font = (gcnew System::Drawing::Font(L"Segoe UI", 11.25F, System::Drawing::FontStyle::Bold));
-			this->label15->Location = System::Drawing::Point(17, 127);
+			this->label15->Location = System::Drawing::Point(13, 103);
+			this->label15->Margin = System::Windows::Forms::Padding(2, 0, 2, 0);
 			this->label15->Name = L"label15";
-			this->label15->Size = System::Drawing::Size(63, 25);
+			this->label15->Size = System::Drawing::Size(50, 20);
 			this->label15->TabIndex = 16;
 			this->label15->Text = L"Phase";
 			// 
@@ -1067,10 +1057,10 @@ private: System::ComponentModel::IContainer^ components;
 			// 
 			this->textBox_samplingrate->Enabled = false;
 			this->textBox_samplingrate->Font = (gcnew System::Drawing::Font(L"Segoe UI", 11.25F, System::Drawing::FontStyle::Bold));
-			this->textBox_samplingrate->Location = System::Drawing::Point(244, 162);
-			this->textBox_samplingrate->Margin = System::Windows::Forms::Padding(3, 2, 3, 2);
+			this->textBox_samplingrate->Location = System::Drawing::Point(183, 132);
+			this->textBox_samplingrate->Margin = System::Windows::Forms::Padding(2);
 			this->textBox_samplingrate->Name = L"textBox_samplingrate";
-			this->textBox_samplingrate->Size = System::Drawing::Size(131, 32);
+			this->textBox_samplingrate->Size = System::Drawing::Size(99, 27);
 			this->textBox_samplingrate->TabIndex = 15;
 			this->textBox_samplingrate->TextAlign = System::Windows::Forms::HorizontalAlignment::Center;
 			// 
@@ -1078,9 +1068,10 @@ private: System::ComponentModel::IContainer^ components;
 			// 
 			this->label14->AutoSize = true;
 			this->label14->Font = (gcnew System::Drawing::Font(L"Segoe UI", 11.25F, System::Drawing::FontStyle::Bold));
-			this->label14->Location = System::Drawing::Point(17, 166);
+			this->label14->Location = System::Drawing::Point(13, 135);
+			this->label14->Margin = System::Windows::Forms::Padding(2, 0, 2, 0);
 			this->label14->Name = L"label14";
-			this->label14->Size = System::Drawing::Size(183, 25);
+			this->label14->Size = System::Drawing::Size(144, 20);
 			this->label14->TabIndex = 14;
 			this->label14->Text = L"Sampling Rate (Hz)";
 			// 
@@ -1088,10 +1079,10 @@ private: System::ComponentModel::IContainer^ components;
 			// 
 			this->textBox_numofsample->Enabled = false;
 			this->textBox_numofsample->Font = (gcnew System::Drawing::Font(L"Segoe UI", 11.25F, System::Drawing::FontStyle::Bold));
-			this->textBox_numofsample->Location = System::Drawing::Point(244, 199);
-			this->textBox_numofsample->Margin = System::Windows::Forms::Padding(3, 2, 3, 2);
+			this->textBox_numofsample->Location = System::Drawing::Point(183, 162);
+			this->textBox_numofsample->Margin = System::Windows::Forms::Padding(2);
 			this->textBox_numofsample->Name = L"textBox_numofsample";
-			this->textBox_numofsample->Size = System::Drawing::Size(131, 32);
+			this->textBox_numofsample->Size = System::Drawing::Size(99, 27);
 			this->textBox_numofsample->TabIndex = 13;
 			this->textBox_numofsample->TextAlign = System::Windows::Forms::HorizontalAlignment::Center;
 			// 
@@ -1099,9 +1090,10 @@ private: System::ComponentModel::IContainer^ components;
 			// 
 			this->label10->AutoSize = true;
 			this->label10->Font = (gcnew System::Drawing::Font(L"Segoe UI", 11.25F, System::Drawing::FontStyle::Bold));
-			this->label10->Location = System::Drawing::Point(17, 202);
+			this->label10->Location = System::Drawing::Point(13, 164);
+			this->label10->Margin = System::Windows::Forms::Padding(2, 0, 2, 0);
 			this->label10->Name = L"label10";
-			this->label10->Size = System::Drawing::Size(147, 25);
+			this->label10->Size = System::Drawing::Size(117, 20);
 			this->label10->TabIndex = 12;
 			this->label10->Text = L"Num of sample";
 			// 
@@ -1109,10 +1101,10 @@ private: System::ComponentModel::IContainer^ components;
 			// 
 			this->textBox_lissajousfreqy->Enabled = false;
 			this->textBox_lissajousfreqy->Font = (gcnew System::Drawing::Font(L"Segoe UI", 11.25F, System::Drawing::FontStyle::Bold));
-			this->textBox_lissajousfreqy->Location = System::Drawing::Point(244, 86);
-			this->textBox_lissajousfreqy->Margin = System::Windows::Forms::Padding(3, 2, 3, 2);
+			this->textBox_lissajousfreqy->Location = System::Drawing::Point(183, 70);
+			this->textBox_lissajousfreqy->Margin = System::Windows::Forms::Padding(2);
 			this->textBox_lissajousfreqy->Name = L"textBox_lissajousfreqy";
-			this->textBox_lissajousfreqy->Size = System::Drawing::Size(131, 32);
+			this->textBox_lissajousfreqy->Size = System::Drawing::Size(99, 27);
 			this->textBox_lissajousfreqy->TabIndex = 11;
 			this->textBox_lissajousfreqy->TextAlign = System::Windows::Forms::HorizontalAlignment::Center;
 			// 
@@ -1120,10 +1112,10 @@ private: System::ComponentModel::IContainer^ components;
 			// 
 			this->textBox_lissajousfreqx->Enabled = false;
 			this->textBox_lissajousfreqx->Font = (gcnew System::Drawing::Font(L"Segoe UI", 11.25F, System::Drawing::FontStyle::Bold));
-			this->textBox_lissajousfreqx->Location = System::Drawing::Point(244, 46);
-			this->textBox_lissajousfreqx->Margin = System::Windows::Forms::Padding(3, 2, 3, 2);
+			this->textBox_lissajousfreqx->Location = System::Drawing::Point(183, 37);
+			this->textBox_lissajousfreqx->Margin = System::Windows::Forms::Padding(2);
 			this->textBox_lissajousfreqx->Name = L"textBox_lissajousfreqx";
-			this->textBox_lissajousfreqx->Size = System::Drawing::Size(131, 32);
+			this->textBox_lissajousfreqx->Size = System::Drawing::Size(99, 27);
 			this->textBox_lissajousfreqx->TabIndex = 10;
 			this->textBox_lissajousfreqx->TextAlign = System::Windows::Forms::HorizontalAlignment::Center;
 			// 
@@ -1131,9 +1123,10 @@ private: System::ComponentModel::IContainer^ components;
 			// 
 			this->label13->AutoSize = true;
 			this->label13->Font = (gcnew System::Drawing::Font(L"Segoe UI", 11.25F, System::Drawing::FontStyle::Bold));
-			this->label13->Location = System::Drawing::Point(17, 90);
+			this->label13->Location = System::Drawing::Point(13, 73);
+			this->label13->Margin = System::Windows::Forms::Padding(2, 0, 2, 0);
 			this->label13->Name = L"label13";
-			this->label13->Size = System::Drawing::Size(112, 25);
+			this->label13->Size = System::Drawing::Size(87, 20);
 			this->label13->TabIndex = 9;
 			this->label13->Text = L"Freq Y (Hz)";
 			// 
@@ -1141,9 +1134,10 @@ private: System::ComponentModel::IContainer^ components;
 			// 
 			this->label12->AutoSize = true;
 			this->label12->Font = (gcnew System::Drawing::Font(L"Segoe UI", 11.25F, System::Drawing::FontStyle::Bold));
-			this->label12->Location = System::Drawing::Point(17, 49);
+			this->label12->Location = System::Drawing::Point(13, 40);
+			this->label12->Margin = System::Windows::Forms::Padding(2, 0, 2, 0);
 			this->label12->Name = L"label12";
-			this->label12->Size = System::Drawing::Size(112, 25);
+			this->label12->Size = System::Drawing::Size(88, 20);
 			this->label12->TabIndex = 8;
 			this->label12->Text = L"Freq X (Hz)";
 			// 
@@ -1153,9 +1147,10 @@ private: System::ComponentModel::IContainer^ components;
 			this->label11->BackColor = System::Drawing::Color::RoyalBlue;
 			this->label11->Font = (gcnew System::Drawing::Font(L"Segoe UI", 12, System::Drawing::FontStyle::Bold));
 			this->label11->ForeColor = System::Drawing::SystemColors::ControlLightLight;
-			this->label11->Location = System::Drawing::Point(17, 11);
+			this->label11->Location = System::Drawing::Point(13, 9);
+			this->label11->Margin = System::Windows::Forms::Padding(2, 0, 2, 0);
 			this->label11->Name = L"label11";
-			this->label11->Size = System::Drawing::Size(281, 28);
+			this->label11->Size = System::Drawing::Size(225, 21);
 			this->label11->TabIndex = 4;
 			this->label11->Text = L"Data Info of Lissajous image";
 			// 
@@ -1172,10 +1167,9 @@ private: System::ComponentModel::IContainer^ components;
 			// 
 			this->checkBox_CalPara_linepoints->AutoSize = true;
 			this->checkBox_CalPara_linepoints->Font = (gcnew System::Drawing::Font(L"Segoe UI", 11.25F, System::Drawing::FontStyle::Bold));
-			this->checkBox_CalPara_linepoints->Location = System::Drawing::Point(291, 140);
-			this->checkBox_CalPara_linepoints->Margin = System::Windows::Forms::Padding(4);
+			this->checkBox_CalPara_linepoints->Location = System::Drawing::Point(218, 114);
 			this->checkBox_CalPara_linepoints->Name = L"checkBox_CalPara_linepoints";
-			this->checkBox_CalPara_linepoints->Size = System::Drawing::Size(174, 29);
+			this->checkBox_CalPara_linepoints->Size = System::Drawing::Size(139, 24);
 			this->checkBox_CalPara_linepoints->TabIndex = 60;
 			this->checkBox_CalPara_linepoints->Text = L"Points Calculate";
 			this->checkBox_CalPara_linepoints->UseVisualStyleBackColor = true;
@@ -1185,9 +1179,10 @@ private: System::ComponentModel::IContainer^ components;
 			// 
 			this->label22->AutoSize = true;
 			this->label22->Font = (gcnew System::Drawing::Font(L"Segoe UI", 11.25F, System::Drawing::FontStyle::Bold));
-			this->label22->Location = System::Drawing::Point(23, 213);
+			this->label22->Location = System::Drawing::Point(17, 173);
+			this->label22->Margin = System::Windows::Forms::Padding(2, 0, 2, 0);
 			this->label22->Name = L"label22";
-			this->label22->Size = System::Drawing::Size(108, 25);
+			this->label22->Size = System::Drawing::Size(85, 20);
 			this->label22->TabIndex = 57;
 			this->label22->Text = L"2nd Target";
 			// 
@@ -1195,10 +1190,10 @@ private: System::ComponentModel::IContainer^ components;
 			// 
 			this->textBox_CalPara_locy2->Enabled = false;
 			this->textBox_CalPara_locy2->Font = (gcnew System::Drawing::Font(L"Segoe UI", 11.25F, System::Drawing::FontStyle::Bold));
-			this->textBox_CalPara_locy2->Location = System::Drawing::Point(260, 213);
-			this->textBox_CalPara_locy2->Margin = System::Windows::Forms::Padding(3, 2, 3, 2);
+			this->textBox_CalPara_locy2->Location = System::Drawing::Point(195, 173);
+			this->textBox_CalPara_locy2->Margin = System::Windows::Forms::Padding(2);
 			this->textBox_CalPara_locy2->Name = L"textBox_CalPara_locy2";
-			this->textBox_CalPara_locy2->Size = System::Drawing::Size(71, 32);
+			this->textBox_CalPara_locy2->Size = System::Drawing::Size(54, 27);
 			this->textBox_CalPara_locy2->TabIndex = 56;
 			this->textBox_CalPara_locy2->TextAlign = System::Windows::Forms::HorizontalAlignment::Center;
 			// 
@@ -1206,10 +1201,10 @@ private: System::ComponentModel::IContainer^ components;
 			// 
 			this->textBox_CalPara_locx2->Enabled = false;
 			this->textBox_CalPara_locx2->Font = (gcnew System::Drawing::Font(L"Segoe UI", 11.25F, System::Drawing::FontStyle::Bold));
-			this->textBox_CalPara_locx2->Location = System::Drawing::Point(160, 213);
-			this->textBox_CalPara_locx2->Margin = System::Windows::Forms::Padding(3, 2, 3, 2);
+			this->textBox_CalPara_locx2->Location = System::Drawing::Point(120, 173);
+			this->textBox_CalPara_locx2->Margin = System::Windows::Forms::Padding(2);
 			this->textBox_CalPara_locx2->Name = L"textBox_CalPara_locx2";
-			this->textBox_CalPara_locx2->Size = System::Drawing::Size(71, 32);
+			this->textBox_CalPara_locx2->Size = System::Drawing::Size(54, 27);
 			this->textBox_CalPara_locx2->TabIndex = 55;
 			this->textBox_CalPara_locx2->TextAlign = System::Windows::Forms::HorizontalAlignment::Center;
 			// 
@@ -1217,9 +1212,10 @@ private: System::ComponentModel::IContainer^ components;
 			// 
 			this->label18->AutoSize = true;
 			this->label18->Font = (gcnew System::Drawing::Font(L"Segoe UI", 11.25F, System::Drawing::FontStyle::Bold));
-			this->label18->Location = System::Drawing::Point(236, 213);
+			this->label18->Location = System::Drawing::Point(177, 173);
+			this->label18->Margin = System::Windows::Forms::Padding(2, 0, 2, 0);
 			this->label18->Name = L"label18";
-			this->label18->Size = System::Drawing::Size(17, 25);
+			this->label18->Size = System::Drawing::Size(13, 20);
 			this->label18->TabIndex = 54;
 			this->label18->Text = L",";
 			// 
@@ -1227,9 +1223,10 @@ private: System::ComponentModel::IContainer^ components;
 			// 
 			this->label20->AutoSize = true;
 			this->label20->Font = (gcnew System::Drawing::Font(L"Segoe UI", 11.25F, System::Drawing::FontStyle::Bold));
-			this->label20->Location = System::Drawing::Point(336, 213);
+			this->label20->Location = System::Drawing::Point(252, 173);
+			this->label20->Margin = System::Windows::Forms::Padding(2, 0, 2, 0);
 			this->label20->Name = L"label20";
-			this->label20->Size = System::Drawing::Size(19, 25);
+			this->label20->Size = System::Drawing::Size(15, 20);
 			this->label20->TabIndex = 53;
 			this->label20->Text = L")";
 			// 
@@ -1237,9 +1234,10 @@ private: System::ComponentModel::IContainer^ components;
 			// 
 			this->label21->AutoSize = true;
 			this->label21->Font = (gcnew System::Drawing::Font(L"Segoe UI", 11.25F, System::Drawing::FontStyle::Bold));
-			this->label21->Location = System::Drawing::Point(136, 213);
+			this->label21->Location = System::Drawing::Point(102, 173);
+			this->label21->Margin = System::Windows::Forms::Padding(2, 0, 2, 0);
 			this->label21->Name = L"label21";
-			this->label21->Size = System::Drawing::Size(19, 25);
+			this->label21->Size = System::Drawing::Size(15, 20);
 			this->label21->TabIndex = 52;
 			this->label21->Text = L"(";
 			// 
@@ -1247,24 +1245,25 @@ private: System::ComponentModel::IContainer^ components;
 			// 
 			this->label_CalPara_twopoints->AutoSize = true;
 			this->label_CalPara_twopoints->Font = (gcnew System::Drawing::Font(L"Segoe UI", 11.25F, System::Drawing::FontStyle::Bold));
-			this->label_CalPara_twopoints->Location = System::Drawing::Point(79, 145);
+			this->label_CalPara_twopoints->Location = System::Drawing::Point(59, 118);
+			this->label_CalPara_twopoints->Margin = System::Windows::Forms::Padding(2, 0, 2, 0);
 			this->label_CalPara_twopoints->Name = L"label_CalPara_twopoints";
-			this->label_CalPara_twopoints->Size = System::Drawing::Size(161, 25);
+			this->label_CalPara_twopoints->Size = System::Drawing::Size(126, 20);
 			this->label_CalPara_twopoints->TabIndex = 51;
 			this->label_CalPara_twopoints->Text = L"Calculate 1 point";
 			// 
 			// toggleButtons_CalPara_twopoints
 			// 
 			this->toggleButtons_CalPara_twopoints->BackColor = System::Drawing::Color::MediumTurquoise;
-			this->toggleButtons_CalPara_twopoints->Location = System::Drawing::Point(24, 142);
-			this->toggleButtons_CalPara_twopoints->Margin = System::Windows::Forms::Padding(3, 2, 3, 2);
-			this->toggleButtons_CalPara_twopoints->MinimumSize = System::Drawing::Size(45, 22);
+			this->toggleButtons_CalPara_twopoints->Location = System::Drawing::Point(18, 115);
+			this->toggleButtons_CalPara_twopoints->Margin = System::Windows::Forms::Padding(2);
+			this->toggleButtons_CalPara_twopoints->MinimumSize = System::Drawing::Size(34, 18);
 			this->toggleButtons_CalPara_twopoints->Name = L"toggleButtons_CalPara_twopoints";
 			this->toggleButtons_CalPara_twopoints->OffBackColor = System::Drawing::Color::DarkSlateGray;
 			this->toggleButtons_CalPara_twopoints->OffToggleColor = System::Drawing::Color::DarkSlateGray;
 			this->toggleButtons_CalPara_twopoints->OnBackColor = System::Drawing::Color::DarkSlateGray;
 			this->toggleButtons_CalPara_twopoints->OnToggleColor = System::Drawing::Color::LightSeaGreen;
-			this->toggleButtons_CalPara_twopoints->Size = System::Drawing::Size(48, 27);
+			this->toggleButtons_CalPara_twopoints->Size = System::Drawing::Size(36, 22);
 			this->toggleButtons_CalPara_twopoints->SolidStyle = false;
 			this->toggleButtons_CalPara_twopoints->TabIndex = 50;
 			this->toggleButtons_CalPara_twopoints->UseVisualStyleBackColor = false;
@@ -1273,10 +1272,9 @@ private: System::ComponentModel::IContainer^ components;
 			// button_CalPara_right
 			// 
 			this->button_CalPara_right->Image = (cli::safe_cast<System::Drawing::Image^>(resources->GetObject(L"button_CalPara_right.Image")));
-			this->button_CalPara_right->Location = System::Drawing::Point(627, 105);
-			this->button_CalPara_right->Margin = System::Windows::Forms::Padding(4);
+			this->button_CalPara_right->Location = System::Drawing::Point(470, 85);
 			this->button_CalPara_right->Name = L"button_CalPara_right";
-			this->button_CalPara_right->Size = System::Drawing::Size(31, 39);
+			this->button_CalPara_right->Size = System::Drawing::Size(23, 32);
 			this->button_CalPara_right->TabIndex = 44;
 			this->button_CalPara_right->UseVisualStyleBackColor = true;
 			this->button_CalPara_right->Click += gcnew System::EventHandler(this, &YSPostprocessing::button_CalPara_right_Click);
@@ -1284,10 +1282,9 @@ private: System::ComponentModel::IContainer^ components;
 			// button_CalPara_left
 			// 
 			this->button_CalPara_left->Image = (cli::safe_cast<System::Drawing::Image^>(resources->GetObject(L"button_CalPara_left.Image")));
-			this->button_CalPara_left->Location = System::Drawing::Point(540, 105);
-			this->button_CalPara_left->Margin = System::Windows::Forms::Padding(4);
+			this->button_CalPara_left->Location = System::Drawing::Point(405, 85);
 			this->button_CalPara_left->Name = L"button_CalPara_left";
-			this->button_CalPara_left->Size = System::Drawing::Size(31, 39);
+			this->button_CalPara_left->Size = System::Drawing::Size(23, 32);
 			this->button_CalPara_left->TabIndex = 43;
 			this->button_CalPara_left->UseVisualStyleBackColor = true;
 			this->button_CalPara_left->Click += gcnew System::EventHandler(this, &YSPostprocessing::button_CalPara_left_Click);
@@ -1296,20 +1293,19 @@ private: System::ComponentModel::IContainer^ components;
 			// 
 			this->textBox_CalPara_locy->Enabled = false;
 			this->textBox_CalPara_locy->Font = (gcnew System::Drawing::Font(L"Segoe UI", 11.25F, System::Drawing::FontStyle::Bold));
-			this->textBox_CalPara_locy->Location = System::Drawing::Point(260, 178);
-			this->textBox_CalPara_locy->Margin = System::Windows::Forms::Padding(3, 2, 3, 2);
+			this->textBox_CalPara_locy->Location = System::Drawing::Point(195, 145);
+			this->textBox_CalPara_locy->Margin = System::Windows::Forms::Padding(2);
 			this->textBox_CalPara_locy->Name = L"textBox_CalPara_locy";
-			this->textBox_CalPara_locy->Size = System::Drawing::Size(71, 32);
+			this->textBox_CalPara_locy->Size = System::Drawing::Size(54, 27);
 			this->textBox_CalPara_locy->TabIndex = 49;
 			this->textBox_CalPara_locy->TextAlign = System::Windows::Forms::HorizontalAlignment::Center;
 			// 
 			// button_CalPara_down
 			// 
 			this->button_CalPara_down->Image = (cli::safe_cast<System::Drawing::Image^>(resources->GetObject(L"button_CalPara_down.Image")));
-			this->button_CalPara_down->Location = System::Drawing::Point(579, 140);
-			this->button_CalPara_down->Margin = System::Windows::Forms::Padding(4);
+			this->button_CalPara_down->Location = System::Drawing::Point(434, 114);
 			this->button_CalPara_down->Name = L"button_CalPara_down";
-			this->button_CalPara_down->Size = System::Drawing::Size(43, 28);
+			this->button_CalPara_down->Size = System::Drawing::Size(32, 23);
 			this->button_CalPara_down->TabIndex = 42;
 			this->button_CalPara_down->UseVisualStyleBackColor = true;
 			this->button_CalPara_down->Click += gcnew System::EventHandler(this, &YSPostprocessing::button_CalPara_down_Click);
@@ -1318,20 +1314,19 @@ private: System::ComponentModel::IContainer^ components;
 			// 
 			this->textBox_CalPara_locx->Enabled = false;
 			this->textBox_CalPara_locx->Font = (gcnew System::Drawing::Font(L"Segoe UI", 11.25F, System::Drawing::FontStyle::Bold));
-			this->textBox_CalPara_locx->Location = System::Drawing::Point(160, 178);
-			this->textBox_CalPara_locx->Margin = System::Windows::Forms::Padding(3, 2, 3, 2);
+			this->textBox_CalPara_locx->Location = System::Drawing::Point(120, 145);
+			this->textBox_CalPara_locx->Margin = System::Windows::Forms::Padding(2);
 			this->textBox_CalPara_locx->Name = L"textBox_CalPara_locx";
-			this->textBox_CalPara_locx->Size = System::Drawing::Size(71, 32);
+			this->textBox_CalPara_locx->Size = System::Drawing::Size(54, 27);
 			this->textBox_CalPara_locx->TabIndex = 48;
 			this->textBox_CalPara_locx->TextAlign = System::Windows::Forms::HorizontalAlignment::Center;
 			// 
 			// button_CalPara_up
 			// 
 			this->button_CalPara_up->Image = (cli::safe_cast<System::Drawing::Image^>(resources->GetObject(L"button_CalPara_up.Image")));
-			this->button_CalPara_up->Location = System::Drawing::Point(579, 73);
-			this->button_CalPara_up->Margin = System::Windows::Forms::Padding(4);
+			this->button_CalPara_up->Location = System::Drawing::Point(434, 59);
 			this->button_CalPara_up->Name = L"button_CalPara_up";
-			this->button_CalPara_up->Size = System::Drawing::Size(43, 28);
+			this->button_CalPara_up->Size = System::Drawing::Size(32, 23);
 			this->button_CalPara_up->TabIndex = 41;
 			this->button_CalPara_up->UseVisualStyleBackColor = true;
 			this->button_CalPara_up->Click += gcnew System::EventHandler(this, &YSPostprocessing::button_CalPara_up_Click);
@@ -1340,20 +1335,21 @@ private: System::ComponentModel::IContainer^ components;
 			// 
 			this->label30->AutoSize = true;
 			this->label30->Font = (gcnew System::Drawing::Font(L"Segoe UI", 11.25F, System::Drawing::FontStyle::Bold));
-			this->label30->Location = System::Drawing::Point(236, 178);
+			this->label30->Location = System::Drawing::Point(177, 145);
+			this->label30->Margin = System::Windows::Forms::Padding(2, 0, 2, 0);
 			this->label30->Name = L"label30";
-			this->label30->Size = System::Drawing::Size(17, 25);
+			this->label30->Size = System::Drawing::Size(13, 20);
 			this->label30->TabIndex = 47;
 			this->label30->Text = L",";
 			// 
 			// textBox_CalPara_ypixel
 			// 
 			this->textBox_CalPara_ypixel->Font = (gcnew System::Drawing::Font(L"Segoe UI", 11.25F, System::Drawing::FontStyle::Bold));
-			this->textBox_CalPara_ypixel->Location = System::Drawing::Point(271, 106);
-			this->textBox_CalPara_ypixel->Margin = System::Windows::Forms::Padding(3, 2, 3, 2);
+			this->textBox_CalPara_ypixel->Location = System::Drawing::Point(203, 86);
+			this->textBox_CalPara_ypixel->Margin = System::Windows::Forms::Padding(2);
 			this->textBox_CalPara_ypixel->Name = L"textBox_CalPara_ypixel";
 			this->textBox_CalPara_ypixel->ReadOnly = true;
-			this->textBox_CalPara_ypixel->Size = System::Drawing::Size(131, 32);
+			this->textBox_CalPara_ypixel->Size = System::Drawing::Size(99, 27);
 			this->textBox_CalPara_ypixel->TabIndex = 40;
 			this->textBox_CalPara_ypixel->Text = L"512";
 			this->textBox_CalPara_ypixel->TextAlign = System::Windows::Forms::HorizontalAlignment::Center;
@@ -1362,19 +1358,20 @@ private: System::ComponentModel::IContainer^ components;
 			// 
 			this->label29->AutoSize = true;
 			this->label29->Font = (gcnew System::Drawing::Font(L"Segoe UI", 11.25F, System::Drawing::FontStyle::Bold));
-			this->label29->Location = System::Drawing::Point(336, 178);
+			this->label29->Location = System::Drawing::Point(252, 145);
+			this->label29->Margin = System::Windows::Forms::Padding(2, 0, 2, 0);
 			this->label29->Name = L"label29";
-			this->label29->Size = System::Drawing::Size(19, 25);
+			this->label29->Size = System::Drawing::Size(15, 20);
 			this->label29->TabIndex = 46;
 			this->label29->Text = L")";
 			// 
 			// textBox_CalPara_xpixel
 			// 
 			this->textBox_CalPara_xpixel->Font = (gcnew System::Drawing::Font(L"Segoe UI", 11.25F, System::Drawing::FontStyle::Bold));
-			this->textBox_CalPara_xpixel->Location = System::Drawing::Point(104, 106);
-			this->textBox_CalPara_xpixel->Margin = System::Windows::Forms::Padding(3, 2, 3, 2);
+			this->textBox_CalPara_xpixel->Location = System::Drawing::Point(78, 86);
+			this->textBox_CalPara_xpixel->Margin = System::Windows::Forms::Padding(2);
 			this->textBox_CalPara_xpixel->Name = L"textBox_CalPara_xpixel";
-			this->textBox_CalPara_xpixel->Size = System::Drawing::Size(131, 32);
+			this->textBox_CalPara_xpixel->Size = System::Drawing::Size(99, 27);
 			this->textBox_CalPara_xpixel->TabIndex = 39;
 			this->textBox_CalPara_xpixel->Text = L"512";
 			this->textBox_CalPara_xpixel->TextAlign = System::Windows::Forms::HorizontalAlignment::Center;
@@ -1383,9 +1380,10 @@ private: System::ComponentModel::IContainer^ components;
 			// 
 			this->label28->AutoSize = true;
 			this->label28->Font = (gcnew System::Drawing::Font(L"Segoe UI", 11.25F, System::Drawing::FontStyle::Bold));
-			this->label28->Location = System::Drawing::Point(136, 178);
+			this->label28->Location = System::Drawing::Point(102, 145);
+			this->label28->Margin = System::Windows::Forms::Padding(2, 0, 2, 0);
 			this->label28->Name = L"label28";
-			this->label28->Size = System::Drawing::Size(19, 25);
+			this->label28->Size = System::Drawing::Size(15, 20);
 			this->label28->TabIndex = 45;
 			this->label28->Text = L"(";
 			// 
@@ -1393,9 +1391,10 @@ private: System::ComponentModel::IContainer^ components;
 			// 
 			this->label26->AutoSize = true;
 			this->label26->Font = (gcnew System::Drawing::Font(L"Microsoft Sans Serif", 11.25F, System::Drawing::FontStyle::Bold));
-			this->label26->Location = System::Drawing::Point(241, 110);
+			this->label26->Location = System::Drawing::Point(181, 89);
+			this->label26->Margin = System::Windows::Forms::Padding(2, 0, 2, 0);
 			this->label26->Name = L"label26";
-			this->label26->Size = System::Drawing::Size(21, 24);
+			this->label26->Size = System::Drawing::Size(16, 18);
 			this->label26->TabIndex = 38;
 			this->label26->Text = L"x";
 			// 
@@ -1403,9 +1402,10 @@ private: System::ComponentModel::IContainer^ components;
 			// 
 			this->label27->AutoSize = true;
 			this->label27->Font = (gcnew System::Drawing::Font(L"Segoe UI", 11.25F, System::Drawing::FontStyle::Bold));
-			this->label27->Location = System::Drawing::Point(21, 178);
+			this->label27->Location = System::Drawing::Point(16, 145);
+			this->label27->Margin = System::Windows::Forms::Padding(2, 0, 2, 0);
 			this->label27->Name = L"label27";
-			this->label27->Size = System::Drawing::Size(104, 25);
+			this->label27->Size = System::Drawing::Size(84, 20);
 			this->label27->TabIndex = 44;
 			this->label27->Text = L"1 st Target";
 			// 
@@ -1413,19 +1413,20 @@ private: System::ComponentModel::IContainer^ components;
 			// 
 			this->label25->AutoSize = true;
 			this->label25->Font = (gcnew System::Drawing::Font(L"Segoe UI", 11.25F, System::Drawing::FontStyle::Bold));
-			this->label25->Location = System::Drawing::Point(21, 110);
+			this->label25->Location = System::Drawing::Point(16, 89);
+			this->label25->Margin = System::Windows::Forms::Padding(2, 0, 2, 0);
 			this->label25->Name = L"label25";
-			this->label25->Size = System::Drawing::Size(70, 25);
+			this->label25->Size = System::Drawing::Size(54, 20);
 			this->label25->TabIndex = 37;
 			this->label25->Text = L"Pixel : ";
 			// 
 			// button_CalPara_calculate
 			// 
 			this->button_CalPara_calculate->Font = (gcnew System::Drawing::Font(L"Segoe UI", 12, System::Drawing::FontStyle::Bold));
-			this->button_CalPara_calculate->Location = System::Drawing::Point(415, 187);
-			this->button_CalPara_calculate->Margin = System::Windows::Forms::Padding(3, 2, 3, 2);
+			this->button_CalPara_calculate->Location = System::Drawing::Point(311, 152);
+			this->button_CalPara_calculate->Margin = System::Windows::Forms::Padding(2);
 			this->button_CalPara_calculate->Name = L"button_CalPara_calculate";
-			this->button_CalPara_calculate->Size = System::Drawing::Size(243, 48);
+			this->button_CalPara_calculate->Size = System::Drawing::Size(182, 39);
 			this->button_CalPara_calculate->TabIndex = 23;
 			this->button_CalPara_calculate->Text = L"Calculate";
 			this->button_CalPara_calculate->UseVisualStyleBackColor = true;
@@ -1439,19 +1440,20 @@ private: System::ComponentModel::IContainer^ components;
 				L"2 MS/s", L"10 MS/s", L"20 MS/s",
 					L"50 MS/s", L"100 MS/s", L"125 MS/s"
 			});
-			this->comboBox_CalPara_samplingrate->Location = System::Drawing::Point(249, 63);
-			this->comboBox_CalPara_samplingrate->Margin = System::Windows::Forms::Padding(3, 2, 3, 2);
+			this->comboBox_CalPara_samplingrate->Location = System::Drawing::Point(187, 51);
+			this->comboBox_CalPara_samplingrate->Margin = System::Windows::Forms::Padding(2);
 			this->comboBox_CalPara_samplingrate->Name = L"comboBox_CalPara_samplingrate";
-			this->comboBox_CalPara_samplingrate->Size = System::Drawing::Size(131, 33);
+			this->comboBox_CalPara_samplingrate->Size = System::Drawing::Size(99, 28);
 			this->comboBox_CalPara_samplingrate->TabIndex = 35;
 			// 
 			// label19
 			// 
 			this->label19->AutoSize = true;
 			this->label19->Font = (gcnew System::Drawing::Font(L"Segoe UI", 11.25F, System::Drawing::FontStyle::Bold));
-			this->label19->Location = System::Drawing::Point(20, 65);
+			this->label19->Location = System::Drawing::Point(15, 53);
+			this->label19->Margin = System::Windows::Forms::Padding(2, 0, 2, 0);
 			this->label19->Name = L"label19";
-			this->label19->Size = System::Drawing::Size(201, 25);
+			this->label19->Size = System::Drawing::Size(158, 20);
 			this->label19->TabIndex = 30;
 			this->label19->Text = L"Sampling Rate (MHz)";
 			// 
@@ -1459,21 +1461,21 @@ private: System::ComponentModel::IContainer^ components;
 			// 
 			this->textBox_CalPara_LOADRASTER->Enabled = false;
 			this->textBox_CalPara_LOADRASTER->Font = (gcnew System::Drawing::Font(L"Segoe UI", 9.75F, System::Drawing::FontStyle::Bold));
-			this->textBox_CalPara_LOADRASTER->Location = System::Drawing::Point(227, 20);
-			this->textBox_CalPara_LOADRASTER->Margin = System::Windows::Forms::Padding(3, 2, 3, 2);
+			this->textBox_CalPara_LOADRASTER->Location = System::Drawing::Point(170, 16);
+			this->textBox_CalPara_LOADRASTER->Margin = System::Windows::Forms::Padding(2);
 			this->textBox_CalPara_LOADRASTER->Multiline = true;
 			this->textBox_CalPara_LOADRASTER->Name = L"textBox_CalPara_LOADRASTER";
 			this->textBox_CalPara_LOADRASTER->ScrollBars = System::Windows::Forms::ScrollBars::Vertical;
-			this->textBox_CalPara_LOADRASTER->Size = System::Drawing::Size(429, 38);
+			this->textBox_CalPara_LOADRASTER->Size = System::Drawing::Size(323, 32);
 			this->textBox_CalPara_LOADRASTER->TabIndex = 22;
 			// 
 			// button_CalPara_LOADRASTER
 			// 
 			this->button_CalPara_LOADRASTER->Font = (gcnew System::Drawing::Font(L"Segoe UI", 10, System::Drawing::FontStyle::Bold));
-			this->button_CalPara_LOADRASTER->Location = System::Drawing::Point(16, 20);
-			this->button_CalPara_LOADRASTER->Margin = System::Windows::Forms::Padding(3, 2, 3, 2);
+			this->button_CalPara_LOADRASTER->Location = System::Drawing::Point(12, 16);
+			this->button_CalPara_LOADRASTER->Margin = System::Windows::Forms::Padding(2);
 			this->button_CalPara_LOADRASTER->Name = L"button_CalPara_LOADRASTER";
-			this->button_CalPara_LOADRASTER->Size = System::Drawing::Size(205, 38);
+			this->button_CalPara_LOADRASTER->Size = System::Drawing::Size(154, 31);
 			this->button_CalPara_LOADRASTER->TabIndex = 21;
 			this->button_CalPara_LOADRASTER->Text = L"Load RASTER";
 			this->button_CalPara_LOADRASTER->UseVisualStyleBackColor = true;
@@ -1484,10 +1486,10 @@ private: System::ComponentModel::IContainer^ components;
 			this->panel5->BackColor = System::Drawing::Color::PowderBlue;
 			this->panel5->Controls->Add(this->tableLayoutPanel_CalPara_result);
 			this->panel5->Controls->Add(this->label23);
-			this->panel5->Location = System::Drawing::Point(699, 89);
-			this->panel5->Margin = System::Windows::Forms::Padding(3, 2, 3, 2);
+			this->panel5->Location = System::Drawing::Point(524, 72);
+			this->panel5->Margin = System::Windows::Forms::Padding(2);
 			this->panel5->Name = L"panel5";
-			this->panel5->Size = System::Drawing::Size(531, 268);
+			this->panel5->Size = System::Drawing::Size(398, 218);
 			this->panel5->TabIndex = 107;
 			// 
 			// tableLayoutPanel_CalPara_result
@@ -1507,31 +1509,31 @@ private: System::ComponentModel::IContainer^ components;
 			this->tableLayoutPanel_CalPara_result->ColumnStyles->Add((gcnew System::Windows::Forms::ColumnStyle(System::Windows::Forms::SizeType::Percent,
 				20)));
 			this->tableLayoutPanel_CalPara_result->Font = (gcnew System::Drawing::Font(L"Segoe UI", 8.25F));
-			this->tableLayoutPanel_CalPara_result->Location = System::Drawing::Point(20, 44);
-			this->tableLayoutPanel_CalPara_result->Margin = System::Windows::Forms::Padding(3, 2, 3, 2);
+			this->tableLayoutPanel_CalPara_result->Location = System::Drawing::Point(15, 36);
+			this->tableLayoutPanel_CalPara_result->Margin = System::Windows::Forms::Padding(2);
 			this->tableLayoutPanel_CalPara_result->Name = L"tableLayoutPanel_CalPara_result";
 			this->tableLayoutPanel_CalPara_result->RowCount = 1;
 			this->tableLayoutPanel_CalPara_result->RowStyles->Add((gcnew System::Windows::Forms::RowStyle(System::Windows::Forms::SizeType::Absolute,
-				479)));
+				394)));
 			this->tableLayoutPanel_CalPara_result->RowStyles->Add((gcnew System::Windows::Forms::RowStyle(System::Windows::Forms::SizeType::Absolute,
-				479)));
+				394)));
 			this->tableLayoutPanel_CalPara_result->RowStyles->Add((gcnew System::Windows::Forms::RowStyle(System::Windows::Forms::SizeType::Absolute,
-				479)));
+				394)));
 			this->tableLayoutPanel_CalPara_result->RowStyles->Add((gcnew System::Windows::Forms::RowStyle(System::Windows::Forms::SizeType::Absolute,
-				479)));
+				394)));
 			this->tableLayoutPanel_CalPara_result->RowStyles->Add((gcnew System::Windows::Forms::RowStyle(System::Windows::Forms::SizeType::Absolute,
-				479)));
+				394)));
 			this->tableLayoutPanel_CalPara_result->RowStyles->Add((gcnew System::Windows::Forms::RowStyle(System::Windows::Forms::SizeType::Absolute,
-				479)));
+				394)));
 			this->tableLayoutPanel_CalPara_result->RowStyles->Add((gcnew System::Windows::Forms::RowStyle(System::Windows::Forms::SizeType::Absolute,
-				479)));
+				394)));
 			this->tableLayoutPanel_CalPara_result->RowStyles->Add((gcnew System::Windows::Forms::RowStyle(System::Windows::Forms::SizeType::Absolute,
-				479)));
+				394)));
 			this->tableLayoutPanel_CalPara_result->RowStyles->Add((gcnew System::Windows::Forms::RowStyle(System::Windows::Forms::SizeType::Absolute,
-				479)));
+				394)));
 			this->tableLayoutPanel_CalPara_result->RowStyles->Add((gcnew System::Windows::Forms::RowStyle(System::Windows::Forms::SizeType::Absolute,
-				479)));
-			this->tableLayoutPanel_CalPara_result->Size = System::Drawing::Size(495, 212);
+				394)));
+			this->tableLayoutPanel_CalPara_result->Size = System::Drawing::Size(371, 172);
 			this->tableLayoutPanel_CalPara_result->TabIndex = 51;
 			// 
 			// label23
@@ -1540,9 +1542,10 @@ private: System::ComponentModel::IContainer^ components;
 			this->label23->BackColor = System::Drawing::Color::RoyalBlue;
 			this->label23->Font = (gcnew System::Drawing::Font(L"Segoe UI", 12, System::Drawing::FontStyle::Bold));
 			this->label23->ForeColor = System::Drawing::SystemColors::ControlLightLight;
-			this->label23->Location = System::Drawing::Point(17, 11);
+			this->label23->Location = System::Drawing::Point(13, 9);
+			this->label23->Margin = System::Windows::Forms::Padding(2, 0, 2, 0);
 			this->label23->Name = L"label23";
-			this->label23->Size = System::Drawing::Size(244, 28);
+			this->label23->Size = System::Drawing::Size(195, 21);
 			this->label23->TabIndex = 43;
 			this->label23->Text = L"Result of the calculation";
 			// 
@@ -1553,11 +1556,10 @@ private: System::ComponentModel::IContainer^ components;
 			this->tabControl1->Controls->Add(this->tabPage5);
 			this->tabControl1->Controls->Add(this->tabPage6);
 			this->tabControl1->Font = (gcnew System::Drawing::Font(L"Segoe UI", 8.25F));
-			this->tabControl1->Location = System::Drawing::Point(3, 366);
-			this->tabControl1->Margin = System::Windows::Forms::Padding(4);
+			this->tabControl1->Location = System::Drawing::Point(2, 297);
 			this->tabControl1->Name = L"tabControl1";
 			this->tabControl1->SelectedIndex = 0;
-			this->tabControl1->Size = System::Drawing::Size(687, 490);
+			this->tabControl1->Size = System::Drawing::Size(515, 398);
 			this->tabControl1->TabIndex = 109;
 			// 
 			// tabPage2
@@ -1582,11 +1584,10 @@ private: System::ComponentModel::IContainer^ components;
 			this->tabPage2->Controls->Add(this->label_lissajousoffset);
 			this->tabPage2->Controls->Add(this->label8);
 			this->tabPage2->Font = (gcnew System::Drawing::Font(L"Segoe UI", 8.25F));
-			this->tabPage2->Location = System::Drawing::Point(4, 28);
-			this->tabPage2->Margin = System::Windows::Forms::Padding(4);
+			this->tabPage2->Location = System::Drawing::Point(4, 22);
 			this->tabPage2->Name = L"tabPage2";
-			this->tabPage2->Padding = System::Windows::Forms::Padding(4);
-			this->tabPage2->Size = System::Drawing::Size(679, 458);
+			this->tabPage2->Padding = System::Windows::Forms::Padding(3);
+			this->tabPage2->Size = System::Drawing::Size(507, 372);
 			this->tabPage2->TabIndex = 1;
 			this->tabPage2->Text = L"Lissajous Raw Data Phase Offset";
 			// 
@@ -1594,19 +1595,20 @@ private: System::ComponentModel::IContainer^ components;
 			// 
 			this->label_TRANSFERTOTIFF->AutoSize = true;
 			this->label_TRANSFERTOTIFF->Font = (gcnew System::Drawing::Font(L"Segoe UI", 11.25F, System::Drawing::FontStyle::Bold));
-			this->label_TRANSFERTOTIFF->Location = System::Drawing::Point(493, 121);
+			this->label_TRANSFERTOTIFF->Location = System::Drawing::Point(370, 98);
+			this->label_TRANSFERTOTIFF->Margin = System::Windows::Forms::Padding(2, 0, 2, 0);
 			this->label_TRANSFERTOTIFF->Name = L"label_TRANSFERTOTIFF";
-			this->label_TRANSFERTOTIFF->Size = System::Drawing::Size(28, 25);
+			this->label_TRANSFERTOTIFF->Size = System::Drawing::Size(21, 20);
 			this->label_TRANSFERTOTIFF->TabIndex = 115;
 			this->label_TRANSFERTOTIFF->Text = L"--";
 			// 
 			// button_LOADLISSAJOUS_RAWBIN
 			// 
 			this->button_LOADLISSAJOUS_RAWBIN->Font = (gcnew System::Drawing::Font(L"Segoe UI", 10, System::Drawing::FontStyle::Bold));
-			this->button_LOADLISSAJOUS_RAWBIN->Location = System::Drawing::Point(13, 44);
-			this->button_LOADLISSAJOUS_RAWBIN->Margin = System::Windows::Forms::Padding(3, 2, 3, 2);
+			this->button_LOADLISSAJOUS_RAWBIN->Location = System::Drawing::Point(10, 36);
+			this->button_LOADLISSAJOUS_RAWBIN->Margin = System::Windows::Forms::Padding(2);
 			this->button_LOADLISSAJOUS_RAWBIN->Name = L"button_LOADLISSAJOUS_RAWBIN";
-			this->button_LOADLISSAJOUS_RAWBIN->Size = System::Drawing::Size(184, 62);
+			this->button_LOADLISSAJOUS_RAWBIN->Size = System::Drawing::Size(138, 50);
 			this->button_LOADLISSAJOUS_RAWBIN->TabIndex = 112;
 			this->button_LOADLISSAJOUS_RAWBIN->Text = L"Load LISSAJOUS RAW FOLDER";
 			this->button_LOADLISSAJOUS_RAWBIN->UseVisualStyleBackColor = true;
@@ -1615,10 +1617,10 @@ private: System::ComponentModel::IContainer^ components;
 			// button_TRANSFERTOTIFF
 			// 
 			this->button_TRANSFERTOTIFF->Font = (gcnew System::Drawing::Font(L"Segoe UI", 12, System::Drawing::FontStyle::Bold));
-			this->button_TRANSFERTOTIFF->Location = System::Drawing::Point(15, 110);
-			this->button_TRANSFERTOTIFF->Margin = System::Windows::Forms::Padding(3, 2, 3, 2);
+			this->button_TRANSFERTOTIFF->Location = System::Drawing::Point(11, 89);
+			this->button_TRANSFERTOTIFF->Margin = System::Windows::Forms::Padding(2);
 			this->button_TRANSFERTOTIFF->Name = L"button_TRANSFERTOTIFF";
-			this->button_TRANSFERTOTIFF->Size = System::Drawing::Size(472, 44);
+			this->button_TRANSFERTOTIFF->Size = System::Drawing::Size(354, 36);
 			this->button_TRANSFERTOTIFF->TabIndex = 114;
 			this->button_TRANSFERTOTIFF->Text = L"Convert to .tiff";
 			this->button_TRANSFERTOTIFF->UseVisualStyleBackColor = true;
@@ -1629,13 +1631,13 @@ private: System::ComponentModel::IContainer^ components;
 			this->textBox_LOADLISSAJOUSBIN->Enabled = false;
 			this->textBox_LOADLISSAJOUSBIN->Font = (gcnew System::Drawing::Font(L"Microsoft Sans Serif", 9.75F, System::Drawing::FontStyle::Bold,
 				System::Drawing::GraphicsUnit::Point, static_cast<System::Byte>(0)));
-			this->textBox_LOADLISSAJOUSBIN->Location = System::Drawing::Point(203, 49);
-			this->textBox_LOADLISSAJOUSBIN->Margin = System::Windows::Forms::Padding(3, 2, 3, 2);
+			this->textBox_LOADLISSAJOUSBIN->Location = System::Drawing::Point(152, 40);
+			this->textBox_LOADLISSAJOUSBIN->Margin = System::Windows::Forms::Padding(2);
 			this->textBox_LOADLISSAJOUSBIN->Multiline = true;
 			this->textBox_LOADLISSAJOUSBIN->Name = L"textBox_LOADLISSAJOUSBIN";
 			this->textBox_LOADLISSAJOUSBIN->ReadOnly = true;
 			this->textBox_LOADLISSAJOUSBIN->ScrollBars = System::Windows::Forms::ScrollBars::Vertical;
-			this->textBox_LOADLISSAJOUSBIN->Size = System::Drawing::Size(443, 56);
+			this->textBox_LOADLISSAJOUSBIN->Size = System::Drawing::Size(333, 46);
 			this->textBox_LOADLISSAJOUSBIN->TabIndex = 113;
 			// 
 			// label41
@@ -1644,9 +1646,10 @@ private: System::ComponentModel::IContainer^ components;
 			this->label41->BackColor = System::Drawing::Color::RoyalBlue;
 			this->label41->Font = (gcnew System::Drawing::Font(L"Segoe UI", 12, System::Drawing::FontStyle::Bold));
 			this->label41->ForeColor = System::Drawing::SystemColors::ControlLightLight;
-			this->label41->Location = System::Drawing::Point(15, 10);
+			this->label41->Location = System::Drawing::Point(11, 8);
+			this->label41->Margin = System::Windows::Forms::Padding(2, 0, 2, 0);
 			this->label41->Name = L"label41";
-			this->label41->Size = System::Drawing::Size(157, 28);
+			this->label41->Size = System::Drawing::Size(126, 21);
 			this->label41->TabIndex = 107;
 			this->label41->Text = L".Bin convertion";
 			// 
@@ -1656,9 +1659,10 @@ private: System::ComponentModel::IContainer^ components;
 			this->label3->BackColor = System::Drawing::Color::RoyalBlue;
 			this->label3->Font = (gcnew System::Drawing::Font(L"Segoe UI", 12, System::Drawing::FontStyle::Bold));
 			this->label3->ForeColor = System::Drawing::SystemColors::ControlLightLight;
-			this->label3->Location = System::Drawing::Point(15, 161);
+			this->label3->Location = System::Drawing::Point(11, 131);
+			this->label3->Margin = System::Windows::Forms::Padding(2, 0, 2, 0);
 			this->label3->Name = L"label3";
-			this->label3->Size = System::Drawing::Size(129, 28);
+			this->label3->Size = System::Drawing::Size(103, 21);
 			this->label3->TabIndex = 106;
 			this->label3->Text = L"Phase offset";
 			// 
@@ -1693,11 +1697,10 @@ private: System::ComponentModel::IContainer^ components;
 			this->tabPage1->Controls->Add(this->checkBox_MergeScantrace);
 			this->tabPage1->Controls->Add(this->button_LOADLISSAJOUSFOLDER);
 			this->tabPage1->ForeColor = System::Drawing::Color::Black;
-			this->tabPage1->Location = System::Drawing::Point(4, 28);
-			this->tabPage1->Margin = System::Windows::Forms::Padding(4);
+			this->tabPage1->Location = System::Drawing::Point(4, 22);
 			this->tabPage1->Name = L"tabPage1";
-			this->tabPage1->Padding = System::Windows::Forms::Padding(4);
-			this->tabPage1->Size = System::Drawing::Size(679, 458);
+			this->tabPage1->Padding = System::Windows::Forms::Padding(3);
+			this->tabPage1->Size = System::Drawing::Size(507, 372);
 			this->tabPage1->TabIndex = 0;
 			this->tabPage1->Text = L"ScanMode Merge";
 			// 
@@ -1723,10 +1726,9 @@ private: System::ComponentModel::IContainer^ components;
 			this->tabPage5->Controls->Add(this->button_LOADRASTER2);
 			this->tabPage5->Controls->Add(this->textBox_LOADRASTER_EK);
 			this->tabPage5->Controls->Add(this->button_LOADLISSAJOUSFOLDER2);
-			this->tabPage5->Location = System::Drawing::Point(4, 28);
-			this->tabPage5->Margin = System::Windows::Forms::Padding(4);
+			this->tabPage5->Location = System::Drawing::Point(4, 22);
 			this->tabPage5->Name = L"tabPage5";
-			this->tabPage5->Size = System::Drawing::Size(679, 458);
+			this->tabPage5->Size = System::Drawing::Size(507, 372);
 			this->tabPage5->TabIndex = 2;
 			this->tabPage5->Text = L"Extract kymograph";
 			// 
@@ -1735,9 +1737,10 @@ private: System::ComponentModel::IContainer^ components;
 			this->label38->AutoSize = true;
 			this->label38->Font = (gcnew System::Drawing::Font(L"Segoe UI", 8, System::Drawing::FontStyle::Bold));
 			this->label38->ForeColor = System::Drawing::Color::DarkRed;
-			this->label38->Location = System::Drawing::Point(343, 209);
+			this->label38->Location = System::Drawing::Point(257, 170);
+			this->label38->Margin = System::Windows::Forms::Padding(2, 0, 2, 0);
 			this->label38->Name = L"label38";
-			this->label38->Size = System::Drawing::Size(313, 19);
+			this->label38->Size = System::Drawing::Size(245, 13);
 			this->label38->TabIndex = 122;
 			this->label38->Text = L"Note: Raster and Lissajous need the same size";
 			// 
@@ -1745,24 +1748,25 @@ private: System::ComponentModel::IContainer^ components;
 			// 
 			this->label_ExtractKymograph_choosedisplay->AutoSize = true;
 			this->label_ExtractKymograph_choosedisplay->Font = (gcnew System::Drawing::Font(L"Segoe UI", 11.25F, System::Drawing::FontStyle::Bold));
-			this->label_ExtractKymograph_choosedisplay->Location = System::Drawing::Point(123, 225);
+			this->label_ExtractKymograph_choosedisplay->Location = System::Drawing::Point(92, 183);
+			this->label_ExtractKymograph_choosedisplay->Margin = System::Windows::Forms::Padding(2, 0, 2, 0);
 			this->label_ExtractKymograph_choosedisplay->Name = L"label_ExtractKymograph_choosedisplay";
-			this->label_ExtractKymograph_choosedisplay->Size = System::Drawing::Size(218, 25);
+			this->label_ExtractKymograph_choosedisplay->Size = System::Drawing::Size(174, 20);
 			this->label_ExtractKymograph_choosedisplay->TabIndex = 121;
 			this->label_ExtractKymograph_choosedisplay->Text = L"Display Lissajous image";
 			// 
 			// toggleButtons_ExtractKymograph_choosedisplay
 			// 
 			this->toggleButtons_ExtractKymograph_choosedisplay->BackColor = System::Drawing::Color::MediumTurquoise;
-			this->toggleButtons_ExtractKymograph_choosedisplay->Location = System::Drawing::Point(27, 220);
-			this->toggleButtons_ExtractKymograph_choosedisplay->Margin = System::Windows::Forms::Padding(3, 2, 3, 2);
-			this->toggleButtons_ExtractKymograph_choosedisplay->MinimumSize = System::Drawing::Size(45, 22);
+			this->toggleButtons_ExtractKymograph_choosedisplay->Location = System::Drawing::Point(20, 179);
+			this->toggleButtons_ExtractKymograph_choosedisplay->Margin = System::Windows::Forms::Padding(2);
+			this->toggleButtons_ExtractKymograph_choosedisplay->MinimumSize = System::Drawing::Size(34, 18);
 			this->toggleButtons_ExtractKymograph_choosedisplay->Name = L"toggleButtons_ExtractKymograph_choosedisplay";
 			this->toggleButtons_ExtractKymograph_choosedisplay->OffBackColor = System::Drawing::Color::SteelBlue;
 			this->toggleButtons_ExtractKymograph_choosedisplay->OffToggleColor = System::Drawing::Color::SteelBlue;
 			this->toggleButtons_ExtractKymograph_choosedisplay->OnBackColor = System::Drawing::Color::RoyalBlue;
 			this->toggleButtons_ExtractKymograph_choosedisplay->OnToggleColor = System::Drawing::Color::RoyalBlue;
-			this->toggleButtons_ExtractKymograph_choosedisplay->Size = System::Drawing::Size(73, 31);
+			this->toggleButtons_ExtractKymograph_choosedisplay->Size = System::Drawing::Size(55, 25);
 			this->toggleButtons_ExtractKymograph_choosedisplay->SolidStyle = false;
 			this->toggleButtons_ExtractKymograph_choosedisplay->TabIndex = 120;
 			this->toggleButtons_ExtractKymograph_choosedisplay->UseVisualStyleBackColor = false;
@@ -1771,10 +1775,10 @@ private: System::ComponentModel::IContainer^ components;
 			// button_ExtractKymograph_quickset
 			// 
 			this->button_ExtractKymograph_quickset->Font = (gcnew System::Drawing::Font(L"Segoe UI", 10, System::Drawing::FontStyle::Bold));
-			this->button_ExtractKymograph_quickset->Location = System::Drawing::Point(20, 398);
-			this->button_ExtractKymograph_quickset->Margin = System::Windows::Forms::Padding(3, 2, 3, 2);
+			this->button_ExtractKymograph_quickset->Location = System::Drawing::Point(15, 323);
+			this->button_ExtractKymograph_quickset->Margin = System::Windows::Forms::Padding(2);
 			this->button_ExtractKymograph_quickset->Name = L"button_ExtractKymograph_quickset";
-			this->button_ExtractKymograph_quickset->Size = System::Drawing::Size(261, 48);
+			this->button_ExtractKymograph_quickset->Size = System::Drawing::Size(196, 39);
 			this->button_ExtractKymograph_quickset->TabIndex = 119;
 			this->button_ExtractKymograph_quickset->Text = L"Quick Set";
 			this->button_ExtractKymograph_quickset->UseVisualStyleBackColor = true;
@@ -1784,9 +1788,10 @@ private: System::ComponentModel::IContainer^ components;
 			// 
 			this->label36->AutoSize = true;
 			this->label36->Font = (gcnew System::Drawing::Font(L"Segoe UI", 11.25F, System::Drawing::FontStyle::Bold));
-			this->label36->Location = System::Drawing::Point(252, 336);
+			this->label36->Location = System::Drawing::Point(189, 273);
+			this->label36->Margin = System::Windows::Forms::Padding(2, 0, 2, 0);
 			this->label36->Name = L"label36";
-			this->label36->Size = System::Drawing::Size(28, 25);
+			this->label36->Size = System::Drawing::Size(22, 20);
 			this->label36->TabIndex = 118;
 			this->label36->Text = L"%";
 			// 
@@ -1794,19 +1799,20 @@ private: System::ComponentModel::IContainer^ components;
 			// 
 			this->label37->AutoSize = true;
 			this->label37->Font = (gcnew System::Drawing::Font(L"Segoe UI", 11.25F, System::Drawing::FontStyle::Bold));
-			this->label37->Location = System::Drawing::Point(252, 268);
+			this->label37->Location = System::Drawing::Point(189, 218);
+			this->label37->Margin = System::Windows::Forms::Padding(2, 0, 2, 0);
 			this->label37->Name = L"label37";
-			this->label37->Size = System::Drawing::Size(28, 25);
+			this->label37->Size = System::Drawing::Size(22, 20);
 			this->label37->TabIndex = 117;
 			this->label37->Text = L"%";
 			// 
 			// button_ExtractKymograph_extractkymograph
 			// 
 			this->button_ExtractKymograph_extractkymograph->Font = (gcnew System::Drawing::Font(L"Segoe UI", 10, System::Drawing::FontStyle::Bold));
-			this->button_ExtractKymograph_extractkymograph->Location = System::Drawing::Point(396, 398);
-			this->button_ExtractKymograph_extractkymograph->Margin = System::Windows::Forms::Padding(3, 2, 3, 2);
+			this->button_ExtractKymograph_extractkymograph->Location = System::Drawing::Point(297, 323);
+			this->button_ExtractKymograph_extractkymograph->Margin = System::Windows::Forms::Padding(2);
 			this->button_ExtractKymograph_extractkymograph->Name = L"button_ExtractKymograph_extractkymograph";
-			this->button_ExtractKymograph_extractkymograph->Size = System::Drawing::Size(261, 48);
+			this->button_ExtractKymograph_extractkymograph->Size = System::Drawing::Size(196, 39);
 			this->button_ExtractKymograph_extractkymograph->TabIndex = 116;
 			this->button_ExtractKymograph_extractkymograph->Text = L"Extract Kymograph";
 			this->button_ExtractKymograph_extractkymograph->UseVisualStyleBackColor = true;
@@ -1815,10 +1821,10 @@ private: System::ComponentModel::IContainer^ components;
 			// button_LOADLISSAJOUS
 			// 
 			this->button_LOADLISSAJOUS->Font = (gcnew System::Drawing::Font(L"Segoe UI", 10, System::Drawing::FontStyle::Bold));
-			this->button_LOADLISSAJOUS->Location = System::Drawing::Point(13, 78);
-			this->button_LOADLISSAJOUS->Margin = System::Windows::Forms::Padding(3, 2, 3, 2);
+			this->button_LOADLISSAJOUS->Location = System::Drawing::Point(10, 63);
+			this->button_LOADLISSAJOUS->Margin = System::Windows::Forms::Padding(2);
 			this->button_LOADLISSAJOUS->Name = L"button_LOADLISSAJOUS";
-			this->button_LOADLISSAJOUS->Size = System::Drawing::Size(184, 62);
+			this->button_LOADLISSAJOUS->Size = System::Drawing::Size(138, 50);
 			this->button_LOADLISSAJOUS->TabIndex = 114;
 			this->button_LOADLISSAJOUS->Text = L"Load LISSAJOUS";
 			this->button_LOADLISSAJOUS->UseVisualStyleBackColor = true;
@@ -1828,21 +1834,21 @@ private: System::ComponentModel::IContainer^ components;
 			// 
 			this->textBox_LOADLISSAJOUS_EK->Enabled = false;
 			this->textBox_LOADLISSAJOUS_EK->Font = (gcnew System::Drawing::Font(L"Segoe UI", 9.75F, System::Drawing::FontStyle::Bold));
-			this->textBox_LOADLISSAJOUS_EK->Location = System::Drawing::Point(203, 78);
-			this->textBox_LOADLISSAJOUS_EK->Margin = System::Windows::Forms::Padding(3, 2, 3, 2);
+			this->textBox_LOADLISSAJOUS_EK->Location = System::Drawing::Point(152, 63);
+			this->textBox_LOADLISSAJOUS_EK->Margin = System::Windows::Forms::Padding(2);
 			this->textBox_LOADLISSAJOUS_EK->Multiline = true;
 			this->textBox_LOADLISSAJOUS_EK->Name = L"textBox_LOADLISSAJOUS_EK";
 			this->textBox_LOADLISSAJOUS_EK->ScrollBars = System::Windows::Forms::ScrollBars::Vertical;
-			this->textBox_LOADLISSAJOUS_EK->Size = System::Drawing::Size(447, 54);
+			this->textBox_LOADLISSAJOUS_EK->Size = System::Drawing::Size(336, 45);
 			this->textBox_LOADLISSAJOUS_EK->TabIndex = 115;
 			// 
 			// textBox_ExtractKymograph_endpixel
 			// 
 			this->textBox_ExtractKymograph_endpixel->Font = (gcnew System::Drawing::Font(L"Segoe UI", 11.25F, System::Drawing::FontStyle::Bold));
-			this->textBox_ExtractKymograph_endpixel->Location = System::Drawing::Point(149, 332);
-			this->textBox_ExtractKymograph_endpixel->Margin = System::Windows::Forms::Padding(3, 2, 3, 2);
+			this->textBox_ExtractKymograph_endpixel->Location = System::Drawing::Point(112, 270);
+			this->textBox_ExtractKymograph_endpixel->Margin = System::Windows::Forms::Padding(2);
 			this->textBox_ExtractKymograph_endpixel->Name = L"textBox_ExtractKymograph_endpixel";
-			this->textBox_ExtractKymograph_endpixel->Size = System::Drawing::Size(103, 32);
+			this->textBox_ExtractKymograph_endpixel->Size = System::Drawing::Size(78, 27);
 			this->textBox_ExtractKymograph_endpixel->TabIndex = 113;
 			this->textBox_ExtractKymograph_endpixel->Text = L"100.0";
 			this->textBox_ExtractKymograph_endpixel->TextAlign = System::Windows::Forms::HorizontalAlignment::Center;
@@ -1850,10 +1856,10 @@ private: System::ComponentModel::IContainer^ components;
 			// textBox_ExtractKymograph_startpixel
 			// 
 			this->textBox_ExtractKymograph_startpixel->Font = (gcnew System::Drawing::Font(L"Segoe UI", 11.25F, System::Drawing::FontStyle::Bold));
-			this->textBox_ExtractKymograph_startpixel->Location = System::Drawing::Point(149, 265);
-			this->textBox_ExtractKymograph_startpixel->Margin = System::Windows::Forms::Padding(3, 2, 3, 2);
+			this->textBox_ExtractKymograph_startpixel->Location = System::Drawing::Point(112, 215);
+			this->textBox_ExtractKymograph_startpixel->Margin = System::Windows::Forms::Padding(2);
 			this->textBox_ExtractKymograph_startpixel->Name = L"textBox_ExtractKymograph_startpixel";
-			this->textBox_ExtractKymograph_startpixel->Size = System::Drawing::Size(103, 32);
+			this->textBox_ExtractKymograph_startpixel->Size = System::Drawing::Size(78, 27);
 			this->textBox_ExtractKymograph_startpixel->TabIndex = 112;
 			this->textBox_ExtractKymograph_startpixel->Text = L"0.0";
 			this->textBox_ExtractKymograph_startpixel->TextAlign = System::Windows::Forms::HorizontalAlignment::Center;
@@ -1863,11 +1869,11 @@ private: System::ComponentModel::IContainer^ components;
 			this->trackBar_ExtractKymograph_endpixel->AutoSize = false;
 			this->trackBar_ExtractKymograph_endpixel->BackColor = System::Drawing::Color::LightSteelBlue;
 			this->trackBar_ExtractKymograph_endpixel->LargeChange = 2;
-			this->trackBar_ExtractKymograph_endpixel->Location = System::Drawing::Point(27, 361);
-			this->trackBar_ExtractKymograph_endpixel->Margin = System::Windows::Forms::Padding(3, 2, 3, 2);
+			this->trackBar_ExtractKymograph_endpixel->Location = System::Drawing::Point(20, 293);
+			this->trackBar_ExtractKymograph_endpixel->Margin = System::Windows::Forms::Padding(2);
 			this->trackBar_ExtractKymograph_endpixel->Maximum = 1000000;
 			this->trackBar_ExtractKymograph_endpixel->Name = L"trackBar_ExtractKymograph_endpixel";
-			this->trackBar_ExtractKymograph_endpixel->Size = System::Drawing::Size(633, 30);
+			this->trackBar_ExtractKymograph_endpixel->Size = System::Drawing::Size(475, 24);
 			this->trackBar_ExtractKymograph_endpixel->TabIndex = 111;
 			this->trackBar_ExtractKymograph_endpixel->TickFrequency = 5;
 			this->trackBar_ExtractKymograph_endpixel->Value = 1000000;
@@ -1878,11 +1884,11 @@ private: System::ComponentModel::IContainer^ components;
 			this->trackBar_ExtractKymograph_startpixel->AutoSize = false;
 			this->trackBar_ExtractKymograph_startpixel->BackColor = System::Drawing::Color::LightSteelBlue;
 			this->trackBar_ExtractKymograph_startpixel->LargeChange = 2;
-			this->trackBar_ExtractKymograph_startpixel->Location = System::Drawing::Point(24, 298);
-			this->trackBar_ExtractKymograph_startpixel->Margin = System::Windows::Forms::Padding(3, 2, 3, 2);
+			this->trackBar_ExtractKymograph_startpixel->Location = System::Drawing::Point(18, 242);
+			this->trackBar_ExtractKymograph_startpixel->Margin = System::Windows::Forms::Padding(2);
 			this->trackBar_ExtractKymograph_startpixel->Maximum = 1000000;
 			this->trackBar_ExtractKymograph_startpixel->Name = L"trackBar_ExtractKymograph_startpixel";
-			this->trackBar_ExtractKymograph_startpixel->Size = System::Drawing::Size(633, 30);
+			this->trackBar_ExtractKymograph_startpixel->Size = System::Drawing::Size(475, 24);
 			this->trackBar_ExtractKymograph_startpixel->TabIndex = 110;
 			this->trackBar_ExtractKymograph_startpixel->TickFrequency = 5;
 			this->trackBar_ExtractKymograph_startpixel->Scroll += gcnew System::EventHandler(this, &YSPostprocessing::trackBar_ExtractKymograph_startpixel_Scroll);
@@ -1891,9 +1897,10 @@ private: System::ComponentModel::IContainer^ components;
 			// 
 			this->label32->AutoSize = true;
 			this->label32->Font = (gcnew System::Drawing::Font(L"Segoe UI", 11.25F, System::Drawing::FontStyle::Bold));
-			this->label32->Location = System::Drawing::Point(20, 268);
+			this->label32->Location = System::Drawing::Point(15, 218);
+			this->label32->Margin = System::Windows::Forms::Padding(2, 0, 2, 0);
 			this->label32->Name = L"label32";
-			this->label32->Size = System::Drawing::Size(104, 25);
+			this->label32->Size = System::Drawing::Size(80, 20);
 			this->label32->TabIndex = 108;
 			this->label32->Text = L"Start Pixel";
 			// 
@@ -1901,9 +1908,10 @@ private: System::ComponentModel::IContainer^ components;
 			// 
 			this->label35->AutoSize = true;
 			this->label35->Font = (gcnew System::Drawing::Font(L"Segoe UI", 11.25F, System::Drawing::FontStyle::Bold));
-			this->label35->Location = System::Drawing::Point(21, 336);
+			this->label35->Location = System::Drawing::Point(16, 273);
+			this->label35->Margin = System::Windows::Forms::Padding(2, 0, 2, 0);
 			this->label35->Name = L"label35";
-			this->label35->Size = System::Drawing::Size(94, 25);
+			this->label35->Size = System::Drawing::Size(72, 20);
 			this->label35->TabIndex = 109;
 			this->label35->Text = L"End Pixel";
 			// 
@@ -1911,21 +1919,21 @@ private: System::ComponentModel::IContainer^ components;
 			// 
 			this->textBox_LOADLISSAJOUSFOLDER_EK->Enabled = false;
 			this->textBox_LOADLISSAJOUSFOLDER_EK->Font = (gcnew System::Drawing::Font(L"Segoe UI", 9.75F, System::Drawing::FontStyle::Bold));
-			this->textBox_LOADLISSAJOUSFOLDER_EK->Location = System::Drawing::Point(203, 143);
-			this->textBox_LOADLISSAJOUSFOLDER_EK->Margin = System::Windows::Forms::Padding(3, 2, 3, 2);
+			this->textBox_LOADLISSAJOUSFOLDER_EK->Location = System::Drawing::Point(152, 116);
+			this->textBox_LOADLISSAJOUSFOLDER_EK->Margin = System::Windows::Forms::Padding(2);
 			this->textBox_LOADLISSAJOUSFOLDER_EK->Multiline = true;
 			this->textBox_LOADLISSAJOUSFOLDER_EK->Name = L"textBox_LOADLISSAJOUSFOLDER_EK";
 			this->textBox_LOADLISSAJOUSFOLDER_EK->ScrollBars = System::Windows::Forms::ScrollBars::Vertical;
-			this->textBox_LOADLISSAJOUSFOLDER_EK->Size = System::Drawing::Size(447, 61);
+			this->textBox_LOADLISSAJOUSFOLDER_EK->Size = System::Drawing::Size(336, 50);
 			this->textBox_LOADLISSAJOUSFOLDER_EK->TabIndex = 26;
 			// 
 			// button_LOADRASTER2
 			// 
 			this->button_LOADRASTER2->Font = (gcnew System::Drawing::Font(L"Segoe UI", 10, System::Drawing::FontStyle::Bold));
-			this->button_LOADRASTER2->Location = System::Drawing::Point(13, 12);
-			this->button_LOADRASTER2->Margin = System::Windows::Forms::Padding(3, 2, 3, 2);
+			this->button_LOADRASTER2->Location = System::Drawing::Point(10, 10);
+			this->button_LOADRASTER2->Margin = System::Windows::Forms::Padding(2);
 			this->button_LOADRASTER2->Name = L"button_LOADRASTER2";
-			this->button_LOADRASTER2->Size = System::Drawing::Size(184, 62);
+			this->button_LOADRASTER2->Size = System::Drawing::Size(138, 50);
 			this->button_LOADRASTER2->TabIndex = 23;
 			this->button_LOADRASTER2->Text = L"Load RASTER";
 			this->button_LOADRASTER2->UseVisualStyleBackColor = true;
@@ -1935,21 +1943,21 @@ private: System::ComponentModel::IContainer^ components;
 			// 
 			this->textBox_LOADRASTER_EK->Enabled = false;
 			this->textBox_LOADRASTER_EK->Font = (gcnew System::Drawing::Font(L"Segoe UI", 9.75F, System::Drawing::FontStyle::Bold));
-			this->textBox_LOADRASTER_EK->Location = System::Drawing::Point(203, 12);
-			this->textBox_LOADRASTER_EK->Margin = System::Windows::Forms::Padding(3, 2, 3, 2);
+			this->textBox_LOADRASTER_EK->Location = System::Drawing::Point(152, 10);
+			this->textBox_LOADRASTER_EK->Margin = System::Windows::Forms::Padding(2);
 			this->textBox_LOADRASTER_EK->Multiline = true;
 			this->textBox_LOADRASTER_EK->Name = L"textBox_LOADRASTER_EK";
 			this->textBox_LOADRASTER_EK->ScrollBars = System::Windows::Forms::ScrollBars::Vertical;
-			this->textBox_LOADRASTER_EK->Size = System::Drawing::Size(447, 54);
+			this->textBox_LOADRASTER_EK->Size = System::Drawing::Size(336, 45);
 			this->textBox_LOADRASTER_EK->TabIndex = 24;
 			// 
 			// button_LOADLISSAJOUSFOLDER2
 			// 
 			this->button_LOADLISSAJOUSFOLDER2->Font = (gcnew System::Drawing::Font(L"Segoe UI", 10, System::Drawing::FontStyle::Bold));
-			this->button_LOADLISSAJOUSFOLDER2->Location = System::Drawing::Point(13, 143);
-			this->button_LOADLISSAJOUSFOLDER2->Margin = System::Windows::Forms::Padding(3, 2, 3, 2);
+			this->button_LOADLISSAJOUSFOLDER2->Location = System::Drawing::Point(10, 116);
+			this->button_LOADLISSAJOUSFOLDER2->Margin = System::Windows::Forms::Padding(2);
 			this->button_LOADLISSAJOUSFOLDER2->Name = L"button_LOADLISSAJOUSFOLDER2";
-			this->button_LOADLISSAJOUSFOLDER2->Size = System::Drawing::Size(184, 62);
+			this->button_LOADLISSAJOUSFOLDER2->Size = System::Drawing::Size(138, 50);
 			this->button_LOADLISSAJOUSFOLDER2->TabIndex = 25;
 			this->button_LOADLISSAJOUSFOLDER2->Text = L"Load LISSAJOUS FOLDER";
 			this->button_LOADLISSAJOUSFOLDER2->UseVisualStyleBackColor = true;
@@ -1962,9 +1970,10 @@ private: System::ComponentModel::IContainer^ components;
 			this->tabPage6->Controls->Add(this->buttom_loadprocessfolder);
 			this->tabPage6->Controls->Add(this->button_processimage);
 			this->tabPage6->Controls->Add(this->textBox_processfolderpath);
-			this->tabPage6->Location = System::Drawing::Point(4, 28);
+			this->tabPage6->Location = System::Drawing::Point(4, 22);
+			this->tabPage6->Margin = System::Windows::Forms::Padding(2);
 			this->tabPage6->Name = L"tabPage6";
-			this->tabPage6->Size = System::Drawing::Size(679, 458);
+			this->tabPage6->Size = System::Drawing::Size(507, 372);
 			this->tabPage6->TabIndex = 3;
 			this->tabPage6->Text = L"Process Image";
 			// 
@@ -1972,19 +1981,20 @@ private: System::ComponentModel::IContainer^ components;
 			// 
 			this->label_processimage->AutoSize = true;
 			this->label_processimage->Font = (gcnew System::Drawing::Font(L"Segoe UI", 11.25F, System::Drawing::FontStyle::Bold));
-			this->label_processimage->Location = System::Drawing::Point(503, 93);
+			this->label_processimage->Location = System::Drawing::Point(377, 76);
+			this->label_processimage->Margin = System::Windows::Forms::Padding(2, 0, 2, 0);
 			this->label_processimage->Name = L"label_processimage";
-			this->label_processimage->Size = System::Drawing::Size(28, 25);
+			this->label_processimage->Size = System::Drawing::Size(21, 20);
 			this->label_processimage->TabIndex = 119;
 			this->label_processimage->Text = L"--";
 			// 
 			// buttom_loadprocessfolder
 			// 
 			this->buttom_loadprocessfolder->Font = (gcnew System::Drawing::Font(L"Segoe UI", 10, System::Drawing::FontStyle::Bold));
-			this->buttom_loadprocessfolder->Location = System::Drawing::Point(23, 16);
-			this->buttom_loadprocessfolder->Margin = System::Windows::Forms::Padding(3, 2, 3, 2);
+			this->buttom_loadprocessfolder->Location = System::Drawing::Point(17, 13);
+			this->buttom_loadprocessfolder->Margin = System::Windows::Forms::Padding(2);
 			this->buttom_loadprocessfolder->Name = L"buttom_loadprocessfolder";
-			this->buttom_loadprocessfolder->Size = System::Drawing::Size(184, 62);
+			this->buttom_loadprocessfolder->Size = System::Drawing::Size(138, 50);
 			this->buttom_loadprocessfolder->TabIndex = 116;
 			this->buttom_loadprocessfolder->Text = L"Load FOLDER";
 			this->buttom_loadprocessfolder->UseVisualStyleBackColor = true;
@@ -1993,10 +2003,10 @@ private: System::ComponentModel::IContainer^ components;
 			// button_processimage
 			// 
 			this->button_processimage->Font = (gcnew System::Drawing::Font(L"Segoe UI", 12, System::Drawing::FontStyle::Bold));
-			this->button_processimage->Location = System::Drawing::Point(25, 82);
-			this->button_processimage->Margin = System::Windows::Forms::Padding(3, 2, 3, 2);
+			this->button_processimage->Location = System::Drawing::Point(19, 67);
+			this->button_processimage->Margin = System::Windows::Forms::Padding(2);
 			this->button_processimage->Name = L"button_processimage";
-			this->button_processimage->Size = System::Drawing::Size(472, 44);
+			this->button_processimage->Size = System::Drawing::Size(354, 36);
 			this->button_processimage->TabIndex = 118;
 			this->button_processimage->Text = L"Process images";
 			this->button_processimage->UseVisualStyleBackColor = true;
@@ -2007,13 +2017,13 @@ private: System::ComponentModel::IContainer^ components;
 			this->textBox_processfolderpath->Enabled = false;
 			this->textBox_processfolderpath->Font = (gcnew System::Drawing::Font(L"Microsoft Sans Serif", 9.75F, System::Drawing::FontStyle::Bold,
 				System::Drawing::GraphicsUnit::Point, static_cast<System::Byte>(0)));
-			this->textBox_processfolderpath->Location = System::Drawing::Point(213, 21);
-			this->textBox_processfolderpath->Margin = System::Windows::Forms::Padding(3, 2, 3, 2);
+			this->textBox_processfolderpath->Location = System::Drawing::Point(160, 17);
+			this->textBox_processfolderpath->Margin = System::Windows::Forms::Padding(2);
 			this->textBox_processfolderpath->Multiline = true;
 			this->textBox_processfolderpath->Name = L"textBox_processfolderpath";
 			this->textBox_processfolderpath->ReadOnly = true;
 			this->textBox_processfolderpath->ScrollBars = System::Windows::Forms::ScrollBars::Vertical;
-			this->textBox_processfolderpath->Size = System::Drawing::Size(443, 56);
+			this->textBox_processfolderpath->Size = System::Drawing::Size(333, 46);
 			this->textBox_processfolderpath->TabIndex = 117;
 			// 
 			// tabControl2
@@ -2021,11 +2031,10 @@ private: System::ComponentModel::IContainer^ components;
 			this->tabControl2->Controls->Add(this->tabPage3);
 			this->tabControl2->Controls->Add(this->tabPage4);
 			this->tabControl2->Font = (gcnew System::Drawing::Font(L"Segoe UI", 8.25F));
-			this->tabControl2->Location = System::Drawing::Point(3, 62);
-			this->tabControl2->Margin = System::Windows::Forms::Padding(4);
+			this->tabControl2->Location = System::Drawing::Point(2, 50);
 			this->tabControl2->Name = L"tabControl2";
 			this->tabControl2->SelectedIndex = 0;
-			this->tabControl2->Size = System::Drawing::Size(687, 297);
+			this->tabControl2->Size = System::Drawing::Size(515, 241);
 			this->tabControl2->TabIndex = 110;
 			// 
 			// tabPage3
@@ -2061,11 +2070,10 @@ private: System::ComponentModel::IContainer^ components;
 			this->tabPage3->Controls->Add(this->textBox_CalPara_locx);
 			this->tabPage3->Controls->Add(this->button_CalPara_up);
 			this->tabPage3->Font = (gcnew System::Drawing::Font(L"Segoe UI", 8.25F));
-			this->tabPage3->Location = System::Drawing::Point(4, 28);
-			this->tabPage3->Margin = System::Windows::Forms::Padding(4);
+			this->tabPage3->Location = System::Drawing::Point(4, 22);
 			this->tabPage3->Name = L"tabPage3";
-			this->tabPage3->Padding = System::Windows::Forms::Padding(4);
-			this->tabPage3->Size = System::Drawing::Size(679, 265);
+			this->tabPage3->Padding = System::Windows::Forms::Padding(3);
+			this->tabPage3->Size = System::Drawing::Size(507, 215);
 			this->tabPage3->TabIndex = 0;
 			this->tabPage3->Text = L"Lissajous Parameter Calculation";
 			// 
@@ -2074,9 +2082,10 @@ private: System::ComponentModel::IContainer^ components;
 			this->label39->AutoSize = true;
 			this->label39->Font = (gcnew System::Drawing::Font(L"Segoe UI", 8, System::Drawing::FontStyle::Bold));
 			this->label39->ForeColor = System::Drawing::Color::DarkRed;
-			this->label39->Location = System::Drawing::Point(337, 245);
+			this->label39->Location = System::Drawing::Point(253, 199);
+			this->label39->Margin = System::Windows::Forms::Padding(2, 0, 2, 0);
 			this->label39->Name = L"label39";
-			this->label39->Size = System::Drawing::Size(314, 19);
+			this->label39->Size = System::Drawing::Size(246, 13);
 			this->label39->TabIndex = 123;
 			this->label39->Text = L"Note: Raster and Lissajous have the same FOV";
 			// 
@@ -2101,11 +2110,10 @@ private: System::ComponentModel::IContainer^ components;
 			this->tabPage4->Controls->Add(this->textBox_ScanPreview_xpixel);
 			this->tabPage4->Controls->Add(this->button_ScanPreview_LOADRASTER);
 			this->tabPage4->Controls->Add(this->textBox_ScanPreview_LOADRASTER);
-			this->tabPage4->Location = System::Drawing::Point(4, 28);
-			this->tabPage4->Margin = System::Windows::Forms::Padding(4);
+			this->tabPage4->Location = System::Drawing::Point(4, 22);
 			this->tabPage4->Name = L"tabPage4";
-			this->tabPage4->Padding = System::Windows::Forms::Padding(4);
-			this->tabPage4->Size = System::Drawing::Size(679, 265);
+			this->tabPage4->Padding = System::Windows::Forms::Padding(3);
+			this->tabPage4->Size = System::Drawing::Size(507, 215);
 			this->tabPage4->TabIndex = 1;
 			this->tabPage4->Text = L"Scan Preview";
 			// 
@@ -2118,18 +2126,19 @@ private: System::ComponentModel::IContainer^ components;
 			this->panel1->Controls->Add(this->textBox_chopperphase);
 			this->panel1->Controls->Add(this->label42);
 			this->panel1->Controls->Add(this->checkBox_applychopper);
-			this->panel1->Location = System::Drawing::Point(426, 134);
+			this->panel1->Location = System::Drawing::Point(318, 135);
+			this->panel1->Margin = System::Windows::Forms::Padding(2);
 			this->panel1->Name = L"panel1";
-			this->panel1->Size = System::Drawing::Size(246, 124);
+			this->panel1->Size = System::Drawing::Size(184, 73);
 			this->panel1->TabIndex = 126;
 			// 
 			// button_setchopperphase
 			// 
 			this->button_setchopperphase->Font = (gcnew System::Drawing::Font(L"Segoe UI", 10, System::Drawing::FontStyle::Bold));
-			this->button_setchopperphase->Location = System::Drawing::Point(13, 76);
-			this->button_setchopperphase->Margin = System::Windows::Forms::Padding(3, 2, 3, 2);
+			this->button_setchopperphase->Location = System::Drawing::Point(110, 6);
+			this->button_setchopperphase->Margin = System::Windows::Forms::Padding(2);
 			this->button_setchopperphase->Name = L"button_setchopperphase";
-			this->button_setchopperphase->Size = System::Drawing::Size(84, 38);
+			this->button_setchopperphase->Size = System::Drawing::Size(63, 25);
 			this->button_setchopperphase->TabIndex = 59;
 			this->button_setchopperphase->Text = L"Set";
 			this->button_setchopperphase->UseVisualStyleBackColor = true;
@@ -2138,10 +2147,9 @@ private: System::ComponentModel::IContainer^ components;
 			// button_ScanPreview_rightchopperphase
 			// 
 			this->button_ScanPreview_rightchopperphase->Image = (cli::safe_cast<System::Drawing::Image^>(resources->GetObject(L"button_ScanPreview_rightchopperphase.Image")));
-			this->button_ScanPreview_rightchopperphase->Location = System::Drawing::Point(211, 38);
-			this->button_ScanPreview_rightchopperphase->Margin = System::Windows::Forms::Padding(4);
+			this->button_ScanPreview_rightchopperphase->Location = System::Drawing::Point(158, 34);
 			this->button_ScanPreview_rightchopperphase->Name = L"button_ScanPreview_rightchopperphase";
-			this->button_ScanPreview_rightchopperphase->Size = System::Drawing::Size(31, 39);
+			this->button_ScanPreview_rightchopperphase->Size = System::Drawing::Size(23, 32);
 			this->button_ScanPreview_rightchopperphase->TabIndex = 58;
 			this->button_ScanPreview_rightchopperphase->UseVisualStyleBackColor = true;
 			this->button_ScanPreview_rightchopperphase->Click += gcnew System::EventHandler(this, &YSPostprocessing::button_ScanPreview_rightchopperphase_Click);
@@ -2149,10 +2157,9 @@ private: System::ComponentModel::IContainer^ components;
 			// button_ScanPreview_leftchopperphase
 			// 
 			this->button_ScanPreview_leftchopperphase->Image = (cli::safe_cast<System::Drawing::Image^>(resources->GetObject(L"button_ScanPreview_leftchopperphase.Image")));
-			this->button_ScanPreview_leftchopperphase->Location = System::Drawing::Point(172, 38);
-			this->button_ScanPreview_leftchopperphase->Margin = System::Windows::Forms::Padding(4);
+			this->button_ScanPreview_leftchopperphase->Location = System::Drawing::Point(129, 34);
 			this->button_ScanPreview_leftchopperphase->Name = L"button_ScanPreview_leftchopperphase";
-			this->button_ScanPreview_leftchopperphase->Size = System::Drawing::Size(31, 39);
+			this->button_ScanPreview_leftchopperphase->Size = System::Drawing::Size(23, 32);
 			this->button_ScanPreview_leftchopperphase->TabIndex = 57;
 			this->button_ScanPreview_leftchopperphase->UseVisualStyleBackColor = true;
 			this->button_ScanPreview_leftchopperphase->Click += gcnew System::EventHandler(this, &YSPostprocessing::button_ScanPreview_leftchopperphase_Click);
@@ -2160,10 +2167,10 @@ private: System::ComponentModel::IContainer^ components;
 			// textBox_chopperphase
 			// 
 			this->textBox_chopperphase->Font = (gcnew System::Drawing::Font(L"Segoe UI", 11.25F, System::Drawing::FontStyle::Bold));
-			this->textBox_chopperphase->Location = System::Drawing::Point(72, 38);
-			this->textBox_chopperphase->Margin = System::Windows::Forms::Padding(3, 2, 3, 2);
+			this->textBox_chopperphase->Location = System::Drawing::Point(54, 39);
+			this->textBox_chopperphase->Margin = System::Windows::Forms::Padding(2);
 			this->textBox_chopperphase->Name = L"textBox_chopperphase";
-			this->textBox_chopperphase->Size = System::Drawing::Size(96, 32);
+			this->textBox_chopperphase->Size = System::Drawing::Size(73, 27);
 			this->textBox_chopperphase->TabIndex = 53;
 			this->textBox_chopperphase->Text = L"0";
 			this->textBox_chopperphase->TextAlign = System::Windows::Forms::HorizontalAlignment::Center;
@@ -2172,9 +2179,10 @@ private: System::ComponentModel::IContainer^ components;
 			// 
 			this->label42->AutoSize = true;
 			this->label42->Font = (gcnew System::Drawing::Font(L"Segoe UI", 11.25F, System::Drawing::FontStyle::Bold));
-			this->label42->Location = System::Drawing::Point(8, 41);
+			this->label42->Location = System::Drawing::Point(6, 41);
+			this->label42->Margin = System::Windows::Forms::Padding(2, 0, 2, 0);
 			this->label42->Name = L"label42";
-			this->label42->Size = System::Drawing::Size(63, 25);
+			this->label42->Size = System::Drawing::Size(50, 20);
 			this->label42->TabIndex = 52;
 			this->label42->Text = L"Phase";
 			// 
@@ -2183,9 +2191,10 @@ private: System::ComponentModel::IContainer^ components;
 			this->checkBox_applychopper->AutoSize = true;
 			this->checkBox_applychopper->Font = (gcnew System::Drawing::Font(L"Segoe UI", 10.8F, System::Drawing::FontStyle::Bold, System::Drawing::GraphicsUnit::Point,
 				static_cast<System::Byte>(0)));
-			this->checkBox_applychopper->Location = System::Drawing::Point(13, 5);
+			this->checkBox_applychopper->Location = System::Drawing::Point(10, 6);
+			this->checkBox_applychopper->Margin = System::Windows::Forms::Padding(2);
 			this->checkBox_applychopper->Name = L"checkBox_applychopper";
-			this->checkBox_applychopper->Size = System::Drawing::Size(106, 29);
+			this->checkBox_applychopper->Size = System::Drawing::Size(87, 24);
 			this->checkBox_applychopper->TabIndex = 0;
 			this->checkBox_applychopper->Text = L"Chopper";
 			this->checkBox_applychopper->UseVisualStyleBackColor = true;
@@ -2194,10 +2203,10 @@ private: System::ComponentModel::IContainer^ components;
 			// textBox_ScanPreview_ypixel
 			// 
 			this->textBox_ScanPreview_ypixel->Font = (gcnew System::Drawing::Font(L"Segoe UI", 11.25F, System::Drawing::FontStyle::Bold));
-			this->textBox_ScanPreview_ypixel->Location = System::Drawing::Point(270, 51);
-			this->textBox_ScanPreview_ypixel->Margin = System::Windows::Forms::Padding(3, 2, 3, 2);
+			this->textBox_ScanPreview_ypixel->Location = System::Drawing::Point(202, 41);
+			this->textBox_ScanPreview_ypixel->Margin = System::Windows::Forms::Padding(2);
 			this->textBox_ScanPreview_ypixel->Name = L"textBox_ScanPreview_ypixel";
-			this->textBox_ScanPreview_ypixel->Size = System::Drawing::Size(131, 32);
+			this->textBox_ScanPreview_ypixel->Size = System::Drawing::Size(99, 27);
 			this->textBox_ScanPreview_ypixel->TabIndex = 125;
 			this->textBox_ScanPreview_ypixel->Text = L"512";
 			this->textBox_ScanPreview_ypixel->TextAlign = System::Windows::Forms::HorizontalAlignment::Center;
@@ -2206,9 +2215,10 @@ private: System::ComponentModel::IContainer^ components;
 			// 
 			this->label40->Font = (gcnew System::Drawing::Font(L"Segoe UI", 8, System::Drawing::FontStyle::Bold));
 			this->label40->ForeColor = System::Drawing::Color::DarkRed;
-			this->label40->Location = System::Drawing::Point(483, 14);
+			this->label40->Location = System::Drawing::Point(362, 11);
+			this->label40->Margin = System::Windows::Forms::Padding(2, 0, 2, 0);
 			this->label40->Name = L"label40";
-			this->label40->Size = System::Drawing::Size(193, 44);
+			this->label40->Size = System::Drawing::Size(145, 36);
 			this->label40->TabIndex = 124;
 			this->label40->Text = L"Note: Raster and Lissajous have the same FOV";
 			// 
@@ -2220,20 +2230,19 @@ private: System::ComponentModel::IContainer^ components;
 				L"(1500,2000)", L"(2000,2010)",
 					L"(2000,2100)", L"(2100,2160)", L"(2088,2160)", L"(2052,2160)", L"(1980,2160)", L"(1620,2160)", L"(2000,3000)"
 			});
-			this->comboBox_ScanPreview_xyfreq->Location = System::Drawing::Point(227, 135);
-			this->comboBox_ScanPreview_xyfreq->Margin = System::Windows::Forms::Padding(3, 2, 3, 2);
+			this->comboBox_ScanPreview_xyfreq->Location = System::Drawing::Point(170, 110);
+			this->comboBox_ScanPreview_xyfreq->Margin = System::Windows::Forms::Padding(2);
 			this->comboBox_ScanPreview_xyfreq->Name = L"comboBox_ScanPreview_xyfreq";
-			this->comboBox_ScanPreview_xyfreq->Size = System::Drawing::Size(192, 33);
+			this->comboBox_ScanPreview_xyfreq->Size = System::Drawing::Size(145, 28);
 			this->comboBox_ScanPreview_xyfreq->TabIndex = 60;
 			this->comboBox_ScanPreview_xyfreq->SelectedIndexChanged += gcnew System::EventHandler(this, &YSPostprocessing::comboBox_ScanPreview_xyfreq_SelectedIndexChanged);
 			// 
 			// button_ScanPreview_rightphase
 			// 
 			this->button_ScanPreview_rightphase->Image = (cli::safe_cast<System::Drawing::Image^>(resources->GetObject(L"button_ScanPreview_rightphase.Image")));
-			this->button_ScanPreview_rightphase->Location = System::Drawing::Point(166, 210);
-			this->button_ScanPreview_rightphase->Margin = System::Windows::Forms::Padding(4);
+			this->button_ScanPreview_rightphase->Location = System::Drawing::Point(124, 171);
 			this->button_ScanPreview_rightphase->Name = L"button_ScanPreview_rightphase";
-			this->button_ScanPreview_rightphase->Size = System::Drawing::Size(31, 39);
+			this->button_ScanPreview_rightphase->Size = System::Drawing::Size(23, 32);
 			this->button_ScanPreview_rightphase->TabIndex = 56;
 			this->button_ScanPreview_rightphase->UseVisualStyleBackColor = true;
 			this->button_ScanPreview_rightphase->Click += gcnew System::EventHandler(this, &YSPostprocessing::button_ScanPreview_rightphase_Click);
@@ -2241,10 +2250,9 @@ private: System::ComponentModel::IContainer^ components;
 			// button_ScanPreview_leftphase
 			// 
 			this->button_ScanPreview_leftphase->Image = (cli::safe_cast<System::Drawing::Image^>(resources->GetObject(L"button_ScanPreview_leftphase.Image")));
-			this->button_ScanPreview_leftphase->Location = System::Drawing::Point(111, 210);
-			this->button_ScanPreview_leftphase->Margin = System::Windows::Forms::Padding(4);
+			this->button_ScanPreview_leftphase->Location = System::Drawing::Point(83, 171);
 			this->button_ScanPreview_leftphase->Name = L"button_ScanPreview_leftphase";
-			this->button_ScanPreview_leftphase->Size = System::Drawing::Size(31, 39);
+			this->button_ScanPreview_leftphase->Size = System::Drawing::Size(23, 32);
 			this->button_ScanPreview_leftphase->TabIndex = 55;
 			this->button_ScanPreview_leftphase->UseVisualStyleBackColor = true;
 			this->button_ScanPreview_leftphase->Click += gcnew System::EventHandler(this, &YSPostprocessing::button_ScanPreview_leftphase_Click);
@@ -2253,10 +2261,10 @@ private: System::ComponentModel::IContainer^ components;
 			// 
 			this->textBox_ScanPreview_framerate->Enabled = false;
 			this->textBox_ScanPreview_framerate->Font = (gcnew System::Drawing::Font(L"Segoe UI", 11.25F, System::Drawing::FontStyle::Bold));
-			this->textBox_ScanPreview_framerate->Location = System::Drawing::Point(227, 175);
-			this->textBox_ScanPreview_framerate->Margin = System::Windows::Forms::Padding(3, 2, 3, 2);
+			this->textBox_ScanPreview_framerate->Location = System::Drawing::Point(170, 142);
+			this->textBox_ScanPreview_framerate->Margin = System::Windows::Forms::Padding(2);
 			this->textBox_ScanPreview_framerate->Name = L"textBox_ScanPreview_framerate";
-			this->textBox_ScanPreview_framerate->Size = System::Drawing::Size(131, 32);
+			this->textBox_ScanPreview_framerate->Size = System::Drawing::Size(99, 27);
 			this->textBox_ScanPreview_framerate->TabIndex = 54;
 			this->textBox_ScanPreview_framerate->Text = L"500";
 			this->textBox_ScanPreview_framerate->TextAlign = System::Windows::Forms::HorizontalAlignment::Center;
@@ -2265,9 +2273,10 @@ private: System::ComponentModel::IContainer^ components;
 			// 
 			this->label34->AutoSize = true;
 			this->label34->Font = (gcnew System::Drawing::Font(L"Segoe UI", 11.25F, System::Drawing::FontStyle::Bold));
-			this->label34->Location = System::Drawing::Point(23, 178);
+			this->label34->Location = System::Drawing::Point(17, 145);
+			this->label34->Margin = System::Windows::Forms::Padding(2, 0, 2, 0);
 			this->label34->Name = L"label34";
-			this->label34->Size = System::Drawing::Size(150, 25);
+			this->label34->Size = System::Drawing::Size(119, 20);
 			this->label34->TabIndex = 53;
 			this->label34->Text = L"Frame rate (Hz)";
 			// 
@@ -2275,10 +2284,10 @@ private: System::ComponentModel::IContainer^ components;
 			// 
 			this->textBox_ScanPreview_phase->Enabled = false;
 			this->textBox_ScanPreview_phase->Font = (gcnew System::Drawing::Font(L"Segoe UI", 11.25F, System::Drawing::FontStyle::Bold));
-			this->textBox_ScanPreview_phase->Location = System::Drawing::Point(227, 210);
-			this->textBox_ScanPreview_phase->Margin = System::Windows::Forms::Padding(3, 2, 3, 2);
+			this->textBox_ScanPreview_phase->Location = System::Drawing::Point(170, 171);
+			this->textBox_ScanPreview_phase->Margin = System::Windows::Forms::Padding(2);
 			this->textBox_ScanPreview_phase->Name = L"textBox_ScanPreview_phase";
-			this->textBox_ScanPreview_phase->Size = System::Drawing::Size(131, 32);
+			this->textBox_ScanPreview_phase->Size = System::Drawing::Size(99, 27);
 			this->textBox_ScanPreview_phase->TabIndex = 52;
 			this->textBox_ScanPreview_phase->Text = L"0";
 			this->textBox_ScanPreview_phase->TextAlign = System::Windows::Forms::HorizontalAlignment::Center;
@@ -2287,9 +2296,10 @@ private: System::ComponentModel::IContainer^ components;
 			// 
 			this->label31->AutoSize = true;
 			this->label31->Font = (gcnew System::Drawing::Font(L"Segoe UI", 11.25F, System::Drawing::FontStyle::Bold));
-			this->label31->Location = System::Drawing::Point(24, 214);
+			this->label31->Location = System::Drawing::Point(18, 174);
+			this->label31->Margin = System::Windows::Forms::Padding(2, 0, 2, 0);
 			this->label31->Name = L"label31";
-			this->label31->Size = System::Drawing::Size(63, 25);
+			this->label31->Size = System::Drawing::Size(50, 20);
 			this->label31->TabIndex = 51;
 			this->label31->Text = L"Phase";
 			// 
@@ -2297,9 +2307,10 @@ private: System::ComponentModel::IContainer^ components;
 			// 
 			this->label33->AutoSize = true;
 			this->label33->Font = (gcnew System::Drawing::Font(L"Segoe UI", 11.25F, System::Drawing::FontStyle::Bold));
-			this->label33->Location = System::Drawing::Point(21, 139);
+			this->label33->Location = System::Drawing::Point(16, 113);
+			this->label33->Margin = System::Windows::Forms::Padding(2, 0, 2, 0);
 			this->label33->Name = L"label33";
-			this->label33->Size = System::Drawing::Size(204, 25);
+			this->label33->Size = System::Drawing::Size(158, 20);
 			this->label33->TabIndex = 47;
 			this->label33->Text = L"Freq X,Freq Y (Hz,Hz)";
 			// 
@@ -2307,9 +2318,10 @@ private: System::ComponentModel::IContainer^ components;
 			// 
 			this->label2->AutoSize = true;
 			this->label2->Font = (gcnew System::Drawing::Font(L"Segoe UI", 11.25F, System::Drawing::FontStyle::Bold));
-			this->label2->Location = System::Drawing::Point(24, 14);
+			this->label2->Location = System::Drawing::Point(18, 11);
+			this->label2->Margin = System::Windows::Forms::Padding(2, 0, 2, 0);
 			this->label2->Name = L"label2";
-			this->label2->Size = System::Drawing::Size(201, 25);
+			this->label2->Size = System::Drawing::Size(158, 20);
 			this->label2->TabIndex = 41;
 			this->label2->Text = L"Sampling Rate (MHz)";
 			// 
@@ -2321,19 +2333,20 @@ private: System::ComponentModel::IContainer^ components;
 				L"2 MS/s", L"10 MS/s",
 					L"20 MS/s", L"50 MS/s", L"100 MS/s", L"125 MS/s"
 			});
-			this->comboBox_ScanPreview_samplingrate->Location = System::Drawing::Point(245, 11);
-			this->comboBox_ScanPreview_samplingrate->Margin = System::Windows::Forms::Padding(3, 2, 3, 2);
+			this->comboBox_ScanPreview_samplingrate->Location = System::Drawing::Point(184, 9);
+			this->comboBox_ScanPreview_samplingrate->Margin = System::Windows::Forms::Padding(2);
 			this->comboBox_ScanPreview_samplingrate->Name = L"comboBox_ScanPreview_samplingrate";
-			this->comboBox_ScanPreview_samplingrate->Size = System::Drawing::Size(131, 33);
+			this->comboBox_ScanPreview_samplingrate->Size = System::Drawing::Size(99, 28);
 			this->comboBox_ScanPreview_samplingrate->TabIndex = 42;
 			// 
 			// label9
 			// 
 			this->label9->AutoSize = true;
 			this->label9->Font = (gcnew System::Drawing::Font(L"Segoe UI", 11.25F, System::Drawing::FontStyle::Bold));
-			this->label9->Location = System::Drawing::Point(25, 55);
+			this->label9->Location = System::Drawing::Point(19, 45);
+			this->label9->Margin = System::Windows::Forms::Padding(2, 0, 2, 0);
 			this->label9->Name = L"label9";
-			this->label9->Size = System::Drawing::Size(70, 25);
+			this->label9->Size = System::Drawing::Size(54, 20);
 			this->label9->TabIndex = 43;
 			this->label9->Text = L"Pixel : ";
 			// 
@@ -2341,19 +2354,20 @@ private: System::ComponentModel::IContainer^ components;
 			// 
 			this->label24->AutoSize = true;
 			this->label24->Font = (gcnew System::Drawing::Font(L"Microsoft Sans Serif", 11.25F, System::Drawing::FontStyle::Bold));
-			this->label24->Location = System::Drawing::Point(243, 55);
+			this->label24->Location = System::Drawing::Point(182, 45);
+			this->label24->Margin = System::Windows::Forms::Padding(2, 0, 2, 0);
 			this->label24->Name = L"label24";
-			this->label24->Size = System::Drawing::Size(21, 24);
+			this->label24->Size = System::Drawing::Size(16, 18);
 			this->label24->TabIndex = 44;
 			this->label24->Text = L"x";
 			// 
 			// textBox_ScanPreview_xpixel
 			// 
 			this->textBox_ScanPreview_xpixel->Font = (gcnew System::Drawing::Font(L"Segoe UI", 11.25F, System::Drawing::FontStyle::Bold));
-			this->textBox_ScanPreview_xpixel->Location = System::Drawing::Point(105, 52);
-			this->textBox_ScanPreview_xpixel->Margin = System::Windows::Forms::Padding(3, 2, 3, 2);
+			this->textBox_ScanPreview_xpixel->Location = System::Drawing::Point(79, 42);
+			this->textBox_ScanPreview_xpixel->Margin = System::Windows::Forms::Padding(2);
 			this->textBox_ScanPreview_xpixel->Name = L"textBox_ScanPreview_xpixel";
-			this->textBox_ScanPreview_xpixel->Size = System::Drawing::Size(131, 32);
+			this->textBox_ScanPreview_xpixel->Size = System::Drawing::Size(99, 27);
 			this->textBox_ScanPreview_xpixel->TabIndex = 45;
 			this->textBox_ScanPreview_xpixel->Text = L"512";
 			this->textBox_ScanPreview_xpixel->TextAlign = System::Windows::Forms::HorizontalAlignment::Center;
@@ -2361,10 +2375,10 @@ private: System::ComponentModel::IContainer^ components;
 			// button_ScanPreview_LOADRASTER
 			// 
 			this->button_ScanPreview_LOADRASTER->Font = (gcnew System::Drawing::Font(L"Segoe UI", 10, System::Drawing::FontStyle::Bold));
-			this->button_ScanPreview_LOADRASTER->Location = System::Drawing::Point(16, 90);
-			this->button_ScanPreview_LOADRASTER->Margin = System::Windows::Forms::Padding(3, 2, 3, 2);
+			this->button_ScanPreview_LOADRASTER->Location = System::Drawing::Point(12, 73);
+			this->button_ScanPreview_LOADRASTER->Margin = System::Windows::Forms::Padding(2);
 			this->button_ScanPreview_LOADRASTER->Name = L"button_ScanPreview_LOADRASTER";
-			this->button_ScanPreview_LOADRASTER->Size = System::Drawing::Size(205, 38);
+			this->button_ScanPreview_LOADRASTER->Size = System::Drawing::Size(154, 31);
 			this->button_ScanPreview_LOADRASTER->TabIndex = 23;
 			this->button_ScanPreview_LOADRASTER->Text = L"Load RASTER";
 			this->button_ScanPreview_LOADRASTER->UseVisualStyleBackColor = true;
@@ -2374,22 +2388,21 @@ private: System::ComponentModel::IContainer^ components;
 			// 
 			this->textBox_ScanPreview_LOADRASTER->Enabled = false;
 			this->textBox_ScanPreview_LOADRASTER->Font = (gcnew System::Drawing::Font(L"Segoe UI", 9.75F, System::Drawing::FontStyle::Bold));
-			this->textBox_ScanPreview_LOADRASTER->Location = System::Drawing::Point(227, 90);
-			this->textBox_ScanPreview_LOADRASTER->Margin = System::Windows::Forms::Padding(3, 2, 3, 2);
+			this->textBox_ScanPreview_LOADRASTER->Location = System::Drawing::Point(170, 73);
+			this->textBox_ScanPreview_LOADRASTER->Margin = System::Windows::Forms::Padding(2);
 			this->textBox_ScanPreview_LOADRASTER->Multiline = true;
 			this->textBox_ScanPreview_LOADRASTER->Name = L"textBox_ScanPreview_LOADRASTER";
 			this->textBox_ScanPreview_LOADRASTER->ScrollBars = System::Windows::Forms::ScrollBars::Vertical;
-			this->textBox_ScanPreview_LOADRASTER->Size = System::Drawing::Size(429, 38);
+			this->textBox_ScanPreview_LOADRASTER->Size = System::Drawing::Size(323, 32);
 			this->textBox_ScanPreview_LOADRASTER->TabIndex = 24;
 			// 
 			// button_shut_down
 			// 
 			this->button_shut_down->Font = (gcnew System::Drawing::Font(L"Segoe UI", 15, static_cast<System::Drawing::FontStyle>((System::Drawing::FontStyle::Bold | System::Drawing::FontStyle::Italic))));
 			this->button_shut_down->ForeColor = System::Drawing::Color::DarkGoldenrod;
-			this->button_shut_down->Location = System::Drawing::Point(1085, 15);
-			this->button_shut_down->Margin = System::Windows::Forms::Padding(4);
+			this->button_shut_down->Location = System::Drawing::Point(814, 12);
 			this->button_shut_down->Name = L"button_shut_down";
-			this->button_shut_down->Size = System::Drawing::Size(132, 41);
+			this->button_shut_down->Size = System::Drawing::Size(99, 33);
 			this->button_shut_down->TabIndex = 112;
 			this->button_shut_down->Text = L"Close";
 			this->button_shut_down->UseVisualStyleBackColor = true;
@@ -2397,17 +2410,18 @@ private: System::ComponentModel::IContainer^ components;
 			// 
 			// YSPostprocessing
 			// 
-			this->AutoScaleDimensions = System::Drawing::SizeF(8, 16);
+			this->AutoScaleDimensions = System::Drawing::SizeF(6, 13);
 			this->AutoScaleMode = System::Windows::Forms::AutoScaleMode::Font;
 			this->BackColor = System::Drawing::SystemColors::InactiveCaption;
-			this->ClientSize = System::Drawing::Size(1233, 863);
+			this->CausesValidation = false;
+			this->ClientSize = System::Drawing::Size(925, 701);
 			this->Controls->Add(this->button_shut_down);
 			this->Controls->Add(this->tabControl2);
 			this->Controls->Add(this->tabControl1);
 			this->Controls->Add(this->panel5);
 			this->Controls->Add(this->panel3);
 			this->Controls->Add(this->label1);
-			this->Margin = System::Windows::Forms::Padding(3, 2, 3, 2);
+			this->Margin = System::Windows::Forms::Padding(2);
 			this->Name = L"YSPostprocessing";
 			this->Text = L"YSPostprocessing";
 			(cli::safe_cast<System::ComponentModel::ISupportInitialize^>(this->trackBar_lissajousoffset))->EndInit();
@@ -2891,6 +2905,7 @@ private: System::Void timer_refresh_UI_Tick(System::Object^ sender, System::Even
 private: System::Void button_shut_down_Click(System::Object^ sender, System::EventArgs^ e) {
 	imagemerge->~YSImageMerge();
 }
+
 
 
 

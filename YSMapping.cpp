@@ -837,18 +837,30 @@ namespace NTU {
             }
         }
 
-        if (ntuscope->YSapply_signalprocessing == false) {
-            // INITIAL WINDOWING | Zero-negVolt | 32768-0
-            cv::cuda::subtract(65535, gpu_image, gpu_image, cv::noArray(), -1, stream);
-            cv::cuda::threshold(gpu_image, gpu_image, 65535, 0, cv::THRESH_TRUNC, stream);
-            cv::cuda::subtract(gpu_image, 32768, gpu_image, cv::noArray(), -1, stream);
-            cv::cuda::multiply(gpu_image, 2.0, gpu_image, 1.0, -1, stream);
+        if (ntuscope->choppermapping == false) {
+            if (ntuscope->YSapply_signalprocessing == false) {
+                // INITIAL WINDOWING | Zero-negVolt | 32768-0
+                cv::cuda::subtract(65535, gpu_image, gpu_image, cv::noArray(), -1, stream);
+                cv::cuda::threshold(gpu_image, gpu_image, 65535, 0, cv::THRESH_TRUNC, stream);
+                cv::cuda::subtract(gpu_image, 32768, gpu_image, cv::noArray(), -1, stream);
+                cv::cuda::multiply(gpu_image, 2.0, gpu_image, 1.0, -1, stream);
+            }
+            else if (ntuscope->YSapply_signalprocessing == true) {
+                cv::cuda::subtract(65535, gpu_image, gpu_image, cv::noArray(), -1, stream);
+                cv::cuda::threshold(gpu_image, gpu_image, 65535, 0, cv::THRESH_TRUNC, stream);
+                cv::cuda::subtract(gpu_image, ntuscope->YSoffsetvalueSP, gpu_image, cv::noArray(), -1, stream);
+                cv::cuda::multiply(gpu_image, ntuscope->YSmultiplySP, gpu_image, 1.0, -1, stream);
+            }
         }
-        else if (ntuscope->YSapply_signalprocessing == true) {
-            cv::cuda::subtract(65535, gpu_image, gpu_image, cv::noArray(), -1, stream);
-            cv::cuda::threshold(gpu_image, gpu_image, 65535, 0, cv::THRESH_TRUNC, stream);
-            cv::cuda::subtract(gpu_image, ntuscope->YSoffsetvalueSP, gpu_image, cv::noArray(), -1, stream);
-            cv::cuda::multiply(gpu_image, ntuscope->YSmultiplySP, gpu_image, 1.0, -1, stream);
+        else if (ntuscope->choppermapping == true) {
+            if (ntuscope->YSapply_signalprocessing == false) {
+                cv::cuda::subtract(gpu_image, 32768, gpu_image, cv::noArray(), -1, stream);
+                cv::cuda::multiply(gpu_image, ntuscope->YSmultiplySP, gpu_image, 1.0, -1, stream);
+            }
+            else if (ntuscope->YSapply_signalprocessing == true) {
+                cv::cuda::subtract(gpu_image, ntuscope->YSoffsetvalueSP, gpu_image, cv::noArray(), -1, stream);
+                cv::cuda::multiply(gpu_image, ntuscope->YSmultiplySP, gpu_image, 1.0, -1, stream);
+            }
         }
 
         //Calculate acquisition_rate

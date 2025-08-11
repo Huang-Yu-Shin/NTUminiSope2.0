@@ -29,7 +29,7 @@ namespace NTU {
 }
 //__global__ void convertToU16_LISSAJOUS(float64* tempImage, U16* image, int xpixelnumber, int ypixelnumber);
 __global__ void processSamples_LISSAJOUS(U16* pBuffer, float64* tempImage, U16* sampleMap, int xpixelnumber, int ypixelnumber, int totalsample, double samplesPerSec, int xfreq, int yfreq, double phase);
-__global__ void invertBuffer(U16* Buffer, int totalsample, bool SPconduct, int SPoffsetvalue);
+__global__ void invertBuffer(U16* Buffer, int totalsample, bool SPconduct, int SPoffsetvalue, bool choppermapping);
 __global__ void normalizeImage(U16* image, float64* tempImage, U16* sampleMap, int xpixelnumber, int ypixelnumber);
 //extern "C" void launchProcessSamples_LISSAJOUS_OLD(U16* pBuffer, U16* sampleMap, U16* h_image, int xpixelnumber, int ypixelnumber, int totalsample, double samplesPerSec, int xfreq, int yfreq);
 #endif  
