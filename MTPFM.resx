@@ -226,7 +226,7 @@
         djqKKKoR/9k=
 </value>
   </data>
-  <data name="YSbutton_lissajous_startimg.Image" type="System.Drawing.Bitmap, System.Drawing" mimetype="application/x-microsoft.net.object.bytearray.base64">
+  <data name="YSbutton_raster_startimg.Image" type="System.Drawing.Bitmap, System.Drawing" mimetype="application/x-microsoft.net.object.bytearray.base64">
     <value>
         iVBORw0KGgoAAAANSUhEUgAAAB4AAAAeCAIAAAC0Ujn1AAAABGdBTUEAALGPC/xhBQAAAxFJREFUSEvt
         lctOWlEUhjtzwEPwHE58Bce8AYEQEweEhGBVJGqMGnSiERDipSLe4yXEkIhgDCbtQJwIGK3BgNZLVEy1
@@ -245,7 +245,7 @@
         cJyXjH/7AAAAAElFTkSuQmCC
 </value>
   </data>
-  <data name="YSbutton_raster_startimg.Image" type="System.Drawing.Bitmap, System.Drawing" mimetype="application/x-microsoft.net.object.bytearray.base64">
+  <data name="YSbutton_lissajous_startimg.Image" type="System.Drawing.Bitmap, System.Drawing" mimetype="application/x-microsoft.net.object.bytearray.base64">
     <value>
         iVBORw0KGgoAAAANSUhEUgAAAB4AAAAeCAIAAAC0Ujn1AAAABGdBTUEAALGPC/xhBQAAAxFJREFUSEvt
         lctOWlEUhjtzwEPwHE58Bce8AYEQEweEhGBVJGqMGnSiERDipSLe4yXEkIhgDCbtQJwIGK3BgNZLVEy1

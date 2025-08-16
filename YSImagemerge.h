@@ -39,7 +39,8 @@ namespace NTU {
 		~YSImageMerge();
 
 		//Processimage
-		void processImage(std::string& input_path);
+		void displayprocessImage(string& input_path);
+		void processImage(string& input_path);
 
 		//Scanmode merge & Reconstruct
 		void LOADspec(string path);

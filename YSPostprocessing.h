@@ -2576,9 +2576,9 @@ private: System::Void trackBar_lissajousoffset_Scroll(System::Object^ sender, Sy
 		imagemerge->DisplayReconstructedLissajousImage();
 	}
 	this->trackBar_lissajousoffset->Enabled == true;
-	//this->label_lissajousoffset->Text = offset.ToString();
-	//imagemerge->offset_lissajous = offset;
-	//imagemerge->DisplayReconstructedLissajousImage();
+	this->label_lissajousoffset->Text = offset.ToString();
+	imagemerge->offset_lissajous = offset;
+	imagemerge->DisplayReconstructedLissajousImage();
 }
 private: System::Void button_LOADLISSAJOUS_Click(System::Object^ sender, System::EventArgs^ e) {
 	if (this->LOAD_LISSAJOUS->ShowDialog() == System::Windows::Forms::DialogResult::OK) {
@@ -2873,9 +2873,12 @@ private: System::Void buttom_loadprocessfolder_Click(System::Object^ sender, Sys
 	if (this->LOAD_LISSAJOUSRAW_FOLDER->ShowDialog() == System::Windows::Forms::DialogResult::OK) {
 		System::String^ selectedPath = this->LOAD_LISSAJOUSRAW_FOLDER->SelectedPath;
 		this->textBox_processfolderpath->Text = selectedPath;
+		std::string path = msclr::interop::marshal_as<std::string>(this->textBox_processfolderpath->Text);
 
 		this->button_TRANSFERTOTIFF->Enabled = true;
 		this->label_TRANSFERTOTIFF->Text = "--";
+
+		imagemerge->displayprocessImage(path);
 	}
 }
 

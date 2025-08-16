@@ -359,6 +359,23 @@ namespace NTU {
                 }
             }
         }
+
+        //std::ofstream file("C:/YuShin/sin_weight.csv");
+        //if (!file.is_open()) {
+        //    return false;
+        //}
+
+        //file << std::fixed << std::setprecision(6);
+        //for (int r = 0; r < sin_weight.rows; ++r) {
+        //    for (int c = 0; c < sin_weight.cols; ++c) {
+        //        file << sin_weight.at<float>(r, c);
+        //        if (c < sin_weight.cols - 1) {
+        //            file << ",";
+        //        }
+        //    }
+        //    file << "\n";
+        //}
+        //file.close();
         return true;
     }
 
@@ -789,30 +806,49 @@ namespace NTU {
         for (int line = 0; line < ntuscope->Pixelnumy; line++) {
             bool is_forward = (line % 2 == 0);
 
+            int phase_forward = std::max(0, ntuscope->raster_phase);
+            int phase_backward = std::max(0, -ntuscope->raster_phase);
+            int phase = is_forward ? phase_forward : phase_backward; 
+
+            int maxPhase = std::max(0, int(samplesPerRecord) - 1);
+            phase = std::min(phase, maxPhase);
+
+            if (!is_forward && phase > 0) {
+                buffer_ptr_new += phase;
+            }
             for (int sample = 0; sample < int(samplesPerRecord); sample++) {
-                float t = float(sample) / float(samplesPerRecord - 1);  // normalized sample [0,1]
+                float t = float(sample) / float(samplesPerRecord - 1);  
                 float angle = is_forward
-                    ? (CV_PI * t - 0.5f * CV_PI)            // -π/2 to +π/2
-                    : (CV_PI * (1.0f - t) - 0.5f * CV_PI);  // +π/2 to -π/2
-                float x = 0.5f * (1.0f + sinf(angle));      // mapped to [0,1]
+                    ? (CV_PI * t - 0.5f * CV_PI)        
+                    : (CV_PI * (1.0f - t) - 0.5f * CV_PI); 
+                float x = 0.5f * (1.0f + sinf(angle));    
                 int x_idx = int(x * (1024 - 1));
 
                 if (x_idx >= 0 && x_idx < 1024) {
-                    if (is_forward == true && sample < ntuscope->raster_phase) {
+                    bool use_baseline = false;
+
+                    if (phase > 0) {
+                        if (is_forward) {
+                            use_baseline = (sample < phase);
+                        }
+                        else {
+                            use_baseline = (sample >= int(samplesPerRecord) - phase);
+                        }
+                    }
+                    if (use_baseline) {
                         sin_image.at<float>(line, x_idx) += 32768.0f;
                     }
                     else {
                         sin_image.at<float>(line, x_idx) += float(*buffer_ptr_new);
-                        buffer_ptr_new++;
+                        buffer_ptr_new++; 
                     }
-
                 }
             }
-
-            if (is_forward == true) {
-                buffer_ptr_new = buffer_ptr_new + ntuscope->raster_phase;
+            if (is_forward && phase > 0) {
+                buffer_ptr_new += phase;
             }
         }
+
         cv::Mat sin_image_u16(ntuscope->Pixelnumy, 1024, CV_16UC1);
         for (int y = 0; y < ntuscope->Pixelnumy; y++) {
             for (int x = 0; x < 1024; x++) {
@@ -826,6 +862,7 @@ namespace NTU {
 
             }
         }
+
         cv::cuda::GpuMat gpu_image_prepre;
         gpu_image_prepre.upload(sin_image_u16);
         cv::cuda::resize(gpu_image_prepre, gpu_image, cv::Size(1024, 1024), 0, 0, cv::INTER_AREA);
@@ -972,6 +1009,29 @@ namespace NTU {
         cv::cuda::GpuMat gpu_8bitresizedImage;
         cv::cuda::resize(gpu_8bit, gpu_8bitresizedImage, cv::Size(ntuscope->Xpixelsize_display, ntuscope->Ypixelsize_display), 0, 0, cv::INTER_AREA);//cv::INTER_AREAcv::INTER_LINEAR
         stream.waitForCompletion();
+
+        //Optional
+        //int shift_px = 6;
+        //int rows = gpu_8bitresizedImage.rows;
+        //int cols = gpu_8bitresizedImage.cols;
+        //cv::cuda::GpuMat shifted;
+        //gpu_8bitresizedImage.copyTo(shifted, stream);
+
+        //for (int r = 0; r < rows; r++) {
+        //    if (r % 2 == 0) { 
+        //        cv::cuda::GpuMat src_row = gpu_8bitresizedImage.row(r);
+        //        cv::cuda::GpuMat dst_row = shifted.row(r);
+
+        //        cv::cuda::GpuMat dst_left(dst_row, cv::Rect(0, 0, shift_px, 1));
+        //        dst_left.setTo(cv::Scalar(0), stream);
+
+        //        cv::cuda::GpuMat dst_right(dst_row, cv::Rect(shift_px, 0, cols - shift_px, 1));
+        //        cv::cuda::GpuMat src_right(src_row, cv::Rect(0, 0, cols - shift_px, 1));
+        //        src_right.copyTo(dst_right, stream);
+        //    }
+        //}
+        //stream.waitForCompletion();
+        //shifted.copyTo(gpu_8bitresizedImage, stream);
 
         //Save images
         if (ntuscope->savestate == true && SavedCount < ntuscope->save_num) {
@@ -1665,6 +1725,7 @@ namespace NTU {
                     file << "inputrange," << 1000 << endl;
                 }
                 file << "chopperfreq," << ntuscope->chopperfreq << endl;
+                file << "chopperphase," << ntuscope->chopperphase << endl;
                 file.close();
                 cout << "CSV file created successfully at: " << csvpath << endl;
             }
@@ -1687,6 +1748,7 @@ namespace NTU {
                 rawfile << "inputrange," << 1000 << endl;
             }
             rawfile << "chopperfreq," << ntuscope->chopperfreq << endl;
+            rawfile << "chopperphase," << ntuscope->chopperphase << endl;
             rawfile.close();
             cout << "CSV file created successfully at: " << rawcsvpath << endl;
         }
@@ -1709,6 +1771,7 @@ namespace NTU {
                 file << "inputrange," << 1000 << endl;
             }
             file << "chopperfreq," << ntuscope->chopperfreq << endl;
+            file << "chopperphase," << ntuscope->chopperphase << endl;
             file.close();
             cout << "CSV file created successfully at: " << csvpath << endl;
             string rawcsvpath = ntuscope->folderPathRaw + "\\scan_spec.csv";
@@ -1729,6 +1792,7 @@ namespace NTU {
                 rawfile << "inputrange," << 1000 << endl;
             }
             rawfile << "chopperfreq," << ntuscope->chopperfreq << endl;
+            rawfile << "chopperphase," << ntuscope->chopperphase << endl;
             rawfile.close();
             cout << "CSV file created successfully at: " << rawcsvpath << endl;
         }
@@ -1753,6 +1817,7 @@ namespace NTU {
                 file << "inputrange," << 1000 << endl;
             }
             file << "chopperfreq," << ntuscope->chopperfreq << endl;
+            file << "chopperphase," << ntuscope->chopperphase << endl;
             file.close();
             cout << "CSV file created successfully at: " << csvpath << endl;
             string rawcsvpath = ntuscope->folderPathRaw + "\\scan_spec.csv";
@@ -1775,6 +1840,7 @@ namespace NTU {
                 rawfile << "inputrange," << 1000 << endl;
             }
             rawfile << "chopperfreq," << ntuscope->chopperfreq << endl;
+            rawfile << "chopperphase," << ntuscope->chopperphase << endl;
             rawfile.close();
             cout << "CSV file created successfully at: " << rawcsvpath << endl;
         }

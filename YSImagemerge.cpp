@@ -16,8 +16,48 @@ namespace NTU {
 	}
 
 	//Process image
-	void YSImageMerge::processImage(std::string& input_path) {
-		std::string output_folder = input_path + "\\process";
+	void YSImageMerge::displayprocessImage(string& input_path) {
+		string singleImgPath = input_path + "\\Image1.tiff";
+		cv::Mat img = cv::imread(singleImgPath, cv::IMREAD_UNCHANGED);
+		if (img.empty()) {
+			cerr << "Failed to load: " << singleImgPath << endl;
+		}
+
+		cv::cuda::GpuMat gpu_image;
+		gpu_image.upload(img, stream);
+
+		double scale = 65535.0 / (50000.0 - 0.0);
+		double shift = 0.0 * scale;
+		gpu_image.convertTo(gpu_image, -1, scale, shift, stream);
+		cv::cuda::threshold(gpu_image, gpu_image, 65535, 65535, cv::THRESH_TRUNC, stream);
+		cv::cuda::threshold(gpu_image, gpu_image, 0, 0, cv::THRESH_TOZERO, stream);
+
+		cv::cuda::GpuMat gpu_8bit;
+		gpu_image.convertTo(gpu_8bit, CV_8UC1, 1.0 / 257.0, 0.0, stream);
+
+		cv::Mat LUT_matrix(1, 256, CV_8UC1);
+		uchar* pointer = LUT_matrix.ptr();
+		for (int i = 0; i < 256; i++) {
+			pointer[i] = (int)(pow((double)(i / 255.0), 1.1) * 255.0);
+		}
+		cv::Ptr<cv::cuda::LookUpTable> cudaLookUpTable = cv::cuda::createLookUpTable(LUT_matrix);
+		cudaLookUpTable->transform(gpu_8bit, gpu_8bit, stream);
+		//cv::cuda::equalizeHist(gpu_8bit, gpu_8bit, stream);
+		gpu_8bit.cv::cuda::GpuMat::convertTo(gpu_8bit, -1, 5, 150 - 150, stream);
+		stream.waitForCompletion();
+
+		cv::cuda::GpuMat gpu_8bit_resize;
+		cv::cuda::resize(gpu_8bit, gpu_8bit_resize,cv::Size(512,512));
+
+		cv::Mat result;
+		gpu_8bit_resize.download(result, stream);
+		stream.waitForCompletion();
+
+		cv::imshow("ProcessImg", result);
+	}
+
+	void YSImageMerge::processImage(string& input_path) {
+		string output_folder = input_path + "\\process";
 		CreateDirectoryA(output_folder.c_str(), NULL);
 
 		string FolderPathwithtiff = input_path + "\\*.tiff";
@@ -79,7 +119,6 @@ namespace NTU {
 			stream.waitForCompletion();
 			std::string output_path = output_folder + "\\" + filename;
 			cv::imwrite(output_path, result);
-			std::cout << "Saved: " << output_path << std::endl;
 		}
 
 		std::cout << "All TIFFs processed." << std::endl;
@@ -801,8 +840,8 @@ namespace NTU {
 
 		cv::Mat image8U;
 		image16U.convertTo(image8U, CV_8UC1, 1.0 / 257); 
-		cv::imshow("Reconstruct Image", image8U);
-		cv::waitKey(0);
+		//cv::imshow("Reconstruct Image", image8U);
+		//cv::waitKey(0);
 		delete[] LissajoustempData;
 		delete[] Image;
 	}

@@ -644,7 +644,10 @@ namespace NTU {
             float64 y_value = yamplitude - (2 * yamplitude * line) / (num_lines - 1) + offsety;
             for (int i = 0; i < samples_per_line; ++i) {
                 time += delta_time;
-                float64 x_value = offsetx + xamplitude* sin(2 * M_PI * freq_x * time - M_PI / 2);
+                float64 phase = fmod(freq_x * time, 1.0);      
+                float64 tri = 4.0 * fabs(phase - 0.5) - 1.0;   
+                float64 x_value = offsetx + xamplitude * tri;
+                //float64 x_value = offsetx + xamplitude* sin(2 * M_PI * freq_x * time - M_PI / 2);
 
                 // Store X and Y values interleaved in the data array
                 data[index++] = x_value;  // X value (sine wave)
@@ -655,7 +658,10 @@ namespace NTU {
             float64 y_value = -yamplitude + (2 * yamplitude * line) / (num_lines - 1) + offsety;
             for (int i = 0; i < samples_per_line; ++i) {
                 time += delta_time;
-                float64 x_value = offsetx + xamplitude * sin(2 * M_PI * freq_x * time - M_PI / 2);
+                float64 phase = fmod(freq_x * time, 1.0);  
+                float64 tri = 4.0 * fabs(phase - 0.5) - 1.0;   
+                float64 x_value = offsetx + xamplitude * tri;
+                //float64 x_value = offsetx + xamplitude * sin(2 * M_PI * freq_x * time - M_PI / 2);
 
                 // Store X and Y values interleaved in the data array
                 data[index++] = x_value;  // X value (sine wave)
