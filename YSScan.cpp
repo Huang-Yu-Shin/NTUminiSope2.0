@@ -104,8 +104,8 @@ namespace NTU {
             int samplingratio = int(ntuscope->samplingRate / int(framerate));
             ntuscope->samplingRate = int(framerate) * samplingratio;
             total_samples = int(ntuscope->samplingRate / framerate);
-            float64 real_xamp = ntuscope->MEMS_xamp * MEMS_Xampratio_clk_Lissajous * MEMSampratio * MEMS_Xampratio_headmount* 0.9 ;
-            float64 real_yamp = ntuscope->MEMS_yamp * MEMS_Yampratio_clk_Lissajous * MEMS_Yampratio_headmount * 0.75;
+            float64 real_xamp = ntuscope->MEMS_xamp * MEMS_Xampratio_clk_Lissajous * MEMSampratio * ntuscope->MEMS_Xampratio_headmount* 0.9 ;
+            float64 real_yamp = ntuscope->MEMS_yamp * MEMS_Yampratio_clk_Lissajous * ntuscope->MEMS_Yampratio_headmount * 0.75;
             if (ntuscope->xfreq > 2200 || ntuscope->yfreq > 2200) {
                 MEMScutofffreq = MEMScutofffreq_high;
                 NItriggerdelay = NItriggerdelay_high;
@@ -115,7 +115,7 @@ namespace NTU {
             cout << "Frame rate: " << framerate << endl;
             cout << "MEMS amp: " << real_xamp << " , " << real_yamp << endl;
             cout << "FCLK ratio: " << MEMS_Xampratio_clk_Lissajous <<" , "<< MEMS_Yampratio_clk_Lissajous << endl;
-            cout << "Headmount ratio: " << MEMS_Xampratio_headmount << " , " << MEMS_Yampratio_headmount << endl;
+            cout << "Headmount ratio: " << ntuscope->MEMS_Xampratio_headmount << " , " << ntuscope->MEMS_Yampratio_headmount << endl;
             cout << "MEMS offset: " << ntuscope->xoffset << " , " << ntuscope->yoffset << endl;
             cout << "MEMS phase: " << ntuscope->lissajous_phase << endl;
             cout << "MEMS cutofffreq: " << MEMScutofffreq << endl;
@@ -248,15 +248,15 @@ namespace NTU {
             ntuscope->framerate = framerate;
             ntuscope->FOVx = ntuscope->MEMS_xamp * 90;
             ntuscope->FOVy = ntuscope->MEMS_yamp * 90;
-            float64 real_xamp = ntuscope->MEMS_xamp * MEMS_Xampratio_clk_raster * MEMSampratio* MEMS_Xampratio_headmount;
-            float64 real_yamp = ntuscope->MEMS_yamp * MEMS_Yampratio_clk_raster * MEMS_Yampratio_headmount;
+            float64 real_xamp = ntuscope->MEMS_xamp * MEMS_Xampratio_clk_raster * MEMSampratio* ntuscope->MEMS_Xampratio_headmount;
+            float64 real_yamp = ntuscope->MEMS_yamp * MEMS_Yampratio_clk_raster * ntuscope->MEMS_Yampratio_headmount;
             cout << "NI Sampling rate: " << ntuscope->samplingRate << endl;
             cout << "NI samples per line: " << samples_per_line << endl;
             cout << "NI total sample: " << total_samples << endl;
             cout << "Frame rate: " << framerate << endl;
             cout << "MEMS amp: " << real_xamp << " , " << real_yamp << endl;
             cout << "FCLK ratio: " << MEMS_Xampratio_clk_raster << " , "<<MEMS_Yampratio_clk_raster << endl;
-            cout << "Headmount ratio: " << MEMS_Xampratio_headmount << " , " << MEMS_Yampratio_headmount << endl;
+            cout << "Headmount ratio: " << ntuscope->MEMS_Xampratio_headmount << " , " << ntuscope->MEMS_Yampratio_headmount << endl;
             cout << "MEMS offset: " << ntuscope->xoffset << " , " << ntuscope->yoffset << endl;
             cout << "NI triggerdelay: " << NItriggerdelay << endl;
             //ETL setup
@@ -376,15 +376,15 @@ namespace NTU {
             ntuscope->framerate = framerate;
             ntuscope->FOVx = ntuscope->MEMS_xamp * 90;
             ntuscope->FOVy = ntuscope->MEMS_yamp * 90;
-            float64 real_xamp = ntuscope->MEMS_xamp * MEMS_Xampratio_clk_raster * MEMSampratio * MEMS_Xampratio_headmount;
-            float64 real_yamp = ntuscope->MEMS_yamp * MEMS_Yampratio_clk_raster * MEMS_Yampratio_headmount;
+            float64 real_xamp = ntuscope->MEMS_xamp * MEMS_Xampratio_clk_raster * MEMSampratio * ntuscope->MEMS_Xampratio_headmount;
+            float64 real_yamp = ntuscope->MEMS_yamp * MEMS_Yampratio_clk_raster * ntuscope->MEMS_Yampratio_headmount;
             cout << "NI Sampling rate: " << ntuscope->samplingRate << endl;
             cout << "NI samples per line: " << samples_per_line << endl;
             cout << "NI total sample: " << total_samples << endl;
             cout << "Frame rate: " << framerate << endl;
             cout << "MEMS amp: " << real_xamp << " , " << real_yamp << endl;
             cout << "FCLK ratio: " << MEMS_Xampratio_clk_raster << " , " << MEMS_Yampratio_clk_raster << endl;
-            cout << "Headmount ratio: " << MEMS_Xampratio_headmount << " , " << MEMS_Yampratio_headmount << endl;
+            cout << "Headmount ratio: " << ntuscope->MEMS_Xampratio_headmount << " , " << ntuscope->MEMS_Yampratio_headmount << endl;
             cout << "MEMS offset: " << ntuscope->xoffset << " , " << ntuscope->yoffset << endl;
             cout << "NI triggerdelay: " << NItriggerdelay << endl;
             //ETL setup

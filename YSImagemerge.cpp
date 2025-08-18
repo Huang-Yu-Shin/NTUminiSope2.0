@@ -274,12 +274,12 @@ namespace NTU {
 			cerr << "Error: Unable to load image at path: " << Path << endl;
 			return;
 		}
-		cv::Mat image_resized;
-		cv::resize(image, image_resized, cv::Size(width_SP, height_SP), 0, 0, cv::INTER_NEAREST);
+		ypixelnum = image.rows;   
+		xpixelnum = image.cols;
 		loaddata = true;
 
 		cv::Mat raster_8U;
-		image_resized.convertTo(raster_8U, CV_8UC1, 1.0 / 257.0, 0.0);
+		image.convertTo(raster_8U, CV_8UC1, 1.0 / 257.0, 0.0);
 		cv::Mat displayimage;
 		cv::cvtColor(raster_8U, displayimage, cv::COLOR_GRAY2BGR);
 		rasterImage = displayimage.clone();
@@ -297,40 +297,38 @@ namespace NTU {
 
 		int totalSamples = int(samplingrate_SP * duration);
 		totalSamples = totalSamples - (totalSamples % 128);
+		int xpixelnum_lissajous = int(double(xpixelnum) * scansizeratio);
+		int ypixelnum_lissajous = int(double(ypixelnum) * scansizeratio);
 		for (int i = 0; i < totalSamples; ++i) {
-			double t = double(i) / samplingrate_SP;
-			int xPixel = int(round((width_SP / 2) * (1 + sin(2 * M_PI * double(xfreq_SP) * t))));
-			int yPixel = int(round((height_SP / 2) * (1 - sin((2 * M_PI * double(yfreq_SP) * t) + phase_SP))));
-
-			if (xPixel >= 0 && xPixel < width_SP && yPixel >= 0 && yPixel < height_SP) {
-
-				if (apply_chopper == true) {
-					if (GetChopperTTLSignal(i, totalSamples)) {
-						DisplayIMG.at<cv::Vec3b>(yPixel, xPixel) = cv::Vec3b(0, 0, 255);
+			int xPixel = 0;
+			int yPixel = 0;
+			bool inrange = LissajousIdxFromSample(i, samplingrate_SP, xpixelnum_lissajous, ypixelnum_lissajous, double(xfreq_SP), double(yfreq_SP), phase_SP, xPixel, yPixel);
+			xPixel = xPixel + (xpixelnum - xpixelnum_lissajous)/2 + offsetx_SP;
+			yPixel = yPixel + (ypixelnum - ypixelnum_lissajous)/2 + offsety_SP;
+			if (inrange == true) {
+				if (xPixel >= 0 && xPixel < xpixelnum && yPixel >= 0 && yPixel < ypixelnum) {
+					if (apply_chopper == true) {
+						if (GetChopperTTLSignal(i, totalSamples)) {
+							DisplayIMG.at<cv::Vec3b>(yPixel, xPixel) = cv::Vec3b(0, 0, 255);
+						}
+						else {
+							DisplayIMG.at<cv::Vec3b>(yPixel, xPixel) = cv::Vec3b(0, 50, 0);
+						}
 					}
 					else {
-						DisplayIMG.at<cv::Vec3b>(yPixel, xPixel) = cv::Vec3b(0, 50, 0);
+						DisplayIMG.at<cv::Vec3b>(yPixel, xPixel) = cv::Vec3b(0, 0, 255);
 					}
 				}
-				else {
-					DisplayIMG.at<cv::Vec3b>(yPixel, xPixel) = cv::Vec3b(0, 0, 255);
-				}
-
 			}
-
-			//if (i % (totalSamples / 200000) == 0) {
-			//	cv::imshow("ScanPreview", DisplayIMG);
-			//	cv::waitKey(1);
-			//}
-
 		}
 
-		cv::imshow("ScanPreview", DisplayIMG);
+		cv::Mat DisplayIMG_resize;
+		cv::resize(DisplayIMG, DisplayIMG_resize, cv::Size(512, 512), 0, 0, cv::INTER_NEAREST);
+		cv::imshow("ScanPreview", DisplayIMG_resize);
 		cv::waitKey(0);
 	}
 
 	bool YSImageMerge::GetChopperTTLSignal(int sampleIndex, int totalSamples) {
-		//cout << chopper_phase << endl;
 		if (chopper_freq_upscale == 1) {
 			int segments = 2;
 			int samplesPerSegment = totalSamples / segments;
@@ -354,13 +352,11 @@ namespace NTU {
 			int samplesPerSegment = totalSamples / segments;
 			if (samplesPerSegment <= 0) return true;
 
-
 			double ph = std::fmod(chopper_phase, 360.0);
 			if (ph < 0.0) ph += 360.0;
 
 			int samplesPerChopper = totalSamples / 4;    
 			int shiftSamples = static_cast<int>(std::round(ph / 360.0 * samplesPerChopper));
-
 
 			int shiftedIndex = (sampleIndex - shiftSamples) % totalSamples;
 			if (shiftedIndex < 0) shiftedIndex += totalSamples;
@@ -397,11 +393,10 @@ namespace NTU {
 		memset(sampleMap, 0, pixelnum * pixelnum * sizeof(int));
 
 		for (int i = 0; i < num_of_sample; ++i) {
-			double t = static_cast<double>(i) / samplingrate;
-			int x = static_cast<int>(round((pixelnum / 2.0) * (1 + sin(2 * M_PI * xfreq * t))));
-			int y = static_cast<int>(round((pixelnum / 2.0) * (1 - sin(2 * M_PI * yfreq * t + lissajous_phase))));
-
-			if (x >= 0 && x < pixelnum && y >= 0 && y < pixelnum) {
+			int x = 0;
+			int y = 0;
+			bool inrange = LissajousIdxFromSample(i, samplingrate, pixelnum, pixelnum, double(xfreq), double(yfreq), lissajous_phase, x, y);
+			if (inrange == true) {
 				sampleMap[y * pixelnum + x]++;
 			}
 		}
@@ -429,9 +424,9 @@ namespace NTU {
 		if (displaywithscan == true) {
 			double phase_shift = 0;
 			for (int i = 0; i < num_of_sample; ++i) {
-				double t = static_cast<double>(i) / static_cast<double>(num_of_sample);
-				int xPixel = int(round(updateImage.cols / 2) * (1 + sinf(2 * M_PI * xfreq * t)));
-				int yPixel = int(round(updateImage.rows / 2) * (1 + sinf(2 * M_PI * yfreq * t)));
+				int xPixel = 0;
+				int yPixel = 0;
+				bool inrange = LissajousIdxFromSample(i, num_of_sample, pixelnum, pixelnum, double(xfreq), double(yfreq), lissajous_phase, xPixel, yPixel);
 				if ((xPixel+offsetx) >= 0 && (xPixel + offsetx) < bigRaster.cols &&
 					(yPixel - offsety) >= 0 && (yPixel - offsety) < bigRaster.rows) {
 					bigRaster.at<cv::Vec3b>(yPixel-offsety, xPixel+offsetx) = cv::Vec3b(0, 0, 255);
@@ -516,7 +511,7 @@ namespace NTU {
 			}
 
 			cv::resize(backgroundImage, backgroundImage, cv::Size(512, 512), 0,0, cv::INTER_LINEAR);
-			Addtext_RLMERGEDISPLAY(backgroundImage, rasterimgindex, total_lissajousimage_count);
+			AddtextOnImg(backgroundImage, rasterimgindex, total_lissajousimage_count);
 			cv::imshow("2D Merge", backgroundImage);
 			if (cv::waitKey(30) == 27) break; 
 
@@ -534,10 +529,10 @@ namespace NTU {
 		scannedPixelList.clear();
 
 		for (int i = 0; i < num_of_sample_EK; ++i) {
-			double t = double(i) / samplingrate_EK;
-			int x = int(round((pixelnum / 2.0) * (1 + sin(2 * M_PI * xfreq_EK * t))));
-			int y = int(round((pixelnum / 2.0) * (1 - sin(2 * M_PI * yfreq_EK * t + lissajous_phase_EK))));
-			if (x >= 0 && x < lissajousImage_EK.cols && y >= 0 && y < lissajousImage_EK.rows) {
+			int x = 0;
+			int y = 0;
+			bool inrange = LissajousIdxFromSample(i, samplingrate_EK, pixelnum, pixelnum, double(xfreq), double(yfreq), lissajous_phase, x, y);
+			if (inrange == true) {
 				cv::Point pt(x, y);
 				if (scannedPixelList.empty() || scannedPixelList.back() != pt)
 					scannedPixelList.push_back(pt);
@@ -634,8 +629,214 @@ namespace NTU {
 		cout << "Extract Kymograph : DONE" << endl;
 	}
 
+	//Transfer to .tiff
+	void YSImageMerge::ConvertBinToTiff() {
+		string output_folder = LISSAJOUSFolderPath + "_TIFF";
+		string search_path = LISSAJOUSFolderPath + "\\*.bin";
+		WIN32_FIND_DATAA find_data;
+		if (GetFileAttributesA(output_folder.c_str()) == INVALID_FILE_ATTRIBUTES) {
+			if (!CreateDirectoryA(output_folder.c_str(), NULL)) {
+				std::cerr << "Error: Unable to create output folder " << output_folder << std::endl;
+				return;
+			}
+		}
+		HANDLE hFind = FindFirstFileA(search_path.c_str(), &find_data);
 
-	//Load function
+		if (hFind == INVALID_HANDLE_VALUE) {
+			cerr << "Error: Unable to find any .bin in " << LISSAJOUSFolderPath << endl;
+			return;
+		}
+
+		do {
+			string bin_filename = find_data.cFileName;
+			string bin_path = LISSAJOUSFolderPath + "\\" + bin_filename;
+			string tiff_filename = bin_filename.substr(0, bin_filename.find_last_of(".")) + ".tiff";
+			string tiff_path = output_folder + "\\" + tiff_filename;
+
+			ifstream file(bin_path, std::ios::binary);
+			if (!file) {
+				std::cerr << "Error: Unable to read " << bin_path << std::endl;
+				continue;
+			}
+
+			std::vector<U16> buffer(num_of_sample);
+			file.read(reinterpret_cast<char*>(buffer.data()), num_of_sample * sizeof(U16));
+			file.close();
+
+			if (file.gcount() != static_cast<std::streamsize>(num_of_sample * sizeof(U16))) {
+				std::cerr << "Error: The length of this read is mismatch " << bin_path << std::endl;
+				continue;
+			}
+
+			cv::cuda::GpuMat gpu_image(1, num_of_sample, CV_16UC1);
+			gpu_image.upload(cv::Mat(1, num_of_sample, CV_16UC1, buffer.data()));
+
+			// INITIAL WINDOWING | Zero-negVolt | 32768-0
+			cv::cuda::subtract(65535, gpu_image, gpu_image, cv::noArray(), -1, stream);
+			cv::cuda::threshold(gpu_image, gpu_image, 65535, 0, cv::THRESH_TRUNC, stream);
+			cv::cuda::subtract(gpu_image, 32768, gpu_image, cv::noArray(), -1, stream);
+			cv::cuda::multiply(gpu_image, 2.0, gpu_image, 1.0, -1, stream);
+
+			cv::Mat Img16bit;
+			gpu_image.download(Img16bit);
+			if (!cv::imwrite(tiff_path, Img16bit)) {
+				std::cerr << "Error: Unable to save the image " << tiff_path << std::endl;
+			}
+
+		} while (FindNextFileA(hFind, &find_data));
+
+		FindClose(hFind);
+		CopyScanSpecCSV(LISSAJOUSFolderPath, output_folder);
+	}
+
+	//Reconstruct
+	void YSImageMerge::DisplayReconstructedLissajousImage() {
+		string lissajousFolderPathtiff = LISSAJOUSFolderPath + "\\Image1.tiff";
+		cv::Mat rawImg16 = cv::imread(lissajousFolderPathtiff, cv::IMREAD_UNCHANGED);
+		if (rawImg16.empty() || rawImg16.type() != CV_16UC1) {
+			cout << "Error: TIFF not found or not CV_16UC1 format: " << lissajousFolderPathtiff << endl;
+			return;
+		}
+		LissajousrawData = new double[num_of_sample];
+		memset(LissajousrawData, 0, num_of_sample * sizeof(double));
+		cv::Mat rawImg64;
+		rawImg16.convertTo(rawImg64, CV_64FC1);
+		memcpy(LissajousrawData, rawImg64.ptr<double>(), num_of_sample * sizeof(double));
+
+		Image = new double[pixelnum * pixelnum];
+		memset(Image, 0, pixelnum * pixelnum * sizeof(double));
+		LissajoustempData = new double[num_of_sample];
+		memset(LissajoustempData, 0, num_of_sample * sizeof(double));
+
+		memcpy(LissajoustempData, LissajousrawData, num_of_sample * sizeof(double));
+		if (offset_lissajous < num_of_sample) {
+			for (int i = num_of_sample - 1; i >= offset_lissajous; --i)
+				LissajoustempData[i] = LissajoustempData[i - offset_lissajous];
+			for (int i = 0; i < offset_lissajous; ++i)
+				LissajoustempData[i] = 0;
+		}
+
+		for (int i = 0; i < num_of_sample; ++i) {
+			int x = 0;
+			int y = 0;
+			bool inrange = LissajousIdxFromSample(i, samplingrate, pixelnum, pixelnum, double(xfreq), double(yfreq), lissajous_phase, x, y);
+			if (inrange == true) {
+				int idx = y * pixelnum + x;
+				if (sampleMap[idx] > 0)
+					Image[idx] += LissajoustempData[i];
+			}
+		}
+		for (int i = 0; i < pixelnum * pixelnum; ++i) {
+			if (sampleMap[i] > 0)
+				Image[i] /= sampleMap[i];
+		}
+		
+		cv::Mat image64F(pixelnum, pixelnum, CV_64FC1, Image);
+		cv::Mat image16U;
+		image64F.convertTo(image16U, CV_16UC1, 1.0);
+
+		cv::Mat image8U;
+		image16U.convertTo(image8U, CV_8UC1, 1.0 / 257); 
+		//cv::imshow("Reconstruct Image", image8U);
+		//cv::waitKey(0);
+		delete[] LissajoustempData;
+		delete[] Image;
+	}
+
+	void YSImageMerge::ReconstructAllTiffInFolder() {
+		// Store valid filenames
+		string lissajousFolderPathwithtiff = LISSAJOUSFolderPath + "\\*.tiff";
+		vector<string> filenames;
+		WIN32_FIND_DATA findFileData;
+		HANDLE hFind = FindFirstFile(lissajousFolderPathwithtiff.c_str(), &findFileData);
+		if (hFind == INVALID_HANDLE_VALUE) {
+			cout << "Error: No .tiff files found in directory " << lissajousFolderPathwithtiff << endl;
+			return;
+		}
+		// Collect all valid filenames
+		do {
+			filenames.push_back(findFileData.cFileName);
+		} while (FindNextFile(hFind, &findFileData) != 0);
+
+		FindClose(hFind);
+
+		string outputFolderPath = LISSAJOUSFolderPath;
+		size_t pos = outputFolderPath.find("2DLISSAJOUS_RAW");
+		if (pos != string::npos) {
+			outputFolderPath.replace(pos, strlen("2DLISSAJOUS_RAW"), "2DLISSAJOUS");
+		}
+		CreateDirectory(outputFolderPath.c_str(), NULL);
+
+		// Sort filenames based on the numeric part
+		sort(filenames.begin(), filenames.end(), [this](const string& a, const string& b) {
+			return extractNumber(a) < extractNumber(b);
+			});
+
+		int total_lissajousimage_count = filenames.size();
+		lissajousimgindex = 0;
+		for (const auto& filename : filenames) {
+			string fullPath = LISSAJOUSFolderPath + "\\" + filename;
+			cv::Mat updateImage = cv::imread(fullPath, cv::IMREAD_UNCHANGED);
+
+			if (updateImage.empty() || updateImage.type() != CV_16UC1) {
+				cout << "Error: TIFF not found or not CV_16UC1 format " << fullPath << endl;
+				continue;
+			}
+
+			num_of_sample = updateImage.rows * updateImage.cols;
+			LissajoustempData = new double[num_of_sample];
+			Image = new double[pixelnum * pixelnum];
+			memset(LissajoustempData, 0, num_of_sample * sizeof(double));
+			memset(Image, 0, pixelnum * pixelnum * sizeof(double));
+
+			cv::Mat updateImage64;
+			updateImage.convertTo(updateImage64, CV_64FC1);
+			memcpy(LissajoustempData, updateImage64.ptr<double>(), num_of_sample * sizeof(double));
+
+			if (offset_lissajous < num_of_sample) {
+				for (int i = num_of_sample - 1; i >= offset_lissajous; --i)
+					LissajoustempData[i] = LissajoustempData[i - offset_lissajous];
+				for (int i = 0; i < offset_lissajous; ++i)
+					LissajoustempData[i] = 0;
+			}
+
+			for (int i = 0; i < num_of_sample; ++i) {
+				int x = 0;
+				int y = 0;
+				bool inrange= LissajousIdxFromSample(i, samplingrate, pixelnum, pixelnum, double(xfreq), double(yfreq), lissajous_phase, x, y);
+				if (inrange==true) {
+					int idx = y * pixelnum + x;
+					if (sampleMap[idx] > 0)
+						Image[idx] += LissajoustempData[i];
+				}
+			}
+			for (int i = 0; i < pixelnum * pixelnum; ++i) {
+				if (sampleMap[i] > 0)
+					Image[i] /= sampleMap[i];
+			}
+
+			cv::Mat image64F(pixelnum, pixelnum, CV_64FC1, Image);
+			cv::Mat image16U;
+			image64F.convertTo(image16U, CV_16UC1, 1.0);
+
+			ostringstream savePath;
+			savePath << outputFolderPath << "\\Image" << (lissajousimgindex + 1) << ".tiff";
+			if (!cv::imwrite(savePath.str(), image16U)) {
+				cerr << "Error: Failed to save image " << savePath.str() << endl;
+			}
+
+			lissajousimgindex++;
+			progresspercentage = double(lissajousimgindex) / double(total_lissajousimage_count) * 100;
+
+			cv::Mat image8U;
+			image16U.convertTo(image8U, CV_8UC1, 1.0 / 257);
+			//cv::imshow("Reconstruct Image folder", image8U);
+			//cv::waitKey(0);
+		}
+		CopyScanSpecCSV(LISSAJOUSFolderPath, outputFolderPath);
+	}
+
+	//Supplementart functions
 	void YSImageMerge::LOADspec(string path) {
 		string csvFilePath = path + "\\scan_spec.csv";
 		ifstream file(csvFilePath);
@@ -732,7 +933,21 @@ namespace NTU {
 		file.close();
 	}
 
-	//Transfer to .tiff
+	bool YSImageMerge::LissajousIdxFromSample(int sample_idx, double sampling_rate, int widthpixelnum, int heightpixelnum, double xfreq, double yfreq,double lissajous_phase,int& x_out,int& y_out) {
+		if (sampling_rate <= 0.0 || pixelnum <= 1) {
+			x_out = y_out = -1;
+			return false;
+		}
+
+		double t = double(sample_idx) / sampling_rate;
+		int x = int(round((widthpixelnum / 2.0) * (1 + sin(2 * M_PI * double(xfreq) * t))));
+		int y = int(round((heightpixelnum / 2.0) * (1 + sin(2 * M_PI * double(yfreq) * t + lissajous_phase))));
+		bool in_bounds = (0 <= x && x < widthpixelnum) && (0 <= y && y < heightpixelnum);
+		x_out = x;
+		y_out = y;
+		return in_bounds;
+	}
+
 	void YSImageMerge::CopyScanSpecCSV(string& sourceFolder, string& targetFolder) {
 		std::string sourceCSV = sourceFolder + "\\scan_spec.csv";
 		std::string targetCSV = targetFolder + "\\scan_spec.csv";
@@ -745,203 +960,6 @@ namespace NTU {
 		}
 	}
 
-	void YSImageMerge::ConvertBinToTiff() {
-		string output_folder = LISSAJOUSFolderPath + "_TIFF";
-		string search_path = LISSAJOUSFolderPath + "\\*.bin";
-		WIN32_FIND_DATAA find_data;
-		if (GetFileAttributesA(output_folder.c_str()) == INVALID_FILE_ATTRIBUTES) {
-			if (!CreateDirectoryA(output_folder.c_str(), NULL)) {
-				std::cerr << "Error: Unable to create output folder " << output_folder << std::endl;
-				return;
-			}
-		}
-		HANDLE hFind = FindFirstFileA(search_path.c_str(), &find_data);
-
-		if (hFind == INVALID_HANDLE_VALUE) {
-			cerr << "Error: Unable to find any .bin in " << LISSAJOUSFolderPath << endl;
-			return;
-		}
-
-		do {
-			string bin_filename = find_data.cFileName;
-			string bin_path = LISSAJOUSFolderPath + "\\" + bin_filename;
-			string tiff_filename = bin_filename.substr(0, bin_filename.find_last_of(".")) + ".tiff";
-			string tiff_path = output_folder + "\\" + tiff_filename;
-
-			ifstream file(bin_path, std::ios::binary);
-			if (!file) {
-				std::cerr << "Error: Unable to read " << bin_path << std::endl;
-				continue;
-			}
-
-			std::vector<U16> buffer(num_of_sample);
-			file.read(reinterpret_cast<char*>(buffer.data()), num_of_sample * sizeof(U16));
-			file.close();
-
-			if (file.gcount() != static_cast<std::streamsize>(num_of_sample * sizeof(U16))) {
-				std::cerr << "Error: The length of this read is mismatch " << bin_path << std::endl;
-				continue;
-			}
-
-			cv::cuda::GpuMat gpu_image(1, num_of_sample, CV_16UC1);
-			gpu_image.upload(cv::Mat(1, num_of_sample, CV_16UC1, buffer.data()));
-
-			// INITIAL WINDOWING | Zero-negVolt | 32768-0
-			cv::cuda::subtract(65535, gpu_image, gpu_image, cv::noArray(), -1, stream);
-			cv::cuda::threshold(gpu_image, gpu_image, 65535, 0, cv::THRESH_TRUNC, stream);
-			cv::cuda::subtract(gpu_image, 32768, gpu_image, cv::noArray(), -1, stream);
-			cv::cuda::multiply(gpu_image, 2.0, gpu_image, 1.0, -1, stream);
-
-			cv::Mat Img16bit;
-			gpu_image.download(Img16bit);
-			if (!cv::imwrite(tiff_path, Img16bit)) {
-				std::cerr << "Error: Unable to save the image " << tiff_path << std::endl;
-			}
-
-		} while (FindNextFileA(hFind, &find_data));
-
-		FindClose(hFind);
-		CopyScanSpecCSV(LISSAJOUSFolderPath, output_folder);
-	}
-
-	//Reconstruct
-	void YSImageMerge::DisplayReconstructedLissajousImage() {
-		Image = new double[pixelnum * pixelnum];
-		memset(Image, 0, pixelnum * pixelnum * sizeof(double));
-		LissajoustempData = new double[num_of_sample];
-		memset(LissajoustempData, 0, num_of_sample * sizeof(double));
-
-		memcpy(LissajoustempData, LissajousrawData, num_of_sample * sizeof(double));
-		if (offset_lissajous < num_of_sample) {
-			for (int i = num_of_sample - 1; i >= offset_lissajous; --i)
-				LissajoustempData[i] = LissajoustempData[i - offset_lissajous];
-			for (int i = 0; i < offset_lissajous; ++i)
-				LissajoustempData[i] = 0;
-		}
-
-		for (int i = 0; i < num_of_sample; ++i) {
-			double t = double(i) / samplingrate;
-			int x = int(round((pixelnum / 2.0) * (1 + sin(2 * M_PI * xfreq * t))));
-			int y = int(round((pixelnum / 2.0) * (1 - sin(2 * M_PI * yfreq * t + lissajous_phase))));
-			if (x >= 0 && x < pixelnum && y >= 0 && y < pixelnum) {
-				int idx = y * pixelnum + x;
-				if (sampleMap[idx] > 0)
-					Image[idx] += LissajoustempData[i];
-			}
-		}
-		for (int i = 0; i < pixelnum * pixelnum; ++i) {
-			if (sampleMap[i] > 0)
-				Image[i] /= sampleMap[i];
-		}
-		
-		cv::Mat image64F(pixelnum, pixelnum, CV_64FC1, Image);
-		cv::Mat image16U;
-		image64F.convertTo(image16U, CV_16UC1, 1.0);
-
-		cv::Mat image8U;
-		image16U.convertTo(image8U, CV_8UC1, 1.0 / 257); 
-		//cv::imshow("Reconstruct Image", image8U);
-		//cv::waitKey(0);
-		delete[] LissajoustempData;
-		delete[] Image;
-	}
-
-	void YSImageMerge::ReconstructAllTiffInFolder() {
-		// Store valid filenames
-		string lissajousFolderPathwithtiff = LISSAJOUSFolderPath + "\\*.tiff";
-		vector<string> filenames;
-		WIN32_FIND_DATA findFileData;
-		HANDLE hFind = FindFirstFile(lissajousFolderPathwithtiff.c_str(), &findFileData);
-		if (hFind == INVALID_HANDLE_VALUE) {
-			cout << "Error: No .tiff files found in directory " << lissajousFolderPathwithtiff << endl;
-			return;
-		}
-		// Collect all valid filenames
-		do {
-			filenames.push_back(findFileData.cFileName);
-		} while (FindNextFile(hFind, &findFileData) != 0);
-
-		FindClose(hFind);
-
-		string outputFolderPath = LISSAJOUSFolderPath;
-		size_t pos = outputFolderPath.find("2DLISSAJOUS_RAW");
-		if (pos != string::npos) {
-			outputFolderPath.replace(pos, strlen("2DLISSAJOUS_RAW"), "2DLISSAJOUS");
-		}
-		CreateDirectory(outputFolderPath.c_str(), NULL);
-
-		// Sort filenames based on the numeric part
-		sort(filenames.begin(), filenames.end(), [this](const string& a, const string& b) {
-			return extractNumber(a) < extractNumber(b);
-			});
-
-		int total_lissajousimage_count = filenames.size();
-		lissajousimgindex = 0;
-		for (const auto& filename : filenames) {
-			string fullPath = LISSAJOUSFolderPath + "\\" + filename;
-			cv::Mat updateImage = cv::imread(fullPath, cv::IMREAD_UNCHANGED);
-
-			if (updateImage.empty() || updateImage.type() != CV_16UC1) {
-				cout << "Error: TIFF not found or not CV_16UC1 format " << fullPath << endl;
-				continue;
-			}
-
-			num_of_sample = updateImage.rows * updateImage.cols;
-			LissajoustempData = new double[num_of_sample];
-			Image = new double[pixelnum * pixelnum];
-			memset(LissajoustempData, 0, num_of_sample * sizeof(double));
-			memset(Image, 0, pixelnum * pixelnum * sizeof(double));
-
-			cv::Mat updateImage64;
-			updateImage.convertTo(updateImage64, CV_64FC1);
-			memcpy(LissajoustempData, updateImage64.ptr<double>(), num_of_sample * sizeof(double));
-
-			if (offset_lissajous < num_of_sample) {
-				for (int i = num_of_sample - 1; i >= offset_lissajous; --i)
-					LissajoustempData[i] = LissajoustempData[i - offset_lissajous];
-				for (int i = 0; i < offset_lissajous; ++i)
-					LissajoustempData[i] = 0;
-			}
-
-			for (int i = 0; i < num_of_sample; ++i) {
-				double t = double(i) / samplingrate;
-				int x = int(round((pixelnum / 2.0) * (1 + sin(2 * M_PI * xfreq * t))));
-				int y = int(round((pixelnum / 2.0) * (1 - sin(2 * M_PI * yfreq * t + lissajous_phase))));
-				if (x >= 0 && x < pixelnum && y >= 0 && y < pixelnum) {
-					int idx = y * pixelnum + x;
-					if (sampleMap[idx] > 0)
-						Image[idx] += LissajoustempData[i];
-				}
-			}
-			for (int i = 0; i < pixelnum * pixelnum; ++i) {
-				if (sampleMap[i] > 0)
-					Image[i] /= sampleMap[i];
-			}
-
-			cv::Mat image64F(pixelnum, pixelnum, CV_64FC1, Image);
-			cv::Mat image16U;
-			image64F.convertTo(image16U, CV_16UC1, 1.0);
-
-			ostringstream savePath;
-			savePath << outputFolderPath << "\\Image" << (lissajousimgindex + 1) << ".tiff";
-			if (!cv::imwrite(savePath.str(), image16U)) {
-				cerr << "Error: Failed to save image " << savePath.str() << endl;
-			}
-
-			lissajousimgindex++;
-			progresspercentage = double(lissajousimgindex) / double(total_lissajousimage_count) * 100;
-
-			cv::Mat image8U;
-			image16U.convertTo(image8U, CV_8UC1, 1.0 / 257);
-			//cv::imshow("Reconstruct Image folder", image8U);
-			//cv::waitKey(0);
-		}
-		CopyScanSpecCSV(LISSAJOUSFolderPath, outputFolderPath);
-		delete[] LissajoustempData;
-		delete[] Image;
-	}
-
-	//Supplementart functions
 	int YSImageMerge::extractNumber(const string& filename) {
 		size_t pos = filename.find_first_of("0123456789");
 		if (pos == string::npos) return -1;
@@ -954,7 +972,7 @@ namespace NTU {
 		return number;
 	}
 
-	void YSImageMerge::Addtext_RLMERGEDISPLAY(cv::Mat& IMGDP16, int frameorder, int totalframe) {
+	void YSImageMerge::AddtextOnImg(cv::Mat& IMGDP16, int frameorder, int totalframe) {
 		int fontFace = cv::FONT_HERSHEY_SIMPLEX;
 		int thickness = 1;
 		int baseline = 0;

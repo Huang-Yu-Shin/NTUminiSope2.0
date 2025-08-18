@@ -52,10 +52,6 @@ namespace NTU {
         double MEMS_Yampratio_clk_raster = 1;
         double MEMS_Xampratio_clk_Lissajous = 1;
         double MEMS_Yampratio_clk_Lissajous = 1;
-        //double MEMS_Xampratio_headmount = 0.784;
-        //double MEMS_Yampratio_headmount = 0.769;
-        double MEMS_Xampratio_headmount = 1;
-        double MEMS_Yampratio_headmount = 1;
         float64 transienttime = 0.005;
 
         //run

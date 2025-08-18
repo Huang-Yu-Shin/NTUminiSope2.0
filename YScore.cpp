@@ -35,6 +35,12 @@ namespace NTU {
                 else if (key == "yOFFSET" && equalSign == '=') {
                     ntuscope->yoffset = value;
                 }
+                else if (key == "xRATIO" && equalSign == '=') {
+                    ntuscope->MEMS_Xampratio_headmount = value;
+                }
+                else if (key == "yRATIO" && equalSign == '=') {
+                    ntuscope->MEMS_Yampratio_headmount = value;
+                }
             }
         }
     }

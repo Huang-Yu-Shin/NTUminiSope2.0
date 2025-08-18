@@ -7467,6 +7467,7 @@ private: System::Void YSbutton_raster_configure_Click(System::Object^ sender, Sy
 	}
 }
 private: System::Void YSbutton_raster_startimg_Click(System::Object^ sender, System::EventArgs^ e) {
+	toggleButtons_defaltimageprocessing->Checked = true;
 	YSbutton_raster_startimg->Enabled = false;
 	textBox_FOV_l->Text = aYSNTU->FOVx.ToString();
 	textBox_FOV_r->Text = aYSNTU->FOVy.ToString();
@@ -7493,6 +7494,7 @@ private: System::Void YSbutton_raster_stop_Click(System::Object^ sender, System:
 	YStextBox__raster_x_amp->Enabled = true;
 	YStextBox__raster_y_amp->Enabled = true;
 	YScheckBox_raster_slowspeed->Enabled = true;
+	YScomboBox__raster_chopperfreq->Enabled = true;
 	toggleButtons_allow_averaging->Checked = false;
 }
 private: System::Void YStrackBar_raster_phase_Scroll(System::Object^ sender, System::EventArgs^ e) {
@@ -7577,6 +7579,7 @@ private: System::Void YSbutton_lissajous_configure_Click(System::Object^ sender,
 	status->Text = "Configure : Lissajous";
 }
 private: System::Void YSbutton_lissajous_startimg_Click(System::Object^ sender, System::EventArgs^ e) {
+	toggleButtons_defaltimageprocessing->Checked = true;
 	YSbutton_lissajous_startimg->Enabled = false;
 	textBox_FOV_l->Text = aYSNTU->FOVx.ToString();
 	textBox_FOV_r->Text = aYSNTU->FOVy.ToString();
@@ -7605,6 +7608,7 @@ private: System::Void YSbutton_lissajous_stop_Click(System::Object^ sender, Syst
 	YStextBox__lissajous_x_amp->Enabled = true;
 	YStextBox__lissajous_y_amp->Enabled = true;
 	YSbutton_lissajous_startimg->Enabled = true;
+	comboBox_lissajous_chopperphase->Enabled = true;
 	toggleButtons_allow_averaging->Checked = false;
 	YScheckBox_lissajous_repairshow->Checked = false;
 }

@@ -54,6 +54,8 @@ namespace NTU
 		double yfreq = 2000;
 		double xoffset = 0;
 		double yoffset = 0;
+		double MEMS_Xampratio_headmount = 1;
+		double MEMS_Yampratio_headmount = 1;
 		double lissajous_phase = 0;
 		int num_lines = 256;
 		bool firstinitialize = true;

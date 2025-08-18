@@ -928,12 +928,6 @@ namespace NTU {
 
         //MinMaxValue
         if (ntuscope->YSapply_minmax==true) {
-            //cv::cuda::GpuMat mask_low, mask_high, valid_mask;
-            //cv::cuda::threshold(gpu_image, mask_low, ntuscope->minVal16bit - 1, 1, cv::THRESH_BINARY, stream);
-            //cv::cuda::threshold(gpu_image, mask_high, ntuscope->maxVal16bit, 1, cv::THRESH_BINARY_INV, stream);
-            //cv::cuda::bitwise_and(mask_low, mask_high, valid_mask, cv::noArray(), stream);
-            //cv::cuda::multiply(gpu_image, valid_mask, gpu_image, 1, -1, stream);
-
             double scale = 65535.0 / (ntuscope->maxVal16bit - ntuscope->minVal16bit);
             double shift = -ntuscope->minVal16bit * scale;
             gpu_image.convertTo(gpu_image, -1, scale, shift, stream);
@@ -969,17 +963,6 @@ namespace NTU {
         cv::cuda::GpuMat gpu_8bit;
         gpu_image.convertTo(gpu_8bit, CV_8UC1, 1/257.0, 0, stream);
         stream.waitForCompletion();
-
-        // Pre Imaging Processing
-        //cv::Mat LUT_matrix_pre(1, 256, CV_8UC1);
-        //uchar* pointer_pre = LUT_matrix_pre.ptr();
-        //for (int i = 0; i < 256; i++) {
-        //    pointer_pre[i] = (int)(pow((double)(i / 255.0), 1.1) * 255.0);
-        //}
-        //cv::Ptr<cv::cuda::LookUpTable> cudaLookUpTable_pre = cv::cuda::createLookUpTable(LUT_matrix_pre);
-        //cudaLookUpTable_pre->transform(gpu_8bit, gpu_8bit, stream);
-        //gpu_8bit.cv::cuda::GpuMat::convertTo(gpu_8bit, -1, 2.6, 0, stream);
-        //stream.waitForCompletion();
 
         //Histogram equalize
         if (ntuscope->YSapply_equalizehistogram) {

@@ -42,41 +42,10 @@ namespace NTU {
 		void displayprocessImage(string& input_path);
 		void processImage(string& input_path);
 
-		//Scanmode merge & Reconstruct
-		void LOADspec(string path);
-		void ConvertBinToTiff();
-		void CopyScanSpecCSV(string& sourceFolder, string& targetFolder);
-		void DISPLAYRASTER();
-		void RLMERGEDISPLAY();
-		void AVERAGE(string folderPath, cv::Mat& avgImage);
-		void GenerateSampleMap();
-		void LoadLissajousImage();
-		void DisplayReconstructedLissajousImage();
-		void ReconstructAllTiffInFolder();
-		int extractNumber(const string& filename);
-		void Addtext_RLMERGEDISPLAY(cv::Mat& IMGDP8, int Xpixelsize, int Ypixelsize);
-		bool savestate = 0;
-		bool displaywithscan = 0;
-
-		int offsetx = 0;
-		int offsety = 0;
-		double upscalefactorX = 1;
-		double upscalefactorY = 1;
-		int offset_lissajous = 0;
-
-		string RASTERPath,LISSAJOUSPath;
-		string LISSAJOUSFolderPath;
-
-		int xfreq, yfreq, num_of_sample, samplingrate;
-		int pixelnum = 512;
-		double lissajous_phase;
-		double progresspercentage = 0;
-		double progresspercentage_scanmodemerge = 0;
-		cv::cuda::Stream stream;
 		//Calculate parameters
 		CudaCalPara* calpara;
-		cv::Mat rasterImage;
-		void CreateCUDACalPara(string Path,int width, int height, double samplingrate);
+		
+		void CreateCUDACalPara(string Path, int width, int height, double samplingrate);
 		static void onMouse(int event, int x, int y, int flags, void* userdata);
 		void moveTarget(int dx, int dy);
 		void CalculateParameter(double sampleingrate);
@@ -84,13 +53,16 @@ namespace NTU {
 
 		//Scan preview
 		double samplingrate_SP = 50000000;
-		int width_SP = 512;
-		int height_SP = 512;
+		int xpixelnum = 256;
+		int ypixelnum = 256;
 		int xfreq_SP = 1500;
 		int yfreq_SP = 2000;
 		double phase_SP = 0;
 		int framerate_SP = 500;
 		int phaseindex_SP = 0;
+		int offsetx_SP = 0;
+		int offsety_SP = 0;
+		double scansizeratio = 1;
 		int chopper_phase = 0;
 		int chopper_freq_upscale = 1;
 		bool loaddata = false;
@@ -98,6 +70,33 @@ namespace NTU {
 		void CreateScanPreview(string Path);
 		void ScanmodePreview();
 		bool GetChopperTTLSignal(int sampleIndex, int totalSamples);
+
+		//Transfer to .tiff
+		void ConvertBinToTiff();
+
+		//Scanmode merge
+		bool savestate = 0;
+		bool displaywithscan = 0;
+		int offsetx = 0;
+		int offsety = 0;
+		double upscalefactorX = 1;
+		double upscalefactorY = 1;
+		int offset_lissajous = 0;
+		string RASTERPath,LISSAJOUSPath;
+		string LISSAJOUSFolderPath;
+		int xfreq, yfreq, num_of_sample, samplingrate;
+		int pixelnum = 512;
+		double lissajous_phase;
+		double progresspercentage = 0;
+		double progresspercentage_scanmodemerge = 0;
+		void DISPLAYRASTER();
+		void RLMERGEDISPLAY();
+		void GenerateSampleMap();
+		void LoadLissajousImage();
+
+		//Reconstruct
+		void DisplayReconstructedLissajousImage();
+		void ReconstructAllTiffInFolder();
 
 		//Extract hymograph
 		string RASTERPath_EK, LISSAJOUSPath_EK;
@@ -109,11 +108,21 @@ namespace NTU {
 		vector<cv::Point> scannedPixelList;
 		double startPixelIndexpercentage = 0;
 		double endPixelIndexpercentage = 0;
-		void LOADspec_EK(string path);
 		void LoadLissajousAndMerge();
 		void DrawLissajousPattern();
 		void ExtractKymograph();
+
+		//Supplementart functions
+		void LOADspec(string path);
+		void LOADspec_EK(string path);
+		bool LissajousIdxFromSample(int sample_idx, double sampling_rate, int widthpixelnum, int heightpixelnum, double xfreq, double yfreq, double lissajous_phase, int& x_out, int& y_out);
+		void CopyScanSpecCSV(string& sourceFolder, string& targetFolder);
+		int extractNumber(const string& filename);
+		void AddtextOnImg(cv::Mat& IMGDP8, int Xpixelsize, int Ypixelsize);
+		void AVERAGE(string folderPath, cv::Mat& avgImage);
 	private:
+		cv::Mat rasterImage;
+		cv::cuda::Stream stream;
 		int rasterimgindex,lissajousimgindex;
 		double* LissajousrawData = nullptr;
 		double* LissajoustempData = nullptr;
