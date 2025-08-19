@@ -84,9 +84,16 @@ namespace NTU {
 		int offset_lissajous = 0;
 		string RASTERPath,LISSAJOUSPath;
 		string LISSAJOUSFolderPath;
-		int xfreq, yfreq, num_of_sample, samplingrate;
+		int xfreq = 0;
+		int yfreq = 0;
+		int num_of_sample = 0;
+		int samplingrate = 0;
+		int chopperfreq = 0;
+		int ampx = 0;
+		int ampy =0;
 		int pixelnum = 512;
-		double lissajous_phase;
+		double lissajousphase = 0;
+		double chopperphase =0;
 		double progresspercentage = 0;
 		double progresspercentage_scanmodemerge = 0;
 		void DISPLAYRASTER();

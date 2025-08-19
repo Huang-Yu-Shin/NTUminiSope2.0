@@ -288,7 +288,7 @@ namespace NTU {
 	void YSImageMerge::ScanmodePreview() {
 		cv::Mat DisplayIMG = rasterImage.clone();
 		double duration = 1.0 / double(framerate_SP);
-		if (framerate_SP >= 120) {
+		if (framerate_SP >= 12000) {
 			chopper_freq_upscale = 1;
 		}
 		else {
@@ -341,15 +341,16 @@ namespace NTU {
 			int shiftedIndex = (sampleIndex - shiftSamples) % totalSamples; 
 			if (shiftedIndex < 0) shiftedIndex += totalSamples;       
 
-			const int quarterSamples = totalSamples / 4;
-			int quarter = shiftedIndex / quarterSamples;  
-			bool isHigh = (quarter < 2);                
+			const int quarterSamples = totalSamples / 8;
+			int quarter = shiftedIndex / quarterSamples; 
+			bool isHigh = (quarter >=1) && (quarter<=2);
 
 			return isHigh;
 		}
 		else if (chopper_freq_upscale == 4) {
 			int segments = 8;                            
 			int samplesPerSegment = totalSamples / segments;
+			int samplesPerSegment_calibration = totalSamples / (segments*4);
 			if (samplesPerSegment <= 0) return true;
 
 			double ph = std::fmod(chopper_phase, 360.0);
@@ -362,7 +363,8 @@ namespace NTU {
 			if (shiftedIndex < 0) shiftedIndex += totalSamples;
 
 			int segIdx = shiftedIndex / samplesPerSegment;
-			bool isHigh = (segIdx % 2) == 0;        
+			int segIdx_calibration = shiftedIndex / samplesPerSegment_calibration;
+			bool isHigh = ((segIdx % 2) == 0) && (((segIdx_calibration % 4) == 1)|| ((segIdx_calibration % 4) == 2));
 			return isHigh;
 		}
 
@@ -395,7 +397,7 @@ namespace NTU {
 		for (int i = 0; i < num_of_sample; ++i) {
 			int x = 0;
 			int y = 0;
-			bool inrange = LissajousIdxFromSample(i, samplingrate, pixelnum, pixelnum, double(xfreq), double(yfreq), lissajous_phase, x, y);
+			bool inrange = LissajousIdxFromSample(i, samplingrate, pixelnum, pixelnum, double(xfreq), double(yfreq), lissajousphase, x, y);
 			if (inrange == true) {
 				sampleMap[y * pixelnum + x]++;
 			}
@@ -426,7 +428,7 @@ namespace NTU {
 			for (int i = 0; i < num_of_sample; ++i) {
 				int xPixel = 0;
 				int yPixel = 0;
-				bool inrange = LissajousIdxFromSample(i, num_of_sample, pixelnum, pixelnum, double(xfreq), double(yfreq), lissajous_phase, xPixel, yPixel);
+				bool inrange = LissajousIdxFromSample(i, num_of_sample, pixelnum, pixelnum, double(xfreq), double(yfreq), lissajousphase, xPixel, yPixel);
 				if ((xPixel+offsetx) >= 0 && (xPixel + offsetx) < bigRaster.cols &&
 					(yPixel - offsety) >= 0 && (yPixel - offsety) < bigRaster.rows) {
 					bigRaster.at<cv::Vec3b>(yPixel-offsety, xPixel+offsetx) = cv::Vec3b(0, 0, 255);
@@ -531,7 +533,7 @@ namespace NTU {
 		for (int i = 0; i < num_of_sample_EK; ++i) {
 			int x = 0;
 			int y = 0;
-			bool inrange = LissajousIdxFromSample(i, samplingrate_EK, pixelnum, pixelnum, double(xfreq), double(yfreq), lissajous_phase, x, y);
+			bool inrange = LissajousIdxFromSample(i, samplingrate_EK, pixelnum, pixelnum, double(xfreq), double(yfreq), lissajousphase, x, y);
 			if (inrange == true) {
 				cv::Point pt(x, y);
 				if (scannedPixelList.empty() || scannedPixelList.back() != pt)
@@ -719,7 +721,7 @@ namespace NTU {
 		for (int i = 0; i < num_of_sample; ++i) {
 			int x = 0;
 			int y = 0;
-			bool inrange = LissajousIdxFromSample(i, samplingrate, pixelnum, pixelnum, double(xfreq), double(yfreq), lissajous_phase, x, y);
+			bool inrange = LissajousIdxFromSample(i, samplingrate, pixelnum, pixelnum, double(xfreq), double(yfreq), lissajousphase, x, y);
 			if (inrange == true) {
 				int idx = y * pixelnum + x;
 				if (sampleMap[idx] > 0)
@@ -803,7 +805,7 @@ namespace NTU {
 			for (int i = 0; i < num_of_sample; ++i) {
 				int x = 0;
 				int y = 0;
-				bool inrange= LissajousIdxFromSample(i, samplingrate, pixelnum, pixelnum, double(xfreq), double(yfreq), lissajous_phase, x, y);
+				bool inrange= LissajousIdxFromSample(i, samplingrate, pixelnum, pixelnum, double(xfreq), double(yfreq), lissajousphase, x, y);
 				if (inrange==true) {
 					int idx = y * pixelnum + x;
 					if (sampleMap[idx] > 0)
@@ -864,7 +866,7 @@ namespace NTU {
 				}
 			}
 			else if (key == "phase") {
-				try { lissajous_phase = stod(value); }
+				try { lissajousphase = stod(value); }
 				catch (const exception& e) {
 					cerr << "Error converting phase value: " << value << " (" << e.what() << ")" << endl;
 				}
@@ -879,6 +881,30 @@ namespace NTU {
 				try { samplingrate = stod(value); }
 				catch (const exception& e) {
 					cerr << "Error converting samplingrate value: " << value << " (" << e.what() << ")" << endl;
+				}
+			}
+			else if (key == "xamp") {
+				try { ampx = stod(value); }
+				catch (const exception& e) {
+					cerr << "Error converting xamp value: " << value << " (" << e.what() << ")" << endl;
+				}
+			}
+			else if (key == "yamp") {
+				try { ampy = stod(value); }
+				catch (const exception& e) {
+					cerr << "Error converting yamp value: " << value << " (" << e.what() << ")" << endl;
+				}
+			}
+			else if (key == "chopperfreq") {
+				try { chopperfreq = stod(value); }
+				catch (const exception& e) {
+					cerr << "Error converting chopperfreq value: " << value << " (" << e.what() << ")" << endl;
+				}
+			}
+			else if (key == "chopperphase") {
+				try { chopperphase = stod(value); }
+				catch (const exception& e) {
+					cerr << "Error converting chopperphase value: " << value << " (" << e.what() << ")" << endl;
 				}
 			}
 		}

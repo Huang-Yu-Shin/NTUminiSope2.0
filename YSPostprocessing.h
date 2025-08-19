@@ -222,6 +222,18 @@ private: System::Windows::Forms::Label^ label48;
 
 
 private: System::Windows::Forms::Label^ label45;
+private: System::Windows::Forms::TextBox^ textBox_phasechopper;
+
+private: System::Windows::Forms::TextBox^ textBox_chopperfreq;
+
+
+private: System::Windows::Forms::TextBox^ textBox_ampy;
+
+private: System::Windows::Forms::TextBox^ textBox_ampx;
+private: System::Windows::Forms::Label^ label49;
+private: System::Windows::Forms::Label^ label46;
+private: System::Windows::Forms::Label^ label44;
+private: System::Windows::Forms::Label^ label43;
 
 
 
@@ -519,6 +531,7 @@ private: System::ComponentModel::IContainer^ components;
 			this->textBox_offsety_SP = (gcnew System::Windows::Forms::TextBox());
 			this->button_down_SP = (gcnew System::Windows::Forms::Button());
 			this->textBox_offsetx_SP = (gcnew System::Windows::Forms::TextBox());
+			this->label40 = (gcnew System::Windows::Forms::Label());
 			this->button_left_SP = (gcnew System::Windows::Forms::Button());
 			this->label47 = (gcnew System::Windows::Forms::Label());
 			this->button_right_SP = (gcnew System::Windows::Forms::Button());
@@ -549,8 +562,15 @@ private: System::ComponentModel::IContainer^ components;
 			this->textBox_ScanPreview_LOADRASTER = (gcnew System::Windows::Forms::TextBox());
 			this->tabPage3 = (gcnew System::Windows::Forms::TabPage());
 			this->label39 = (gcnew System::Windows::Forms::Label());
-			this->label40 = (gcnew System::Windows::Forms::Label());
 			this->button_shut_down = (gcnew System::Windows::Forms::Button());
+			this->label43 = (gcnew System::Windows::Forms::Label());
+			this->label44 = (gcnew System::Windows::Forms::Label());
+			this->label46 = (gcnew System::Windows::Forms::Label());
+			this->label49 = (gcnew System::Windows::Forms::Label());
+			this->textBox_ampx = (gcnew System::Windows::Forms::TextBox());
+			this->textBox_ampy = (gcnew System::Windows::Forms::TextBox());
+			this->textBox_chopperfreq = (gcnew System::Windows::Forms::TextBox());
+			this->textBox_phasechopper = (gcnew System::Windows::Forms::TextBox());
 			(cli::safe_cast<System::ComponentModel::ISupportInitialize^>(this->trackBar_lissajousoffset))->BeginInit();
 			(cli::safe_cast<System::ComponentModel::ISupportInitialize^>(this->trackBar_resizey))->BeginInit();
 			(cli::safe_cast<System::ComponentModel::ISupportInitialize^>(this->trackBar_resizex))->BeginInit();
@@ -1039,6 +1059,14 @@ private: System::ComponentModel::IContainer^ components;
 			// panel3
 			// 
 			this->panel3->BackColor = System::Drawing::Color::LightSteelBlue;
+			this->panel3->Controls->Add(this->textBox_phasechopper);
+			this->panel3->Controls->Add(this->textBox_chopperfreq);
+			this->panel3->Controls->Add(this->textBox_ampy);
+			this->panel3->Controls->Add(this->textBox_ampx);
+			this->panel3->Controls->Add(this->label49);
+			this->panel3->Controls->Add(this->label46);
+			this->panel3->Controls->Add(this->label44);
+			this->panel3->Controls->Add(this->label43);
 			this->panel3->Controls->Add(this->textBox_lissajousphase);
 			this->panel3->Controls->Add(this->label15);
 			this->panel3->Controls->Add(this->textBox_samplingrate);
@@ -1053,7 +1081,7 @@ private: System::ComponentModel::IContainer^ components;
 			this->panel3->Location = System::Drawing::Point(698, 471);
 			this->panel3->Margin = System::Windows::Forms::Padding(4);
 			this->panel3->Name = L"panel3";
-			this->panel3->Size = System::Drawing::Size(529, 246);
+			this->panel3->Size = System::Drawing::Size(529, 401);
 			this->panel3->TabIndex = 105;
 			// 
 			// textBox_lissajousphase
@@ -1525,25 +1553,25 @@ private: System::ComponentModel::IContainer^ components;
 			this->tableLayoutPanel_CalPara_result->Name = L"tableLayoutPanel_CalPara_result";
 			this->tableLayoutPanel_CalPara_result->RowCount = 1;
 			this->tableLayoutPanel_CalPara_result->RowStyles->Add((gcnew System::Windows::Forms::RowStyle(System::Windows::Forms::SizeType::Absolute,
-				493)));
+				494)));
 			this->tableLayoutPanel_CalPara_result->RowStyles->Add((gcnew System::Windows::Forms::RowStyle(System::Windows::Forms::SizeType::Absolute,
-				493)));
+				494)));
 			this->tableLayoutPanel_CalPara_result->RowStyles->Add((gcnew System::Windows::Forms::RowStyle(System::Windows::Forms::SizeType::Absolute,
-				493)));
+				494)));
 			this->tableLayoutPanel_CalPara_result->RowStyles->Add((gcnew System::Windows::Forms::RowStyle(System::Windows::Forms::SizeType::Absolute,
-				493)));
+				494)));
 			this->tableLayoutPanel_CalPara_result->RowStyles->Add((gcnew System::Windows::Forms::RowStyle(System::Windows::Forms::SizeType::Absolute,
-				493)));
+				494)));
 			this->tableLayoutPanel_CalPara_result->RowStyles->Add((gcnew System::Windows::Forms::RowStyle(System::Windows::Forms::SizeType::Absolute,
-				493)));
+				494)));
 			this->tableLayoutPanel_CalPara_result->RowStyles->Add((gcnew System::Windows::Forms::RowStyle(System::Windows::Forms::SizeType::Absolute,
-				493)));
+				494)));
 			this->tableLayoutPanel_CalPara_result->RowStyles->Add((gcnew System::Windows::Forms::RowStyle(System::Windows::Forms::SizeType::Absolute,
-				493)));
+				494)));
 			this->tableLayoutPanel_CalPara_result->RowStyles->Add((gcnew System::Windows::Forms::RowStyle(System::Windows::Forms::SizeType::Absolute,
-				493)));
+				494)));
 			this->tableLayoutPanel_CalPara_result->RowStyles->Add((gcnew System::Windows::Forms::RowStyle(System::Windows::Forms::SizeType::Absolute,
-				493)));
+				494)));
 			this->tableLayoutPanel_CalPara_result->Size = System::Drawing::Size(495, 285);
 			this->tableLayoutPanel_CalPara_result->TabIndex = 51;
 			// 
@@ -2051,6 +2079,7 @@ private: System::ComponentModel::IContainer^ components;
 			this->tabPage4->Controls->Add(this->textBox_offsety_SP);
 			this->tabPage4->Controls->Add(this->button_down_SP);
 			this->tabPage4->Controls->Add(this->textBox_offsetx_SP);
+			this->tabPage4->Controls->Add(this->label40);
 			this->tabPage4->Controls->Add(this->button_left_SP);
 			this->tabPage4->Controls->Add(this->label47);
 			this->tabPage4->Controls->Add(this->button_right_SP);
@@ -2092,7 +2121,7 @@ private: System::ComponentModel::IContainer^ components;
 			this->comboBox_ScanPreview_scansize->Location = System::Drawing::Point(132, 266);
 			this->comboBox_ScanPreview_scansize->Margin = System::Windows::Forms::Padding(3, 2, 3, 2);
 			this->comboBox_ScanPreview_scansize->Name = L"comboBox_ScanPreview_scansize";
-			this->comboBox_ScanPreview_scansize->Size = System::Drawing::Size(131, 33);
+			this->comboBox_ScanPreview_scansize->Size = System::Drawing::Size(87, 33);
 			this->comboBox_ScanPreview_scansize->TabIndex = 144;
 			this->comboBox_ScanPreview_scansize->Text = L"1x";
 			this->comboBox_ScanPreview_scansize->SelectedIndexChanged += gcnew System::EventHandler(this, &YSPostprocessing::comboBox_ScanPreview_scansize_SelectedIndexChanged);
@@ -2152,6 +2181,16 @@ private: System::ComponentModel::IContainer^ components;
 			this->textBox_offsetx_SP->TabIndex = 137;
 			this->textBox_offsetx_SP->Text = L"0";
 			this->textBox_offsetx_SP->TextAlign = System::Windows::Forms::HorizontalAlignment::Center;
+			// 
+			// label40
+			// 
+			this->label40->Font = (gcnew System::Drawing::Font(L"Segoe UI", 8, System::Drawing::FontStyle::Bold));
+			this->label40->ForeColor = System::Drawing::Color::DarkRed;
+			this->label40->Location = System::Drawing::Point(450, 149);
+			this->label40->Name = L"label40";
+			this->label40->Size = System::Drawing::Size(193, 44);
+			this->label40->TabIndex = 124;
+			this->label40->Text = L"Note: Raster and Lissajous have the same FOV";
 			// 
 			// button_left_SP
 			// 
@@ -2524,16 +2563,6 @@ private: System::ComponentModel::IContainer^ components;
 			this->label39->TabIndex = 123;
 			this->label39->Text = L"Note: Raster and Lissajous have the same FOV";
 			// 
-			// label40
-			// 
-			this->label40->Font = (gcnew System::Drawing::Font(L"Segoe UI", 8, System::Drawing::FontStyle::Bold));
-			this->label40->ForeColor = System::Drawing::Color::DarkRed;
-			this->label40->Location = System::Drawing::Point(754, 14);
-			this->label40->Name = L"label40";
-			this->label40->Size = System::Drawing::Size(193, 44);
-			this->label40->TabIndex = 124;
-			this->label40->Text = L"Note: Raster and Lissajous have the same FOV";
-			// 
 			// button_shut_down
 			// 
 			this->button_shut_down->Font = (gcnew System::Drawing::Font(L"Segoe UI", 15, static_cast<System::Drawing::FontStyle>((System::Drawing::FontStyle::Bold | System::Drawing::FontStyle::Italic))));
@@ -2546,6 +2575,90 @@ private: System::ComponentModel::IContainer^ components;
 			this->button_shut_down->Text = L"Close";
 			this->button_shut_down->UseVisualStyleBackColor = true;
 			this->button_shut_down->Click += gcnew System::EventHandler(this, &YSPostprocessing::button_shut_down_Click);
+			// 
+			// label43
+			// 
+			this->label43->AutoSize = true;
+			this->label43->Font = (gcnew System::Drawing::Font(L"Segoe UI", 11.25F, System::Drawing::FontStyle::Bold));
+			this->label43->Location = System::Drawing::Point(17, 240);
+			this->label43->Name = L"label43";
+			this->label43->Size = System::Drawing::Size(122, 25);
+			this->label43->TabIndex = 18;
+			this->label43->Text = L"Amplitude X";
+			// 
+			// label44
+			// 
+			this->label44->AutoSize = true;
+			this->label44->Font = (gcnew System::Drawing::Font(L"Segoe UI", 11.25F, System::Drawing::FontStyle::Bold));
+			this->label44->Location = System::Drawing::Point(17, 279);
+			this->label44->Name = L"label44";
+			this->label44->Size = System::Drawing::Size(122, 25);
+			this->label44->TabIndex = 19;
+			this->label44->Text = L"Amplitude Y";
+			// 
+			// label46
+			// 
+			this->label46->AutoSize = true;
+			this->label46->Font = (gcnew System::Drawing::Font(L"Segoe UI", 11.25F, System::Drawing::FontStyle::Bold));
+			this->label46->Location = System::Drawing::Point(17, 310);
+			this->label46->Name = L"label46";
+			this->label46->Size = System::Drawing::Size(179, 25);
+			this->label46->TabIndex = 20;
+			this->label46->Text = L"Freq. chopper (Hz)";
+			// 
+			// label49
+			// 
+			this->label49->AutoSize = true;
+			this->label49->Font = (gcnew System::Drawing::Font(L"Segoe UI", 11.25F, System::Drawing::FontStyle::Bold));
+			this->label49->Location = System::Drawing::Point(17, 344);
+			this->label49->Name = L"label49";
+			this->label49->Size = System::Drawing::Size(142, 25);
+			this->label49->TabIndex = 21;
+			this->label49->Text = L"Phase chopper";
+			// 
+			// textBox_ampx
+			// 
+			this->textBox_ampx->Enabled = false;
+			this->textBox_ampx->Font = (gcnew System::Drawing::Font(L"Segoe UI", 11.25F, System::Drawing::FontStyle::Bold));
+			this->textBox_ampx->Location = System::Drawing::Point(244, 235);
+			this->textBox_ampx->Margin = System::Windows::Forms::Padding(3, 2, 3, 2);
+			this->textBox_ampx->Name = L"textBox_ampx";
+			this->textBox_ampx->Size = System::Drawing::Size(131, 32);
+			this->textBox_ampx->TabIndex = 22;
+			this->textBox_ampx->TextAlign = System::Windows::Forms::HorizontalAlignment::Center;
+			// 
+			// textBox_ampy
+			// 
+			this->textBox_ampy->Enabled = false;
+			this->textBox_ampy->Font = (gcnew System::Drawing::Font(L"Segoe UI", 11.25F, System::Drawing::FontStyle::Bold));
+			this->textBox_ampy->Location = System::Drawing::Point(244, 271);
+			this->textBox_ampy->Margin = System::Windows::Forms::Padding(3, 2, 3, 2);
+			this->textBox_ampy->Name = L"textBox_ampy";
+			this->textBox_ampy->Size = System::Drawing::Size(131, 32);
+			this->textBox_ampy->TabIndex = 23;
+			this->textBox_ampy->TextAlign = System::Windows::Forms::HorizontalAlignment::Center;
+			// 
+			// textBox_chopperfreq
+			// 
+			this->textBox_chopperfreq->Enabled = false;
+			this->textBox_chopperfreq->Font = (gcnew System::Drawing::Font(L"Segoe UI", 11.25F, System::Drawing::FontStyle::Bold));
+			this->textBox_chopperfreq->Location = System::Drawing::Point(244, 307);
+			this->textBox_chopperfreq->Margin = System::Windows::Forms::Padding(3, 2, 3, 2);
+			this->textBox_chopperfreq->Name = L"textBox_chopperfreq";
+			this->textBox_chopperfreq->Size = System::Drawing::Size(131, 32);
+			this->textBox_chopperfreq->TabIndex = 24;
+			this->textBox_chopperfreq->TextAlign = System::Windows::Forms::HorizontalAlignment::Center;
+			// 
+			// textBox_phasechopper
+			// 
+			this->textBox_phasechopper->Enabled = false;
+			this->textBox_phasechopper->Font = (gcnew System::Drawing::Font(L"Segoe UI", 11.25F, System::Drawing::FontStyle::Bold));
+			this->textBox_phasechopper->Location = System::Drawing::Point(244, 344);
+			this->textBox_phasechopper->Margin = System::Windows::Forms::Padding(3, 2, 3, 2);
+			this->textBox_phasechopper->Name = L"textBox_phasechopper";
+			this->textBox_phasechopper->Size = System::Drawing::Size(131, 32);
+			this->textBox_phasechopper->TabIndex = 25;
+			this->textBox_phasechopper->TextAlign = System::Windows::Forms::HorizontalAlignment::Center;
 			// 
 			// YSPostprocessing
 			// 
@@ -2560,7 +2673,6 @@ private: System::ComponentModel::IContainer^ components;
 			this->Controls->Add(this->panel5);
 			this->Controls->Add(this->panel3);
 			this->Controls->Add(this->label1);
-			this->Controls->Add(this->label40);
 			this->Margin = System::Windows::Forms::Padding(3, 2, 3, 2);
 			this->Name = L"YSPostprocessing";
 			this->Text = L"YSPostprocessing";
@@ -2608,11 +2720,11 @@ private: System::Void button_LOADLISSAJOUSFOLDER_Click(System::Object^ sender, S
 		this->textBox_LOADLISSAJOUSFOLDER->Text = selectedPath;
 		imagemerge->LISSAJOUSFolderPath = msclr::interop::marshal_as<std::string>(selectedPath);
 		imagemerge->LOADspec(imagemerge->LISSAJOUSFolderPath);
-		this->textBox_lissajousfreqx->Text = imagemerge->xfreq.ToString();
-		this->textBox_lissajousfreqy->Text = imagemerge->yfreq.ToString();
-		this->textBox_lissajousphase->Text = imagemerge->lissajous_phase.ToString();
-		this->textBox_numofsample->Text = imagemerge->num_of_sample.ToString();
-		this->textBox_samplingrate->Text = imagemerge->samplingrate.ToString();
+		//this->textBox_lissajousfreqx->Text = imagemerge->xfreq.ToString();
+		//this->textBox_lissajousfreqy->Text = imagemerge->yfreq.ToString();
+		//this->textBox_lissajousphase->Text = imagemerge->lissajousphase.ToString();
+		//this->textBox_numofsample->Text = imagemerge->num_of_sample.ToString();
+		//this->textBox_samplingrate->Text = imagemerge->samplingrate.ToString();
 		imagemerge->DISPLAYRASTER();
 	}
 }
@@ -2688,11 +2800,6 @@ private: System::Void button_LOADLISSAJOUS_RAWBIN_Click_1(System::Object^ sender
 		this->textBox_LOADLISSAJOUSBIN->Text = selectedPath;
 		imagemerge->LISSAJOUSFolderPath = msclr::interop::marshal_as<std::string>(selectedPath);
 		imagemerge->LOADspec(imagemerge->LISSAJOUSFolderPath);
-		this->textBox_lissajousfreqx->Text = imagemerge->xfreq.ToString();
-		this->textBox_lissajousfreqy->Text = imagemerge->yfreq.ToString();
-		this->textBox_lissajousphase->Text = imagemerge->lissajous_phase.ToString();
-		this->textBox_numofsample->Text = imagemerge->num_of_sample.ToString();
-		this->textBox_samplingrate->Text = imagemerge->samplingrate.ToString();
 		this->button_TRANSFERTOTIFF->Enabled = true;
 		this->label_TRANSFERTOTIFF->Text = "--";
 	}
@@ -2735,11 +2842,6 @@ private: System::Void button_LOADLISSAJOUSFOLDER2_Click(System::Object^ sender, 
 		imagemerge->LISSAJOUSFolderPath = msclr::interop::marshal_as<std::string>(selectedPath);
 		imagemerge->LOADspec(imagemerge->LISSAJOUSFolderPath);
 		imagemerge->GenerateSampleMap();
-		this->textBox_lissajousfreqx->Text = imagemerge->xfreq.ToString();
-		this->textBox_lissajousfreqy->Text = imagemerge->yfreq.ToString();
-		this->textBox_lissajousphase->Text = imagemerge->lissajous_phase.ToString();
-		this->textBox_numofsample->Text = imagemerge->num_of_sample.ToString();
-		this->textBox_samplingrate->Text = imagemerge->samplingrate.ToString();
 		imagemerge->DisplayReconstructedLissajousImage();
 	}
 }
@@ -3060,10 +3162,19 @@ private: System::Void button_processimage_Click(System::Object^ sender, System::
 }
 
 private: System::Void timer_refresh_UI_Tick(System::Object^ sender, System::EventArgs^ e) {
+	this->textBox_lissajousfreqx->Text = imagemerge->xfreq.ToString();
+	this->textBox_lissajousfreqy->Text = imagemerge->yfreq.ToString();
+	this->textBox_lissajousphase->Text = imagemerge->lissajousphase.ToString();
+	this->textBox_numofsample->Text = imagemerge->num_of_sample.ToString();
+	this->textBox_samplingrate->Text = imagemerge->samplingrate.ToString();
+	this->textBox_ampx->Text = imagemerge->ampx.ToString();
+	this->textBox_ampy->Text = imagemerge->ampy.ToString();
+	this->textBox_chopperfreq->Text = imagemerge->chopperfreq.ToString();
+	this->textBox_phasechopper->Text = imagemerge->chopperphase.ToString();
 	this->progressBar_reconstruct->Value = int(imagemerge->progresspercentage);
-	this->label_reconstruct->Text = imagemerge->progresspercentage.ToString() + "%";
+	this->label_reconstruct->Text = imagemerge->progresspercentage.ToString("F1") + "%";
 	this->progressBar_scanmodemerge->Value = int(imagemerge->progresspercentage_scanmodemerge);
-	this->label_scanmodemerge->Text = imagemerge->progresspercentage_scanmodemerge.ToString() + "%";
+	this->label_scanmodemerge->Text = imagemerge->progresspercentage_scanmodemerge.ToString("F1") + "%";
 	if (imagemerge->calpara != nullptr) {
 		this->textBox_CalPara_locx->Text = cudacalpara->xTarget.ToString();
 		this->textBox_CalPara_locy->Text = cudacalpara->yTarget.ToString();
