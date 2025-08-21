@@ -488,7 +488,7 @@ private: System::Windows::Forms::Button^ YSbutton_save;
 private: System::Windows::Forms::ProgressBar^ progressBar1;
 private: System::Windows::Forms::Label^ YSlabel_savenum;
 
-private: System::Windows::Forms::CheckBox^ YScheckBox_ch1;
+
 private: System::Windows::Forms::TrackBar^ YStrackBar_savenum;
 
 
@@ -606,7 +606,7 @@ private: CustomControls::DefineControls::ToggleButtons^ toggleButtons_Binning;
 private: System::Windows::Forms::Label^ label16;
 private: System::Windows::Forms::Label^ label58;
 private: CustomControls::DefineControls::ToggleButtons^ toggleButtons_equalhistogram;
-private: System::Windows::Forms::CheckBox^ YScheckBox_saverawbin;
+
 private: CustomControls::DefineControls::ToggleButtons^ toggleButtons_normalize;
 
 private: System::Windows::Forms::Label^ label59;
@@ -640,8 +640,14 @@ private: System::Windows::Forms::Label^ label_Median_kernel;
 private: System::Windows::Forms::TrackBar^ trackBar_Median_kernel;
 private: CustomControls::DefineControls::ToggleButtons^ toggleButtons_Median;
 private: CustomControls::DefineControls::ToggleButtons^ toggleButtons_raster_chopper;
-private: CustomControls::DefineControls::ToggleButtons^ toggleButtons_lissajous_chopper;
+
 private: System::Windows::Forms::ComboBox^ comboBox_lissajous_chopperphase;
+private: System::Windows::Forms::Label^ label_channel;
+private: System::Windows::Forms::Label^ label_channeldisplay;
+private: CustomControls::DefineControls::ToggleButtons^ toggleButtons_label_channeldisplay;
+
+
+
 
 
 
@@ -1117,7 +1123,6 @@ private:
 			this->tabControl3 = (gcnew System::Windows::Forms::TabControl());
 			this->tabPage13 = (gcnew System::Windows::Forms::TabPage());
 			this->checkBox_saveprocessedimage = (gcnew System::Windows::Forms::CheckBox());
-			this->YScheckBox_saverawbin = (gcnew System::Windows::Forms::CheckBox());
 			this->YSbutton_clear = (gcnew System::Windows::Forms::Button());
 			this->label25 = (gcnew System::Windows::Forms::Label());
 			this->YStextBox_title = (gcnew System::Windows::Forms::TextBox());
@@ -1125,7 +1130,6 @@ private:
 			this->YSbutton_save = (gcnew System::Windows::Forms::Button());
 			this->progressBar1 = (gcnew System::Windows::Forms::ProgressBar());
 			this->YSlabel_savenum = (gcnew System::Windows::Forms::Label());
-			this->YScheckBox_ch1 = (gcnew System::Windows::Forms::CheckBox());
 			this->YStrackBar_savenum = (gcnew System::Windows::Forms::TrackBar());
 			this->textBox2 = (gcnew System::Windows::Forms::TextBox());
 			this->label38 = (gcnew System::Windows::Forms::Label());
@@ -1251,7 +1255,8 @@ private:
 			this->YScheckBox_intclock = (gcnew System::Windows::Forms::CheckBox());
 			this->YSbutton_lissajous_setamp = (gcnew System::Windows::Forms::TabControl());
 			this->tabPage16 = (gcnew System::Windows::Forms::TabPage());
-			this->toggleButtons_raster_chopper = (gcnew CustomControls::DefineControls::ToggleButtons());
+			this->label_channeldisplay = (gcnew System::Windows::Forms::Label());
+			this->toggleButtons_label_channeldisplay = (gcnew CustomControls::DefineControls::ToggleButtons());
 			this->label65 = (gcnew System::Windows::Forms::Label());
 			this->YScomboBox__raster_chopperfreq = (gcnew System::Windows::Forms::ComboBox());
 			this->label64 = (gcnew System::Windows::Forms::Label());
@@ -1279,7 +1284,6 @@ private:
 			this->label29 = (gcnew System::Windows::Forms::Label());
 			this->tabPage15 = (gcnew System::Windows::Forms::TabPage());
 			this->comboBox_lissajous_chopperphase = (gcnew System::Windows::Forms::ComboBox());
-			this->toggleButtons_lissajous_chopper = (gcnew CustomControls::DefineControls::ToggleButtons());
 			this->label67 = (gcnew System::Windows::Forms::Label());
 			this->textBox_highspeedmode = (gcnew System::Windows::Forms::TextBox());
 			this->YScheckBox_lissajous_repairshow = (gcnew System::Windows::Forms::CheckBox());
@@ -1320,6 +1324,7 @@ private:
 			this->label44 = (gcnew System::Windows::Forms::Label());
 			this->label45 = (gcnew System::Windows::Forms::Label());
 			this->YSbutton_manual_control = (gcnew System::Windows::Forms::Button());
+			this->toggleButtons_raster_chopper = (gcnew CustomControls::DefineControls::ToggleButtons());
 			this->label23 = (gcnew System::Windows::Forms::Label());
 			this->panel2 = (gcnew System::Windows::Forms::Panel());
 			this->button_ETL_downdown = (gcnew System::Windows::Forms::Button());
@@ -1340,6 +1345,7 @@ private:
 			this->timer_refresh_UI = (gcnew System::Windows::Forms::Timer(this->components));
 			this->tabControl5 = (gcnew System::Windows::Forms::TabControl());
 			this->tabPage18 = (gcnew System::Windows::Forms::TabPage());
+			this->label_channel = (gcnew System::Windows::Forms::Label());
 			this->label57 = (gcnew System::Windows::Forms::Label());
 			this->label50 = (gcnew System::Windows::Forms::Label());
 			this->YScomboBox_inputrange = (gcnew System::Windows::Forms::ComboBox());
@@ -1456,7 +1462,7 @@ private:
 				static_cast<System::Byte>(0)));
 			this->checkBox_biDirection->Location = System::Drawing::Point(208, 43);
 			this->checkBox_biDirection->Name = L"checkBox_biDirection";
-			this->checkBox_biDirection->Size = System::Drawing::Size(135, 29);
+			this->checkBox_biDirection->Size = System::Drawing::Size(108, 24);
 			this->checkBox_biDirection->TabIndex = 12;
 			this->checkBox_biDirection->Text = L"Bi-Direction";
 			this->checkBox_biDirection->UseVisualStyleBackColor = true;
@@ -1469,7 +1475,7 @@ private:
 				static_cast<System::Byte>(0)));
 			this->checkBox_uniDirection->Location = System::Drawing::Point(11, 40);
 			this->checkBox_uniDirection->Name = L"checkBox_uniDirection";
-			this->checkBox_uniDirection->Size = System::Drawing::Size(148, 29);
+			this->checkBox_uniDirection->Size = System::Drawing::Size(117, 24);
 			this->checkBox_uniDirection->TabIndex = 11;
 			this->checkBox_uniDirection->Text = L"Uni-Direction";
 			this->checkBox_uniDirection->UseVisualStyleBackColor = true;
@@ -1484,7 +1490,7 @@ private:
 				static_cast<System::Byte>(0)));
 			this->checkBox2__Int_clk->Location = System::Drawing::Point(208, 10);
 			this->checkBox2__Int_clk->Name = L"checkBox2__Int_clk";
-			this->checkBox2__Int_clk->Size = System::Drawing::Size(108, 29);
+			this->checkBox2__Int_clk->Size = System::Drawing::Size(86, 24);
 			this->checkBox2__Int_clk->TabIndex = 8;
 			this->checkBox2__Int_clk->Text = L"Int. clock";
 			this->checkBox2__Int_clk->UseVisualStyleBackColor = true;
@@ -1498,7 +1504,7 @@ private:
 			this->checkBox1_Ext_clk->ForeColor = System::Drawing::Color::White;
 			this->checkBox1_Ext_clk->Location = System::Drawing::Point(11, 10);
 			this->checkBox1_Ext_clk->Name = L"checkBox1_Ext_clk";
-			this->checkBox1_Ext_clk->Size = System::Drawing::Size(111, 29);
+			this->checkBox1_Ext_clk->Size = System::Drawing::Size(89, 24);
 			this->checkBox1_Ext_clk->TabIndex = 7;
 			this->checkBox1_Ext_clk->Text = L"Ext. clock";
 			this->checkBox1_Ext_clk->UseVisualStyleBackColor = true;
@@ -1516,7 +1522,7 @@ private:
 				System::Drawing::GraphicsUnit::Point, static_cast<System::Byte>(0)));
 			this->label1_Main_Control_Panel->Location = System::Drawing::Point(4, 109);
 			this->label1_Main_Control_Panel->Name = L"label1_Main_Control_Panel";
-			this->label1_Main_Control_Panel->Size = System::Drawing::Size(126, 25);
+			this->label1_Main_Control_Panel->Size = System::Drawing::Size(104, 20);
 			this->label1_Main_Control_Panel->TabIndex = 3;
 			this->label1_Main_Control_Panel->Text = L"Scan Settings";
 			// 
@@ -1543,7 +1549,7 @@ private:
 				static_cast<System::Byte>(0)));
 			this->label1->Location = System::Drawing::Point(244, 49);
 			this->label1->Name = L"label1";
-			this->label1->Size = System::Drawing::Size(22, 25);
+			this->label1->Size = System::Drawing::Size(17, 20);
 			this->label1->TabIndex = 34;
 			this->label1->Text = L"x";
 			// 
@@ -1555,7 +1561,7 @@ private:
 				static_cast<System::Byte>(0)));
 			this->label_x->Location = System::Drawing::Point(244, 12);
 			this->label_x->Name = L"label_x";
-			this->label_x->Size = System::Drawing::Size(22, 25);
+			this->label_x->Size = System::Drawing::Size(17, 20);
 			this->label_x->TabIndex = 33;
 			this->label_x->Text = L"x";
 			// 
@@ -1628,7 +1634,7 @@ private:
 			this->label_frame_rate->ForeColor = System::Drawing::Color::White;
 			this->label_frame_rate->Location = System::Drawing::Point(5, 125);
 			this->label_frame_rate->Name = L"label_frame_rate";
-			this->label_frame_rate->Size = System::Drawing::Size(169, 28);
+			this->label_frame_rate->Size = System::Drawing::Size(132, 21);
 			this->label_frame_rate->TabIndex = 27;
 			this->label_frame_rate->Text = L"Frame Rate (1/s)";
 			// 
@@ -1640,7 +1646,7 @@ private:
 				static_cast<System::Byte>(0)));
 			this->label_pixel_size->Location = System::Drawing::Point(5, 48);
 			this->label_pixel_size->Name = L"label_pixel_size";
-			this->label_pixel_size->Size = System::Drawing::Size(134, 25);
+			this->label_pixel_size->Size = System::Drawing::Size(104, 20);
 			this->label_pixel_size->TabIndex = 25;
 			this->label_pixel_size->Text = L"Pixel Number";
 			// 
@@ -1652,7 +1658,7 @@ private:
 				static_cast<System::Byte>(0)));
 			this->label_FOV->Location = System::Drawing::Point(5, 10);
 			this->label_FOV->Name = L"label_FOV";
-			this->label_FOV->Size = System::Drawing::Size(97, 25);
+			this->label_FOV->Size = System::Drawing::Size(77, 20);
 			this->label_FOV->TabIndex = 24;
 			this->label_FOV->Text = L"FOV (μm)";
 			// 
@@ -1681,7 +1687,7 @@ private:
 			this->status->ForeColor = System::Drawing::SystemColors::Window;
 			this->status->Location = System::Drawing::Point(6, 10);
 			this->status->Name = L"status";
-			this->status->Size = System::Drawing::Size(305, 30);
+			this->status->Size = System::Drawing::Size(305, 26);
 			this->status->TabIndex = 12;
 			this->status->Text = L"---";
 			this->status->TextAlign = System::Windows::Forms::HorizontalAlignment::Center;
@@ -1718,7 +1724,7 @@ private:
 			this->panel_real_time->Controls->Add(this->label_pixel_size);
 			this->panel_real_time->Controls->Add(this->label_frame_rate);
 			this->panel_real_time->Controls->Add(this->panel1);
-			this->panel_real_time->Location = System::Drawing::Point(7, 390);
+			this->panel_real_time->Location = System::Drawing::Point(7, 420);
 			this->panel_real_time->Name = L"panel_real_time";
 			this->panel_real_time->Size = System::Drawing::Size(428, 199);
 			this->panel_real_time->TabIndex = 16;
@@ -1747,7 +1753,7 @@ private:
 			this->label63->ForeColor = System::Drawing::Color::White;
 			this->label63->Location = System::Drawing::Point(5, 165);
 			this->label63->Name = L"label63";
-			this->label63->Size = System::Drawing::Size(185, 28);
+			this->label63->Size = System::Drawing::Size(144, 21);
 			this->label63->TabIndex = 40;
 			this->label63->Text = L"Chopper freq. (Hz)";
 			// 
@@ -1760,7 +1766,7 @@ private:
 			this->label21->ForeColor = System::Drawing::Color::White;
 			this->label21->Location = System::Drawing::Point(269, 85);
 			this->label21->Name = L"label21";
-			this->label21->Size = System::Drawing::Size(181, 28);
+			this->label21->Size = System::Drawing::Size(141, 21);
 			this->label21->TabIndex = 38;
 			this->label21->Text = L"Refresh Rate (1/s)";
 			// 
@@ -1788,7 +1794,7 @@ private:
 			this->label2->ForeColor = System::Drawing::Color::White;
 			this->label2->Location = System::Drawing::Point(5, 86);
 			this->label2->Name = L"label2";
-			this->label2->Size = System::Drawing::Size(133, 28);
+			this->label2->Size = System::Drawing::Size(105, 21);
 			this->label2->TabIndex = 36;
 			this->label2->Text = L"Acq. Time (s)";
 			// 
@@ -1824,9 +1830,9 @@ private:
 			this->label_Real_time->BackColor = System::Drawing::Color::Transparent;
 			this->label_Real_time->Font = (gcnew System::Drawing::Font(L"Segoe UI", 10.8F, static_cast<System::Drawing::FontStyle>((System::Drawing::FontStyle::Bold | System::Drawing::FontStyle::Italic)),
 				System::Drawing::GraphicsUnit::Point, static_cast<System::Byte>(0)));
-			this->label_Real_time->Location = System::Drawing::Point(438, 375);
+			this->label_Real_time->Location = System::Drawing::Point(438, 405);
 			this->label_Real_time->Name = L"label_Real_time";
-			this->label_Real_time->Size = System::Drawing::Size(206, 25);
+			this->label_Real_time->Size = System::Drawing::Size(174, 20);
 			this->label_Real_time->TabIndex = 17;
 			this->label_Real_time->Text = L"Real-Time Information";
 			// 
@@ -1852,7 +1858,7 @@ private:
 			this->panel_Stage->Controls->Add(this->button1_UP);
 			this->panel_Stage->Controls->Add(this->label7);
 			this->panel_Stage->Controls->Add(this->button_HOME);
-			this->panel_Stage->Location = System::Drawing::Point(7, 554);
+			this->panel_Stage->Location = System::Drawing::Point(7, 586);
 			this->panel_Stage->Name = L"panel_Stage";
 			this->panel_Stage->Size = System::Drawing::Size(418, 182);
 			this->panel_Stage->TabIndex = 21;
@@ -1865,7 +1871,7 @@ private:
 				static_cast<System::Byte>(0)));
 			this->label54->Location = System::Drawing::Point(67, 144);
 			this->label54->Name = L"label54";
-			this->label54->Size = System::Drawing::Size(152, 25);
+			this->label54->Size = System::Drawing::Size(121, 20);
 			this->label54->TabIndex = 54;
 			this->label54->Text = L"Initial pos. (μm)";
 			// 
@@ -1904,7 +1910,7 @@ private:
 			this->radioButton2_abs->AutoSize = true;
 			this->radioButton2_abs->Location = System::Drawing::Point(10, 109);
 			this->radioButton2_abs->Name = L"radioButton2_abs";
-			this->radioButton2_abs->Size = System::Drawing::Size(17, 16);
+			this->radioButton2_abs->Size = System::Drawing::Size(14, 13);
 			this->radioButton2_abs->TabIndex = 51;
 			this->radioButton2_abs->TabStop = true;
 			this->radioButton2_abs->UseVisualStyleBackColor = true;
@@ -1915,7 +1921,7 @@ private:
 			this->radioButton1_rel->AutoSize = true;
 			this->radioButton1_rel->Location = System::Drawing::Point(10, 65);
 			this->radioButton1_rel->Name = L"radioButton1_rel";
-			this->radioButton1_rel->Size = System::Drawing::Size(17, 16);
+			this->radioButton1_rel->Size = System::Drawing::Size(14, 13);
 			this->radioButton1_rel->TabIndex = 50;
 			this->radioButton1_rel->TabStop = true;
 			this->radioButton1_rel->UseVisualStyleBackColor = true;
@@ -1942,7 +1948,7 @@ private:
 				static_cast<System::Byte>(0)));
 			this->label9->Location = System::Drawing::Point(351, 71);
 			this->label9->Name = L"label9";
-			this->label9->Size = System::Drawing::Size(74, 25);
+			this->label9->Size = System::Drawing::Size(58, 20);
 			this->label9->TabIndex = 48;
 			this->label9->Text = L"DOWN";
 			// 
@@ -1954,7 +1960,7 @@ private:
 				static_cast<System::Byte>(0)));
 			this->label6->Location = System::Drawing::Point(366, 46);
 			this->label6->Name = L"label6";
-			this->label6->Size = System::Drawing::Size(38, 25);
+			this->label6->Size = System::Drawing::Size(29, 20);
 			this->label6->TabIndex = 47;
 			this->label6->Text = L"UP";
 			// 
@@ -1978,7 +1984,7 @@ private:
 				static_cast<System::Byte>(0)));
 			this->textBox_abs_position->Location = System::Drawing::Point(174, 102);
 			this->textBox_abs_position->Name = L"textBox_abs_position";
-			this->textBox_abs_position->Size = System::Drawing::Size(100, 32);
+			this->textBox_abs_position->Size = System::Drawing::Size(100, 27);
 			this->textBox_abs_position->TabIndex = 45;
 			this->textBox_abs_position->TextAlign = System::Windows::Forms::HorizontalAlignment::Center;
 			// 
@@ -1989,7 +1995,7 @@ private:
 				static_cast<System::Byte>(0)));
 			this->textBox3_relative_pos->Location = System::Drawing::Point(175, 58);
 			this->textBox3_relative_pos->Name = L"textBox3_relative_pos";
-			this->textBox3_relative_pos->Size = System::Drawing::Size(100, 32);
+			this->textBox3_relative_pos->Size = System::Drawing::Size(100, 27);
 			this->textBox3_relative_pos->TabIndex = 44;
 			this->textBox3_relative_pos->TextAlign = System::Windows::Forms::HorizontalAlignment::Center;
 			// 
@@ -2016,7 +2022,7 @@ private:
 				static_cast<System::Byte>(0)));
 			this->label3->Location = System::Drawing::Point(32, 105);
 			this->label3->Name = L"label3";
-			this->label3->Size = System::Drawing::Size(140, 25);
+			this->label3->Size = System::Drawing::Size(112, 20);
 			this->label3->TabIndex = 37;
 			this->label3->Text = L"Abs, pos. (μm)";
 			// 
@@ -2041,7 +2047,7 @@ private:
 				static_cast<System::Byte>(0)));
 			this->label_current_position->Location = System::Drawing::Point(6, 17);
 			this->label_current_position->Name = L"label_current_position";
-			this->label_current_position->Size = System::Drawing::Size(171, 25);
+			this->label_current_position->Size = System::Drawing::Size(134, 20);
 			this->label_current_position->TabIndex = 38;
 			this->label_current_position->Text = L"Current pos. (μm)";
 			// 
@@ -2066,7 +2072,7 @@ private:
 				static_cast<System::Byte>(0)));
 			this->label7->Location = System::Drawing::Point(31, 61);
 			this->label7->Name = L"label7";
-			this->label7->Size = System::Drawing::Size(171, 25);
+			this->label7->Size = System::Drawing::Size(137, 20);
 			this->label7->TabIndex = 36;
 			this->label7->Text = L"Relative pos. (μm)";
 			// 
@@ -2089,9 +2095,9 @@ private:
 			this->label5->BackColor = System::Drawing::Color::Transparent;
 			this->label5->Font = (gcnew System::Drawing::Font(L"Segoe UI", 10.8F, static_cast<System::Drawing::FontStyle>((System::Drawing::FontStyle::Bold | System::Drawing::FontStyle::Italic)),
 				System::Drawing::GraphicsUnit::Point, static_cast<System::Byte>(0)));
-			this->label5->Location = System::Drawing::Point(7, 529);
+			this->label5->Location = System::Drawing::Point(7, 561);
 			this->label5->Name = L"label5";
-			this->label5->Size = System::Drawing::Size(127, 25);
+			this->label5->Size = System::Drawing::Size(107, 20);
 			this->label5->TabIndex = 22;
 			this->label5->Text = L"Stage Control";
 			// 
@@ -2121,7 +2127,7 @@ private:
 			this->panelCollapse->Controls->Add(this->panel_real_time);
 			this->panelCollapse->Location = System::Drawing::Point(431, 8);
 			this->panelCollapse->Name = L"panelCollapse";
-			this->panelCollapse->Size = System::Drawing::Size(445, 858);
+			this->panelCollapse->Size = System::Drawing::Size(445, 882);
 			this->panelCollapse->TabIndex = 24;
 			// 
 			// checkBox_Export16BIT
@@ -2131,7 +2137,7 @@ private:
 				static_cast<System::Byte>(0)));
 			this->checkBox_Export16BIT->Location = System::Drawing::Point(207, 4);
 			this->checkBox_Export16BIT->Name = L"checkBox_Export16BIT";
-			this->checkBox_Export16BIT->Size = System::Drawing::Size(282, 29);
+			this->checkBox_Export16BIT->Size = System::Drawing::Size(224, 24);
 			this->checkBox_Export16BIT->TabIndex = 48;
 			this->checkBox_Export16BIT->Text = L"Export 16BIT | Optimization";
 			this->checkBox_Export16BIT->UseVisualStyleBackColor = true;
@@ -2145,7 +2151,7 @@ private:
 				System::Drawing::GraphicsUnit::Point, static_cast<System::Byte>(0)));
 			this->label12->Location = System::Drawing::Point(8, 5);
 			this->label12->Name = L"label12";
-			this->label12->Size = System::Drawing::Size(225, 25);
+			this->label12->Size = System::Drawing::Size(188, 20);
 			this->label12->TabIndex = 42;
 			this->label12->Text = L"CHANNEL SELECT PANEL";
 			// 
@@ -2158,14 +2164,13 @@ private:
 			this->tabControl3->Location = System::Drawing::Point(8, 30);
 			this->tabControl3->Name = L"tabControl3";
 			this->tabControl3->SelectedIndex = 0;
-			this->tabControl3->Size = System::Drawing::Size(428, 141);
+			this->tabControl3->Size = System::Drawing::Size(428, 166);
 			this->tabControl3->TabIndex = 68;
 			// 
 			// tabPage13
 			// 
 			this->tabPage13->BackColor = System::Drawing::Color::DimGray;
 			this->tabPage13->Controls->Add(this->checkBox_saveprocessedimage);
-			this->tabPage13->Controls->Add(this->YScheckBox_saverawbin);
 			this->tabPage13->Controls->Add(this->YSbutton_clear);
 			this->tabPage13->Controls->Add(this->label25);
 			this->tabPage13->Controls->Add(this->YStextBox_title);
@@ -2173,14 +2178,13 @@ private:
 			this->tabPage13->Controls->Add(this->YSbutton_save);
 			this->tabPage13->Controls->Add(this->progressBar1);
 			this->tabPage13->Controls->Add(this->YSlabel_savenum);
-			this->tabPage13->Controls->Add(this->YScheckBox_ch1);
 			this->tabPage13->Controls->Add(this->YStrackBar_savenum);
 			this->tabPage13->Controls->Add(this->textBox2);
 			this->tabPage13->Controls->Add(this->label38);
-			this->tabPage13->Location = System::Drawing::Point(4, 29);
+			this->tabPage13->Location = System::Drawing::Point(4, 24);
 			this->tabPage13->Name = L"tabPage13";
 			this->tabPage13->Padding = System::Windows::Forms::Padding(3);
-			this->tabPage13->Size = System::Drawing::Size(420, 108);
+			this->tabPage13->Size = System::Drawing::Size(420, 138);
 			this->tabPage13->TabIndex = 3;
 			this->tabPage13->Text = L"YS Image acq.";
 			// 
@@ -2189,24 +2193,12 @@ private:
 			this->checkBox_saveprocessedimage->AutoSize = true;
 			this->checkBox_saveprocessedimage->Font = (gcnew System::Drawing::Font(L"Segoe UI", 11.25F, System::Drawing::FontStyle::Bold, System::Drawing::GraphicsUnit::Point,
 				static_cast<System::Byte>(0)));
-			this->checkBox_saveprocessedimage->Location = System::Drawing::Point(157, 62);
+			this->checkBox_saveprocessedimage->Location = System::Drawing::Point(6, 88);
 			this->checkBox_saveprocessedimage->Name = L"checkBox_saveprocessedimage";
-			this->checkBox_saveprocessedimage->Size = System::Drawing::Size(228, 29);
+			this->checkBox_saveprocessedimage->Size = System::Drawing::Size(181, 24);
 			this->checkBox_saveprocessedimage->TabIndex = 111;
 			this->checkBox_saveprocessedimage->Text = L"Save processed image";
 			this->checkBox_saveprocessedimage->UseVisualStyleBackColor = true;
-			// 
-			// YScheckBox_saverawbin
-			// 
-			this->YScheckBox_saverawbin->AutoSize = true;
-			this->YScheckBox_saverawbin->Font = (gcnew System::Drawing::Font(L"Segoe UI", 11.25F, System::Drawing::FontStyle::Bold, System::Drawing::GraphicsUnit::Point,
-				static_cast<System::Byte>(0)));
-			this->YScheckBox_saverawbin->Location = System::Drawing::Point(6, 60);
-			this->YScheckBox_saverawbin->Name = L"YScheckBox_saverawbin";
-			this->YScheckBox_saverawbin->Size = System::Drawing::Size(151, 29);
-			this->YScheckBox_saverawbin->TabIndex = 110;
-			this->YScheckBox_saverawbin->Text = L"Save Raw Bin";
-			this->YScheckBox_saverawbin->UseVisualStyleBackColor = true;
 			// 
 			// YSbutton_clear
 			// 
@@ -2226,17 +2218,17 @@ private:
 			this->label25->AutoSize = true;
 			this->label25->Font = (gcnew System::Drawing::Font(L"Segoe UI", 12, System::Drawing::FontStyle::Bold, System::Drawing::GraphicsUnit::Point,
 				static_cast<System::Byte>(0)));
-			this->label25->Location = System::Drawing::Point(153, 36);
+			this->label25->Location = System::Drawing::Point(4, 7);
 			this->label25->Name = L"label25";
-			this->label25->Size = System::Drawing::Size(66, 28);
+			this->label25->Size = System::Drawing::Size(52, 21);
 			this->label25->TabIndex = 108;
 			this->label25->Text = L"Title :";
 			// 
 			// YStextBox_title
 			// 
-			this->YStextBox_title->Location = System::Drawing::Point(204, 36);
+			this->YStextBox_title->Location = System::Drawing::Point(55, 7);
 			this->YStextBox_title->Name = L"YStextBox_title";
-			this->YStextBox_title->Size = System::Drawing::Size(121, 27);
+			this->YStextBox_title->Size = System::Drawing::Size(226, 23);
 			this->YStextBox_title->TabIndex = 107;
 			// 
 			// YScheckBox_saveraw
@@ -2244,9 +2236,9 @@ private:
 			this->YScheckBox_saveraw->AutoSize = true;
 			this->YScheckBox_saveraw->Font = (gcnew System::Drawing::Font(L"Segoe UI", 11.25F, System::Drawing::FontStyle::Bold, System::Drawing::GraphicsUnit::Point,
 				static_cast<System::Byte>(0)));
-			this->YScheckBox_saveraw->Location = System::Drawing::Point(7, 36);
+			this->YScheckBox_saveraw->Location = System::Drawing::Point(6, 62);
 			this->YScheckBox_saveraw->Name = L"YScheckBox_saveraw";
-			this->YScheckBox_saveraw->Size = System::Drawing::Size(163, 29);
+			this->YScheckBox_saveraw->Size = System::Drawing::Size(131, 24);
 			this->YScheckBox_saveraw->TabIndex = 106;
 			this->YScheckBox_saveraw->Text = L"Save Raw Data";
 			this->YScheckBox_saveraw->UseVisualStyleBackColor = true;
@@ -2269,9 +2261,9 @@ private:
 			this->progressBar1->BackColor = System::Drawing::Color::FromArgb(static_cast<System::Int32>(static_cast<System::Byte>(64)), static_cast<System::Int32>(static_cast<System::Byte>(64)),
 				static_cast<System::Int32>(static_cast<System::Byte>(64)));
 			this->progressBar1->ForeColor = System::Drawing::Color::LimeGreen;
-			this->progressBar1->Location = System::Drawing::Point(63, 9);
+			this->progressBar1->Location = System::Drawing::Point(6, 35);
 			this->progressBar1->Name = L"progressBar1";
-			this->progressBar1->Size = System::Drawing::Size(205, 21);
+			this->progressBar1->Size = System::Drawing::Size(275, 21);
 			this->progressBar1->Step = 1;
 			this->progressBar1->Style = System::Windows::Forms::ProgressBarStyle::Continuous;
 			this->progressBar1->TabIndex = 99;
@@ -2282,32 +2274,18 @@ private:
 			this->YSlabel_savenum->Font = (gcnew System::Drawing::Font(L"Segoe UI", 11.25F, System::Drawing::FontStyle::Bold, System::Drawing::GraphicsUnit::Point,
 				static_cast<System::Byte>(0)));
 			this->YSlabel_savenum->ForeColor = System::Drawing::Color::White;
-			this->YSlabel_savenum->Location = System::Drawing::Point(318, 84);
+			this->YSlabel_savenum->Location = System::Drawing::Point(318, 110);
 			this->YSlabel_savenum->Name = L"YSlabel_savenum";
-			this->YSlabel_savenum->Size = System::Drawing::Size(90, 25);
+			this->YSlabel_savenum->Size = System::Drawing::Size(72, 20);
 			this->YSlabel_savenum->TabIndex = 103;
 			this->YSlabel_savenum->Text = L"Num = 1";
-			// 
-			// YScheckBox_ch1
-			// 
-			this->YScheckBox_ch1->AutoSize = true;
-			this->YScheckBox_ch1->Checked = true;
-			this->YScheckBox_ch1->CheckState = System::Windows::Forms::CheckState::Checked;
-			this->YScheckBox_ch1->Font = (gcnew System::Drawing::Font(L"Segoe UI", 11.25F, System::Drawing::FontStyle::Bold, System::Drawing::GraphicsUnit::Point,
-				static_cast<System::Byte>(0)));
-			this->YScheckBox_ch1->Location = System::Drawing::Point(7, 7);
-			this->YScheckBox_ch1->Name = L"YScheckBox_ch1";
-			this->YScheckBox_ch1->Size = System::Drawing::Size(68, 29);
-			this->YScheckBox_ch1->TabIndex = 101;
-			this->YScheckBox_ch1->Text = L"Ch1";
-			this->YScheckBox_ch1->UseVisualStyleBackColor = true;
 			// 
 			// YStrackBar_savenum
 			// 
 			this->YStrackBar_savenum->AutoSize = false;
 			this->YStrackBar_savenum->BackColor = System::Drawing::Color::DimGray;
 			this->YStrackBar_savenum->LargeChange = 10;
-			this->YStrackBar_savenum->Location = System::Drawing::Point(95, 87);
+			this->YStrackBar_savenum->Location = System::Drawing::Point(95, 113);
 			this->YStrackBar_savenum->Maximum = 2500;
 			this->YStrackBar_savenum->Minimum = 1;
 			this->YStrackBar_savenum->Name = L"YStrackBar_savenum";
@@ -2324,10 +2302,10 @@ private:
 			this->textBox2->Font = (gcnew System::Drawing::Font(L"Segoe UI", 11.25F, System::Drawing::FontStyle::Bold, System::Drawing::GraphicsUnit::Point,
 				static_cast<System::Byte>(0)));
 			this->textBox2->ForeColor = System::Drawing::Color::White;
-			this->textBox2->Location = System::Drawing::Point(274, 4);
+			this->textBox2->Location = System::Drawing::Point(279, 35);
 			this->textBox2->Name = L"textBox2";
 			this->textBox2->ReadOnly = true;
-			this->textBox2->Size = System::Drawing::Size(63, 32);
+			this->textBox2->Size = System::Drawing::Size(63, 27);
 			this->textBox2->TabIndex = 100;
 			this->textBox2->Text = L"---";
 			this->textBox2->TextAlign = System::Windows::Forms::HorizontalAlignment::Center;
@@ -2338,9 +2316,9 @@ private:
 			this->label38->Font = (gcnew System::Drawing::Font(L"Segoe UI", 11.25F, System::Drawing::FontStyle::Bold, System::Drawing::GraphicsUnit::Point,
 				static_cast<System::Byte>(0)));
 			this->label38->ForeColor = System::Drawing::Color::White;
-			this->label38->Location = System::Drawing::Point(8, 86);
+			this->label38->Location = System::Drawing::Point(8, 112);
 			this->label38->Name = L"label38";
-			this->label38->Size = System::Drawing::Size(107, 25);
+			this->label38->Size = System::Drawing::Size(85, 20);
 			this->label38->TabIndex = 105;
 			this->label38->Text = L"# of Frame";
 			// 
@@ -2352,10 +2330,10 @@ private:
 			this->tabPage8->Controls->Add(this->label2_average_count);
 			this->tabPage8->Controls->Add(this->trackBar_average_num_count);
 			this->tabPage8->Controls->Add(this->toggleButtons_allow_averaging);
-			this->tabPage8->Location = System::Drawing::Point(4, 29);
+			this->tabPage8->Location = System::Drawing::Point(4, 24);
 			this->tabPage8->Name = L"tabPage8";
 			this->tabPage8->Padding = System::Windows::Forms::Padding(3);
-			this->tabPage8->Size = System::Drawing::Size(420, 108);
+			this->tabPage8->Size = System::Drawing::Size(420, 138);
 			this->tabPage8->TabIndex = 2;
 			this->tabPage8->Text = L"Frame Averaging";
 			// 
@@ -2366,7 +2344,7 @@ private:
 				static_cast<System::Byte>(0)));
 			this->label48->Location = System::Drawing::Point(58, 6);
 			this->label48->Name = L"label48";
-			this->label48->Size = System::Drawing::Size(163, 28);
+			this->label48->Size = System::Drawing::Size(132, 21);
 			this->label48->TabIndex = 112;
 			this->label48->Text = L"Average display";
 			// 
@@ -2377,7 +2355,7 @@ private:
 				static_cast<System::Byte>(0)));
 			this->label35->Location = System::Drawing::Point(255, 48);
 			this->label35->Name = L"label35";
-			this->label35->Size = System::Drawing::Size(178, 28);
+			this->label35->Size = System::Drawing::Size(143, 21);
 			this->label35->TabIndex = 111;
 			this->label35->Text = L"images per frame";
 			// 
@@ -2388,7 +2366,7 @@ private:
 				static_cast<System::Byte>(0)));
 			this->label2_average_count->Location = System::Drawing::Point(226, 48);
 			this->label2_average_count->Name = L"label2_average_count";
-			this->label2_average_count->Size = System::Drawing::Size(24, 28);
+			this->label2_average_count->Size = System::Drawing::Size(19, 21);
 			this->label2_average_count->TabIndex = 66;
 			this->label2_average_count->Text = L"1";
 			// 
@@ -2431,10 +2409,10 @@ private:
 			this->tabPage1->Controls->Add(this->labelraw_count);
 			this->tabPage1->Controls->Add(this->trackBar_raw_count);
 			this->tabPage1->ForeColor = System::Drawing::Color::White;
-			this->tabPage1->Location = System::Drawing::Point(4, 29);
+			this->tabPage1->Location = System::Drawing::Point(4, 24);
 			this->tabPage1->Name = L"tabPage1";
 			this->tabPage1->Padding = System::Windows::Forms::Padding(3);
-			this->tabPage1->Size = System::Drawing::Size(420, 108);
+			this->tabPage1->Size = System::Drawing::Size(420, 138);
 			this->tabPage1->TabIndex = 0;
 			this->tabPage1->Text = L"RAW Image acq.";
 			// 
@@ -2457,7 +2435,7 @@ private:
 				static_cast<System::Byte>(0)));
 			this->checkBox1_raw_ch1->Location = System::Drawing::Point(4, 20);
 			this->checkBox1_raw_ch1->Name = L"checkBox1_raw_ch1";
-			this->checkBox1_raw_ch1->Size = System::Drawing::Size(130, 29);
+			this->checkBox1_raw_ch1->Size = System::Drawing::Size(107, 24);
 			this->checkBox1_raw_ch1->TabIndex = 63;
 			this->checkBox1_raw_ch1->Text = L"Ch1 (RAW)";
 			this->checkBox1_raw_ch1->UseVisualStyleBackColor = true;
@@ -2472,7 +2450,7 @@ private:
 			this->textBox_progress_raw_ch1->Location = System::Drawing::Point(276, 19);
 			this->textBox_progress_raw_ch1->Name = L"textBox_progress_raw_ch1";
 			this->textBox_progress_raw_ch1->ReadOnly = true;
-			this->textBox_progress_raw_ch1->Size = System::Drawing::Size(63, 32);
+			this->textBox_progress_raw_ch1->Size = System::Drawing::Size(63, 27);
 			this->textBox_progress_raw_ch1->TabIndex = 62;
 			this->textBox_progress_raw_ch1->Text = L"---";
 			this->textBox_progress_raw_ch1->TextAlign = System::Windows::Forms::HorizontalAlignment::Center;
@@ -2498,7 +2476,7 @@ private:
 			this->label17->ForeColor = System::Drawing::Color::White;
 			this->label17->Location = System::Drawing::Point(2, 58);
 			this->label17->Name = L"label17";
-			this->label17->Size = System::Drawing::Size(107, 25);
+			this->label17->Size = System::Drawing::Size(85, 20);
 			this->label17->TabIndex = 66;
 			this->label17->Text = L"# of Frame";
 			// 
@@ -2510,7 +2488,7 @@ private:
 			this->labelraw_count->ForeColor = System::Drawing::Color::White;
 			this->labelraw_count->Location = System::Drawing::Point(313, 56);
 			this->labelraw_count->Name = L"labelraw_count";
-			this->labelraw_count->Size = System::Drawing::Size(90, 25);
+			this->labelraw_count->Size = System::Drawing::Size(72, 20);
 			this->labelraw_count->TabIndex = 64;
 			this->labelraw_count->Text = L"Num = 1";
 			// 
@@ -2541,10 +2519,10 @@ private:
 			this->tabPage5->Controls->Add(this->textBox_progress_export);
 			this->tabPage5->Controls->Add(this->label_frame_num);
 			this->tabPage5->ForeColor = System::Drawing::Color::White;
-			this->tabPage5->Location = System::Drawing::Point(4, 29);
+			this->tabPage5->Location = System::Drawing::Point(4, 24);
 			this->tabPage5->Name = L"tabPage5";
 			this->tabPage5->Padding = System::Windows::Forms::Padding(3);
-			this->tabPage5->Size = System::Drawing::Size(420, 108);
+			this->tabPage5->Size = System::Drawing::Size(420, 138);
 			this->tabPage5->TabIndex = 1;
 			this->tabPage5->Text = L"Preview Image acq.";
 			// 
@@ -2580,7 +2558,7 @@ private:
 				System::Drawing::GraphicsUnit::Point, static_cast<System::Byte>(0)));
 			this->radioButton_checkBox_Activate_chan_1->Location = System::Drawing::Point(8, 7);
 			this->radioButton_checkBox_Activate_chan_1->Name = L"radioButton_checkBox_Activate_chan_1";
-			this->radioButton_checkBox_Activate_chan_1->Size = System::Drawing::Size(126, 29);
+			this->radioButton_checkBox_Activate_chan_1->Size = System::Drawing::Size(102, 24);
 			this->radioButton_checkBox_Activate_chan_1->TabIndex = 46;
 			this->radioButton_checkBox_Activate_chan_1->TabStop = true;
 			this->radioButton_checkBox_Activate_chan_1->Text = L"Active Ch1";
@@ -2595,7 +2573,7 @@ private:
 			this->label1_num_frame->ForeColor = System::Drawing::Color::White;
 			this->label1_num_frame->Location = System::Drawing::Point(315, 67);
 			this->label1_num_frame->Name = L"label1_num_frame";
-			this->label1_num_frame->Size = System::Drawing::Size(90, 25);
+			this->label1_num_frame->Size = System::Drawing::Size(72, 20);
 			this->label1_num_frame->TabIndex = 60;
 			this->label1_num_frame->Text = L"Num = 1";
 			// 
@@ -2606,7 +2584,7 @@ private:
 				static_cast<System::Byte>(0)));
 			this->checkBox1_save_ch1_data->Location = System::Drawing::Point(7, 37);
 			this->checkBox1_save_ch1_data->Name = L"checkBox1_save_ch1_data";
-			this->checkBox1_save_ch1_data->Size = System::Drawing::Size(68, 29);
+			this->checkBox1_save_ch1_data->Size = System::Drawing::Size(55, 24);
 			this->checkBox1_save_ch1_data->TabIndex = 41;
 			this->checkBox1_save_ch1_data->Text = L"Ch1";
 			this->checkBox1_save_ch1_data->UseVisualStyleBackColor = true;
@@ -2636,7 +2614,7 @@ private:
 			this->textBox_progress_export->Location = System::Drawing::Point(272, 36);
 			this->textBox_progress_export->Name = L"textBox_progress_export";
 			this->textBox_progress_export->ReadOnly = true;
-			this->textBox_progress_export->Size = System::Drawing::Size(63, 32);
+			this->textBox_progress_export->Size = System::Drawing::Size(63, 27);
 			this->textBox_progress_export->TabIndex = 32;
 			this->textBox_progress_export->Text = L"---";
 			this->textBox_progress_export->TextAlign = System::Windows::Forms::HorizontalAlignment::Center;
@@ -2649,7 +2627,7 @@ private:
 			this->label_frame_num->ForeColor = System::Drawing::Color::White;
 			this->label_frame_num->Location = System::Drawing::Point(5, 69);
 			this->label_frame_num->Name = L"label_frame_num";
-			this->label_frame_num->Size = System::Drawing::Size(107, 25);
+			this->label_frame_num->Size = System::Drawing::Size(85, 20);
 			this->label_frame_num->TabIndex = 60;
 			this->label_frame_num->Text = L"# of Frame";
 			// 
@@ -2661,7 +2639,7 @@ private:
 			this->tabControl4->Controls->Add(this->tabPage6);
 			this->tabControl4->Controls->Add(this->tabPage10);
 			this->tabControl4->Controls->Add(this->tabPage11);
-			this->tabControl4->Location = System::Drawing::Point(8, 617);
+			this->tabControl4->Location = System::Drawing::Point(8, 646);
 			this->tabControl4->Name = L"tabControl4";
 			this->tabControl4->SelectedIndex = 0;
 			this->tabControl4->Size = System::Drawing::Size(428, 233);
@@ -2679,9 +2657,9 @@ private:
 			this->tabPage12->Controls->Add(this->label55);
 			this->tabPage12->Controls->Add(this->label_offsetvalueSP);
 			this->tabPage12->Controls->Add(this->trackBar_offsetvalueSP);
-			this->tabPage12->Location = System::Drawing::Point(4, 29);
+			this->tabPage12->Location = System::Drawing::Point(4, 24);
 			this->tabPage12->Name = L"tabPage12";
-			this->tabPage12->Size = System::Drawing::Size(420, 200);
+			this->tabPage12->Size = System::Drawing::Size(420, 205);
 			this->tabPage12->TabIndex = 8;
 			this->tabPage12->Text = L"Signal Processing";
 			// 
@@ -2693,7 +2671,7 @@ private:
 			this->label16->ForeColor = System::Drawing::Color::White;
 			this->label16->Location = System::Drawing::Point(62, 110);
 			this->label16->Name = L"label16";
-			this->label16->Size = System::Drawing::Size(82, 25);
+			this->label16->Size = System::Drawing::Size(63, 20);
 			this->label16->TabIndex = 76;
 			this->label16->Text = L"Binning";
 			// 
@@ -2735,7 +2713,7 @@ private:
 			this->label52->ForeColor = System::Drawing::Color::White;
 			this->label52->Location = System::Drawing::Point(58, 63);
 			this->label52->Name = L"label52";
-			this->label52->Size = System::Drawing::Size(86, 25);
+			this->label52->Size = System::Drawing::Size(67, 20);
 			this->label52->TabIndex = 71;
 			this->label52->Text = L"Multiply";
 			// 
@@ -2746,7 +2724,7 @@ private:
 				static_cast<System::Byte>(0)));
 			this->label_multiplySP->Location = System::Drawing::Point(361, 63);
 			this->label_multiplySP->Name = L"label_multiplySP";
-			this->label_multiplySP->Size = System::Drawing::Size(53, 28);
+			this->label_multiplySP->Size = System::Drawing::Size(41, 21);
 			this->label_multiplySP->TabIndex = 72;
 			this->label_multiplySP->Text = L"2.00";
 			// 
@@ -2774,7 +2752,7 @@ private:
 			this->label55->ForeColor = System::Drawing::Color::White;
 			this->label55->Location = System::Drawing::Point(58, 16);
 			this->label55->Name = L"label55";
-			this->label55->Size = System::Drawing::Size(119, 25);
+			this->label55->Size = System::Drawing::Size(95, 20);
 			this->label55->TabIndex = 68;
 			this->label55->Text = L"Offset Value";
 			// 
@@ -2785,7 +2763,7 @@ private:
 				static_cast<System::Byte>(0)));
 			this->label_offsetvalueSP->Location = System::Drawing::Point(362, 18);
 			this->label_offsetvalueSP->Name = L"label_offsetvalueSP";
-			this->label_offsetvalueSP->Size = System::Drawing::Size(72, 28);
+			this->label_offsetvalueSP->Size = System::Drawing::Size(55, 21);
 			this->label_offsetvalueSP->TabIndex = 69;
 			this->label_offsetvalueSP->Text = L"32768";
 			// 
@@ -2824,10 +2802,10 @@ private:
 			this->tabPage19->Controls->Add(this->trackBar_contrast_alpha);
 			this->tabPage19->Controls->Add(this->trackBar_brightness_beta);
 			this->tabPage19->Controls->Add(this->trackBar_adjust_gamma);
-			this->tabPage19->Location = System::Drawing::Point(4, 29);
+			this->tabPage19->Location = System::Drawing::Point(4, 24);
 			this->tabPage19->Name = L"tabPage19";
 			this->tabPage19->Padding = System::Windows::Forms::Padding(3);
-			this->tabPage19->Size = System::Drawing::Size(420, 200);
+			this->tabPage19->Size = System::Drawing::Size(420, 205);
 			this->tabPage19->TabIndex = 6;
 			this->tabPage19->Text = L"CONTRAST";
 			// 
@@ -2839,7 +2817,7 @@ private:
 			this->label62->ForeColor = System::Drawing::Color::White;
 			this->label62->Location = System::Drawing::Point(73, 154);
 			this->label62->Name = L"label62";
-			this->label62->Size = System::Drawing::Size(69, 25);
+			this->label62->Size = System::Drawing::Size(54, 20);
 			this->label62->TabIndex = 71;
 			this->label62->Text = L"Kernel";
 			// 
@@ -2850,7 +2828,7 @@ private:
 				static_cast<System::Byte>(0)));
 			this->label_DCEkernel->Location = System::Drawing::Point(381, 156);
 			this->label_DCEkernel->Name = L"label_DCEkernel";
-			this->label_DCEkernel->Size = System::Drawing::Size(24, 28);
+			this->label_DCEkernel->Size = System::Drawing::Size(19, 21);
 			this->label_DCEkernel->TabIndex = 72;
 			this->label_DCEkernel->Text = L"7";
 			// 
@@ -2876,7 +2854,7 @@ private:
 			this->label56->ForeColor = System::Drawing::Color::White;
 			this->label56->Location = System::Drawing::Point(73, 124);
 			this->label56->Name = L"label56";
-			this->label56->Size = System::Drawing::Size(63, 25);
+			this->label56->Size = System::Drawing::Size(50, 20);
 			this->label56->TabIndex = 68;
 			this->label56->Text = L"Alpha";
 			// 
@@ -2887,7 +2865,7 @@ private:
 				static_cast<System::Byte>(0)));
 			this->label_DCE->Location = System::Drawing::Point(381, 126);
 			this->label_DCE->Name = L"label_DCE";
-			this->label_DCE->Size = System::Drawing::Size(24, 28);
+			this->label_DCE->Size = System::Drawing::Size(19, 21);
 			this->label_DCE->TabIndex = 69;
 			this->label_DCE->Text = L"4";
 			// 
@@ -2944,7 +2922,7 @@ private:
 				static_cast<System::Byte>(0)));
 			this->label_adjust_gamma->Location = System::Drawing::Point(378, 84);
 			this->label_adjust_gamma->Name = L"label_adjust_gamma";
-			this->label_adjust_gamma->Size = System::Drawing::Size(36, 28);
+			this->label_adjust_gamma->Size = System::Drawing::Size(28, 21);
 			this->label_adjust_gamma->TabIndex = 65;
 			this->label_adjust_gamma->Text = L"15";
 			// 
@@ -2956,7 +2934,7 @@ private:
 			this->label18->ForeColor = System::Drawing::Color::White;
 			this->label18->Location = System::Drawing::Point(73, 11);
 			this->label18->Name = L"label18";
-			this->label18->Size = System::Drawing::Size(105, 25);
+			this->label18->Size = System::Drawing::Size(84, 20);
 			this->label18->TabIndex = 59;
 			this->label18->Text = L"Brightness";
 			// 
@@ -2967,7 +2945,7 @@ private:
 				static_cast<System::Byte>(0)));
 			this->label_contrast_alpha->Location = System::Drawing::Point(378, 50);
 			this->label_contrast_alpha->Name = L"label_contrast_alpha";
-			this->label_contrast_alpha->Size = System::Drawing::Size(36, 28);
+			this->label_contrast_alpha->Size = System::Drawing::Size(28, 21);
 			this->label_contrast_alpha->TabIndex = 64;
 			this->label_contrast_alpha->Text = L"14";
 			// 
@@ -2979,7 +2957,7 @@ private:
 			this->label19->ForeColor = System::Drawing::Color::White;
 			this->label19->Location = System::Drawing::Point(73, 46);
 			this->label19->Name = L"label19";
-			this->label19->Size = System::Drawing::Size(88, 25);
+			this->label19->Size = System::Drawing::Size(69, 20);
 			this->label19->TabIndex = 60;
 			this->label19->Text = L"Contrast";
 			// 
@@ -2990,7 +2968,7 @@ private:
 				static_cast<System::Byte>(0)));
 			this->label_brightness_beta->Location = System::Drawing::Point(378, 13);
 			this->label_brightness_beta->Name = L"label_brightness_beta";
-			this->label_brightness_beta->Size = System::Drawing::Size(48, 28);
+			this->label_brightness_beta->Size = System::Drawing::Size(37, 21);
 			this->label_brightness_beta->TabIndex = 59;
 			this->label_brightness_beta->Text = L"150";
 			// 
@@ -3002,7 +2980,7 @@ private:
 			this->label20->ForeColor = System::Drawing::Color::White;
 			this->label20->Location = System::Drawing::Point(73, 81);
 			this->label20->Name = L"label20";
-			this->label20->Size = System::Drawing::Size(80, 25);
+			this->label20->Size = System::Drawing::Size(64, 20);
 			this->label20->TabIndex = 61;
 			this->label20->Text = L"Gamma";
 			// 
@@ -3070,9 +3048,9 @@ private:
 			this->tabPage9->Controls->Add(this->label51);
 			this->tabPage9->Controls->Add(this->label_MinVal);
 			this->tabPage9->Controls->Add(this->trackBar_MinVal);
-			this->tabPage9->Location = System::Drawing::Point(4, 29);
+			this->tabPage9->Location = System::Drawing::Point(4, 24);
 			this->tabPage9->Name = L"tabPage9";
-			this->tabPage9->Size = System::Drawing::Size(420, 200);
+			this->tabPage9->Size = System::Drawing::Size(420, 205);
 			this->tabPage9->TabIndex = 7;
 			this->tabPage9->Text = L"MinMax Value";
 			// 
@@ -3099,7 +3077,7 @@ private:
 			this->label59->ForeColor = System::Drawing::Color::White;
 			this->label59->Location = System::Drawing::Point(58, 155);
 			this->label59->Name = L"label59";
-			this->label59->Size = System::Drawing::Size(159, 25);
+			this->label59->Size = System::Drawing::Size(124, 20);
 			this->label59->TabIndex = 82;
 			this->label59->Text = L"Normalized Max";
 			// 
@@ -3110,7 +3088,7 @@ private:
 				static_cast<System::Byte>(0)));
 			this->label_normalizeMax->Location = System::Drawing::Point(361, 155);
 			this->label_normalizeMax->Name = L"label_normalizeMax";
-			this->label_normalizeMax->Size = System::Drawing::Size(72, 28);
+			this->label_normalizeMax->Size = System::Drawing::Size(55, 21);
 			this->label_normalizeMax->TabIndex = 83;
 			this->label_normalizeMax->Text = L"65535";
 			// 
@@ -3137,7 +3115,7 @@ private:
 			this->label61->ForeColor = System::Drawing::Color::White;
 			this->label61->Location = System::Drawing::Point(58, 125);
 			this->label61->Name = L"label61";
-			this->label61->Size = System::Drawing::Size(155, 25);
+			this->label61->Size = System::Drawing::Size(121, 20);
 			this->label61->TabIndex = 79;
 			this->label61->Text = L"Normalized Min";
 			// 
@@ -3148,7 +3126,7 @@ private:
 				static_cast<System::Byte>(0)));
 			this->label_normalizeMin->Location = System::Drawing::Point(362, 127);
 			this->label_normalizeMin->Name = L"label_normalizeMin";
-			this->label_normalizeMin->Size = System::Drawing::Size(24, 28);
+			this->label_normalizeMin->Size = System::Drawing::Size(19, 21);
 			this->label_normalizeMin->TabIndex = 80;
 			this->label_normalizeMin->Text = L"0";
 			// 
@@ -3174,7 +3152,7 @@ private:
 			this->label58->ForeColor = System::Drawing::Color::White;
 			this->label58->Location = System::Drawing::Point(61, 78);
 			this->label58->Name = L"label58";
-			this->label58->Size = System::Drawing::Size(220, 25);
+			this->label58->Size = System::Drawing::Size(172, 20);
 			this->label58->TabIndex = 78;
 			this->label58->Text = L"Histogram equalization";
 			// 
@@ -3216,7 +3194,7 @@ private:
 			this->label53->ForeColor = System::Drawing::Color::White;
 			this->label53->Location = System::Drawing::Point(58, 41);
 			this->label53->Name = L"label53";
-			this->label53->Size = System::Drawing::Size(105, 25);
+			this->label53->Size = System::Drawing::Size(81, 20);
 			this->label53->TabIndex = 63;
 			this->label53->Text = L"Max Value";
 			// 
@@ -3227,7 +3205,7 @@ private:
 				static_cast<System::Byte>(0)));
 			this->label_MaxVal->Location = System::Drawing::Point(361, 41);
 			this->label_MaxVal->Name = L"label_MaxVal";
-			this->label_MaxVal->Size = System::Drawing::Size(72, 28);
+			this->label_MaxVal->Size = System::Drawing::Size(55, 21);
 			this->label_MaxVal->TabIndex = 64;
 			this->label_MaxVal->Text = L"65535";
 			// 
@@ -3254,7 +3232,7 @@ private:
 			this->label51->ForeColor = System::Drawing::Color::White;
 			this->label51->Location = System::Drawing::Point(58, 11);
 			this->label51->Name = L"label51";
-			this->label51->Size = System::Drawing::Size(101, 25);
+			this->label51->Size = System::Drawing::Size(78, 20);
 			this->label51->TabIndex = 60;
 			this->label51->Text = L"Min Value";
 			// 
@@ -3265,7 +3243,7 @@ private:
 				static_cast<System::Byte>(0)));
 			this->label_MinVal->Location = System::Drawing::Point(362, 13);
 			this->label_MinVal->Name = L"label_MinVal";
-			this->label_MinVal->Size = System::Drawing::Size(24, 28);
+			this->label_MinVal->Size = System::Drawing::Size(19, 21);
 			this->label_MinVal->TabIndex = 61;
 			this->label_MinVal->Text = L"0";
 			// 
@@ -3298,10 +3276,10 @@ private:
 			this->tabPage6->Controls->Add(this->trackBar_Gaussian_sigmaH);
 			this->tabPage6->Controls->Add(this->trackBar_Gaussian_kernel);
 			this->tabPage6->Controls->Add(this->toggleButtons_Gaussian);
-			this->tabPage6->Location = System::Drawing::Point(4, 29);
+			this->tabPage6->Location = System::Drawing::Point(4, 24);
 			this->tabPage6->Name = L"tabPage6";
 			this->tabPage6->Padding = System::Windows::Forms::Padding(3);
-			this->tabPage6->Size = System::Drawing::Size(420, 200);
+			this->tabPage6->Size = System::Drawing::Size(420, 205);
 			this->tabPage6->TabIndex = 0;
 			this->tabPage6->Text = L"Filter";
 			// 
@@ -3312,7 +3290,7 @@ private:
 				static_cast<System::Byte>(0)));
 			this->label69->Location = System::Drawing::Point(69, 142);
 			this->label69->Name = L"label69";
-			this->label69->Size = System::Drawing::Size(128, 28);
+			this->label69->Size = System::Drawing::Size(103, 21);
 			this->label69->TabIndex = 73;
 			this->label69->Text = L"Median Blur";
 			// 
@@ -3323,7 +3301,7 @@ private:
 				static_cast<System::Byte>(0)));
 			this->label68->Location = System::Drawing::Point(69, 15);
 			this->label68->Name = L"label68";
-			this->label68->Size = System::Drawing::Size(141, 28);
+			this->label68->Size = System::Drawing::Size(113, 21);
 			this->label68->TabIndex = 72;
 			this->label68->Text = L"Gaussian Blur";
 			// 
@@ -3334,7 +3312,7 @@ private:
 				static_cast<System::Byte>(0)));
 			this->label_Median_kernel->Location = System::Drawing::Point(306, 172);
 			this->label_Median_kernel->Name = L"label_Median_kernel";
-			this->label_Median_kernel->Size = System::Drawing::Size(111, 28);
+			this->label_Median_kernel->Size = System::Drawing::Size(87, 21);
 			this->label_Median_kernel->TabIndex = 71;
 			this->label_Median_kernel->Text = L"Kernel = 3";
 			// 
@@ -3373,7 +3351,7 @@ private:
 				static_cast<System::Byte>(0)));
 			this->label_Gaussian_sigmaV->Location = System::Drawing::Point(303, 92);
 			this->label_Gaussian_sigmaV->Name = L"label_Gaussian_sigmaV";
-			this->label_Gaussian_sigmaV->Size = System::Drawing::Size(133, 28);
+			this->label_Gaussian_sigmaV->Size = System::Drawing::Size(106, 21);
 			this->label_Gaussian_sigmaV->TabIndex = 68;
 			this->label_Gaussian_sigmaV->Text = L"SigmaV = 10";
 			// 
@@ -3384,7 +3362,7 @@ private:
 				static_cast<System::Byte>(0)));
 			this->label_Gaussian_sigmaH->Location = System::Drawing::Point(303, 64);
 			this->label_Gaussian_sigmaH->Name = L"label_Gaussian_sigmaH";
-			this->label_Gaussian_sigmaH->Size = System::Drawing::Size(135, 28);
+			this->label_Gaussian_sigmaH->Size = System::Drawing::Size(107, 21);
 			this->label_Gaussian_sigmaH->TabIndex = 67;
 			this->label_Gaussian_sigmaH->Text = L"SigmaH = 10";
 			// 
@@ -3395,7 +3373,7 @@ private:
 				static_cast<System::Byte>(0)));
 			this->label_Gaussian_kernel->Location = System::Drawing::Point(303, 36);
 			this->label_Gaussian_kernel->Name = L"label_Gaussian_kernel";
-			this->label_Gaussian_kernel->Size = System::Drawing::Size(111, 28);
+			this->label_Gaussian_kernel->Size = System::Drawing::Size(87, 21);
 			this->label_Gaussian_kernel->TabIndex = 66;
 			this->label_Gaussian_kernel->Text = L"Kernel = 5";
 			// 
@@ -3469,10 +3447,10 @@ private:
 			this->tabPage10->Controls->Add(this->trackBar_tile_grid_H);
 			this->tabPage10->Controls->Add(this->trackBar_clip_limit);
 			this->tabPage10->Controls->Add(this->toggleButtons_CLAHE);
-			this->tabPage10->Location = System::Drawing::Point(4, 29);
+			this->tabPage10->Location = System::Drawing::Point(4, 24);
 			this->tabPage10->Name = L"tabPage10";
 			this->tabPage10->Padding = System::Windows::Forms::Padding(3);
-			this->tabPage10->Size = System::Drawing::Size(420, 200);
+			this->tabPage10->Size = System::Drawing::Size(420, 205);
 			this->tabPage10->TabIndex = 4;
 			this->tabPage10->Text = L"CLAHE";
 			// 
@@ -3483,7 +3461,7 @@ private:
 				static_cast<System::Byte>(0)));
 			this->label_tile_grid_V->Location = System::Drawing::Point(301, 74);
 			this->label_tile_grid_V->Name = L"label_tile_grid_V";
-			this->label_tile_grid_V->Size = System::Drawing::Size(146, 28);
+			this->label_tile_grid_V->Size = System::Drawing::Size(115, 21);
 			this->label_tile_grid_V->TabIndex = 74;
 			this->label_tile_grid_V->Text = L"tileGridV = 20";
 			// 
@@ -3494,7 +3472,7 @@ private:
 				static_cast<System::Byte>(0)));
 			this->label_tile_grid_H->Location = System::Drawing::Point(301, 46);
 			this->label_tile_grid_H->Name = L"label_tile_grid_H";
-			this->label_tile_grid_H->Size = System::Drawing::Size(148, 28);
+			this->label_tile_grid_H->Size = System::Drawing::Size(116, 21);
 			this->label_tile_grid_H->TabIndex = 73;
 			this->label_tile_grid_H->Text = L"tileGridH = 20";
 			// 
@@ -3505,7 +3483,7 @@ private:
 				static_cast<System::Byte>(0)));
 			this->label_clip_limit->Location = System::Drawing::Point(301, 18);
 			this->label_clip_limit->Name = L"label_clip_limit";
-			this->label_clip_limit->Size = System::Drawing::Size(134, 28);
+			this->label_clip_limit->Size = System::Drawing::Size(107, 21);
 			this->label_clip_limit->TabIndex = 72;
 			this->label_clip_limit->Text = L"ClipLimit = 3";
 			// 
@@ -3579,10 +3557,10 @@ private:
 			this->tabPage11->Controls->Add(this->textBox_brief_detail);
 			this->tabPage11->Controls->Add(this->trackBar_BiD_align_bin);
 			this->tabPage11->Controls->Add(this->label_BiD_align_bin);
-			this->tabPage11->Location = System::Drawing::Point(4, 29);
+			this->tabPage11->Location = System::Drawing::Point(4, 24);
 			this->tabPage11->Name = L"tabPage11";
 			this->tabPage11->Padding = System::Windows::Forms::Padding(3);
-			this->tabPage11->Size = System::Drawing::Size(420, 200);
+			this->tabPage11->Size = System::Drawing::Size(420, 205);
 			this->tabPage11->TabIndex = 5;
 			this->tabPage11->Text = L"Post Processing";
 			// 
@@ -3634,7 +3612,7 @@ private:
 			this->label_BiD_align_Val_bin->ForeColor = System::Drawing::Color::Cyan;
 			this->label_BiD_align_Val_bin->Location = System::Drawing::Point(331, 43);
 			this->label_BiD_align_Val_bin->Name = L"label_BiD_align_Val_bin";
-			this->label_BiD_align_Val_bin->Size = System::Drawing::Size(99, 25);
+			this->label_BiD_align_Val_bin->Size = System::Drawing::Size(81, 20);
 			this->label_BiD_align_Val_bin->TabIndex = 59;
 			this->label_BiD_align_Val_bin->Text = L"Offset = 0";
 			// 
@@ -3672,7 +3650,7 @@ private:
 			this->label_BiD_align_bin->ForeColor = System::Drawing::Color::Cyan;
 			this->label_BiD_align_bin->Location = System::Drawing::Point(4, 45);
 			this->label_BiD_align_bin->Name = L"label_BiD_align_bin";
-			this->label_BiD_align_bin->Size = System::Drawing::Size(127, 25);
+			this->label_BiD_align_bin->Size = System::Drawing::Size(100, 20);
 			this->label_BiD_align_bin->TabIndex = 59;
 			this->label_BiD_align_bin->Text = L"BiD PostProc";
 			// 
@@ -3682,9 +3660,9 @@ private:
 			this->label15->BackColor = System::Drawing::Color::Transparent;
 			this->label15->Font = (gcnew System::Drawing::Font(L"Segoe UI", 10.8F, static_cast<System::Drawing::FontStyle>((System::Drawing::FontStyle::Bold | System::Drawing::FontStyle::Italic)),
 				System::Drawing::GraphicsUnit::Point, static_cast<System::Byte>(0)));
-			this->label15->Location = System::Drawing::Point(7, 594);
+			this->label15->Location = System::Drawing::Point(7, 623);
 			this->label15->Name = L"label15";
-			this->label15->Size = System::Drawing::Size(212, 25);
+			this->label15->Size = System::Drawing::Size(178, 20);
 			this->label15->TabIndex = 43;
 			this->label15->Text = L"Image Processing Panel";
 			// 
@@ -3693,7 +3671,7 @@ private:
 			this->tabControl1->Controls->Add(this->tabPage2);
 			this->tabControl1->Font = (gcnew System::Drawing::Font(L"Segoe UI", 9, System::Drawing::FontStyle::Regular, System::Drawing::GraphicsUnit::Point,
 				static_cast<System::Byte>(0)));
-			this->tabControl1->Location = System::Drawing::Point(7, 199);
+			this->tabControl1->Location = System::Drawing::Point(7, 224);
 			this->tabControl1->Name = L"tabControl1";
 			this->tabControl1->SelectedIndex = 0;
 			this->tabControl1->Size = System::Drawing::Size(428, 168);
@@ -3716,10 +3694,10 @@ private:
 			this->tabPage2->Controls->Add(this->checkBox_bin_export_cropped);
 			this->tabPage2->Controls->Add(this->checkBox1_mode);
 			this->tabPage2->ForeColor = System::Drawing::Color::White;
-			this->tabPage2->Location = System::Drawing::Point(4, 29);
+			this->tabPage2->Location = System::Drawing::Point(4, 24);
 			this->tabPage2->Name = L"tabPage2";
 			this->tabPage2->Padding = System::Windows::Forms::Padding(3);
-			this->tabPage2->Size = System::Drawing::Size(420, 135);
+			this->tabPage2->Size = System::Drawing::Size(420, 140);
 			this->tabPage2->TabIndex = 1;
 			this->tabPage2->Text = L"Controls / Settings";
 			// 
@@ -3730,7 +3708,7 @@ private:
 				static_cast<System::Byte>(0)));
 			this->checkBox_save_data_alazar->Location = System::Drawing::Point(209, 70);
 			this->checkBox_save_data_alazar->Name = L"checkBox_save_data_alazar";
-			this->checkBox_save_data_alazar->Size = System::Drawing::Size(218, 29);
+			this->checkBox_save_data_alazar->Size = System::Drawing::Size(174, 24);
 			this->checkBox_save_data_alazar->TabIndex = 48;
 			this->checkBox_save_data_alazar->Text = L" Save Alazar Bin data";
 			this->checkBox_save_data_alazar->UseVisualStyleBackColor = true;
@@ -3747,7 +3725,7 @@ private:
 			});
 			this->comboBox_prev_scale_down_bin_read->Location = System::Drawing::Point(330, 41);
 			this->comboBox_prev_scale_down_bin_read->Name = L"comboBox_prev_scale_down_bin_read";
-			this->comboBox_prev_scale_down_bin_read->Size = System::Drawing::Size(73, 33);
+			this->comboBox_prev_scale_down_bin_read->Size = System::Drawing::Size(73, 28);
 			this->comboBox_prev_scale_down_bin_read->TabIndex = 47;
 			this->comboBox_prev_scale_down_bin_read->SelectedIndexChanged += gcnew System::EventHandler(this, &MTPFM::comboBox_prev_scale_down_bin_read_SelectedIndexChanged);
 			// 
@@ -3785,7 +3763,7 @@ private:
 			this->label14->ForeColor = System::Drawing::Color::White;
 			this->label14->Location = System::Drawing::Point(205, 44);
 			this->label14->Name = L"label14";
-			this->label14->Size = System::Drawing::Size(158, 25);
+			this->label14->Size = System::Drawing::Size(123, 20);
 			this->label14->TabIndex = 46;
 			this->label14->Text = L"Scale DOWN bin";
 			// 
@@ -3797,7 +3775,7 @@ private:
 			this->label13->ForeColor = System::Drawing::Color::White;
 			this->label13->Location = System::Drawing::Point(205, 11);
 			this->label13->Name = L"label13";
-			this->label13->Size = System::Drawing::Size(124, 25);
+			this->label13->Size = System::Drawing::Size(97, 20);
 			this->label13->TabIndex = 43;
 			this->label13->Text = L"Scale DOWN";
 			// 
@@ -3813,7 +3791,7 @@ private:
 			});
 			this->comboBox_prev_scale_down->Location = System::Drawing::Point(330, 5);
 			this->comboBox_prev_scale_down->Name = L"comboBox_prev_scale_down";
-			this->comboBox_prev_scale_down->Size = System::Drawing::Size(73, 33);
+			this->comboBox_prev_scale_down->Size = System::Drawing::Size(73, 28);
 			this->comboBox_prev_scale_down->TabIndex = 43;
 			this->comboBox_prev_scale_down->SelectedIndexChanged += gcnew System::EventHandler(this, &MTPFM::comboBox_prev_scale_down_SelectedIndexChanged);
 			// 
@@ -3824,7 +3802,7 @@ private:
 				static_cast<System::Byte>(0)));
 			this->checkBox_merge_channels->Location = System::Drawing::Point(6, 8);
 			this->checkBox_merge_channels->Name = L"checkBox_merge_channels";
-			this->checkBox_merge_channels->Size = System::Drawing::Size(97, 29);
+			this->checkBox_merge_channels->Size = System::Drawing::Size(77, 24);
 			this->checkBox_merge_channels->TabIndex = 45;
 			this->checkBox_merge_channels->Text = L" Merge";
 			this->checkBox_merge_channels->UseVisualStyleBackColor = true;
@@ -3850,7 +3828,7 @@ private:
 				System::Drawing::GraphicsUnit::Point, static_cast<System::Byte>(0)));
 			this->checkBox_bin_export_full_frame->Location = System::Drawing::Point(6, 101);
 			this->checkBox_bin_export_full_frame->Name = L"checkBox_bin_export_full_frame";
-			this->checkBox_bin_export_full_frame->Size = System::Drawing::Size(71, 29);
+			this->checkBox_bin_export_full_frame->Size = System::Drawing::Size(57, 24);
 			this->checkBox_bin_export_full_frame->TabIndex = 44;
 			this->checkBox_bin_export_full_frame->Text = L" Full";
 			this->checkBox_bin_export_full_frame->UseVisualStyleBackColor = true;
@@ -3863,7 +3841,7 @@ private:
 				static_cast<System::Byte>(0)));
 			this->checkBox_bin_export_cropped->Location = System::Drawing::Point(6, 70);
 			this->checkBox_bin_export_cropped->Name = L"checkBox_bin_export_cropped";
-			this->checkBox_bin_export_cropped->Size = System::Drawing::Size(117, 29);
+			this->checkBox_bin_export_cropped->Size = System::Drawing::Size(91, 24);
 			this->checkBox_bin_export_cropped->TabIndex = 43;
 			this->checkBox_bin_export_cropped->Text = L" Cropped";
 			this->checkBox_bin_export_cropped->UseVisualStyleBackColor = true;
@@ -3876,7 +3854,7 @@ private:
 				static_cast<System::Byte>(0)));
 			this->checkBox1_mode->Location = System::Drawing::Point(6, 39);
 			this->checkBox1_mode->Name = L"checkBox1_mode";
-			this->checkBox1_mode->Size = System::Drawing::Size(202, 29);
+			this->checkBox1_mode->Size = System::Drawing::Size(160, 24);
 			this->checkBox1_mode->TabIndex = 42;
 			this->checkBox1_mode->Text = L" Dark/Bright Mode";
 			this->checkBox1_mode->UseVisualStyleBackColor = true;
@@ -3888,9 +3866,9 @@ private:
 			this->label4->BackColor = System::Drawing::Color::Transparent;
 			this->label4->Font = (gcnew System::Drawing::Font(L"Segoe UI", 10.8F, static_cast<System::Drawing::FontStyle>((System::Drawing::FontStyle::Bold | System::Drawing::FontStyle::Italic)),
 				System::Drawing::GraphicsUnit::Point, static_cast<System::Byte>(0)));
-			this->label4->Location = System::Drawing::Point(6, 174);
+			this->label4->Location = System::Drawing::Point(6, 199);
 			this->label4->Name = L"label4";
-			this->label4->Size = System::Drawing::Size(165, 25);
+			this->label4->Size = System::Drawing::Size(138, 20);
 			this->label4->TabIndex = 25;
 			this->label4->Text = L"Control Tab Panel";
 			// 
@@ -3902,7 +3880,7 @@ private:
 			this->label60->ForeColor = System::Drawing::Color::White;
 			this->label60->Location = System::Drawing::Point(216, 49);
 			this->label60->Name = L"label60";
-			this->label60->Size = System::Drawing::Size(225, 25);
+			this->label60->Size = System::Drawing::Size(178, 20);
 			this->label60->TabIndex = 77;
 			this->label60->Text = L"Defalt image processing";
 			// 
@@ -3947,7 +3925,7 @@ private:
 			});
 			this->YScomboBox_intclock->Location = System::Drawing::Point(308, 15);
 			this->YScomboBox_intclock->Name = L"YScomboBox_intclock";
-			this->YScomboBox_intclock->Size = System::Drawing::Size(84, 29);
+			this->YScomboBox_intclock->Size = System::Drawing::Size(84, 25);
 			this->YScomboBox_intclock->TabIndex = 102;
 			// 
 			// YScheckBox_extclock
@@ -3958,7 +3936,7 @@ private:
 			this->YScheckBox_extclock->ForeColor = System::Drawing::Color::White;
 			this->YScheckBox_extclock->Location = System::Drawing::Point(7, 17);
 			this->YScheckBox_extclock->Name = L"YScheckBox_extclock";
-			this->YScheckBox_extclock->Size = System::Drawing::Size(118, 29);
+			this->YScheckBox_extclock->Size = System::Drawing::Size(93, 24);
 			this->YScheckBox_extclock->TabIndex = 99;
 			this->YScheckBox_extclock->Text = L"Ext. clock";
 			this->YScheckBox_extclock->UseVisualStyleBackColor = true;
@@ -3973,7 +3951,7 @@ private:
 				static_cast<System::Byte>(0)));
 			this->YScheckBox_intclock->Location = System::Drawing::Point(211, 17);
 			this->YScheckBox_intclock->Name = L"YScheckBox_intclock";
-			this->YScheckBox_intclock->Size = System::Drawing::Size(115, 29);
+			this->YScheckBox_intclock->Size = System::Drawing::Size(91, 24);
 			this->YScheckBox_intclock->TabIndex = 100;
 			this->YScheckBox_intclock->Text = L"Int. clock";
 			this->YScheckBox_intclock->UseVisualStyleBackColor = true;
@@ -3984,7 +3962,7 @@ private:
 			this->YSbutton_lissajous_setamp->Controls->Add(this->tabPage16);
 			this->YSbutton_lissajous_setamp->Controls->Add(this->tabPage15);
 			this->YSbutton_lissajous_setamp->Controls->Add(this->tabPage17);
-			this->YSbutton_lissajous_setamp->Location = System::Drawing::Point(7, 81);
+			this->YSbutton_lissajous_setamp->Location = System::Drawing::Point(7, 112);
 			this->YSbutton_lissajous_setamp->Name = L"YSbutton_lissajous_setamp";
 			this->YSbutton_lissajous_setamp->SelectedIndex = 0;
 			this->YSbutton_lissajous_setamp->Size = System::Drawing::Size(398, 334);
@@ -3993,7 +3971,8 @@ private:
 			// tabPage16
 			// 
 			this->tabPage16->BackColor = System::Drawing::Color::DimGray;
-			this->tabPage16->Controls->Add(this->toggleButtons_raster_chopper);
+			this->tabPage16->Controls->Add(this->label_channeldisplay);
+			this->tabPage16->Controls->Add(this->toggleButtons_label_channeldisplay);
 			this->tabPage16->Controls->Add(this->label65);
 			this->tabPage16->Controls->Add(this->YScomboBox__raster_chopperfreq);
 			this->tabPage16->Controls->Add(this->label64);
@@ -4020,27 +3999,40 @@ private:
 			this->tabPage16->Controls->Add(this->YStrackBar__raster_x_amp);
 			this->tabPage16->Controls->Add(this->label29);
 			this->tabPage16->ForeColor = System::Drawing::Color::Transparent;
-			this->tabPage16->Location = System::Drawing::Point(4, 29);
+			this->tabPage16->Location = System::Drawing::Point(4, 24);
 			this->tabPage16->Name = L"tabPage16";
 			this->tabPage16->Padding = System::Windows::Forms::Padding(3);
-			this->tabPage16->Size = System::Drawing::Size(390, 301);
+			this->tabPage16->Size = System::Drawing::Size(390, 306);
 			this->tabPage16->TabIndex = 1;
 			this->tabPage16->Text = L"2D Raster";
 			// 
-			// toggleButtons_raster_chopper
+			// label_channeldisplay
 			// 
-			this->toggleButtons_raster_chopper->Location = System::Drawing::Point(247, 241);
-			this->toggleButtons_raster_chopper->MinimumSize = System::Drawing::Size(45, 22);
-			this->toggleButtons_raster_chopper->Name = L"toggleButtons_raster_chopper";
-			this->toggleButtons_raster_chopper->OffBackColor = System::Drawing::Color::WhiteSmoke;
-			this->toggleButtons_raster_chopper->OffToggleColor = System::Drawing::Color::Gainsboro;
-			this->toggleButtons_raster_chopper->OnBackColor = System::Drawing::Color::WhiteSmoke;
-			this->toggleButtons_raster_chopper->OnToggleColor = System::Drawing::Color::DodgerBlue;
-			this->toggleButtons_raster_chopper->Size = System::Drawing::Size(47, 25);
-			this->toggleButtons_raster_chopper->SolidStyle = false;
-			this->toggleButtons_raster_chopper->TabIndex = 109;
-			this->toggleButtons_raster_chopper->UseVisualStyleBackColor = true;
-			this->toggleButtons_raster_chopper->CheckedChanged += gcnew System::EventHandler(this, &MTPFM::toggleButtons_raster_chopper_CheckedChanged);
+			this->label_channeldisplay->AutoSize = true;
+			this->label_channeldisplay->Font = (gcnew System::Drawing::Font(L"Segoe UI", 11.25F, System::Drawing::FontStyle::Bold, System::Drawing::GraphicsUnit::Point,
+				static_cast<System::Byte>(0)));
+			this->label_channeldisplay->ForeColor = System::Drawing::Color::White;
+			this->label_channeldisplay->Location = System::Drawing::Point(70, 280);
+			this->label_channeldisplay->Name = L"label_channeldisplay";
+			this->label_channeldisplay->Size = System::Drawing::Size(86, 20);
+			this->label_channeldisplay->TabIndex = 112;
+			this->label_channeldisplay->Text = L"PMT signal";
+			// 
+			// toggleButtons_label_channeldisplay
+			// 
+			this->toggleButtons_label_channeldisplay->Enabled = false;
+			this->toggleButtons_label_channeldisplay->Location = System::Drawing::Point(17, 278);
+			this->toggleButtons_label_channeldisplay->MinimumSize = System::Drawing::Size(45, 22);
+			this->toggleButtons_label_channeldisplay->Name = L"toggleButtons_label_channeldisplay";
+			this->toggleButtons_label_channeldisplay->OffBackColor = System::Drawing::Color::WhiteSmoke;
+			this->toggleButtons_label_channeldisplay->OffToggleColor = System::Drawing::Color::Gainsboro;
+			this->toggleButtons_label_channeldisplay->OnBackColor = System::Drawing::Color::WhiteSmoke;
+			this->toggleButtons_label_channeldisplay->OnToggleColor = System::Drawing::Color::DodgerBlue;
+			this->toggleButtons_label_channeldisplay->Size = System::Drawing::Size(47, 25);
+			this->toggleButtons_label_channeldisplay->SolidStyle = false;
+			this->toggleButtons_label_channeldisplay->TabIndex = 111;
+			this->toggleButtons_label_channeldisplay->UseVisualStyleBackColor = true;
+			this->toggleButtons_label_channeldisplay->CheckedChanged += gcnew System::EventHandler(this, &MTPFM::toggleButtons_label_channeldisplay_CheckedChanged);
 			// 
 			// label65
 			// 
@@ -4049,7 +4041,7 @@ private:
 			this->label65->ForeColor = System::Drawing::Color::White;
 			this->label65->Location = System::Drawing::Point(15, 260);
 			this->label65->Name = L"label65";
-			this->label65->Size = System::Drawing::Size(186, 19);
+			this->label65->Size = System::Drawing::Size(145, 13);
 			this->label65->TabIndex = 108;
 			this->label65->Text = L"Downscale from Line Freq.";
 			// 
@@ -4062,7 +4054,7 @@ private:
 			this->YScomboBox__raster_chopperfreq->Items->AddRange(gcnew cli::array< System::Object^  >(3) { L"1x", L"2x", L"4x" });
 			this->YScomboBox__raster_chopperfreq->Location = System::Drawing::Point(162, 240);
 			this->YScomboBox__raster_chopperfreq->Name = L"YScomboBox__raster_chopperfreq";
-			this->YScomboBox__raster_chopperfreq->Size = System::Drawing::Size(73, 33);
+			this->YScomboBox__raster_chopperfreq->Size = System::Drawing::Size(73, 28);
 			this->YScomboBox__raster_chopperfreq->TabIndex = 107;
 			// 
 			// label64
@@ -4073,7 +4065,7 @@ private:
 			this->label64->ForeColor = System::Drawing::Color::White;
 			this->label64->Location = System::Drawing::Point(14, 242);
 			this->label64->Name = L"label64";
-			this->label64->Size = System::Drawing::Size(139, 25);
+			this->label64->Size = System::Drawing::Size(107, 20);
 			this->label64->TabIndex = 106;
 			this->label64->Text = L"Chopper Freq.";
 			// 
@@ -4097,7 +4089,7 @@ private:
 				static_cast<System::Byte>(0)));
 			this->YStextBox__raster_y_amp->Location = System::Drawing::Point(256, 125);
 			this->YStextBox__raster_y_amp->Name = L"YStextBox__raster_y_amp";
-			this->YStextBox__raster_y_amp->Size = System::Drawing::Size(61, 32);
+			this->YStextBox__raster_y_amp->Size = System::Drawing::Size(61, 27);
 			this->YStextBox__raster_y_amp->TabIndex = 104;
 			this->YStextBox__raster_y_amp->Text = L"0.5";
 			this->YStextBox__raster_y_amp->TextAlign = System::Windows::Forms::HorizontalAlignment::Center;
@@ -4109,7 +4101,7 @@ private:
 				static_cast<System::Byte>(0)));
 			this->YStextBox__raster_x_amp->Location = System::Drawing::Point(256, 90);
 			this->YStextBox__raster_x_amp->Name = L"YStextBox__raster_x_amp";
-			this->YStextBox__raster_x_amp->Size = System::Drawing::Size(61, 32);
+			this->YStextBox__raster_x_amp->Size = System::Drawing::Size(61, 27);
 			this->YStextBox__raster_x_amp->TabIndex = 103;
 			this->YStextBox__raster_x_amp->Text = L"0.5";
 			this->YStextBox__raster_x_amp->TextAlign = System::Windows::Forms::HorizontalAlignment::Center;
@@ -4120,7 +4112,7 @@ private:
 			this->YScheckBox_raster_slowspeed->Font = (gcnew System::Drawing::Font(L"Segoe UI", 11, System::Drawing::FontStyle::Bold));
 			this->YScheckBox_raster_slowspeed->Location = System::Drawing::Point(282, 60);
 			this->YScheckBox_raster_slowspeed->Name = L"YScheckBox_raster_slowspeed";
-			this->YScheckBox_raster_slowspeed->Size = System::Drawing::Size(137, 29);
+			this->YScheckBox_raster_slowspeed->Size = System::Drawing::Size(107, 24);
 			this->YScheckBox_raster_slowspeed->TabIndex = 102;
 			this->YScheckBox_raster_slowspeed->Text = L"Slow Speed";
 			this->YScheckBox_raster_slowspeed->UseVisualStyleBackColor = true;
@@ -4132,7 +4124,7 @@ private:
 				static_cast<System::Byte>(0)));
 			this->YSlabel_raster_phase->Location = System::Drawing::Point(254, 210);
 			this->YSlabel_raster_phase->Name = L"YSlabel_raster_phase";
-			this->YSlabel_raster_phase->Size = System::Drawing::Size(23, 25);
+			this->YSlabel_raster_phase->Size = System::Drawing::Size(18, 20);
 			this->YSlabel_raster_phase->TabIndex = 95;
 			this->YSlabel_raster_phase->Text = L"0";
 			// 
@@ -4158,7 +4150,7 @@ private:
 			this->label46->ForeColor = System::Drawing::Color::White;
 			this->label46->Location = System::Drawing::Point(14, 206);
 			this->label46->Name = L"label46";
-			this->label46->Size = System::Drawing::Size(63, 25);
+			this->label46->Size = System::Drawing::Size(50, 20);
 			this->label46->TabIndex = 93;
 			this->label46->Text = L"Phase";
 			// 
@@ -4218,7 +4210,7 @@ private:
 			});
 			this->YScomboBox__raster_yline->Location = System::Drawing::Point(268, 165);
 			this->YScomboBox__raster_yline->Name = L"YScomboBox__raster_yline";
-			this->YScomboBox__raster_yline->Size = System::Drawing::Size(73, 33);
+			this->YScomboBox__raster_yline->Size = System::Drawing::Size(73, 28);
 			this->YScomboBox__raster_yline->TabIndex = 71;
 			// 
 			// label32
@@ -4229,7 +4221,7 @@ private:
 			this->label32->ForeColor = System::Drawing::Color::White;
 			this->label32->Location = System::Drawing::Point(188, 168);
 			this->label32->Name = L"label32";
-			this->label32->Size = System::Drawing::Size(85, 25);
+			this->label32->Size = System::Drawing::Size(66, 20);
 			this->label32->TabIndex = 70;
 			this->label32->Text = L"# Y-Line";
 			// 
@@ -4245,7 +4237,7 @@ private:
 			});
 			this->YScomboBox__raster_linefreq->Location = System::Drawing::Point(97, 166);
 			this->YScomboBox__raster_linefreq->Name = L"YScomboBox__raster_linefreq";
-			this->YScomboBox__raster_linefreq->Size = System::Drawing::Size(73, 33);
+			this->YScomboBox__raster_linefreq->Size = System::Drawing::Size(73, 28);
 			this->YScomboBox__raster_linefreq->TabIndex = 69;
 			// 
 			// label31
@@ -4256,7 +4248,7 @@ private:
 			this->label31->ForeColor = System::Drawing::Color::White;
 			this->label31->Location = System::Drawing::Point(14, 168);
 			this->label31->Name = L"label31";
-			this->label31->Size = System::Drawing::Size(99, 25);
+			this->label31->Size = System::Drawing::Size(77, 20);
 			this->label31->TabIndex = 68;
 			this->label31->Text = L"Line Freq.";
 			// 
@@ -4267,7 +4259,7 @@ private:
 				static_cast<System::Byte>(0)));
 			this->YStextBox__raster_yoffset->Location = System::Drawing::Point(215, 58);
 			this->YStextBox__raster_yoffset->Name = L"YStextBox__raster_yoffset";
-			this->YStextBox__raster_yoffset->Size = System::Drawing::Size(61, 32);
+			this->YStextBox__raster_yoffset->Size = System::Drawing::Size(61, 27);
 			this->YStextBox__raster_yoffset->TabIndex = 66;
 			this->YStextBox__raster_yoffset->Text = L"0";
 			this->YStextBox__raster_yoffset->TextAlign = System::Windows::Forms::HorizontalAlignment::Center;
@@ -4279,7 +4271,7 @@ private:
 				static_cast<System::Byte>(0)));
 			this->YStextBox__raster_xoffset->Location = System::Drawing::Point(83, 58);
 			this->YStextBox__raster_xoffset->Name = L"YStextBox__raster_xoffset";
-			this->YStextBox__raster_xoffset->Size = System::Drawing::Size(61, 32);
+			this->YStextBox__raster_xoffset->Size = System::Drawing::Size(61, 27);
 			this->YStextBox__raster_xoffset->TabIndex = 65;
 			this->YStextBox__raster_xoffset->Text = L"0";
 			this->YStextBox__raster_xoffset->TextAlign = System::Windows::Forms::HorizontalAlignment::Center;
@@ -4292,7 +4284,7 @@ private:
 			this->label22->ForeColor = System::Drawing::Color::White;
 			this->label22->Location = System::Drawing::Point(149, 61);
 			this->label22->Name = L"label22";
-			this->label22->Size = System::Drawing::Size(77, 25);
+			this->label22->Size = System::Drawing::Size(62, 20);
 			this->label22->TabIndex = 64;
 			this->label22->Text = L"YOffset";
 			// 
@@ -4304,7 +4296,7 @@ private:
 			this->label24->ForeColor = System::Drawing::Color::White;
 			this->label24->Location = System::Drawing::Point(14, 61);
 			this->label24->Name = L"label24";
-			this->label24->Size = System::Drawing::Size(77, 25);
+			this->label24->Size = System::Drawing::Size(63, 20);
 			this->label24->TabIndex = 63;
 			this->label24->Text = L"XOffset";
 			// 
@@ -4330,7 +4322,7 @@ private:
 			this->label26->ForeColor = System::Drawing::Color::White;
 			this->label26->Location = System::Drawing::Point(14, 125);
 			this->label26->Name = L"label26";
-			this->label26->Size = System::Drawing::Size(71, 25);
+			this->label26->Size = System::Drawing::Size(56, 20);
 			this->label26->TabIndex = 61;
 			this->label26->Text = L"y amp.";
 			// 
@@ -4356,7 +4348,7 @@ private:
 			this->label29->ForeColor = System::Drawing::Color::White;
 			this->label29->Location = System::Drawing::Point(14, 94);
 			this->label29->Name = L"label29";
-			this->label29->Size = System::Drawing::Size(72, 25);
+			this->label29->Size = System::Drawing::Size(56, 20);
 			this->label29->TabIndex = 59;
 			this->label29->Text = L"x amp.";
 			// 
@@ -4364,7 +4356,6 @@ private:
 			// 
 			this->tabPage15->BackColor = System::Drawing::Color::DimGray;
 			this->tabPage15->Controls->Add(this->comboBox_lissajous_chopperphase);
-			this->tabPage15->Controls->Add(this->toggleButtons_lissajous_chopper);
 			this->tabPage15->Controls->Add(this->label67);
 			this->tabPage15->Controls->Add(this->textBox_highspeedmode);
 			this->tabPage15->Controls->Add(this->YScheckBox_lissajous_repairshow);
@@ -4394,10 +4385,10 @@ private:
 			this->tabPage15->Controls->Add(this->YStrackBar__lissajous_x_amp);
 			this->tabPage15->Controls->Add(this->label40);
 			this->tabPage15->ForeColor = System::Drawing::Color::White;
-			this->tabPage15->Location = System::Drawing::Point(4, 29);
+			this->tabPage15->Location = System::Drawing::Point(4, 24);
 			this->tabPage15->Name = L"tabPage15";
 			this->tabPage15->Padding = System::Windows::Forms::Padding(3);
-			this->tabPage15->Size = System::Drawing::Size(390, 301);
+			this->tabPage15->Size = System::Drawing::Size(390, 306);
 			this->tabPage15->TabIndex = 0;
 			this->tabPage15->Text = L"2D Lisssajous";
 			// 
@@ -4411,25 +4402,10 @@ private:
 				L"0     degree", L"45   degree",
 					L"90   degree", L"135 degree", L"180 degree", L"225 degree", L"270 degree", L"315 degree", L"360 degree"
 			});
-			this->comboBox_lissajous_chopperphase->Location = System::Drawing::Point(193, 271);
+			this->comboBox_lissajous_chopperphase->Location = System::Drawing::Point(132, 271);
 			this->comboBox_lissajous_chopperphase->Name = L"comboBox_lissajous_chopperphase";
-			this->comboBox_lissajous_chopperphase->Size = System::Drawing::Size(113, 33);
+			this->comboBox_lissajous_chopperphase->Size = System::Drawing::Size(113, 28);
 			this->comboBox_lissajous_chopperphase->TabIndex = 116;
-			// 
-			// toggleButtons_lissajous_chopper
-			// 
-			this->toggleButtons_lissajous_chopper->Location = System::Drawing::Point(22, 270);
-			this->toggleButtons_lissajous_chopper->MinimumSize = System::Drawing::Size(45, 22);
-			this->toggleButtons_lissajous_chopper->Name = L"toggleButtons_lissajous_chopper";
-			this->toggleButtons_lissajous_chopper->OffBackColor = System::Drawing::Color::WhiteSmoke;
-			this->toggleButtons_lissajous_chopper->OffToggleColor = System::Drawing::Color::Gainsboro;
-			this->toggleButtons_lissajous_chopper->OnBackColor = System::Drawing::Color::WhiteSmoke;
-			this->toggleButtons_lissajous_chopper->OnToggleColor = System::Drawing::Color::DodgerBlue;
-			this->toggleButtons_lissajous_chopper->Size = System::Drawing::Size(47, 25);
-			this->toggleButtons_lissajous_chopper->SolidStyle = false;
-			this->toggleButtons_lissajous_chopper->TabIndex = 114;
-			this->toggleButtons_lissajous_chopper->UseVisualStyleBackColor = true;
-			this->toggleButtons_lissajous_chopper->CheckedChanged += gcnew System::EventHandler(this, &MTPFM::toggleButtons_lissajous_chopper_CheckedChanged);
 			// 
 			// label67
 			// 
@@ -4437,9 +4413,9 @@ private:
 			this->label67->Font = (gcnew System::Drawing::Font(L"Segoe UI", 11.25F, System::Drawing::FontStyle::Bold, System::Drawing::GraphicsUnit::Point,
 				static_cast<System::Byte>(0)));
 			this->label67->ForeColor = System::Drawing::Color::White;
-			this->label67->Location = System::Drawing::Point(75, 274);
+			this->label67->Location = System::Drawing::Point(14, 274);
 			this->label67->Name = L"label67";
-			this->label67->Size = System::Drawing::Size(145, 25);
+			this->label67->Size = System::Drawing::Size(113, 20);
 			this->label67->TabIndex = 111;
 			this->label67->Text = L"Chopper Phase";
 			// 
@@ -4454,7 +4430,7 @@ private:
 			this->textBox_highspeedmode->ForeColor = System::Drawing::Color::Gray;
 			this->textBox_highspeedmode->Location = System::Drawing::Point(287, 176);
 			this->textBox_highspeedmode->Name = L"textBox_highspeedmode";
-			this->textBox_highspeedmode->Size = System::Drawing::Size(101, 20);
+			this->textBox_highspeedmode->Size = System::Drawing::Size(101, 16);
 			this->textBox_highspeedmode->TabIndex = 110;
 			this->textBox_highspeedmode->Text = L"High Speed Mode";
 			// 
@@ -4465,7 +4441,7 @@ private:
 				System::Drawing::GraphicsUnit::Point, static_cast<System::Byte>(0)));
 			this->YScheckBox_lissajous_repairshow->Location = System::Drawing::Point(312, 240);
 			this->YScheckBox_lissajous_repairshow->Name = L"YScheckBox_lissajous_repairshow";
-			this->YScheckBox_lissajous_repairshow->Size = System::Drawing::Size(91, 29);
+			this->YScheckBox_lissajous_repairshow->Size = System::Drawing::Size(73, 24);
 			this->YScheckBox_lissajous_repairshow->TabIndex = 109;
 			this->YScheckBox_lissajous_repairshow->Text = L"Repair";
 			this->YScheckBox_lissajous_repairshow->UseVisualStyleBackColor = true;
@@ -4478,7 +4454,7 @@ private:
 				static_cast<System::Byte>(0)));
 			this->YStextBox__lissajous_y_amp->Location = System::Drawing::Point(256, 125);
 			this->YStextBox__lissajous_y_amp->Name = L"YStextBox__lissajous_y_amp";
-			this->YStextBox__lissajous_y_amp->Size = System::Drawing::Size(61, 32);
+			this->YStextBox__lissajous_y_amp->Size = System::Drawing::Size(61, 27);
 			this->YStextBox__lissajous_y_amp->TabIndex = 108;
 			this->YStextBox__lissajous_y_amp->Text = L"0.5";
 			this->YStextBox__lissajous_y_amp->TextAlign = System::Windows::Forms::HorizontalAlignment::Center;
@@ -4490,7 +4466,7 @@ private:
 				static_cast<System::Byte>(0)));
 			this->YStextBox__lissajous_x_amp->Location = System::Drawing::Point(256, 90);
 			this->YStextBox__lissajous_x_amp->Name = L"YStextBox__lissajous_x_amp";
-			this->YStextBox__lissajous_x_amp->Size = System::Drawing::Size(61, 32);
+			this->YStextBox__lissajous_x_amp->Size = System::Drawing::Size(61, 27);
 			this->YStextBox__lissajous_x_amp->TabIndex = 107;
 			this->YStextBox__lissajous_x_amp->Text = L"0.5";
 			this->YStextBox__lissajous_x_amp->TextAlign = System::Windows::Forms::HorizontalAlignment::Center;
@@ -4515,7 +4491,7 @@ private:
 				static_cast<System::Byte>(0)));
 			this->YSlabel__lissajous_offsettime->Location = System::Drawing::Point(268, 240);
 			this->YSlabel__lissajous_offsettime->Name = L"YSlabel__lissajous_offsettime";
-			this->YSlabel__lissajous_offsettime->Size = System::Drawing::Size(48, 25);
+			this->YSlabel__lissajous_offsettime->Size = System::Drawing::Size(38, 20);
 			this->YSlabel__lissajous_offsettime->TabIndex = 104;
 			this->YSlabel__lissajous_offsettime->Text = L"0 µs";
 			// 
@@ -4540,7 +4516,7 @@ private:
 			this->label49->ForeColor = System::Drawing::Color::White;
 			this->label49->Location = System::Drawing::Point(14, 238);
 			this->label49->Name = L"label49";
-			this->label49->Size = System::Drawing::Size(109, 25);
+			this->label49->Size = System::Drawing::Size(89, 20);
 			this->label49->TabIndex = 103;
 			this->label49->Text = L"Offset time";
 			// 
@@ -4551,7 +4527,7 @@ private:
 				System::Drawing::GraphicsUnit::Point, static_cast<System::Byte>(0)));
 			this->YScheckBox_lissajous_samplemapsave->Location = System::Drawing::Point(282, 60);
 			this->YScheckBox_lissajous_samplemapsave->Name = L"YScheckBox_lissajous_samplemapsave";
-			this->YScheckBox_lissajous_samplemapsave->Size = System::Drawing::Size(139, 29);
+			this->YScheckBox_lissajous_samplemapsave->Size = System::Drawing::Size(110, 24);
 			this->YScheckBox_lissajous_samplemapsave->TabIndex = 101;
 			this->YScheckBox_lissajous_samplemapsave->Text = L"SampleMap";
 			this->YScheckBox_lissajous_samplemapsave->UseVisualStyleBackColor = true;
@@ -4563,7 +4539,7 @@ private:
 				static_cast<System::Byte>(0)));
 			this->YSlabel__lissajous_phase->Location = System::Drawing::Point(268, 204);
 			this->YSlabel__lissajous_phase->Name = L"YSlabel__lissajous_phase";
-			this->YSlabel__lissajous_phase->Size = System::Drawing::Size(23, 25);
+			this->YSlabel__lissajous_phase->Size = System::Drawing::Size(18, 20);
 			this->YSlabel__lissajous_phase->TabIndex = 100;
 			this->YSlabel__lissajous_phase->Text = L"0";
 			// 
@@ -4588,7 +4564,7 @@ private:
 			this->label47->ForeColor = System::Drawing::Color::White;
 			this->label47->Location = System::Drawing::Point(14, 202);
 			this->label47->Name = L"label47";
-			this->label47->Size = System::Drawing::Size(63, 25);
+			this->label47->Size = System::Drawing::Size(50, 20);
 			this->label47->TabIndex = 99;
 			this->label47->Text = L"Phase";
 			// 
@@ -4599,7 +4575,7 @@ private:
 				static_cast<System::Byte>(0)));
 			this->YStextBox__lissajous_y_freq->Location = System::Drawing::Point(216, 168);
 			this->YStextBox__lissajous_y_freq->Name = L"YStextBox__lissajous_y_freq";
-			this->YStextBox__lissajous_y_freq->Size = System::Drawing::Size(68, 32);
+			this->YStextBox__lissajous_y_freq->Size = System::Drawing::Size(68, 27);
 			this->YStextBox__lissajous_y_freq->TabIndex = 97;
 			this->YStextBox__lissajous_y_freq->Text = L"2160";
 			this->YStextBox__lissajous_y_freq->TextAlign = System::Windows::Forms::HorizontalAlignment::Center;
@@ -4611,7 +4587,7 @@ private:
 				static_cast<System::Byte>(0)));
 			this->YStextBox__lissajous_x_freq->Location = System::Drawing::Point(77, 168);
 			this->YStextBox__lissajous_x_freq->Name = L"YStextBox__lissajous_x_freq";
-			this->YStextBox__lissajous_x_freq->Size = System::Drawing::Size(68, 32);
+			this->YStextBox__lissajous_x_freq->Size = System::Drawing::Size(68, 27);
 			this->YStextBox__lissajous_x_freq->TabIndex = 96;
 			this->YStextBox__lissajous_x_freq->Text = L"2100";
 			this->YStextBox__lissajous_x_freq->TextAlign = System::Windows::Forms::HorizontalAlignment::Center;
@@ -4668,7 +4644,7 @@ private:
 			this->label33->ForeColor = System::Drawing::Color::White;
 			this->label33->Location = System::Drawing::Point(153, 168);
 			this->label33->Name = L"label33";
-			this->label33->Size = System::Drawing::Size(77, 25);
+			this->label33->Size = System::Drawing::Size(59, 20);
 			this->label33->TabIndex = 84;
 			this->label33->Text = L"Y-Freq.";
 			// 
@@ -4680,7 +4656,7 @@ private:
 			this->label34->ForeColor = System::Drawing::Color::White;
 			this->label34->Location = System::Drawing::Point(14, 168);
 			this->label34->Name = L"label34";
-			this->label34->Size = System::Drawing::Size(77, 25);
+			this->label34->Size = System::Drawing::Size(60, 20);
 			this->label34->TabIndex = 82;
 			this->label34->Text = L"X-Freq.";
 			// 
@@ -4691,7 +4667,7 @@ private:
 				static_cast<System::Byte>(0)));
 			this->YStextBox__lissajous_yoffset->Location = System::Drawing::Point(215, 58);
 			this->YStextBox__lissajous_yoffset->Name = L"YStextBox__lissajous_yoffset";
-			this->YStextBox__lissajous_yoffset->Size = System::Drawing::Size(61, 32);
+			this->YStextBox__lissajous_yoffset->Size = System::Drawing::Size(61, 27);
 			this->YStextBox__lissajous_yoffset->TabIndex = 80;
 			this->YStextBox__lissajous_yoffset->Text = L"0";
 			this->YStextBox__lissajous_yoffset->TextAlign = System::Windows::Forms::HorizontalAlignment::Center;
@@ -4703,7 +4679,7 @@ private:
 				static_cast<System::Byte>(0)));
 			this->YStextBox__lissajous_xoffset->Location = System::Drawing::Point(83, 58);
 			this->YStextBox__lissajous_xoffset->Name = L"YStextBox__lissajous_xoffset";
-			this->YStextBox__lissajous_xoffset->Size = System::Drawing::Size(61, 32);
+			this->YStextBox__lissajous_xoffset->Size = System::Drawing::Size(61, 27);
 			this->YStextBox__lissajous_xoffset->TabIndex = 79;
 			this->YStextBox__lissajous_xoffset->Text = L"0";
 			this->YStextBox__lissajous_xoffset->TextAlign = System::Windows::Forms::HorizontalAlignment::Center;
@@ -4716,7 +4692,7 @@ private:
 			this->label36->ForeColor = System::Drawing::Color::White;
 			this->label36->Location = System::Drawing::Point(149, 61);
 			this->label36->Name = L"label36";
-			this->label36->Size = System::Drawing::Size(77, 25);
+			this->label36->Size = System::Drawing::Size(62, 20);
 			this->label36->TabIndex = 78;
 			this->label36->Text = L"YOffset";
 			// 
@@ -4728,7 +4704,7 @@ private:
 			this->label37->ForeColor = System::Drawing::Color::White;
 			this->label37->Location = System::Drawing::Point(14, 61);
 			this->label37->Name = L"label37";
-			this->label37->Size = System::Drawing::Size(77, 25);
+			this->label37->Size = System::Drawing::Size(63, 20);
 			this->label37->TabIndex = 77;
 			this->label37->Text = L"XOffset";
 			// 
@@ -4754,7 +4730,7 @@ private:
 			this->label39->ForeColor = System::Drawing::Color::White;
 			this->label39->Location = System::Drawing::Point(14, 125);
 			this->label39->Name = L"label39";
-			this->label39->Size = System::Drawing::Size(71, 25);
+			this->label39->Size = System::Drawing::Size(56, 20);
 			this->label39->TabIndex = 75;
 			this->label39->Text = L"y amp.";
 			// 
@@ -4780,7 +4756,7 @@ private:
 			this->label40->ForeColor = System::Drawing::Color::White;
 			this->label40->Location = System::Drawing::Point(14, 94);
 			this->label40->Name = L"label40";
-			this->label40->Size = System::Drawing::Size(72, 25);
+			this->label40->Size = System::Drawing::Size(56, 20);
 			this->label40->TabIndex = 73;
 			this->label40->Text = L"x amp.";
 			// 
@@ -4798,9 +4774,9 @@ private:
 			this->tabPage17->Controls->Add(this->label44);
 			this->tabPage17->Controls->Add(this->label45);
 			this->tabPage17->Controls->Add(this->YSbutton_manual_control);
-			this->tabPage17->Location = System::Drawing::Point(4, 29);
+			this->tabPage17->Location = System::Drawing::Point(4, 24);
 			this->tabPage17->Name = L"tabPage17";
-			this->tabPage17->Size = System::Drawing::Size(390, 301);
+			this->tabPage17->Size = System::Drawing::Size(390, 306);
 			this->tabPage17->TabIndex = 2;
 			this->tabPage17->Text = L"Alignment";
 			// 
@@ -4824,7 +4800,7 @@ private:
 				static_cast<System::Byte>(0)));
 			this->YStextBox_crnt_po_y->Location = System::Drawing::Point(268, 129);
 			this->YStextBox_crnt_po_y->Name = L"YStextBox_crnt_po_y";
-			this->YStextBox_crnt_po_y->Size = System::Drawing::Size(59, 32);
+			this->YStextBox_crnt_po_y->Size = System::Drawing::Size(59, 27);
 			this->YStextBox_crnt_po_y->TabIndex = 71;
 			this->YStextBox_crnt_po_y->TextAlign = System::Windows::Forms::HorizontalAlignment::Center;
 			// 
@@ -4836,7 +4812,7 @@ private:
 				static_cast<System::Byte>(0)));
 			this->YStextBox_crnt_po_x->Location = System::Drawing::Point(174, 129);
 			this->YStextBox_crnt_po_x->Name = L"YStextBox_crnt_po_x";
-			this->YStextBox_crnt_po_x->Size = System::Drawing::Size(59, 32);
+			this->YStextBox_crnt_po_x->Size = System::Drawing::Size(59, 27);
 			this->YStextBox_crnt_po_x->TabIndex = 70;
 			this->YStextBox_crnt_po_x->TextAlign = System::Windows::Forms::HorizontalAlignment::Center;
 			// 
@@ -4848,7 +4824,7 @@ private:
 				static_cast<System::Byte>(0)));
 			this->label41->Location = System::Drawing::Point(19, 132);
 			this->label41->Name = L"label41";
-			this->label41->Size = System::Drawing::Size(123, 25);
+			this->label41->Size = System::Drawing::Size(95, 20);
 			this->label41->TabIndex = 63;
 			this->label41->Text = L"Current pos.";
 			// 
@@ -4860,7 +4836,7 @@ private:
 				static_cast<System::Byte>(0)));
 			this->label42->Location = System::Drawing::Point(244, 133);
 			this->label42->Name = L"label42";
-			this->label42->Size = System::Drawing::Size(24, 25);
+			this->label42->Size = System::Drawing::Size(18, 20);
 			this->label42->TabIndex = 69;
 			this->label42->Text = L"Y";
 			// 
@@ -4872,7 +4848,7 @@ private:
 				static_cast<System::Byte>(0)));
 			this->label43->Location = System::Drawing::Point(145, 132);
 			this->label43->Name = L"label43";
-			this->label43->Size = System::Drawing::Size(29, 25);
+			this->label43->Size = System::Drawing::Size(23, 20);
 			this->label43->TabIndex = 68;
 			this->label43->Text = L"X ";
 			// 
@@ -4883,7 +4859,7 @@ private:
 				static_cast<System::Byte>(0)));
 			this->YStextBox_y_po->Location = System::Drawing::Point(178, 50);
 			this->YStextBox_y_po->Name = L"YStextBox_y_po";
-			this->YStextBox_y_po->Size = System::Drawing::Size(100, 32);
+			this->YStextBox_y_po->Size = System::Drawing::Size(100, 27);
 			this->YStextBox_y_po->TabIndex = 67;
 			this->YStextBox_y_po->Text = L"0";
 			this->YStextBox_y_po->TextAlign = System::Windows::Forms::HorizontalAlignment::Center;
@@ -4895,7 +4871,7 @@ private:
 				static_cast<System::Byte>(0)));
 			this->YStextBox_x_po->Location = System::Drawing::Point(178, 16);
 			this->YStextBox_x_po->Name = L"YStextBox_x_po";
-			this->YStextBox_x_po->Size = System::Drawing::Size(100, 32);
+			this->YStextBox_x_po->Size = System::Drawing::Size(100, 27);
 			this->YStextBox_x_po->TabIndex = 64;
 			this->YStextBox_x_po->Text = L"0";
 			this->YStextBox_x_po->TextAlign = System::Windows::Forms::HorizontalAlignment::Center;
@@ -4908,7 +4884,7 @@ private:
 				static_cast<System::Byte>(0)));
 			this->label44->Location = System::Drawing::Point(19, 53);
 			this->label44->Name = L"label44";
-			this->label44->Size = System::Drawing::Size(186, 25);
+			this->label44->Size = System::Drawing::Size(148, 20);
 			this->label44->TabIndex = 66;
 			this->label44->Text = L"Y position (-10~10)";
 			// 
@@ -4920,7 +4896,7 @@ private:
 				static_cast<System::Byte>(0)));
 			this->label45->Location = System::Drawing::Point(19, 19);
 			this->label45->Name = L"label45";
-			this->label45->Size = System::Drawing::Size(186, 25);
+			this->label45->Size = System::Drawing::Size(149, 20);
 			this->label45->TabIndex = 65;
 			this->label45->Text = L"X position (-10~10)";
 			// 
@@ -4938,15 +4914,30 @@ private:
 			this->YSbutton_manual_control->UseVisualStyleBackColor = false;
 			this->YSbutton_manual_control->Click += gcnew System::EventHandler(this, &MTPFM::YSbutton_manual_control_Click);
 			// 
+			// toggleButtons_raster_chopper
+			// 
+			this->toggleButtons_raster_chopper->Location = System::Drawing::Point(9, 81);
+			this->toggleButtons_raster_chopper->MinimumSize = System::Drawing::Size(45, 22);
+			this->toggleButtons_raster_chopper->Name = L"toggleButtons_raster_chopper";
+			this->toggleButtons_raster_chopper->OffBackColor = System::Drawing::Color::WhiteSmoke;
+			this->toggleButtons_raster_chopper->OffToggleColor = System::Drawing::Color::Gainsboro;
+			this->toggleButtons_raster_chopper->OnBackColor = System::Drawing::Color::WhiteSmoke;
+			this->toggleButtons_raster_chopper->OnToggleColor = System::Drawing::Color::DodgerBlue;
+			this->toggleButtons_raster_chopper->Size = System::Drawing::Size(47, 25);
+			this->toggleButtons_raster_chopper->SolidStyle = false;
+			this->toggleButtons_raster_chopper->TabIndex = 109;
+			this->toggleButtons_raster_chopper->UseVisualStyleBackColor = true;
+			this->toggleButtons_raster_chopper->CheckedChanged += gcnew System::EventHandler(this, &MTPFM::toggleButtons_raster_chopper_CheckedChanged);
+			// 
 			// label23
 			// 
 			this->label23->AutoSize = true;
 			this->label23->BackColor = System::Drawing::Color::Transparent;
 			this->label23->Font = (gcnew System::Drawing::Font(L"Segoe UI", 10.8F, static_cast<System::Drawing::FontStyle>((System::Drawing::FontStyle::Bold | System::Drawing::FontStyle::Italic)),
 				System::Drawing::GraphicsUnit::Point, static_cast<System::Byte>(0)));
-			this->label23->Location = System::Drawing::Point(6, 739);
+			this->label23->Location = System::Drawing::Point(6, 771);
 			this->label23->Name = L"label23";
-			this->label23->Size = System::Drawing::Size(109, 25);
+			this->label23->Size = System::Drawing::Size(92, 20);
 			this->label23->TabIndex = 74;
 			this->label23->Text = L"ETL Control";
 			// 
@@ -4962,7 +4953,7 @@ private:
 			this->panel2->Controls->Add(this->label27);
 			this->panel2->Controls->Add(this->button_ETL_up);
 			this->panel2->Controls->Add(this->label28);
-			this->panel2->Location = System::Drawing::Point(6, 761);
+			this->panel2->Location = System::Drawing::Point(6, 793);
 			this->panel2->Name = L"panel2";
 			this->panel2->Size = System::Drawing::Size(419, 97);
 			this->panel2->TabIndex = 73;
@@ -5013,7 +5004,7 @@ private:
 				static_cast<System::Byte>(0)));
 			this->textBox_ETL_FL->Location = System::Drawing::Point(146, 58);
 			this->textBox_ETL_FL->Name = L"textBox_ETL_FL";
-			this->textBox_ETL_FL->Size = System::Drawing::Size(100, 32);
+			this->textBox_ETL_FL->Size = System::Drawing::Size(100, 27);
 			this->textBox_ETL_FL->TabIndex = 44;
 			this->textBox_ETL_FL->TextAlign = System::Windows::Forms::HorizontalAlignment::Center;
 			// 
@@ -5040,7 +5031,7 @@ private:
 				static_cast<System::Byte>(0)));
 			this->label27->Location = System::Drawing::Point(6, 17);
 			this->label27->Name = L"label27";
-			this->label27->Size = System::Drawing::Size(112, 25);
+			this->label27->Size = System::Drawing::Size(88, 20);
 			this->label27->TabIndex = 38;
 			this->label27->Text = L"Voltage (V)";
 			// 
@@ -5065,7 +5056,7 @@ private:
 				static_cast<System::Byte>(0)));
 			this->label28->Location = System::Drawing::Point(6, 61);
 			this->label28->Name = L"label28";
-			this->label28->Size = System::Drawing::Size(168, 25);
+			this->label28->Size = System::Drawing::Size(133, 20);
 			this->label28->TabIndex = 36;
 			this->label28->Text = L"Focal length (μm)";
 			// 
@@ -5090,7 +5081,7 @@ private:
 			this->label2_combo_y_length->ForeColor = System::Drawing::Color::White;
 			this->label2_combo_y_length->Location = System::Drawing::Point(11, 77);
 			this->label2_combo_y_length->Name = L"label2_combo_y_length";
-			this->label2_combo_y_length->Size = System::Drawing::Size(85, 25);
+			this->label2_combo_y_length->Size = System::Drawing::Size(66, 20);
 			this->label2_combo_y_length->TabIndex = 36;
 			this->label2_combo_y_length->Text = L"# Y-Line";
 			// 
@@ -5107,7 +5098,7 @@ private:
 			});
 			this->comboBox2__Ext_clk->Location = System::Drawing::Point(106, 10);
 			this->comboBox2__Ext_clk->Name = L"comboBox2__Ext_clk";
-			this->comboBox2__Ext_clk->Size = System::Drawing::Size(84, 29);
+			this->comboBox2__Ext_clk->Size = System::Drawing::Size(84, 25);
 			this->comboBox2__Ext_clk->TabIndex = 37;
 			this->comboBox2__Ext_clk->SelectedIndexChanged += gcnew System::EventHandler(this, &MTPFM::comboBox2__Ext_clk_SelectedIndexChanged_1);
 			// 
@@ -5124,7 +5115,7 @@ private:
 			});
 			this->comboBox3_Int_clk->Location = System::Drawing::Point(298, 10);
 			this->comboBox3_Int_clk->Name = L"comboBox3_Int_clk";
-			this->comboBox3_Int_clk->Size = System::Drawing::Size(84, 29);
+			this->comboBox3_Int_clk->Size = System::Drawing::Size(84, 25);
 			this->comboBox3_Int_clk->TabIndex = 38;
 			this->comboBox3_Int_clk->SelectedIndexChanged += gcnew System::EventHandler(this, &MTPFM::comboBox3_Int_clk_SelectedIndexChanged_1);
 			// 
@@ -5140,7 +5131,7 @@ private:
 			});
 			this->comboBox_num_Y_lines->Location = System::Drawing::Point(84, 73);
 			this->comboBox_num_Y_lines->Name = L"comboBox_num_Y_lines";
-			this->comboBox_num_Y_lines->Size = System::Drawing::Size(73, 33);
+			this->comboBox_num_Y_lines->Size = System::Drawing::Size(73, 28);
 			this->comboBox_num_Y_lines->TabIndex = 39;
 			this->comboBox_num_Y_lines->SelectedIndexChanged += gcnew System::EventHandler(this, &MTPFM::comboBox_num_Y_lines_SelectedIndexChanged_1);
 			// 
@@ -5156,7 +5147,7 @@ private:
 			});
 			this->comboBox_headmount_count->Location = System::Drawing::Point(310, 73);
 			this->comboBox_headmount_count->Name = L"comboBox_headmount_count";
-			this->comboBox_headmount_count->Size = System::Drawing::Size(73, 33);
+			this->comboBox_headmount_count->Size = System::Drawing::Size(73, 28);
 			this->comboBox_headmount_count->TabIndex = 40;
 			this->comboBox_headmount_count->SelectedIndexChanged += gcnew System::EventHandler(this, &MTPFM::comboBox_headmount_count_SelectedIndexChanged);
 			// 
@@ -5168,7 +5159,7 @@ private:
 			this->label11->ForeColor = System::Drawing::Color::White;
 			this->label11->Location = System::Drawing::Point(184, 77);
 			this->label11->Name = L"label11";
-			this->label11->Size = System::Drawing::Size(158, 25);
+			this->label11->Size = System::Drawing::Size(122, 20);
 			this->label11->TabIndex = 41;
 			this->label11->Text = L"Head Mount Set";
 			// 
@@ -5183,12 +5174,14 @@ private:
 			this->tabControl5->Location = System::Drawing::Point(6, 77);
 			this->tabControl5->Name = L"tabControl5";
 			this->tabControl5->SelectedIndex = 0;
-			this->tabControl5->Size = System::Drawing::Size(419, 449);
+			this->tabControl5->Size = System::Drawing::Size(419, 481);
 			this->tabControl5->TabIndex = 69;
 			// 
 			// tabPage18
 			// 
 			this->tabPage18->BackColor = System::Drawing::Color::DimGray;
+			this->tabPage18->Controls->Add(this->label_channel);
+			this->tabPage18->Controls->Add(this->toggleButtons_raster_chopper);
 			this->tabPage18->Controls->Add(this->label57);
 			this->tabPage18->Controls->Add(this->label50);
 			this->tabPage18->Controls->Add(this->YScomboBox_inputrange);
@@ -5199,12 +5192,24 @@ private:
 			this->tabPage18->Controls->Add(this->YScheckBox_extclock);
 			this->tabPage18->Controls->Add(this->YScheckBox_intclock);
 			this->tabPage18->Controls->Add(this->YSbutton_lissajous_setamp);
-			this->tabPage18->Location = System::Drawing::Point(4, 29);
+			this->tabPage18->Location = System::Drawing::Point(4, 24);
 			this->tabPage18->Name = L"tabPage18";
 			this->tabPage18->Padding = System::Windows::Forms::Padding(3);
-			this->tabPage18->Size = System::Drawing::Size(411, 416);
+			this->tabPage18->Size = System::Drawing::Size(411, 453);
 			this->tabPage18->TabIndex = 1;
 			this->tabPage18->Text = L"Driver";
+			// 
+			// label_channel
+			// 
+			this->label_channel->AutoSize = true;
+			this->label_channel->Font = (gcnew System::Drawing::Font(L"Segoe UI", 11.25F, System::Drawing::FontStyle::Bold, System::Drawing::GraphicsUnit::Point,
+				static_cast<System::Byte>(0)));
+			this->label_channel->ForeColor = System::Drawing::Color::White;
+			this->label_channel->Location = System::Drawing::Point(62, 83);
+			this->label_channel->Name = L"label_channel";
+			this->label_channel->Size = System::Drawing::Size(78, 20);
+			this->label_channel->TabIndex = 110;
+			this->label_channel->Text = L"1 Channel";
 			// 
 			// label57
 			// 
@@ -5214,7 +5219,7 @@ private:
 			this->label57->ForeColor = System::Drawing::Color::White;
 			this->label57->Location = System::Drawing::Point(5, 51);
 			this->label57->Name = L"label57";
-			this->label57->Size = System::Drawing::Size(122, 25);
+			this->label57->Size = System::Drawing::Size(95, 20);
 			this->label57->TabIndex = 109;
 			this->label57->Text = L"Input Range";
 			// 
@@ -5226,7 +5231,7 @@ private:
 			this->label50->ForeColor = System::Drawing::Color::White;
 			this->label50->Location = System::Drawing::Point(160, 18);
 			this->label50->Name = L"label50";
-			this->label50->Size = System::Drawing::Size(57, 25);
+			this->label50->Size = System::Drawing::Size(45, 20);
 			this->label50->TabIndex = 107;
 			this->label50->Text = L"MS/s";
 			// 
@@ -5240,7 +5245,7 @@ private:
 			this->YScomboBox_inputrange->Items->AddRange(gcnew cli::array< System::Object^  >(3) { L"500 mV", L"800 mV", L"1000 mV" });
 			this->YScomboBox_inputrange->Location = System::Drawing::Point(103, 49);
 			this->YScomboBox_inputrange->Name = L"YScomboBox_inputrange";
-			this->YScomboBox_inputrange->Size = System::Drawing::Size(73, 29);
+			this->YScomboBox_inputrange->Size = System::Drawing::Size(73, 25);
 			this->YScomboBox_inputrange->TabIndex = 108;
 			// 
 			// YStextBox__ExtClockFreq
@@ -5250,7 +5255,7 @@ private:
 				static_cast<System::Byte>(0)));
 			this->YStextBox__ExtClockFreq->Location = System::Drawing::Point(98, 15);
 			this->YStextBox__ExtClockFreq->Name = L"YStextBox__ExtClockFreq";
-			this->YStextBox__ExtClockFreq->Size = System::Drawing::Size(61, 32);
+			this->YStextBox__ExtClockFreq->Size = System::Drawing::Size(61, 27);
 			this->YStextBox__ExtClockFreq->TabIndex = 106;
 			this->YStextBox__ExtClockFreq->Text = L"80.225";
 			this->YStextBox__ExtClockFreq->TextAlign = System::Windows::Forms::HorizontalAlignment::Center;
@@ -5263,7 +5268,7 @@ private:
 			this->label30->ForeColor = System::Drawing::Color::White;
 			this->label30->Location = System::Drawing::Point(190, 54);
 			this->label30->Name = L"label30";
-			this->label30->Size = System::Drawing::Size(158, 25);
+			this->label30->Size = System::Drawing::Size(122, 20);
 			this->label30->TabIndex = 105;
 			this->label30->Text = L"Head Mount Set";
 			// 
@@ -5279,7 +5284,7 @@ private:
 			});
 			this->YScomboBox_headmount->Location = System::Drawing::Point(316, 50);
 			this->YScomboBox_headmount->Name = L"YScomboBox_headmount";
-			this->YScomboBox_headmount->Size = System::Drawing::Size(73, 33);
+			this->YScomboBox_headmount->Size = System::Drawing::Size(73, 28);
 			this->YScomboBox_headmount->TabIndex = 104;
 			this->YScomboBox_headmount->SelectedIndexChanged += gcnew System::EventHandler(this, &MTPFM::YScomboBox_headmount_SelectedIndexChanged);
 			// 
@@ -5300,10 +5305,10 @@ private:
 			this->tabPage14->Controls->Add(this->checkBox_uniDirection);
 			this->tabPage14->Controls->Add(this->comboBox_headmount_count);
 			this->tabPage14->Controls->Add(this->Configure);
-			this->tabPage14->Location = System::Drawing::Point(4, 29);
+			this->tabPage14->Location = System::Drawing::Point(4, 24);
 			this->tabPage14->Name = L"tabPage14";
 			this->tabPage14->Padding = System::Windows::Forms::Padding(3);
-			this->tabPage14->Size = System::Drawing::Size(411, 416);
+			this->tabPage14->Size = System::Drawing::Size(411, 453);
 			this->tabPage14->TabIndex = 0;
 			this->tabPage14->Text = L"Controller";
 			// 
@@ -5342,10 +5347,10 @@ private:
 			this->tabPage3->Controls->Add(this->trackBar2__raster_x_amp);
 			this->tabPage3->Controls->Add(this->label4__raster_x_amp);
 			this->tabPage3->Controls->Add(this->label3_raster_x_amp);
-			this->tabPage3->Location = System::Drawing::Point(4, 29);
+			this->tabPage3->Location = System::Drawing::Point(4, 24);
 			this->tabPage3->Name = L"tabPage3";
 			this->tabPage3->Padding = System::Windows::Forms::Padding(3);
-			this->tabPage3->Size = System::Drawing::Size(394, 217);
+			this->tabPage3->Size = System::Drawing::Size(394, 222);
 			this->tabPage3->TabIndex = 0;
 			this->tabPage3->Text = L"Scan Mode";
 			// 
@@ -5369,7 +5374,7 @@ private:
 				static_cast<System::Byte>(0)));
 			this->textBox_yoffset->Location = System::Drawing::Point(237, 55);
 			this->textBox_yoffset->Name = L"textBox_yoffset";
-			this->textBox_yoffset->Size = System::Drawing::Size(82, 32);
+			this->textBox_yoffset->Size = System::Drawing::Size(82, 27);
 			this->textBox_yoffset->TabIndex = 57;
 			this->textBox_yoffset->TextAlign = System::Windows::Forms::HorizontalAlignment::Center;
 			// 
@@ -5380,7 +5385,7 @@ private:
 				static_cast<System::Byte>(0)));
 			this->textBox_xoffset->Location = System::Drawing::Point(72, 55);
 			this->textBox_xoffset->Name = L"textBox_xoffset";
-			this->textBox_xoffset->Size = System::Drawing::Size(82, 32);
+			this->textBox_xoffset->Size = System::Drawing::Size(82, 27);
 			this->textBox_xoffset->TabIndex = 56;
 			this->textBox_xoffset->TextAlign = System::Windows::Forms::HorizontalAlignment::Center;
 			// 
@@ -5391,7 +5396,7 @@ private:
 				static_cast<System::Byte>(0)));
 			this->textBox_line_time->Location = System::Drawing::Point(86, 190);
 			this->textBox_line_time->Name = L"textBox_line_time";
-			this->textBox_line_time->Size = System::Drawing::Size(92, 32);
+			this->textBox_line_time->Size = System::Drawing::Size(92, 27);
 			this->textBox_line_time->TabIndex = 52;
 			this->textBox_line_time->TextAlign = System::Windows::Forms::HorizontalAlignment::Center;
 			// 
@@ -5403,7 +5408,7 @@ private:
 			this->label1_yoffset->ForeColor = System::Drawing::Color::White;
 			this->label1_yoffset->Location = System::Drawing::Point(171, 58);
 			this->label1_yoffset->Name = L"label1_yoffset";
-			this->label1_yoffset->Size = System::Drawing::Size(77, 25);
+			this->label1_yoffset->Size = System::Drawing::Size(62, 20);
 			this->label1_yoffset->TabIndex = 55;
 			this->label1_yoffset->Text = L"YOffset";
 			// 
@@ -5415,7 +5420,7 @@ private:
 			this->label_xoffset->ForeColor = System::Drawing::Color::White;
 			this->label_xoffset->Location = System::Drawing::Point(3, 58);
 			this->label_xoffset->Name = L"label_xoffset";
-			this->label_xoffset->Size = System::Drawing::Size(77, 25);
+			this->label_xoffset->Size = System::Drawing::Size(63, 20);
 			this->label_xoffset->TabIndex = 54;
 			this->label_xoffset->Text = L"XOffset";
 			// 
@@ -5426,7 +5431,7 @@ private:
 				static_cast<System::Byte>(0)));
 			this->label1_sec->Location = System::Drawing::Point(184, 193);
 			this->label1_sec->Name = L"label1_sec";
-			this->label1_sec->Size = System::Drawing::Size(39, 25);
+			this->label1_sec->Size = System::Drawing::Size(31, 20);
 			this->label1_sec->TabIndex = 53;
 			this->label1_sec->Text = L"sec";
 			// 
@@ -5456,7 +5461,7 @@ private:
 			this->label10->ForeColor = System::Drawing::Color::White;
 			this->label10->Location = System::Drawing::Point(3, 190);
 			this->label10->Name = L"label10";
-			this->label10->Size = System::Drawing::Size(97, 25);
+			this->label10->Size = System::Drawing::Size(77, 20);
 			this->label10->TabIndex = 40;
 			this->label10->Text = L"Line Time";
 			// 
@@ -5467,7 +5472,7 @@ private:
 				static_cast<System::Byte>(0)));
 			this->label_bi_direction_offset->Location = System::Drawing::Point(243, 157);
 			this->label_bi_direction_offset->Name = L"label_bi_direction_offset";
-			this->label_bi_direction_offset->Size = System::Drawing::Size(99, 25);
+			this->label_bi_direction_offset->Size = System::Drawing::Size(81, 20);
 			this->label_bi_direction_offset->TabIndex = 39;
 			this->label_bi_direction_offset->Text = L"Offset = 1";
 			// 
@@ -5511,7 +5516,7 @@ private:
 				static_cast<System::Byte>(0)));
 			this->label7_raster_y_amp->Location = System::Drawing::Point(243, 124);
 			this->label7_raster_y_amp->Name = L"label7_raster_y_amp";
-			this->label7_raster_y_amp->Size = System::Drawing::Size(50, 25);
+			this->label7_raster_y_amp->Size = System::Drawing::Size(40, 20);
 			this->label7_raster_y_amp->TabIndex = 31;
 			this->label7_raster_y_amp->Text = L"0.10";
 			// 
@@ -5523,7 +5528,7 @@ private:
 			this->label_phase->ForeColor = System::Drawing::Color::White;
 			this->label_phase->Location = System::Drawing::Point(3, 153);
 			this->label_phase->Name = L"label_phase";
-			this->label_phase->Size = System::Drawing::Size(63, 25);
+			this->label_phase->Size = System::Drawing::Size(50, 20);
 			this->label_phase->TabIndex = 37;
 			this->label_phase->Text = L"Phase";
 			// 
@@ -5550,7 +5555,7 @@ private:
 			this->label6_raster_y_amp->ForeColor = System::Drawing::Color::White;
 			this->label6_raster_y_amp->Location = System::Drawing::Point(3, 122);
 			this->label6_raster_y_amp->Name = L"label6_raster_y_amp";
-			this->label6_raster_y_amp->Size = System::Drawing::Size(71, 25);
+			this->label6_raster_y_amp->Size = System::Drawing::Size(56, 20);
 			this->label6_raster_y_amp->TabIndex = 30;
 			this->label6_raster_y_amp->Text = L"y amp.";
 			// 
@@ -5589,7 +5594,7 @@ private:
 				static_cast<System::Byte>(0)));
 			this->label4__raster_x_amp->Location = System::Drawing::Point(242, 90);
 			this->label4__raster_x_amp->Name = L"label4__raster_x_amp";
-			this->label4__raster_x_amp->Size = System::Drawing::Size(53, 28);
+			this->label4__raster_x_amp->Size = System::Drawing::Size(41, 21);
 			this->label4__raster_x_amp->TabIndex = 28;
 			this->label4__raster_x_amp->Text = L"0.10";
 			// 
@@ -5601,7 +5606,7 @@ private:
 			this->label3_raster_x_amp->ForeColor = System::Drawing::Color::White;
 			this->label3_raster_x_amp->Location = System::Drawing::Point(3, 91);
 			this->label3_raster_x_amp->Name = L"label3_raster_x_amp";
-			this->label3_raster_x_amp->Size = System::Drawing::Size(72, 25);
+			this->label3_raster_x_amp->Size = System::Drawing::Size(56, 20);
 			this->label3_raster_x_amp->TabIndex = 27;
 			this->label3_raster_x_amp->Text = L"x amp.";
 			// 
@@ -5621,10 +5626,10 @@ private:
 			this->tabPage4->Controls->Add(this->label_y_posi);
 			this->tabPage4->Controls->Add(this->label_x_posi);
 			this->tabPage4->Controls->Add(this->button1_manual_control);
-			this->tabPage4->Location = System::Drawing::Point(4, 29);
+			this->tabPage4->Location = System::Drawing::Point(4, 24);
 			this->tabPage4->Name = L"tabPage4";
 			this->tabPage4->Padding = System::Windows::Forms::Padding(3);
-			this->tabPage4->Size = System::Drawing::Size(394, 217);
+			this->tabPage4->Size = System::Drawing::Size(394, 222);
 			this->tabPage4->TabIndex = 1;
 			this->tabPage4->Text = L"Alignment Mode";
 			// 
@@ -5635,7 +5640,7 @@ private:
 				static_cast<System::Byte>(0)));
 			this->textBox_crnt_po_y->Location = System::Drawing::Point(266, 176);
 			this->textBox_crnt_po_y->Name = L"textBox_crnt_po_y";
-			this->textBox_crnt_po_y->Size = System::Drawing::Size(59, 32);
+			this->textBox_crnt_po_y->Size = System::Drawing::Size(59, 27);
 			this->textBox_crnt_po_y->TabIndex = 61;
 			this->textBox_crnt_po_y->TextAlign = System::Windows::Forms::HorizontalAlignment::Center;
 			// 
@@ -5646,7 +5651,7 @@ private:
 				static_cast<System::Byte>(0)));
 			this->textBox_crnt_po_x->Location = System::Drawing::Point(172, 176);
 			this->textBox_crnt_po_x->Name = L"textBox_crnt_po_x";
-			this->textBox_crnt_po_x->Size = System::Drawing::Size(59, 32);
+			this->textBox_crnt_po_x->Size = System::Drawing::Size(59, 27);
 			this->textBox_crnt_po_x->TabIndex = 60;
 			this->textBox_crnt_po_x->TextAlign = System::Windows::Forms::HorizontalAlignment::Center;
 			// 
@@ -5657,7 +5662,7 @@ private:
 				static_cast<System::Byte>(0)));
 			this->textBox_movingtime->Location = System::Drawing::Point(159, 82);
 			this->textBox_movingtime->Name = L"textBox_movingtime";
-			this->textBox_movingtime->Size = System::Drawing::Size(100, 32);
+			this->textBox_movingtime->Size = System::Drawing::Size(100, 27);
 			this->textBox_movingtime->TabIndex = 56;
 			this->textBox_movingtime->TextAlign = System::Windows::Forms::HorizontalAlignment::Center;
 			// 
@@ -5668,7 +5673,7 @@ private:
 				static_cast<System::Byte>(0)));
 			this->textBox_y_pos->Location = System::Drawing::Point(159, 48);
 			this->textBox_y_pos->Name = L"textBox_y_pos";
-			this->textBox_y_pos->Size = System::Drawing::Size(100, 32);
+			this->textBox_y_pos->Size = System::Drawing::Size(100, 27);
 			this->textBox_y_pos->TabIndex = 55;
 			this->textBox_y_pos->TextAlign = System::Windows::Forms::HorizontalAlignment::Center;
 			// 
@@ -5679,7 +5684,7 @@ private:
 				static_cast<System::Byte>(0)));
 			this->textBox_x_po->Location = System::Drawing::Point(159, 14);
 			this->textBox_x_po->Name = L"textBox_x_po";
-			this->textBox_x_po->Size = System::Drawing::Size(100, 32);
+			this->textBox_x_po->Size = System::Drawing::Size(100, 27);
 			this->textBox_x_po->TabIndex = 52;
 			this->textBox_x_po->TextAlign = System::Windows::Forms::HorizontalAlignment::Center;
 			// 
@@ -5691,7 +5696,7 @@ private:
 				static_cast<System::Byte>(0)));
 			this->label8->Location = System::Drawing::Point(17, 179);
 			this->label8->Name = L"label8";
-			this->label8->Size = System::Drawing::Size(123, 25);
+			this->label8->Size = System::Drawing::Size(95, 20);
 			this->label8->TabIndex = 52;
 			this->label8->Text = L"Current pos.";
 			// 
@@ -5703,7 +5708,7 @@ private:
 				static_cast<System::Byte>(0)));
 			this->label_Y_current->Location = System::Drawing::Point(242, 180);
 			this->label_Y_current->Name = L"label_Y_current";
-			this->label_Y_current->Size = System::Drawing::Size(24, 25);
+			this->label_Y_current->Size = System::Drawing::Size(18, 20);
 			this->label_Y_current->TabIndex = 59;
 			this->label_Y_current->Text = L"Y";
 			// 
@@ -5715,7 +5720,7 @@ private:
 				static_cast<System::Byte>(0)));
 			this->label_x_current->Location = System::Drawing::Point(143, 179);
 			this->label_x_current->Name = L"label_x_current";
-			this->label_x_current->Size = System::Drawing::Size(29, 25);
+			this->label_x_current->Size = System::Drawing::Size(23, 20);
 			this->label_x_current->TabIndex = 58;
 			this->label_x_current->Text = L"X ";
 			// 
@@ -5741,7 +5746,7 @@ private:
 				static_cast<System::Byte>(0)));
 			this->label_msec->Location = System::Drawing::Point(15, 85);
 			this->label_msec->Name = L"label_msec";
-			this->label_msec->Size = System::Drawing::Size(169, 25);
+			this->label_msec->Size = System::Drawing::Size(135, 20);
 			this->label_msec->TabIndex = 54;
 			this->label_msec->Text = L"Moving time (ms)";
 			// 
@@ -5753,7 +5758,7 @@ private:
 				static_cast<System::Byte>(0)));
 			this->label_y_posi->Location = System::Drawing::Point(15, 51);
 			this->label_y_posi->Name = L"label_y_posi";
-			this->label_y_posi->Size = System::Drawing::Size(164, 25);
+			this->label_y_posi->Size = System::Drawing::Size(130, 20);
 			this->label_y_posi->TabIndex = 53;
 			this->label_y_posi->Text = L"Y position (-1~1)";
 			// 
@@ -5765,7 +5770,7 @@ private:
 				static_cast<System::Byte>(0)));
 			this->label_x_posi->Location = System::Drawing::Point(15, 17);
 			this->label_x_posi->Name = L"label_x_posi";
-			this->label_x_posi->Size = System::Drawing::Size(164, 25);
+			this->label_x_posi->Size = System::Drawing::Size(131, 20);
 			this->label_x_posi->TabIndex = 52;
 			this->label_x_posi->Text = L"X position (-1~1)";
 			// 
@@ -5785,11 +5790,11 @@ private:
 			// 
 			// MTPFM
 			// 
-			this->AutoScaleDimensions = System::Drawing::SizeF(8, 20);
+			this->AutoScaleDimensions = System::Drawing::SizeF(7, 15);
 			this->AutoScaleMode = System::Windows::Forms::AutoScaleMode::Font;
 			this->AutoSize = true;
 			this->BackColor = System::Drawing::Color::DimGray;
-			this->ClientSize = System::Drawing::Size(881, 869);
+			this->ClientSize = System::Drawing::Size(881, 893);
 			this->ControlBox = false;
 			this->Controls->Add(this->label60);
 			this->Controls->Add(this->label23);
@@ -7340,6 +7345,19 @@ private: System::Void textBox1_TextChanged(System::Object^ sender, System::Event
 
 
 //YuShin
+//Lock in
+private: System::Void toggleButtons_raster_chopper_CheckedChanged(System::Object^ sender, System::EventArgs^ e) {
+	if (toggleButtons_raster_chopper->Checked == true) {
+		aYSNTU->applychopper = true;
+		toggleButtons_label_channeldisplay->Enabled = true;
+		label_channel->Text = "2 Channels";
+	}
+	else if (toggleButtons_raster_chopper->Checked == false) {
+		aYSNTU->applychopper = false;
+		toggleButtons_label_channeldisplay->Enabled = false;
+		label_channel->Text = "1 Channel";
+	}
+}
 //ETL
 private: System::Void button_ETL_up_Click(System::Object^ sender, System::EventArgs^ e) {
 	double ETLvoltage = System::Convert::ToDouble(textBox_ETL_voltage->Text);
@@ -7394,6 +7412,14 @@ private: System::Void button_ETL_downdown_Click(System::Object^ sender, System::
 	}
 }
 //Raster
+private: System::Void toggleButtons_label_channeldisplay_CheckedChanged(System::Object^ sender, System::EventArgs^ e) {
+	if (toggleButtons_label_channeldisplay->Checked == true) {
+		aYSNTU->channeldisplay = true;
+	}
+	else if (toggleButtons_label_channeldisplay->Checked == false) {
+		aYSNTU->channeldisplay = false;
+	}
+}
 private: System::Void YStrackBar__raster_x_amp_Scroll(System::Object^ sender, System::EventArgs^ e) {
 	double MEMS_xamplitude = ((static_cast<double>(YStrackBar__raster_x_amp->Value)) / 100);
 	YStextBox__raster_x_amp->Text = MEMS_xamplitude.ToString();
@@ -7405,14 +7431,6 @@ private: System::Void YStrackBar__raster_y_amp_Scroll(System::Object^ sender, Sy
 private: System::Void YSbutton_raster_setamp_Click(System::Object^ sender, System::EventArgs^ e) {
 	YStrackBar__raster_x_amp->Value = System::Convert::ToInt32(System::Convert::ToDouble(YStextBox__raster_x_amp->Text) * 100);
 	YStrackBar__raster_y_amp->Value = System::Convert::ToInt32(System::Convert::ToDouble(YStextBox__raster_y_amp->Text) * 100);
-}
-private: System::Void toggleButtons_raster_chopper_CheckedChanged(System::Object^ sender, System::EventArgs^ e) {
-	if (toggleButtons_raster_chopper->Checked == true) {
-		aYSNTU->choppermapping = true;
-	}
-	else if (toggleButtons_raster_chopper->Checked == false) {
-		aYSNTU->choppermapping = false;
-	}
 }
 private: System::Void YSbutton_raster_configure_Click(System::Object^ sender, System::EventArgs^ e) {
 	if (aYSNTU->firstinitialize == false) {
@@ -7456,6 +7474,7 @@ private: System::Void YSbutton_raster_configure_Click(System::Object^ sender, Sy
 		YStextBox__raster_y_amp->Enabled = false;
 		YScheckBox_raster_slowspeed->Enabled = false;
 		YScomboBox__raster_chopperfreq->Enabled = false;
+		toggleButtons_raster_chopper->Enabled = false;
 		YSbutton_raster_stop->Enabled = true;
 		YSbutton_raster_configure->Text = L"Configured";
 		status->ForeColor = Color::LightGreen;
@@ -7495,6 +7514,7 @@ private: System::Void YSbutton_raster_stop_Click(System::Object^ sender, System:
 	YStextBox__raster_y_amp->Enabled = true;
 	YScheckBox_raster_slowspeed->Enabled = true;
 	YScomboBox__raster_chopperfreq->Enabled = true;
+	toggleButtons_raster_chopper->Enabled = true;
 	toggleButtons_allow_averaging->Checked = false;
 }
 private: System::Void YStrackBar_raster_phase_Scroll(System::Object^ sender, System::EventArgs^ e) {
@@ -7518,14 +7538,6 @@ private: System::Void YSbutton__lissajous_setamp_Click(System::Object^ sender, S
 private: System::Void YStrackBar__lissajous_phase_Scroll(System::Object^ sender, System::EventArgs^ e) {
 	aYSNTU->lissajous_phase = YSphase[YStrackBar__lissajous_phase->Value];
 	YSlabel__lissajous_phase->Text = gcnew System::String(YSphasename[YStrackBar__lissajous_phase->Value].c_str());
-}
-private: System::Void toggleButtons_lissajous_chopper_CheckedChanged(System::Object^ sender, System::EventArgs^ e) {
-	if (toggleButtons_lissajous_chopper->Checked == true) {
-		aYSNTU->choppermapping = true;
-	}
-	else if (toggleButtons_lissajous_chopper->Checked == false) {
-		aYSNTU->choppermapping = false;
-	}
 }
 private: System::Void YSbutton_lissajous_configure_Click(System::Object^ sender, System::EventArgs^ e) {
 	if (aYSNTU->firstinitialize == false) {
@@ -7573,6 +7585,7 @@ private: System::Void YSbutton_lissajous_configure_Click(System::Object^ sender,
 	YStextBox__lissajous_x_amp->Enabled = false;
 	YStextBox__lissajous_y_amp->Enabled = false;
 	comboBox_lissajous_chopperphase->Enabled = false;
+	toggleButtons_raster_chopper->Enabled = false;
 	YSbutton_lissajous_stop->Enabled = true;
 	YSbutton_lissajous_configure->Text = L"Configured";
 	status->ForeColor = Color::LightGreen;
@@ -7609,6 +7622,7 @@ private: System::Void YSbutton_lissajous_stop_Click(System::Object^ sender, Syst
 	YStextBox__lissajous_y_amp->Enabled = true;
 	YSbutton_lissajous_startimg->Enabled = true;
 	comboBox_lissajous_chopperphase->Enabled = true;
+	toggleButtons_raster_chopper->Enabled = true;
 	toggleButtons_allow_averaging->Checked = false;
 	YScheckBox_lissajous_repairshow->Checked = false;
 }
@@ -7642,9 +7656,8 @@ private: System::Void button9_Click(System::Object^ sender, System::EventArgs^ e
 private: System::Void YSbutton_save_Click(System::Object^ sender, System::EventArgs^ e) {
 	int savenum_value = this->YStrackBar_savenum->Value;
 	aYSNTU->titleFolder = msclr::interop::marshal_as<std::string>(this->YStextBox_title->Text);
-	if (this->YScheckBox_saveraw->CheckState == CheckState::Checked && this->YScheckBox_ch1->CheckState == CheckState::Checked) {
+	if (this->YScheckBox_saveraw->CheckState == CheckState::Checked) {
 		aYSNTU->saverawstate = true;
-		aYSNTU->saverawbinstate = YScheckBox_saverawbin->Checked;
 		status->ForeColor = Color::LightGreen;
 		status->Text = "Save : Image & Raw data";
 	}
@@ -7666,7 +7679,6 @@ private: System::Void YSbutton_clear_Click(System::Object^ sender, System::Event
 	this->YSbutton_save->Enabled = true;
 	aYSNTU->savestate = false;
 	aYSNTU->saverawstate = false;
-	aYSNTU->saverawbinstate = false;
 	aYSNTU->save_num = 0;
 	aYSNTU->saveprogress = 0;
 }
@@ -7954,6 +7966,7 @@ private: System::Void toggleButtons_defaltimageprocessing_CheckedChanged(System:
 		toggleButtons_DCE->Checked = false;
 	}
 }
+
 
 
 

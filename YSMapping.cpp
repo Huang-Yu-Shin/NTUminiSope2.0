@@ -48,7 +48,8 @@ namespace NTU {
     bool YSMapping::ConfigureBoard(ScanMode mode) {
         success = true;
         scanmode = mode;
-
+        channelCount = 1;
+        channelMask = CHANNEL_A;
         //Select the clock type
         if (ntuscope->clocktype == EXTClock) { //not know the SAMPLE_RATE_USER_DEF
             retCode = AlazarSetCaptureClock(boardHandle, FAST_EXTERNAL_CLOCK, SAMPLE_RATE_USER_DEF, CLOCK_EDGE_RISING, 0);
@@ -280,6 +281,243 @@ namespace NTU {
         return success;
     }
 
+    bool YSMapping::ConfigureBoardTwoChannel(ScanMode mode) {
+        success = true;
+        scanmode = mode;
+        channelCount = 2;
+        channelMask = CHANNEL_A | CHANNEL_B;
+        //Select the clock type
+        if (ntuscope->clocktype == EXTClock) { //not know the SAMPLE_RATE_USER_DEF
+            retCode = AlazarSetCaptureClock(boardHandle, FAST_EXTERNAL_CLOCK, SAMPLE_RATE_USER_DEF, CLOCK_EDGE_RISING, 0);
+            ntuscope->samplesPerSec = int(ntuscope->EXTCLOCK_freq);
+            if (retCode != ApiSuccess) {
+                cerr << "Error: AlazarSetCaptureClock failed -- " << AlazarErrorToText(retCode) << endl;
+                success = false;
+            }
+        }
+        else {
+            switch (YSMapping::ClockType(ntuscope->clocktype))
+            {
+            case INTClock2M:
+                retCode = AlazarSetCaptureClock(boardHandle, INTERNAL_CLOCK, SAMPLE_RATE_2MSPS, CLOCK_EDGE_RISING, 0);
+                ntuscope->samplesPerSec = 2000000;
+                break;
+            case INTClock10M:
+                retCode = AlazarSetCaptureClock(boardHandle, INTERNAL_CLOCK, SAMPLE_RATE_10MSPS, CLOCK_EDGE_RISING, 0);
+                ntuscope->samplesPerSec = 10000000;
+                break;
+            case INTClock20M:
+                retCode = AlazarSetCaptureClock(boardHandle, INTERNAL_CLOCK, SAMPLE_RATE_20MSPS, CLOCK_EDGE_RISING, 0);
+                ntuscope->samplesPerSec = 20000000;
+                break;
+            case INTClock50M:
+                retCode = AlazarSetCaptureClock(boardHandle, INTERNAL_CLOCK, SAMPLE_RATE_50MSPS, CLOCK_EDGE_RISING, 0);
+                ntuscope->samplesPerSec = 50000000;
+                break;
+            case INTClock100M:
+                retCode = AlazarSetCaptureClock(boardHandle, INTERNAL_CLOCK, SAMPLE_RATE_100MSPS, CLOCK_EDGE_RISING, 0);
+                ntuscope->samplesPerSec = 100000000;
+                break;
+            case INTClock125M:
+                retCode = AlazarSetCaptureClock(boardHandle, INTERNAL_CLOCK, SAMPLE_RATE_125MSPS, CLOCK_EDGE_RISING, 0);
+                ntuscope->samplesPerSec = 125000000;
+                break;
+            default:
+                break;
+            }
+            if (retCode != ApiSuccess) {
+                cerr << "Error: AlazarSetCaptureClock failed -- " << AlazarErrorToText(retCode) << endl;
+                success = false;
+            }
+        }
+
+        // Select the scan mode
+        if (scanmode == RASTER || scanmode == RASTER_SLOW) {
+            ntuscope->Pixelnumx = ntuscope->num_lines;
+            ntuscope->Pixelnumy = ntuscope->num_lines;
+            ntuscope->Xpixelsize_display = int(double(ntuscope->Ypixelsize_display) * double(ntuscope->MEMS_xamp / ntuscope->MEMS_yamp));
+            ntuscope->Ypixelsize_save = ntuscope->num_lines;
+            ntuscope->Xpixelsize_save = int(double(ntuscope->Ypixelsize_save) * double(ntuscope->MEMS_xamp / ntuscope->MEMS_yamp));
+            totalsample = int(ntuscope->samplesPerSec / (2 * ntuscope->xfreq) * ntuscope->num_lines);
+        }
+        else if (scanmode == LISSAJOUS_2D) {
+            if (ntuscope->MEMS_yamp <= 0.5 || ntuscope->MEMS_xamp <= 0.5) {
+                ntuscope->Pixelnumx = 128;
+            }
+            else {
+                ntuscope->Pixelnumx = 256;
+            }
+            ntuscope->Pixelnumy = int(double(ntuscope->Pixelnumx) * double(ntuscope->MEMS_yamp / ntuscope->MEMS_xamp));
+            ntuscope->Ypixelsize_display = int(double(ntuscope->Xpixelsize_display) * double(ntuscope->MEMS_yamp / ntuscope->MEMS_xamp));
+            ntuscope->Xpixelsize_save = ntuscope->Pixelnumx;
+            ntuscope->Ypixelsize_save = int(double(ntuscope->Xpixelsize_save) * double(ntuscope->MEMS_yamp / ntuscope->MEMS_xamp));
+            totalsample = int(ntuscope->samplesPerSec / _Gcd(int(ntuscope->xfreq), int(ntuscope->yfreq)));
+            ntuscope->highspeedmode = true;
+        }
+        else if (scanmode == LISSAJOUS_3D) {
+            totalsample = int(ntuscope->samplesPerSec * 0.0065);
+        }
+
+        cout << "Sample per second: " << ntuscope->samplesPerSec << endl;
+        cout << "Total sample (not real): " << totalsample << endl;
+        cout << "Number of lines: " << ntuscope->num_lines << endl;
+        cout << "Pixel number: " << ntuscope->Pixelnumx << " x " << ntuscope->Pixelnumy << endl;
+        cout << "Pixel number_display: " << ntuscope->Xpixelsize_display << " x " << ntuscope->Ypixelsize_display << endl;
+        cout << "Pixel number_save: " << ntuscope->Xpixelsize_save << " x " << ntuscope->Ypixelsize_save << endl;
+
+        // Select channel A.B input parameters as required
+        retCode = AlazarInputControlEx(boardHandle, CHANNEL_A, DC_COUPLING, ntuscope->inputrangetype, IMPEDANCE_50_OHM);
+        if (retCode != ApiSuccess) {
+            cerr << "Error: AlazarInputControl failed -- " << AlazarErrorToText(retCode) << endl;
+            success = false;
+        }
+        retCode = AlazarInputControlEx(boardHandle, CHANNEL_B, DC_COUPLING, ntuscope->inputrangetype, IMPEDANCE_50_OHM);
+        if (retCode != ApiSuccess) {
+            cerr << "Error: AlazarInputControl failed -- " << AlazarErrorToText(retCode) << endl;
+            success = false;
+        }
+
+        // Set clock AuxIO output
+        if (scanmode == LISSAJOUS_2D) {
+            retCode = AlazarConfigureAuxIO(boardHandle, AUX_OUT_PACER, 5);
+            if (retCode != ApiSuccess) {
+                cerr << "Error: AlazarConfigureAuxIO failed -- " << AlazarErrorToText(retCode) << endl;
+                success = false;
+            }
+        }
+        else if (scanmode == RASTER || scanmode == RASTER_SLOW) {
+            retCode = AlazarConfigureAuxIO(boardHandle, AUX_IN_TRIGGER_ENABLE, TRIGGER_SLOPE_POSITIVE);
+            if (retCode != ApiSuccess) {
+                cerr << "Error: AlazarConfigureAuxIO failed -- " << AlazarErrorToText(retCode) << endl;
+                success = false;
+            }
+        }
+
+        // Set the external trigger
+        retCode = AlazarSetTriggerOperation(boardHandle, TRIG_ENGINE_OP_J, TRIG_ENGINE_J, TRIG_EXTERNAL, TRIGGER_SLOPE_POSITIVE, 160, TRIG_ENGINE_K, TRIG_DISABLE, TRIGGER_SLOPE_POSITIVE, 128);
+        if (retCode != ApiSuccess) {
+            cerr << "Error: AlazarSetTriggerOperation failed -- " << AlazarErrorToText(retCode) << endl;
+            success = false;
+        }
+        retCode = AlazarSetExternalTrigger(boardHandle, DC_COUPLING, ETR_TTL);
+
+        // No trigger delay
+        U32 triggerDelay_samples = static_cast<U32>(Alazartriggerdelay * ntuscope->samplesPerSec + 0.5);
+        retCode = AlazarSetTriggerDelay(boardHandle, triggerDelay_samples);
+        if (retCode != ApiSuccess) {
+            cerr << "Error: AlazarSetTriggerDelay failed -- " << AlazarErrorToText(retCode) << endl;
+            success = false;
+        }
+
+        double triggerTimeout_sec = 0;
+        U32 triggerTimeout_clocks = (U32)(triggerTimeout_sec / 10.e-6 + 0.5);
+        retCode = AlazarSetTriggerTimeOut(boardHandle, triggerTimeout_clocks);
+        if (retCode != ApiSuccess) {
+            cerr << "Error: AlazarSetTriggerTimeOut failed -- " << AlazarErrorToText(retCode) << endl;
+            success = false;
+        }
+
+        // To set up sample points
+        if (scanmode == RASTER || scanmode == RASTER_SLOW) {
+            U32 sampleinrecord = totalsample / ntuscope->num_lines;
+            sampleinrecord = sampleinrecord - (sampleinrecord % 128); //Because the number of sample points must be multiple of 16
+            postTriggerSamples = sampleinrecord;
+        }
+        else {
+            postTriggerSamples = totalsample - (totalsample % 128); //Because the number of sample points must be multiple of 16
+        }
+        cout << "PreTrigger point: " << preTriggerSamples << "  PostTrigger point: " << postTriggerSamples << endl;
+
+        U8 bitsPerSample;
+        U32 maxSamplesPerChannel;
+        retCode = AlazarGetChannelInfo(boardHandle, &maxSamplesPerChannel, &bitsPerSample);
+        if (retCode != ApiSuccess) {
+            cerr << "Error: AlazarGetChannelInfo failed -- " << AlazarErrorToText(retCode) << endl;
+            success = false;
+        }
+        cout << "Bits per sample: " << int(bitsPerSample) << " Max samples per channel: " << maxSamplesPerChannel << endl;
+
+        if (scanmode == RASTER || scanmode == RASTER_SLOW) recordsPerBuffer = ntuscope->num_lines; //defalt is 1
+        float bytesPerSample = static_cast<float>((bitsPerSample + 7) / 8);
+        samplesPerRecord = (preTriggerSamples + postTriggerSamples);
+        U32 bytesPerRecord = static_cast<U32>(bytesPerSample * samplesPerRecord + 0.5);
+        U32 bytesPerBuffer_single = bytesPerRecord * recordsPerBuffer * 1;  // Assuming one channels
+        samplesPerBuffer = samplesPerRecord * recordsPerBuffer;
+        cout << "bytesPerSample: " << bytesPerSample << endl;
+        cout << "bytesPerRecord: " << bytesPerRecord << endl;
+        cout << "bytesPerBuffer: " << bytesPerBuffer_single << endl;
+        cout << "Samples per record: " << samplesPerRecord << endl;
+        cout << "Records per buffer: " << recordsPerBuffer << endl;
+        cout << "Samples per buffer: " << samplesPerBuffer << endl;
+
+        // Allocate the buffer
+        U32 bytesPerRecord_allCh = bytesPerRecord* channelCount;
+        bytesPerBuffer = bytesPerRecord_allCh * recordsPerBuffer;
+        U32 samplesPerBuffer_allCh = samplesPerRecord * recordsPerBuffer * channelCount;
+        std::cout << "bytesPerRecord_allCh: " << bytesPerRecord_allCh << std::endl;
+        std::cout << "bytesPerBuffer_allCh: " << bytesPerBuffer << std::endl;
+        std::cout << "samplesPerBuffer_allCh: " << samplesPerBuffer_allCh << std::endl;
+        for (U32 bufferIndex = 0; bufferIndex < BUFFER_COUNT && success; bufferIndex++) {
+            BufferArray[bufferIndex] = static_cast<U16*>(AlazarAllocBufferU16(boardHandle, bytesPerBuffer));
+            if (BufferArray[bufferIndex] == nullptr) {
+                cerr << "Error: Failed to allocate " << bytesPerBuffer << " bytes." << endl;
+                success = false;
+            }
+        }
+        if (success) {
+            retCode = AlazarSetRecordSize(boardHandle, preTriggerSamples, postTriggerSamples);
+            if (retCode != ApiSuccess) {
+                cerr << "Error: AlazarSetRecordSize failed -- " << AlazarErrorToText(retCode) << endl;
+                success = false;
+            }
+        }
+        if (success) {
+            if (scanmode == LISSAJOUS_2D) {
+                recordsPerAcquisition = 0x7FFFFFFF;
+            }
+            else if (scanmode == RASTER || scanmode == RASTER_SLOW) {
+                buffersPerAcquisition = 1;
+                //recordsPerAcquisition = recordsPerBuffer * buffersPerAcquisition;
+                recordsPerAcquisition = 0x7FFFFFFF;
+            }
+
+            U32 admaFlags = ADMA_EXTERNAL_STARTCAPTURE | ADMA_TRADITIONAL_MODE;  //| ADMA_FIFO_ONLY_STREAMING | ADMA_INTERLEAVE_SAMPLES| ADMA_NPT
+            retCode = AlazarBeforeAsyncRead(boardHandle, channelMask, -static_cast<long>(preTriggerSamples),
+                samplesPerRecord, recordsPerBuffer, recordsPerAcquisition, admaFlags);
+            if (retCode != ApiSuccess) {
+                cerr << "Error: AlazarBeforeAsyncRead failed -- " << AlazarErrorToText(retCode) << endl;
+                success = false;
+            }
+            cout << "Records per acquisition: " << recordsPerAcquisition << endl;
+        }
+        // Initialize the bufferarray
+        for (U32 bufferIndex = 0; bufferIndex < BUFFER_COUNT && success; bufferIndex++) {
+            U16* pBuffer = BufferArray[bufferIndex];
+            retCode = AlazarPostAsyncBuffer(boardHandle, pBuffer, bytesPerBuffer);
+            if (retCode != ApiSuccess) {
+                cerr << "Error: AlazarPostAsyncBuffer failed -- " << AlazarErrorToText(retCode) << endl;
+                success = false;
+            }
+        }
+
+        // Initialize buffer and CUDA and opencv
+        for (int i = 0; i < TRANSIENT_BUFFER_COUNT; ++i) {
+            transientBuffers[i] = (U16*)malloc(bytesPerBuffer);
+            hasNewData[i] = false;
+            frameorder[i] = 0;
+            bufferStartTimes[i] = high_resolution_clock::now();
+            bufferStartTimes_system[i] = system_clock::now();
+        }
+        cudamanager->CudaMemoryAllocate(int(samplesPerBuffer));
+        //if (scanmode == LISSAJOUS_3D) {
+        //    threedimdisplay = (U16*)malloc(int(bytesPerBuffer) * ntuscope->zlayer);
+        //}
+        stopavgThread = false;
+        stoprepairThread = false;
+        stopsaveThread = false;
+        return success;
+    }
+
 //To build up the sample map in advance
     bool YSMapping::Generate2D_LISSAJOUS_SampleMap() {
         sampleMap_1D = new U16[ntuscope->Pixelnumx * ntuscope->Pixelnumy];
@@ -410,7 +648,7 @@ namespace NTU {
                     if (hasNewData[bufferIndex]) {
                         bool processed = false;
                         if (scanmode == LISSAJOUS_2D) {
-                            if (ntuscope->highspeedmode == true) {
+                            if (ntuscope->highspeedmode == true || ntuscope->applychopper ==true) {
                                 processed = ProcessBufferAndFill_2DLissajousImage_highspeed(transientBuffers[bufferIndex], bufferStartTimes[bufferIndex], bufferStartTimes_system[bufferIndex],frameorder[bufferIndex]);
                             }
                             else if (ntuscope->highspeedmode == false) {
@@ -418,7 +656,13 @@ namespace NTU {
                             }   
                         }
                         else if (scanmode == RASTER || scanmode == RASTER_SLOW) {
-                            processed = ProcessBufferAndFill_2DRasterImage(transientBuffers[bufferIndex], bufferStartTimes[bufferIndex], bufferStartTimes_system[bufferIndex],frameorder[bufferIndex]);
+                            if (ntuscope->applychopper == true) {
+                                processed = ProcessBufferAndFill_2DRasterImageTwoChannel(transientBuffers[bufferIndex], bufferStartTimes[bufferIndex], bufferStartTimes_system[bufferIndex], frameorder[bufferIndex]);
+                            }
+                            else if (ntuscope->applychopper == false) {
+                                processed = ProcessBufferAndFill_2DRasterImage(transientBuffers[bufferIndex], bufferStartTimes[bufferIndex], bufferStartTimes_system[bufferIndex], frameorder[bufferIndex]);
+                            }
+                           
                         }
                         //else if (scanmode == LISSAJOUS_3D) {
                         //    if (ntuscope->zcallback[bufferIndex]) {
@@ -647,12 +891,6 @@ namespace NTU {
 
         //MinMaxValue
         if (ntuscope->YSapply_minmax == true) {
-            //cv::cuda::GpuMat mask_low, mask_high, valid_mask;
-            //cv::cuda::threshold(gpu_image, mask_low, ntuscope->minVal16bit - 1, 1, cv::THRESH_BINARY, stream);
-            //cv::cuda::threshold(gpu_image, mask_high, ntuscope->maxVal16bit, 1, cv::THRESH_BINARY_INV, stream);
-            //cv::cuda::bitwise_and(mask_low, mask_high, valid_mask, cv::noArray(), stream);
-            //cv::cuda::multiply(gpu_image, valid_mask, gpu_image, 1, -1, stream);
-
             double scale = 65535.0 / (ntuscope->maxVal16bit - ntuscope->minVal16bit);
             double shift = -ntuscope->minVal16bit * scale;
             gpu_image.convertTo(gpu_image, -1, scale, shift, stream);
@@ -694,7 +932,6 @@ namespace NTU {
 
         //to save
         if (ntuscope->savestate == true && SavedCount < ntuscope->save_num) {
-            cv::Mat saveraw = cv::Mat(1, int(samplesPerBuffer), CV_16UC1, Buffer);
             lock_guard<mutex> lock(saveMutex);
             if (ntuscope->saveprocessedstate == true) {
                 gpu_8bitresizedImage.download(image_save);
@@ -702,13 +939,10 @@ namespace NTU {
             else if (ntuscope->saveprocessedstate == false) {
                 image_save = Img16bit.clone();
             }
-            image_saveraw = saveraw.clone();
-            saveLissajousQueue.emplace_back(image_save, image_saveraw, starttime_system);
+            vector<U16> buffer_vector(Buffer, Buffer + samplesPerBuffer);
+            saveLissajousQueue.emplace_back(image_save, buffer_vector , starttime_system);
             SavedCount++;
             saveCondition.notify_one();
-            //if (ntuscope->saverawstate){
-            //    SaveBufferdata(frameorder, Buffer);
-            //}
         }
 
         //Convert to RGB
@@ -741,20 +975,6 @@ namespace NTU {
         //to save raw
         if (ntuscope->savestate == true && imageIndex < ntuscope->save_num) {
             Saveimage_LISSAJOUSBin_highspeed(Buffer, starttime_system);
-            //std::vector<U16> buffer_copy(Buffer, Buffer + samplesPerBuffer); 
-            //std::lock_guard<std::mutex> lock(saveMutex);
-            //saveLissajousQueue_highspeed.emplace_back(std::move(buffer_copy), starttime_system);
-            //SavedCount++;
-            //saveCondition.notify_one();
-
-            //cv::Mat saveimage (1, int(samplesPerBuffer), CV_16UC1, Buffer);
-            //lock_guard<mutex> lock(saveMutex);
-            //saveLissajousQueue_highspeed.emplace_back(saveimage.clone(), starttime_system);
-            //SavedCount++;
-            //saveCondition.notify_one();
-            //if (ntuscope->saverawstate){
-            //    SaveBufferdata(frameorder, Buffer);
-            //}
         }
 
         return true;
@@ -766,35 +986,35 @@ namespace NTU {
         cv::cuda::GpuMat gpu_image;
 
         //sample mapping
-        U16* h_image = new U16[int(samplesPerBuffer)];
-        memset(h_image, 0, int(samplesPerBuffer) * sizeof(U16));
+        //U16* h_image = new U16[int(samplesPerBuffer)];
+        //memset(h_image, 0, int(samplesPerBuffer) * sizeof(U16));
 
-        U16* buffer_ptr = Buffer;
-        U16* buffer_end = Buffer + U16(samplesPerBuffer);
+        //U16* buffer_ptr = Buffer;
+        //U16* buffer_end = Buffer + U16(samplesPerBuffer);
 
-        for (int line = 0; line < ntuscope->Pixelnumy; line++) {
-            U16* image_ptr = h_image + U16(line) * U16(samplesPerRecord);
-            if (line % 2 == 0) {  //forward
+        //for (int line = 0; line < ntuscope->Pixelnumy; line++) {
+        //    U16* image_ptr = h_image + U16(line) * U16(samplesPerRecord);
+        //    if (line % 2 == 0) {  //forward
 
-                for (int sample = 0; sample < ntuscope->raster_phase; sample++) {
-                    *(image_ptr++) = 32768;
-                }
-                for (int sample = 0; sample < int(int(samplesPerRecord) - ntuscope->raster_phase); sample++) {
-                    *(image_ptr++) = *(buffer_ptr++);
-                }
-                buffer_ptr = buffer_ptr + ntuscope->raster_phase;
-            }
-            else if (line % 2 == 1) { //reverse
-                U16* reverse_ptr = image_ptr + U16(samplesPerRecord) - 1;
+        //        for (int sample = 0; sample < ntuscope->raster_phase; sample++) {
+        //            *(image_ptr++) = 32768;
+        //        }
+        //        for (int sample = 0; sample < int(int(samplesPerRecord) - ntuscope->raster_phase); sample++) {
+        //            *(image_ptr++) = *(buffer_ptr++);
+        //        }
+        //        buffer_ptr = buffer_ptr + ntuscope->raster_phase;
+        //    }
+        //    else if (line % 2 == 1) { //reverse
+        //        U16* reverse_ptr = image_ptr + U16(samplesPerRecord) - 1;
 
-                for (int sample = 0; sample < int(samplesPerRecord); sample++) {
-                    *(reverse_ptr--) = *(buffer_ptr++);
-                }
-            }
-        }
+        //        for (int sample = 0; sample < int(samplesPerRecord); sample++) {
+        //            *(reverse_ptr--) = *(buffer_ptr++);
+        //        }
+        //    }
+        //}
 
-        cv::cuda::GpuMat gpu_image_pre(ntuscope->Pixelnumy, int(samplesPerRecord), CV_16UC1);
-        gpu_image_pre.upload(cv::Mat(ntuscope->Pixelnumy, int(samplesPerRecord), CV_16UC1, h_image));
+        //cv::cuda::GpuMat gpu_image_pre(ntuscope->Pixelnumy, int(samplesPerRecord), CV_16UC1);
+        //gpu_image_pre.upload(cv::Mat(ntuscope->Pixelnumy, int(samplesPerRecord), CV_16UC1, h_image));
         /*cv::cuda::GpuMat gpu_image;*/
         /*cv::cuda::resize(gpu_image_pre, gpu_image, cv::Size(1024, 1024), 0, 0, cv::INTER_AREA);*/
 
@@ -874,30 +1094,18 @@ namespace NTU {
             }
         }
 
-        if (ntuscope->choppermapping == false) {
-            if (ntuscope->YSapply_signalprocessing == false) {
-                // INITIAL WINDOWING | Zero-negVolt | 32768-0
-                cv::cuda::subtract(65535, gpu_image, gpu_image, cv::noArray(), -1, stream);
-                cv::cuda::threshold(gpu_image, gpu_image, 65535, 0, cv::THRESH_TRUNC, stream);
-                cv::cuda::subtract(gpu_image, 32768, gpu_image, cv::noArray(), -1, stream);
-                cv::cuda::multiply(gpu_image, 2.0, gpu_image, 1.0, -1, stream);
-            }
-            else if (ntuscope->YSapply_signalprocessing == true) {
-                cv::cuda::subtract(65535, gpu_image, gpu_image, cv::noArray(), -1, stream);
-                cv::cuda::threshold(gpu_image, gpu_image, 65535, 0, cv::THRESH_TRUNC, stream);
-                cv::cuda::subtract(gpu_image, ntuscope->YSoffsetvalueSP, gpu_image, cv::noArray(), -1, stream);
-                cv::cuda::multiply(gpu_image, ntuscope->YSmultiplySP, gpu_image, 1.0, -1, stream);
-            }
+        if (ntuscope->YSapply_signalprocessing == false) {
+            // INITIAL WINDOWING | Zero-negVolt | 32768-0
+            cv::cuda::subtract(65535, gpu_image, gpu_image, cv::noArray(), -1, stream);
+            cv::cuda::threshold(gpu_image, gpu_image, 65535, 0, cv::THRESH_TRUNC, stream);
+            cv::cuda::subtract(gpu_image, 32768, gpu_image, cv::noArray(), -1, stream);
+            cv::cuda::multiply(gpu_image, 2.0, gpu_image, 1.0, -1, stream);
         }
-        else if (ntuscope->choppermapping == true) {
-            if (ntuscope->YSapply_signalprocessing == false) {
-                cv::cuda::subtract(gpu_image, 32768, gpu_image, cv::noArray(), -1, stream);
-                cv::cuda::multiply(gpu_image, ntuscope->YSmultiplySP, gpu_image, 1.0, -1, stream);
-            }
-            else if (ntuscope->YSapply_signalprocessing == true) {
-                cv::cuda::subtract(gpu_image, ntuscope->YSoffsetvalueSP, gpu_image, cv::noArray(), -1, stream);
-                cv::cuda::multiply(gpu_image, ntuscope->YSmultiplySP, gpu_image, 1.0, -1, stream);
-            }
+        else if (ntuscope->YSapply_signalprocessing == true) {
+            cv::cuda::subtract(65535, gpu_image, gpu_image, cv::noArray(), -1, stream);
+            cv::cuda::threshold(gpu_image, gpu_image, 65535, 0, cv::THRESH_TRUNC, stream);
+            cv::cuda::subtract(gpu_image, ntuscope->YSoffsetvalueSP, gpu_image, cv::noArray(), -1, stream);
+            cv::cuda::multiply(gpu_image, ntuscope->YSmultiplySP, gpu_image, 1.0, -1, stream);
         }
 
         //Calculate acquisition_rate
@@ -1025,9 +1233,8 @@ namespace NTU {
             else if (ntuscope->saveprocessedstate == false) {
                 image_save = Img16bit.clone();
             }
-            gpu_image_pre.download(image_saveraw);
             vector<U16> buffer_vector(Buffer, Buffer + samplesPerBuffer);
-            saveQueue.emplace_back(image_save, image_saveraw, buffer_vector, starttime_system);
+            saveQueue.emplace_back(image_save, buffer_vector, starttime_system);
             SavedCount++;
             saveCondition.notify_one();
         }
@@ -1048,7 +1255,311 @@ namespace NTU {
         cv::imshow("Real-Time Image", finalImage);
         cv::waitKey(1);
 
-        delete[] h_image;
+        //delete[] h_image;
+        return true;
+    }
+
+    bool YSMapping::ProcessBufferAndFill_2DRasterImageTwoChannel(U16* Buffer, high_resolution_clock::time_point starttime, system_clock::time_point starttime_system, U32 frameorder) {
+        //Mapping
+        cv::cuda::GpuMat gpu_image_1, gpu_image_2;
+        U16 recStride = U16(samplesPerRecord) * 2;
+
+        int phase_forward = max(0, ntuscope->raster_phase);
+        int phase_backward = max(0, -ntuscope->raster_phase);
+
+        //sample mapping1---
+        //U16* h_image_1 = new U16[int(samplesPerBuffer)];
+        //memset(h_image_1, 0, int(samplesPerBuffer) * sizeof(U16));
+        //U16* h_image_2 = new U16[int(samplesPerBuffer)];
+        //memset(h_image_2, 0, int(samplesPerBuffer) * sizeof(U16));
+
+        //for (int line = 0; line < ntuscope->Pixelnumy; line++) {
+        //    int phase = (line % 2 == 0) ? phase_forward : phase_backward;
+        //    phase = std::min(phase, std::max(0, int(samplesPerRecord) - 1));
+
+        //    U16* srcA = Buffer + U16(line) * U16(recStride);
+        //    U16* srcB = srcA + U16(samplesPerRecord);
+        //    U16* dstA = h_image_1 + U16(line) * U16(samplesPerRecord);
+        //    U16* dstB = h_image_2 + U16(line) * U16(samplesPerRecord);
+
+        //    if (line % 2 == 0) {
+        //        for (int i = 0; i < phase; ++i) {
+        //            dstA[i] = 32768;
+        //            dstB[i] = 32768;
+        //        }
+        //        memcpy(dstA + phase, srcA, sizeof(U16) * (int(samplesPerRecord) - phase));
+        //        memcpy(dstB + phase, srcB, sizeof(U16) * (int(samplesPerRecord) - phase));
+        //    }
+        //    else {
+        //        for (int s = 0; s < int(samplesPerRecord); ++s) {
+        //            int dstIdx = (int(samplesPerRecord) - 1) - s; // 反向
+        //            bool use_baseline = (s >= (int(samplesPerRecord) - phase));
+        //            if (use_baseline) {
+        //                dstA[dstIdx] = 32768;
+        //                dstB[dstIdx] = 32768;
+        //            }
+        //            else {
+        //                dstA[dstIdx] = srcA[s];
+        //                dstB[dstIdx] = srcB[s];
+        //            }
+        //        }
+        //    }
+        //}
+        //cv::cuda::GpuMat gpu_image_pre_1(ntuscope->Pixelnumy, int(samplesPerRecord), CV_16UC1);
+        //gpu_image_pre_1.upload(cv::Mat(ntuscope->Pixelnumy, int(samplesPerRecord), CV_16UC1, h_image_1));
+        //cv::cuda::GpuMat gpu_image_pre_2(ntuscope->Pixelnumy, int(samplesPerRecord), CV_16UC1);
+        //gpu_image_pre_2.upload(cv::Mat(ntuscope->Pixelnumy, int(samplesPerRecord), CV_16UC1, h_image_2));
+
+        ////cv::cuda::resize(gpu_image_pre_1, gpu_image_1, cv::Size(1024, 1024), 0, 0, cv::INTER_AREA);
+        ////cv::cuda::resize(gpu_image_pre_2, gpu_image_2, cv::Size(1024, 1024), 0, 0, cv::INTER_AREA);
+        
+        //sine wave mapping
+        cv::Mat sin_image_1(ntuscope->Pixelnumy, 1024, CV_32FC1, cv::Scalar(0));
+        cv::Mat sin_image_2(ntuscope->Pixelnumy, 1024, CV_32FC1, cv::Scalar(0));
+
+        for (int line = 0; line < ntuscope->Pixelnumy; line++) {
+            bool is_forward = (line % 2 == 0);
+
+            U16* srcA_new = Buffer + U16(line) * U16(recStride);
+            U16* srcB_new = srcA_new + U16(samplesPerRecord);
+
+            int phase_new = is_forward ? phase_forward : phase_backward;
+            phase_new = min(phase_new, max(0, int(samplesPerRecord) - 1));
+
+            int srcIdxA = 0, srcIdxB = 0;
+            if (!is_forward && phase_new > 0) {
+                srcIdxA += phase_new;
+                srcIdxB += phase_new;
+            }
+
+            for (int sample = 0; sample < int(samplesPerRecord); ++sample) {
+                float t = float(sample) / float(std::max(1, int(samplesPerRecord) - 1));
+                float angle = is_forward ? (CV_PI * t - 0.5f * CV_PI)
+                    : (CV_PI * (1.0f - t) - 0.5f * CV_PI);
+                float x = 0.5f * (1.0f + std::sinf(angle));
+                int x_idx = int(x * (1024 - 1));
+
+                if (x_idx < 0 || x_idx >= 1024) continue;
+
+                bool use_baseline = false;
+                if (phase_new > 0) {
+                    if (is_forward) {
+                        use_baseline = (sample < phase_new);             
+                    }
+                    else {
+                        use_baseline = (sample >= (int(samplesPerRecord) - phase_new));  
+                    }
+                }
+
+                if (use_baseline) {
+                    sin_image_1.at<float>(line, x_idx) += 32768.0f;
+                    sin_image_2.at<float>(line, x_idx) += 32768.0f;
+                }
+                else {
+                    if (srcIdxA < int(samplesPerRecord)) sin_image_1.at<float>(line, x_idx) += float(srcA_new[srcIdxA++]);
+                    if (srcIdxB < int(samplesPerRecord)) sin_image_2.at<float>(line, x_idx) += float(srcB_new[srcIdxB++]);
+                }
+            }
+
+            if (is_forward && phase_new > 0) {
+                srcIdxA += phase_new;
+                srcIdxB += phase_new;
+            }
+        }
+
+        cv::Mat sin_image_u16_1(ntuscope->Pixelnumy, 1024, CV_16UC1);
+        cv::Mat sin_image_u16_2(ntuscope->Pixelnumy, 1024, CV_16UC1);
+        for (int y = 0; y < ntuscope->Pixelnumy; y++) {
+            for (int x = 0; x < 1024; x++) {
+                float weight = sin_weight.at<float>(y, x);
+                float val_1 = sin_image_1.at<float>(y, x);
+                float val_2 = sin_image_2.at<float>(y, x);
+                if (weight > 0) {
+                    val_1 /= weight;
+                    val_2 /= weight;
+                }
+                val_1 = std::min(std::max(val_1, 0.0f), 65535.0f);
+                val_2 = std::min(std::max(val_2, 0.0f), 65535.0f);
+                sin_image_u16_1.at<U16>(y, x) = static_cast<U16>(val_1);
+                sin_image_u16_2.at<U16>(y, x) = static_cast<U16>(val_2);
+            }
+        }
+
+        cv::cuda::GpuMat gpu_image_prepre_1;
+        gpu_image_prepre_1.upload(sin_image_u16_1);
+        cv::cuda::resize(gpu_image_prepre_1, gpu_image_1, cv::Size(1024, 1024), 0, 0, cv::INTER_AREA);
+        cv::cuda::GpuMat gpu_image_prepre_2;
+        gpu_image_prepre_2.upload(sin_image_u16_2);
+        cv::cuda::resize(gpu_image_prepre_2, gpu_image_2, cv::Size(1024, 1024), 0, 0, cv::INTER_AREA);
+        
+        //If raster fast scan need to flip
+        if (scanmode == RASTER) {
+            if (frameorder % 2 == 1) { //flip the upward and downward
+                cv::cuda::flip(gpu_image_1, gpu_image_1, 0);
+                cv::cuda::flip(gpu_image_2, gpu_image_2, 0);
+            }
+        }
+
+        if (ntuscope->YSapply_signalprocessing == false) {
+            // INITIAL WINDOWING | Zero-negVolt | 32768-0
+            cv::cuda::subtract(65535, gpu_image_1, gpu_image_1, cv::noArray(), -1, stream);
+            cv::cuda::threshold(gpu_image_1, gpu_image_1, 65535, 0, cv::THRESH_TRUNC, stream);
+            cv::cuda::subtract(gpu_image_1, 32768, gpu_image_1, cv::noArray(), -1, stream);
+            cv::cuda::multiply(gpu_image_1, 2.0, gpu_image_1, 1.0, -1, stream);
+            cv::cuda::subtract(gpu_image_2, 32768, gpu_image_2, cv::noArray(), -1, stream);
+            cv::cuda::multiply(gpu_image_2, 2.0, gpu_image_2, 1.0, -1, stream);
+        }
+        else if (ntuscope->YSapply_signalprocessing == true) {
+            cv::cuda::subtract(65535, gpu_image_1, gpu_image_1, cv::noArray(), -1, stream);
+            cv::cuda::threshold(gpu_image_1, gpu_image_1, 65535, 0, cv::THRESH_TRUNC, stream);
+            cv::cuda::subtract(gpu_image_1, ntuscope->YSoffsetvalueSP, gpu_image_1, cv::noArray(), -1, stream);
+            cv::cuda::multiply(gpu_image_1, ntuscope->YSmultiplySP, gpu_image_1, 1.0, -1, stream);
+            cv::cuda::subtract(gpu_image_2, ntuscope->YSoffsetvalueSP, gpu_image_2, cv::noArray(), -1, stream);
+            cv::cuda::multiply(gpu_image_2, ntuscope->YSmultiplySP, gpu_image_2, 1.0, -1, stream);
+        }
+
+        //Calculate acquisition_rate
+        auto end_time = high_resolution_clock::now();
+        auto duration_ms = duration_cast<nanoseconds>(end_time - starttime);
+        ntuscope->acqtime = double(duration_ms.count()) / 1000000000;
+        ntuscope->refreshtime = double(1000000000) / double(duration_cast<nanoseconds>(end_time - previoustimepoint).count());
+        previoustimepoint = end_time;
+
+        //Transfer to CPU
+        cv::Mat Img16bit_1, Img16bit_2;
+        gpu_image_1.download(Img16bit_1);
+        gpu_image_2.download(Img16bit_2);
+
+        ////Average
+        //if (ntuscope->avgstate == true) {
+        //    lock_guard<mutex> lock(queueMutex);
+        //    image_average = Img16bit.clone();
+        //    imageQueue.push_back(image_average);
+        //    queueCondition.notify_one();
+        //}
+
+        ////Enhance Contrast 0.0035
+        //if (ntuscope->YSapply_enhancecontrast) {
+        //    cv::cuda::GpuMat ECTEMP;
+        //    EnhanceContrast_16bit(gpu_image, ECTEMP, 0.0035);
+        //    ECTEMP.copyTo(gpu_image);
+        //}
+
+        //MinMaxValue
+        if (ntuscope->YSapply_minmax == true) {
+            double scale = 65535.0 / (ntuscope->maxVal16bit - ntuscope->minVal16bit);
+            double shift = -ntuscope->minVal16bit * scale;
+            gpu_image_1.convertTo(gpu_image_1, -1, scale, shift, stream);
+            cv::cuda::threshold(gpu_image_1, gpu_image_1, 65535, 65535, cv::THRESH_TRUNC, stream);
+            cv::cuda::threshold(gpu_image_1, gpu_image_1, 0, 0, cv::THRESH_TOZERO, stream);
+
+            gpu_image_2.convertTo(gpu_image_2, -1, scale, shift, stream);
+            cv::cuda::threshold(gpu_image_2, gpu_image_2, 65535, 65535, cv::THRESH_TRUNC, stream);
+            cv::cuda::threshold(gpu_image_2, gpu_image_2, 0, 0, cv::THRESH_TOZERO, stream);
+        }
+
+        ////Normalize
+        //if (ntuscope->YSapply_normalize == true) {
+        //    cv::cuda::normalize(gpu_image, gpu_image, ntuscope->normalize_alpha, ntuscope->normalize_beta, cv::NORM_MINMAX, -1, cv::noArray(), stream);
+        //}
+
+        ////Binning
+        //if (ntuscope->YSapply_binning == true) {
+        //    int sizeRaw_width = int(samplesPerRecord);
+        //    int size_width = ntuscope->Xpixelsize_display;
+        //    int sizeRaw_height = ntuscope->Pixelnumy;
+        //    int size_height = ntuscope->Ypixelsize_display;
+        //    if (sizeRaw_width > ntuscope->Xpixelsize_display && size_height >= sizeRaw_height) {
+        //        cv::cuda::GpuMat RES_UP;
+        //        int binPixel_x = int(sizeRaw_width / size_width) + 1;
+        //        int binPixel_y = int(size_height / sizeRaw_height);
+        //        cv::cuda::resize(gpu_image, RES_UP, cv::Size((size_width * binPixel_x), (size_height * 1 / binPixel_y)), 0, 0, cv::INTER_AREA, stream);
+        //        cv::cuda::resize(RES_UP, gpu_image, RES_UP.size() / 1, 0, 0, cv::INTER_AREA, stream);
+        //    }
+        //    else {
+        //        cv::cuda::resize(gpu_image, gpu_image, cv::Size(size_width, size_height), 0, 0, cv::INTER_CUBIC, stream);
+        //    }
+        //    stream.waitForCompletion();
+        //}
+
+        //Convert to 8-bit
+        cv::cuda::GpuMat gpu_8bit_1, gpu_8bit_2;
+        gpu_image_1.convertTo(gpu_8bit_1, CV_8UC1, 1 / 257.0, 0, stream);
+        gpu_image_2.convertTo(gpu_8bit_2, CV_8UC1, 1 / 257.0, 0, stream);
+        stream.waitForCompletion();
+
+        ////Histogram equalize
+        //if (ntuscope->YSapply_equalizehistogram) {
+        //    cv::cuda::equalizeHist(gpu_8bit, gpu_8bit, stream);
+        //    stream.waitForCompletion();
+        //}
+
+        //Constrat IN GPU
+        if (ntuscope->YSapply_contrast) {
+            cv::Mat LUT_matrix(1, 256, CV_8UC1);
+            uchar* pointer = LUT_matrix.ptr();
+            for (int i = 0; i < 256; i++) {
+                pointer[i] = (int)(pow((double)(i / 255.0), ntuscope->YSgamma) * 255.0);
+            }
+            cv::Ptr<cv::cuda::LookUpTable> cudaLookUpTable = cv::cuda::createLookUpTable(LUT_matrix);
+            cudaLookUpTable->transform(gpu_8bit_1, gpu_8bit_1, stream);
+            cudaLookUpTable->transform(gpu_8bit_2, gpu_8bit_2, stream);
+            gpu_8bit_1.cv::cuda::GpuMat::convertTo(gpu_8bit_1, -1, ntuscope->YSconstrat, ntuscope->YSbrightness - 150, stream);
+            gpu_8bit_2.cv::cuda::GpuMat::convertTo(gpu_8bit_2, -1, ntuscope->YSconstrat, ntuscope->YSbrightness - 150, stream);
+            stream.waitForCompletion();
+        }
+
+        //Filter apply
+        ApplyFilter(gpu_8bit_1, stream);
+        ApplyFilter(gpu_8bit_2, stream);
+        stream.waitForCompletion();
+
+        //Resize
+        cv::cuda::GpuMat gpu_8bitresizedImage_1, gpu_8bitresizedImage_2;
+        cv::cuda::resize(gpu_8bit_1, gpu_8bitresizedImage_1, cv::Size(ntuscope->Xpixelsize_display, ntuscope->Ypixelsize_display), 0, 0, cv::INTER_AREA);//cv::INTER_AREAcv::INTER_LINEAR
+        cv::cuda::resize(gpu_8bit_2, gpu_8bitresizedImage_2, cv::Size(ntuscope->Xpixelsize_display, ntuscope->Ypixelsize_display), 0, 0, cv::INTER_AREA);//cv::INTER_AREAcv::INTER_LINEAR
+        stream.waitForCompletion();
+
+        //Save images
+        if (ntuscope->savestate == true && SavedCount < ntuscope->save_num) {
+            lock_guard<mutex> lock(saveMutex);
+            if (ntuscope->saveprocessedstate == true) {
+                gpu_8bitresizedImage_1.download(image_save);
+            }
+            else if (ntuscope->saveprocessedstate == false) {
+                image_save = Img16bit_1.clone();
+            }
+            vector<U16> buffer_vector(Buffer, Buffer + samplesPerBuffer*channelCount);
+            saveQueue.emplace_back(image_save, buffer_vector, starttime_system);
+            SavedCount++;
+            saveCondition.notify_one();
+        }
+
+        //Convert to RGB
+        cv::cuda::GpuMat gpu_8bitRGB_1, gpu_8bitRGB_2;
+        gpu_8bitRGB_1.create(gpu_8bitresizedImage_1.size(), CV_8UC3);
+        if (gpu_8bit_1.channels() == 1) {
+            cv::cuda::cvtColor(gpu_8bitresizedImage_1, gpu_8bitRGB_1, cv::COLOR_GRAY2BGR, 0, stream);
+            stream.waitForCompletion();
+        }
+        gpu_8bitRGB_2.create(gpu_8bitresizedImage_2.size(), CV_8UC3);
+        if (gpu_8bit_2.channels() == 1) {
+            cv::cuda::cvtColor(gpu_8bitresizedImage_2, gpu_8bitRGB_2, cv::COLOR_GRAY2BGR, 0, stream);
+            stream.waitForCompletion();
+        }
+
+        //Display img generate
+        cv::Mat finalImage_1, finalImage_2;
+        gpu_8bitRGB_1.download(finalImage_1);
+        gpu_8bitRGB_2.download(finalImage_2);
+
+        Addtext(finalImage_1, ntuscope->refreshtime, ntuscope->Xpixelsize_display, ntuscope->Ypixelsize_display);
+        cv::imshow("Real-Time Image", finalImage_1);
+        Addtext(finalImage_2, ntuscope->refreshtime, ntuscope->Xpixelsize_display, ntuscope->Ypixelsize_display);
+        cv::imshow("Chopper Image", finalImage_2);
+        cv::waitKey(1);
+
+        //delete[] h_image_1, h_image_2;
         return true;
     }
 
@@ -1068,7 +1579,7 @@ namespace NTU {
         delete[] dummyBuffer;
     }
 //Function
-    bool YSMapping::Saveimage_RASTER(cv::Mat final_display_img,cv::Mat final_display_img_raw, vector<U16>& buffer_save, system_clock::time_point starttime_system) {
+    bool YSMapping::Saveimage_RASTER(cv::Mat final_display_img, vector<U16>& buffer_save, system_clock::time_point starttime_system) {
         if (ntuscope->savestate == true && imageIndex ==0) {
             auto ms = duration_cast<chrono::milliseconds>(starttime_system.time_since_epoch()) % 1000;
             time_t time_now = chrono::system_clock::to_time_t(starttime_system);
@@ -1081,24 +1592,18 @@ namespace NTU {
 
             ntuscope->folderPath = "C:\\NTU_miniScope_Imaging\\2DRASTER\\" + ntuscope->timestampFolder + "_" + ntuscope->titleFolder;
             ntuscope->folderPathRaw = "C:\\NTU_miniScope_Imaging\\2DRASTER_RAW\\" + ntuscope->timestampFolder + "_" + ntuscope->titleFolder;
-            ntuscope->folderPathRawBin = ntuscope->folderPathRaw + "\\BIN";
 
             CreateDirectoryA(ntuscope->folderPath.c_str(), NULL);
-            if (ntuscope->saverawstate) {
+            if (ntuscope->saverawstate==true) {
                 CreateDirectoryA(ntuscope->folderPathRaw.c_str(), NULL);
-                if (ntuscope->saverawbinstate == true) {
-                    CreateDirectoryA(ntuscope->folderPathRawBin.c_str(), NULL);
-                }
             }
                 
         }
 
         ostringstream filePath;
-        ostringstream filePathraw;
         ostringstream filePathrawbin;
         filePath << ntuscope->folderPath << "\\Image" << imageIndex + 1 << ".tiff";
-        filePathraw << ntuscope->folderPathRaw << "\\Image" << imageIndex + 1 << ".tiff";
-        filePathrawbin << ntuscope->folderPathRawBin << "\\Image" << imageIndex + 1 << ".bin";
+        filePathrawbin << ntuscope->folderPathRaw << "\\Image" << imageIndex + 1 << ".bin";
         if (imageIndex == 0) {
             Savecsv(RASTER);
         }
@@ -1124,44 +1629,19 @@ namespace NTU {
             }
         }
 
-        //final_display_raw
+        //final_display_raw_bin
         if (ntuscope->saverawstate == true) {
-            cv::cuda::GpuMat gpu_Imageraw;
-            gpu_Imageraw.upload(final_display_img_raw);
-            if (ntuscope->YSapply_signalprocessing == false) {
-                // INITIAL WINDOWING | Zero-negVolt | 32768-0
-                cv::cuda::subtract(65535, gpu_Imageraw, gpu_Imageraw, cv::noArray(), -1, stream);
-                cv::cuda::threshold(gpu_Imageraw, gpu_Imageraw, 65535, 0, cv::THRESH_TRUNC, stream);
-                cv::cuda::subtract(gpu_Imageraw, 32768, gpu_Imageraw, cv::noArray(), -1, stream);
-                cv::cuda::multiply(gpu_Imageraw, 2.0, gpu_Imageraw, 1.0, -1, stream);
-            }
-            else if (ntuscope->YSapply_signalprocessing == true) {
-                cv::cuda::subtract(65535, gpu_Imageraw, gpu_Imageraw, cv::noArray(), -1, stream);
-                cv::cuda::threshold(gpu_Imageraw, gpu_Imageraw, 65535, 0, cv::THRESH_TRUNC, stream);
-                cv::cuda::subtract(gpu_Imageraw, ntuscope->YSoffsetvalueSP, gpu_Imageraw, cv::noArray(), -1, stream);
-                cv::cuda::multiply(gpu_Imageraw, ntuscope->YSmultiplySP, gpu_Imageraw, 1.0, -1, stream);
-            }
-            cv::Mat finalImage_raw;
-            gpu_Imageraw.download(finalImage_raw);
-            if (!cv::imwrite(filePathraw.str(), finalImage_raw)) {
-                cerr << "Error: Unable to save pixel data to " << filePathraw.str() << endl;
-                return false;
-            }
-
-            //final_display_raw_bin
-            if (ntuscope->saverawbinstate == true) {
-                FILE* fpData = fopen(filePathrawbin.str().c_str(), "wb");
-                if (fpData) {
-                    size_t bytesPerBuffer = samplesPerBuffer * sizeof(U16);
-                    size_t bytesWritten = fwrite(buffer_save.data(), sizeof(BYTE), bytesPerBuffer, fpData);
-                    fclose(fpData);
-                    if (bytesWritten != bytesPerBuffer) {
-                        return false;
-                    }
-                }
-                else {
+            FILE* fpData = fopen(filePathrawbin.str().c_str(), "wb");
+            if (fpData) {
+                size_t bytesPerBuffer = samplesPerBuffer * sizeof(U16) * size_t(channelCount);
+                size_t bytesWritten = fwrite(buffer_save.data(), sizeof(BYTE), bytesPerBuffer, fpData);
+                fclose(fpData);
+                if (bytesWritten != bytesPerBuffer) {
                     return false;
                 }
+            }
+            else {
+                return false;
             }
         }
 
@@ -1175,7 +1655,7 @@ namespace NTU {
         return true;
     }
 
-    bool YSMapping::Saveimage_LISSAJOUS(cv::Mat final_display_img, cv::Mat final_display_raw, system_clock::time_point starttime_system) {
+    bool YSMapping::Saveimage_LISSAJOUS(cv::Mat final_display_img, vector<U16>& buffer_save, system_clock::time_point starttime_system) {
         if (ntuscope->savestate == true && imageIndex == 0) {
             auto ms = duration_cast<milliseconds>(starttime_system.time_since_epoch()) % 1000;
             time_t time_now = system_clock::to_time_t(starttime_system);
@@ -1185,7 +1665,6 @@ namespace NTU {
             ostringstream oss;
             oss << put_time(&local_tm, "%Y%m%d_%H%M%S")<< '_' << setfill('0') << setw(3) << ms.count();
             ntuscope->timestampFolder = oss.str();
-
 
             ntuscope->folderPath = "C:\\NTU_miniScope_Imaging\\2DLISSAJOUS\\" + ntuscope->timestampFolder + "_" + ntuscope->titleFolder;
             ntuscope->folderPathRaw = "C:\\NTU_miniScope_Imaging\\2DLISSAJOUS_RAW\\" + ntuscope->timestampFolder + "_" + ntuscope->titleFolder;
@@ -1197,9 +1676,9 @@ namespace NTU {
         }
 
         ostringstream filePath;
-        ostringstream filePathraw;
+        ostringstream filePathrawbin;
         filePath << ntuscope->folderPath << "\\Image" << imageIndex + 1 << ".tiff";
-        filePathraw << ntuscope->folderPathRaw << "\\Image" << imageIndex + 1 << ".tiff";
+        filePathrawbin << ntuscope->folderPathRaw << "\\Image" << imageIndex + 1 << ".bin";
         if (imageIndex == 0) {
             Savecsv(LISSAJOUS_2D);
         }
@@ -1210,31 +1689,18 @@ namespace NTU {
             return false;
         }
 
-        //final_display_raw
+        //final_display_raw_bin
         if (ntuscope->saverawstate == true) {
-            cv::cuda::GpuMat gpu_saveimage(1, int(samplesPerBuffer), CV_16UC1);
-            gpu_saveimage.upload(final_display_raw);
-
-            if (ntuscope->YSapply_signalprocessing == false) {
-                // INITIAL WINDOWING | Zero-negVolt | 32768-0
-                cv::cuda::subtract(65535, gpu_saveimage, gpu_saveimage, cv::noArray(), -1, stream);
-                cv::cuda::threshold(gpu_saveimage, gpu_saveimage, 65535, 0, cv::THRESH_TRUNC, stream);
-                cv::cuda::subtract(gpu_saveimage, 32768, gpu_saveimage, cv::noArray(), -1, stream);
-                cv::cuda::multiply(gpu_saveimage, 2.0, gpu_saveimage, 1.0, -1, stream);
+            FILE* fpData = fopen(filePathrawbin.str().c_str(), "wb");
+            if (fpData) {
+                size_t bytesPerBuffer = samplesPerBuffer * sizeof(U16) * size_t(channelCount);
+                size_t bytesWritten = fwrite(buffer_save.data(), sizeof(BYTE), bytesPerBuffer, fpData);
+                fclose(fpData);
+                if (bytesWritten != bytesPerBuffer) {
+                    return false;
+                }
             }
-            else if (ntuscope->YSapply_signalprocessing == true) {
-                cv::cuda::subtract(65535, gpu_saveimage, gpu_saveimage, cv::noArray(), -1, stream);
-                cv::cuda::threshold(gpu_saveimage, gpu_saveimage, 65535, 0, cv::THRESH_TRUNC, stream);
-                cv::cuda::subtract(gpu_saveimage, ntuscope->YSoffsetvalueSP, gpu_saveimage, cv::noArray(), -1, stream);
-                cv::cuda::multiply(gpu_saveimage, ntuscope->YSmultiplySP, gpu_saveimage, 1.0, -1, stream);
-            }
-            stream.waitForCompletion();
-
-            cv::Mat finalsaveImage;
-            gpu_saveimage.download(finalsaveImage);
-
-            if (!cv::imwrite(filePathraw.str(), finalsaveImage)) {
-                cerr << "Error: Unable to save pixel data to " << filePathraw.str() << endl;
+            else {
                 return false;
             }
         }
@@ -1246,61 +1712,6 @@ namespace NTU {
         imageIndex++;
         ntuscope->saveprogress = (double(imageIndex) / double(ntuscope->save_num)) * 100;
 
-        return true;
-    }
-
-    bool YSMapping::Saveimage_LISSAJOUS_highspeed(const vector<U16>& saveimage_data, system_clock::time_point starttime_system) {
-        if (ntuscope->savestate == true && imageIndex == 0) {
-            auto ms = duration_cast<chrono::milliseconds>(starttime_system.time_since_epoch()) % 1000;
-            time_t time_now = chrono::system_clock::to_time_t(starttime_system);
-            tm local_tm;
-            localtime_s(&local_tm, &time_now);
-
-            ostringstream oss;
-            oss << put_time(&local_tm, "%Y%m%d_%H%M%S") << '_' << setfill('0') << setw(3) << ms.count();
-            ntuscope->timestampFolder = oss.str();
-
-            ntuscope->folderPathRaw = "C:\\NTU_miniScope_Imaging\\2DLISSAJOUS_RAW\\" + ntuscope->timestampFolder + "_" + ntuscope->titleFolder;
-
-            CreateDirectoryA(ntuscope->folderPathRaw.c_str(), NULL);
-            Savecsv(LISSAJOUS_2D);
-        }
-
-        cv::Mat saveimage(1, static_cast<int>(saveimage_data.size()), CV_16UC1, const_cast<U16*>(saveimage_data.data()));
-
-        cv::cuda::GpuMat gpu_saveimage;
-        gpu_saveimage.upload(saveimage);
-
-        if (ntuscope->YSapply_signalprocessing == false) {
-            // INITIAL WINDOWING | Zero-negVolt | 32768-0
-            cv::cuda::subtract(65535, gpu_saveimage, gpu_saveimage, cv::noArray(), -1, stream);
-            cv::cuda::threshold(gpu_saveimage, gpu_saveimage, 65535, 0, cv::THRESH_TRUNC, stream);
-            cv::cuda::subtract(gpu_saveimage, 32768, gpu_saveimage, cv::noArray(), -1, stream);
-            cv::cuda::multiply(gpu_saveimage, 2.0, gpu_saveimage, 1.0, -1, stream);
-        }
-        else if (ntuscope->YSapply_signalprocessing == true) {
-            cv::cuda::subtract(65535, gpu_saveimage, gpu_saveimage, cv::noArray(), -1, stream);
-            cv::cuda::threshold(gpu_saveimage, gpu_saveimage, 65535, 0, cv::THRESH_TRUNC, stream);
-            cv::cuda::subtract(gpu_saveimage, ntuscope->YSoffsetvalueSP, gpu_saveimage, cv::noArray(), -1, stream);
-            cv::cuda::multiply(gpu_saveimage, ntuscope->YSmultiplySP, gpu_saveimage, 1.0, -1, stream);
-        }
-        stream.waitForCompletion();
-
-        cv::Mat finalsaveImage;
-        gpu_saveimage.download(finalsaveImage);
-
-        ostringstream filePathraw;
-        filePathraw << ntuscope->folderPathRaw << "\\Image" << imageIndex + 1 << ".tiff";
-        if (!cv::imwrite(filePathraw.str(), finalsaveImage)) {
-            cerr << "Error: Unable to save pixel data to " << filePathraw.str() << endl;
-        }
-        if (imageIndex == ntuscope->save_num - 1) {
-            ntuscope->savestate = false;
-            ntuscope->saverawstate = false;
-        }
-        imageIndex++;
-        ntuscope->saveprogress = (double(imageIndex) / double(ntuscope->save_num)) * 100;
-        
         return true;
     }
 
@@ -1325,7 +1736,7 @@ namespace NTU {
         filePath << ntuscope->folderPathRaw << "\\Image" << (imageIndex + 1) << ".bin";
         FILE* fpData = fopen(filePath.str().c_str(), "wb");
         if (fpData) {
-            size_t bytesPerBuffer = samplesPerBuffer * sizeof(U16);
+            size_t bytesPerBuffer = samplesPerBuffer * sizeof(U16) * channelCount;
             size_t bytesWritten = fwrite(Buffer, sizeof(BYTE), bytesPerBuffer, fpData);
             fclose(fpData);
 
@@ -1346,6 +1757,77 @@ namespace NTU {
         return true;
     }
 
+    bool YSMapping::Saveimage_RASTER2CH_highspeed(cv::Mat final_display_img, vector<U16>& buffer_save, system_clock::time_point starttime_system) {
+        if (ntuscope->savestate == true && imageIndex == 0) {
+            auto ms = duration_cast<chrono::milliseconds>(starttime_system.time_since_epoch()) % 1000;
+            time_t time_now = chrono::system_clock::to_time_t(starttime_system);
+            tm local_tm;
+            localtime_s(&local_tm, &time_now);
+
+            ostringstream oss;
+            oss << put_time(&local_tm, "%Y%m%d_%H%M%S") << '_' << setfill('0') << setw(3) << ms.count();
+            ntuscope->timestampFolder = oss.str();
+
+            ntuscope->folderPath = "C:\\NTU_miniScope_Imaging\\2DRASTER\\" + ntuscope->timestampFolder + "_" + ntuscope->titleFolder;
+            ntuscope->folderPathRaw = "C:\\NTU_miniScope_Imaging\\2DRASTER_RAW\\" + ntuscope->timestampFolder + "_" + ntuscope->titleFolder;
+
+            CreateDirectoryA(ntuscope->folderPath.c_str(), NULL);
+            CreateDirectoryA(ntuscope->folderPathRaw.c_str(), NULL);
+        }
+
+        ostringstream filePath;
+        ostringstream filePathrawbin;
+        filePath << ntuscope->folderPath << "\\Image" << imageIndex + 1 << ".tiff";
+        filePathrawbin << ntuscope->folderPathRaw << "\\Image" << imageIndex + 1 << ".bin";
+        if (imageIndex == 0) {
+            Savecsv(RASTER);
+        }
+
+        //final_display_img
+        //resize
+        if (ntuscope->saveprocessedstate == true) {
+            if (!cv::imwrite(filePath.str(), final_display_img)) {
+                cerr << "Error: Unable to save image to " << filePath.str() << endl;
+                return false;
+            }
+        }
+        else if (ntuscope->saveprocessedstate == false) {
+            cv::cuda::GpuMat gpu_Image;
+            cv::cuda::GpuMat gpu_resizedImage;
+            gpu_Image.upload(final_display_img);
+            cv::cuda::resize(gpu_Image, gpu_resizedImage, cv::Size(ntuscope->Xpixelsize_save, ntuscope->Ypixelsize_save), 0, 0, cv::INTER_LINEAR);
+            cv::Mat finalImage;
+            gpu_resizedImage.download(finalImage);
+            if (!cv::imwrite(filePath.str(), finalImage)) {
+                cerr << "Error: Unable to save image to " << filePath.str() << endl;
+                return false;
+            }
+        }
+
+        //final_display_raw_bin
+        FILE* fpData = fopen(filePathrawbin.str().c_str(), "wb");
+        if (fpData) {
+            size_t bytesPerBuffer = samplesPerBuffer * sizeof(U16) * size_t(channelCount);
+            size_t bytesWritten = fwrite(buffer_save.data(), sizeof(BYTE), bytesPerBuffer, fpData);
+            fclose(fpData);
+            if (bytesWritten != bytesPerBuffer) {
+                return false;
+            }
+        }
+        else {
+            return false;
+        }
+
+        if (imageIndex == ntuscope->save_num - 1) {
+            ntuscope->savestate = false;
+            ntuscope->saverawstate = false;
+        }
+        imageIndex++;
+        ntuscope->saveprogress = (double(imageIndex) / double(ntuscope->save_num)) * 100;
+
+        return true;
+    }
+
     void YSMapping::SaverasterimageFunction() {
         while (!stopsaveThread) {
             unique_lock<mutex> lock(saveMutex);
@@ -1358,47 +1840,37 @@ namespace NTU {
             auto imageWithTime = std::move(saveQueue.front());
             saveQueue.pop_front();
 
-            cv::Mat Img, rawImg;
+            cv::Mat Img;
             vector<U16> Buffer;
 
             std::chrono::system_clock::time_point timestamp;
-            std::tie(Img, rawImg,Buffer, timestamp) = imageWithTime;
-            Saveimage_RASTER(Img, rawImg,Buffer, timestamp);
-
+            std::tie(Img,Buffer, timestamp) = imageWithTime;
+            if (ntuscope->applychopper == true) {
+                Saveimage_RASTER2CH_highspeed(Img, Buffer, timestamp);
+            }
+            else if (ntuscope->applychopper == false) {
+                Saveimage_RASTER(Img, Buffer, timestamp);
+            }
         }
     }
 
     void YSMapping::SavelissajousimageFunction() {
         while (!stopsaveThread) {
-            if (ntuscope->highspeedmode == false) {
-                unique_lock<mutex> lock(saveMutex);
-                saveCondition.wait(lock, [this]() {
-                    return !saveLissajousQueue.empty() || stopsaveThread;
-                    });
+            unique_lock<mutex> lock(saveMutex);
+            saveCondition.wait(lock, [this]() {
+                return !saveLissajousQueue.empty() || stopsaveThread;
+                });
 
-                if (stopsaveThread) break;
+            if (stopsaveThread) break;
 
-                auto imageWithTime = std::move(saveLissajousQueue.front());
-                saveLissajousQueue.pop_front();
+            auto imageWithTime = std::move(saveLissajousQueue.front());
+            saveLissajousQueue.pop_front();
 
-                cv::Mat rawImg, processedImg;
-                std::chrono::system_clock::time_point timestamp;
-                std::tie(processedImg, rawImg, timestamp) = imageWithTime;
-                Saveimage_LISSAJOUS(processedImg, rawImg, timestamp);
-            }
-            else if (ntuscope->highspeedmode == true) {
-                unique_lock<mutex> lock(saveMutex);
-                saveCondition.wait(lock, [this]() {
-                    return !saveLissajousQueue_highspeed.empty() || stopsaveThread;
-                    });
-
-                if (stopsaveThread) break;
-
-                pair<vector<U16>, std::chrono::system_clock::time_point> imageWithTime;
-                imageWithTime = std::move(saveLissajousQueue_highspeed.front());
-                saveLissajousQueue_highspeed.pop_front();
-                Saveimage_LISSAJOUS_highspeed(imageWithTime.first, imageWithTime.second);
-            }
+            cv::Mat processedImg;
+            vector<U16> Buffer;
+            std::chrono::system_clock::time_point timestamp;
+            std::tie(processedImg, Buffer, timestamp) = imageWithTime;
+            Saveimage_LISSAJOUS(processedImg, Buffer, timestamp);
         }
     }
 
@@ -1709,6 +2181,7 @@ namespace NTU {
                 }
                 file << "chopperfreq," << ntuscope->chopperfreq << endl;
                 file << "chopperphase," << ntuscope->chopperphase << endl;
+                file << "channelnumber," << channelCount << endl;
                 file.close();
                 cout << "CSV file created successfully at: " << csvpath << endl;
             }
@@ -1732,6 +2205,7 @@ namespace NTU {
             }
             rawfile << "chopperfreq," << ntuscope->chopperfreq << endl;
             rawfile << "chopperphase," << ntuscope->chopperphase << endl;
+            rawfile << "channelnumber," << channelCount << endl;
             rawfile.close();
             cout << "CSV file created successfully at: " << rawcsvpath << endl;
         }
@@ -1755,29 +2229,34 @@ namespace NTU {
             }
             file << "chopperfreq," << ntuscope->chopperfreq << endl;
             file << "chopperphase," << ntuscope->chopperphase << endl;
+            file << "channelnumber," << channelCount << endl;
             file.close();
             cout << "CSV file created successfully at: " << csvpath << endl;
-            string rawcsvpath = ntuscope->folderPathRaw + "\\scan_spec.csv";
-            ofstream rawfile(rawcsvpath);
-            rawfile << "linefreq," << ntuscope->xfreq * 2 << endl;
-            rawfile << "num_of_line," << ntuscope->num_lines << endl;
-            rawfile << "xamp," << ntuscope->MEMS_xamp << endl;
-            rawfile << "yamp," << ntuscope->MEMS_yamp << endl;
-            rawfile << "samplingrate," << ntuscope->samplesPerSec << endl;
-            rawfile << "num of samples," << int(samplesPerBuffer) << endl;
-            if (ntuscope->inputrangetype == INPUT_RANGE_PM_500_MV) {
-                rawfile << "inputrange," << 500 << endl;
-            }
-            else if (ntuscope->inputrangetype == INPUT_RANGE_PM_800_MV) {
-                rawfile << "inputrange," << 800 << endl;
-            }
-            else if (ntuscope->inputrangetype == INPUT_RANGE_PM_1_V) {
-                rawfile << "inputrange," << 1000 << endl;
-            }
-            rawfile << "chopperfreq," << ntuscope->chopperfreq << endl;
-            rawfile << "chopperphase," << ntuscope->chopperphase << endl;
-            rawfile.close();
-            cout << "CSV file created successfully at: " << rawcsvpath << endl;
+                      
+            if (ntuscope->saverawstate == true) {
+                string rawcsvpath = ntuscope->folderPathRaw + "\\scan_spec.csv";
+                ofstream rawfile(rawcsvpath);
+                rawfile << "linefreq," << ntuscope->xfreq * 2 << endl;
+                rawfile << "num_of_line," << ntuscope->num_lines << endl;
+                rawfile << "xamp," << ntuscope->MEMS_xamp << endl;
+                rawfile << "yamp," << ntuscope->MEMS_yamp << endl;
+                rawfile << "samplingrate," << ntuscope->samplesPerSec << endl;
+                rawfile << "num of samples," << int(samplesPerBuffer) << endl;
+                if (ntuscope->inputrangetype == INPUT_RANGE_PM_500_MV) {
+                    rawfile << "inputrange," << 500 << endl;
+                }
+                else if (ntuscope->inputrangetype == INPUT_RANGE_PM_800_MV) {
+                    rawfile << "inputrange," << 800 << endl;
+                }
+                else if (ntuscope->inputrangetype == INPUT_RANGE_PM_1_V) {
+                    rawfile << "inputrange," << 1000 << endl;
+                }
+                rawfile << "chopperfreq," << ntuscope->chopperfreq << endl;
+                rawfile << "chopperphase," << ntuscope->chopperphase << endl;
+                rawfile << "channelnumber," << channelCount << endl;
+                rawfile.close();
+                cout << "CSV file created successfully at: " << rawcsvpath << endl;
+            }   
         }
         else if (scanmode == LISSAJOUS_3D) {
             string csvpath = ntuscope->folderPath + "\\scan_spec.csv";
@@ -1801,6 +2280,7 @@ namespace NTU {
             }
             file << "chopperfreq," << ntuscope->chopperfreq << endl;
             file << "chopperphase," << ntuscope->chopperphase << endl;
+            file << "channelnumber," << channelCount << endl;
             file.close();
             cout << "CSV file created successfully at: " << csvpath << endl;
             string rawcsvpath = ntuscope->folderPathRaw + "\\scan_spec.csv";
@@ -1824,6 +2304,7 @@ namespace NTU {
             }
             rawfile << "chopperfreq," << ntuscope->chopperfreq << endl;
             rawfile << "chopperphase," << ntuscope->chopperphase << endl;
+            rawfile << "channelnumber," << channelCount << endl;
             rawfile.close();
             cout << "CSV file created successfully at: " << rawcsvpath << endl;
         }

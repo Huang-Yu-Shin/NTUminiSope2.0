@@ -21,11 +21,12 @@ namespace NTU {
         bool running;
         HANDLE boardHandle; //Alazar board task
         U32 channelMask = CHANNEL_A;
+        U32 channelCount = 1;
         U32 preTriggerSamples;  //for Configuration.txt
         U32 postTriggerSamples;  // The number of post-trigger samples calculated from sampling rate and Lissajous frequencies
         U32 recordsPerBuffer = 1;
         U32 samplesPerRecord = 0;
-        U32 bytesPerBuffer = 0;
+        U32 bytesPerBuffer = 0; // WARNING:include channelcount
         U32 samplesPerBuffer = 0;
         U32 recordsPerAcquisition = 0;
         U32 buffersPerAcquisition = 0;
@@ -36,21 +37,23 @@ namespace NTU {
         int SavedCount = 0;
 
         bool ConfigureBoard(ScanMode mode);
+        bool ConfigureBoardTwoChannel(ScanMode mode);
         bool Generate2D_LISSAJOUS_SampleMap();
         bool Generate2D_RASTER_SampleMap();
         bool ProcessBufferAndFill_2DLissajousImage(U16* Buffer, high_resolution_clock::time_point starttime, system_clock::time_point starttime_system, U32 frameorder);
         bool ProcessBufferAndFill_2DLissajousImage_highspeed(U16* Buffer, high_resolution_clock::time_point starttime, system_clock::time_point starttime_system, U32 frameorder);
         bool ProcessBufferAndFill_2DRasterImage(U16* Buffer, high_resolution_clock::time_point starttime, system_clock::time_point starttime_system, U32 frameorder);
+        bool ProcessBufferAndFill_2DRasterImageTwoChannel(U16* Buffer, high_resolution_clock::time_point starttime, system_clock::time_point starttime_system, U32 frameorder);
         void WarmupLissajousImageProcessing();
         bool StartAcquireData();
         bool AcquireData_RASTER();
         bool AcquireData();
         void SaverasterimageFunction();
         void SavelissajousimageFunction();
-        bool Saveimage_RASTER(cv::Mat final_display_img , cv::Mat final_display_img_raw, vector<U16>& buffer_save, system_clock::time_point starttime_system);
-        bool Saveimage_LISSAJOUS(cv::Mat final_display_img, cv::Mat final_display_raw, system_clock::time_point starttime_system);
-        bool Saveimage_LISSAJOUS_highspeed(const vector<U16>& saveimage_data, system_clock::time_point starttime_system);
+        bool Saveimage_RASTER(cv::Mat final_display_img , vector<U16>& buffer_save, system_clock::time_point starttime_system);
+        bool Saveimage_LISSAJOUS(cv::Mat final_display_img, vector<U16>& buffer_save, system_clock::time_point starttime_system);
         bool Saveimage_LISSAJOUSBin_highspeed(U16* Buffer, system_clock::time_point starttime_system);
+        bool Saveimage_RASTER2CH_highspeed(cv::Mat final_display_img, vector<U16>& buffer_save, system_clock::time_point starttime_system);
         void CloseAlazar();
         void Trensientstep();
         void Accelerate(U16* Buffer, int bufferIndex, high_resolution_clock::time_point starttime, system_clock::time_point starttime_system);
@@ -95,8 +98,8 @@ namespace NTU {
         cv::Mat image_repair;
 
         //save state
-        deque<tuple<cv::Mat,cv::Mat, vector<U16>, std::chrono::system_clock::time_point>> saveQueue;
-        deque<tuple<cv::Mat, cv::Mat, std::chrono::system_clock::time_point>> saveLissajousQueue;
+        deque<tuple<cv::Mat, vector<U16>, std::chrono::system_clock::time_point>> saveQueue;
+        deque<tuple<cv::Mat, vector<U16>, std::chrono::system_clock::time_point>> saveLissajousQueue;
         deque<pair<vector<U16>, std::chrono::system_clock::time_point>> saveLissajousQueue_highspeed;
         mutex saveMutex;
         condition_variable saveCondition;

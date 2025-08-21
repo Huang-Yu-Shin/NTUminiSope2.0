@@ -29,7 +29,7 @@
 
 
 #define BUFFER_COUNT 16
-#define TRANSIENT_BUFFER_COUNT 100
+#define TRANSIENT_BUFFER_COUNT 200
 
 namespace NTU
 {
@@ -77,7 +77,6 @@ namespace NTU
 		bool savestate = false;
 		bool saveprocessedstate = false;
 		bool saverawstate = false;
-		bool saverawbinstate = false;
 		int save_num = 0;
 		bool avgstate = false;
 		int avgcount = 1;
@@ -142,8 +141,8 @@ namespace NTU
 		double lissajous_delay = 0;
 		bool samplemapsave = false;
 		bool highspeedmode = false;
-		bool choppermapping = false;
-
+		bool applychopper = false;
+		bool channeldisplay = false; //false for CH1, true for CH2
 		//NI
 		int samplingRate = 0;
 

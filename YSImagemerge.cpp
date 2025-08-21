@@ -7,10 +7,18 @@ namespace NTU {
 	}
 
 	YSImageMerge::~YSImageMerge() {
-		delete[] LissajousrawData;
-		delete[] LissajoustempData;
-		delete[] sampleMap;
-		delete[] Image;
+		if (LissajousrawData != nullptr) {
+			delete[] LissajousrawData;
+		}
+		if (LissajousrawData != nullptr) {
+			delete[] LissajoustempData;
+		}
+		if (Image != nullptr) {
+			delete[] Image;
+		}
+		if (sampleMap != nullptr) {
+			delete[] sampleMap;
+		}
 		calpara->~CudaCalPara();
 		cv::destroyAllWindows();
 	}
@@ -288,7 +296,7 @@ namespace NTU {
 	void YSImageMerge::ScanmodePreview() {
 		cv::Mat DisplayIMG = rasterImage.clone();
 		double duration = 1.0 / double(framerate_SP);
-		if (framerate_SP >= 12000) {
+		if (framerate_SP >= 120) {
 			chopper_freq_upscale = 1;
 		}
 		else {
@@ -330,6 +338,25 @@ namespace NTU {
 
 	bool YSImageMerge::GetChopperTTLSignal(int sampleIndex, int totalSamples) {
 		if (chopper_freq_upscale == 1) {
+			//int segments = 2;
+			//int samplesPerSegment = totalSamples / segments;
+			//if (samplesPerSegment <= 0) return true;
+
+			//double ph = std::fmod(chopper_phase, 360.0);
+			//if (ph < 0.0) ph += 360.0;
+			//int shiftSamples = static_cast<int>(std::round(ph / 360.0 * totalSamples));
+
+			//int shiftedIndex = (sampleIndex - shiftSamples) % totalSamples; 
+			//if (shiftedIndex < 0) shiftedIndex += totalSamples;       
+
+			//const int quarterSamples = totalSamples / 8;
+
+			//int quarter = shiftedIndex / quarterSamples; 
+			//bool isHigh = (quarter >=1) && (quarter<=2);
+
+			//return isHigh;
+
+
 			int segments = 2;
 			int samplesPerSegment = totalSamples / segments;
 			if (samplesPerSegment <= 0) return true;
@@ -338,34 +365,51 @@ namespace NTU {
 			if (ph < 0.0) ph += 360.0;
 			int shiftSamples = static_cast<int>(std::round(ph / 360.0 * totalSamples));
 
-			int shiftedIndex = (sampleIndex - shiftSamples) % totalSamples; 
-			if (shiftedIndex < 0) shiftedIndex += totalSamples;       
+			int shiftedIndex = (sampleIndex - shiftSamples) % totalSamples;
+			if (shiftedIndex < 0) shiftedIndex += totalSamples;
 
-			const int quarterSamples = totalSamples / 8;
-			int quarter = shiftedIndex / quarterSamples; 
-			bool isHigh = (quarter >=1) && (quarter<=2);
-
+			const int quarterSamples = totalSamples / 4;
+			int quarter = shiftedIndex / quarterSamples;
+			bool isHigh = (quarter < 2);
 			return isHigh;
 		}
 		else if (chopper_freq_upscale == 4) {
-			int segments = 8;                            
+			//int segments = 8;                            
+			//int samplesPerSegment = totalSamples / segments;
+			//int samplesPerSegment_calibration = totalSamples / (segments*4);
+			//if (samplesPerSegment <= 0) return true;
+
+			//double ph = std::fmod(chopper_phase, 360.0);
+			//if (ph < 0.0) ph += 360.0;
+
+			//int samplesPerChopper = totalSamples / 4;    
+			//int shiftSamples = static_cast<int>(std::round(ph / 360.0 * samplesPerChopper));
+
+			//int shiftedIndex = (sampleIndex - shiftSamples) % totalSamples;
+			//if (shiftedIndex < 0) shiftedIndex += totalSamples;
+
+			//int segIdx = shiftedIndex / samplesPerSegment;
+			//int segIdx_calibration = shiftedIndex / samplesPerSegment_calibration;
+			//bool isHigh = ((segIdx % 2) == 0) && (((segIdx_calibration % 4) == 1)|| ((segIdx_calibration % 4) == 2));
+			//return isHigh;
+
+			int segments = 8;
 			int samplesPerSegment = totalSamples / segments;
-			int samplesPerSegment_calibration = totalSamples / (segments*4);
 			if (samplesPerSegment <= 0) return true;
 
 			double ph = std::fmod(chopper_phase, 360.0);
 			if (ph < 0.0) ph += 360.0;
 
-			int samplesPerChopper = totalSamples / 4;    
+			int samplesPerChopper = totalSamples / 4;
 			int shiftSamples = static_cast<int>(std::round(ph / 360.0 * samplesPerChopper));
 
 			int shiftedIndex = (sampleIndex - shiftSamples) % totalSamples;
 			if (shiftedIndex < 0) shiftedIndex += totalSamples;
 
 			int segIdx = shiftedIndex / samplesPerSegment;
-			int segIdx_calibration = shiftedIndex / samplesPerSegment_calibration;
-			bool isHigh = ((segIdx % 2) == 0) && (((segIdx_calibration % 4) == 1)|| ((segIdx_calibration % 4) == 2));
+			bool isHigh = (segIdx % 2) == 0;
 			return isHigh;
+
 		}
 
 	}
@@ -533,7 +577,7 @@ namespace NTU {
 		for (int i = 0; i < num_of_sample_EK; ++i) {
 			int x = 0;
 			int y = 0;
-			bool inrange = LissajousIdxFromSample(i, samplingrate_EK, pixelnum, pixelnum, double(xfreq), double(yfreq), lissajousphase, x, y);
+			bool inrange = LissajousIdxFromSample(i, samplingrate_EK, pixelnum, pixelnum, double(xfreq_EK), double(yfreq_EK), lissajous_phase_EK, x, y);
 			if (inrange == true) {
 				cv::Point pt(x, y);
 				if (scannedPixelList.empty() || scannedPixelList.back() != pt)
@@ -693,17 +737,14 @@ namespace NTU {
 
 	//Reconstruct
 	void YSImageMerge::DisplayReconstructedLissajousImage() {
-		string lissajousFolderPathtiff = LISSAJOUSFolderPath + "\\Image1.tiff";
-		cv::Mat rawImg16 = cv::imread(lissajousFolderPathtiff, cv::IMREAD_UNCHANGED);
-		if (rawImg16.empty() || rawImg16.type() != CV_16UC1) {
-			cout << "Error: TIFF not found or not CV_16UC1 format: " << lissajousFolderPathtiff << endl;
-			return;
-		}
+		cv::Mat avergeimg16;
+		AVERAGE(LISSAJOUSFolderPath, avergeimg16);
+
 		LissajousrawData = new double[num_of_sample];
 		memset(LissajousrawData, 0, num_of_sample * sizeof(double));
-		cv::Mat rawImg64;
-		rawImg16.convertTo(rawImg64, CV_64FC1);
-		memcpy(LissajousrawData, rawImg64.ptr<double>(), num_of_sample * sizeof(double));
+		cv::Mat avergeimg64;
+		avergeimg16.convertTo(avergeimg64, CV_64FC1);
+		memcpy(LissajousrawData, avergeimg64.ptr<double>(), num_of_sample * sizeof(double));
 
 		Image = new double[pixelnum * pixelnum];
 		memset(Image, 0, pixelnum * pixelnum * sizeof(double));
@@ -739,10 +780,16 @@ namespace NTU {
 
 		cv::Mat image8U;
 		image16U.convertTo(image8U, CV_8UC1, 1.0 / 257); 
-		//cv::imshow("Reconstruct Image", image8U);
-		//cv::waitKey(0);
-		delete[] LissajoustempData;
-		delete[] Image;
+		cv::imshow("Reconstruct Image", image8U);
+		cv::waitKey(1);
+
+		if (LissajousrawData != nullptr) {
+			delete[] LissajoustempData;
+		}
+		if (Image != nullptr) {
+			delete[] Image;
+		}
+
 	}
 
 	void YSImageMerge::ReconstructAllTiffInFolder() {
@@ -981,9 +1028,6 @@ namespace NTU {
 		if (!CopyFileA(sourceCSV.c_str(), targetCSV.c_str(), FALSE)) {
 			std::cerr << "Error: Unable to copy scan_spec.csv to " << targetCSV << std::endl;
 		}
-		else {
-			std::cout << "Have copied scan_spec.csv to: " << targetCSV << std::endl;
-		}
 	}
 
 	int YSImageMerge::extractNumber(const string& filename) {
@@ -1026,7 +1070,7 @@ namespace NTU {
 			}
 			if (count == 0) {
 				imageSize = image.size();
-				sumImage = cv::Mat::zeros(imageSize, CV_64FC3);
+				sumImage = cv::Mat::zeros(imageSize, CV_64FC1);
 			}
 			if (image.size() != imageSize) {
 				cv::resize(image, image, imageSize, 0, 0, cv::INTER_LINEAR);
@@ -1039,7 +1083,7 @@ namespace NTU {
 			cerr << "Error: No images found in folder " << folderPath << endl;
 		}
 		sumImage /= count;
-		sumImage.convertTo(avgImage, CV_8UC3);
-		cv::resize(avgImage, avgImage, cv::Size(), 256 / avgImage.size[0], 256 / avgImage.size[1], cv::INTER_LINEAR);
+		sumImage.convertTo(avgImage, CV_16UC1);
+	
 	}
 }

@@ -89,8 +89,8 @@ namespace NTU {
 		int num_of_sample = 0;
 		int samplingrate = 0;
 		int chopperfreq = 0;
-		int ampx = 0;
-		int ampy =0;
+		double ampx = 0;
+		double ampy =0;
 		int pixelnum = 512;
 		double lissajousphase = 0;
 		double chopperphase =0;
@@ -102,6 +102,7 @@ namespace NTU {
 		void LoadLissajousImage();
 
 		//Reconstruct
+		bool quickreconstruct = false;
 		void DisplayReconstructedLissajousImage();
 		void ReconstructAllTiffInFolder();
 

@@ -72,9 +72,17 @@ namespace NTU {
         ntuscope->zoffset = focaloffset;
         ntuscope->zstep = 0;
         ntuscope->zlayer = 0;
-        if (mapping->ConfigureBoard(mapping->LISSAJOUS_2D)) {
-            cout << "Configure Alazar : Success" << endl;
-            cout << "---------------------" << endl;
+        if (ntuscope->applychopper == false) {
+            if (mapping->ConfigureBoard(mapping->LISSAJOUS_2D)) {
+                cout << "Configure Alazar : Success" << endl;
+                cout << "---------------------" << endl;
+            }
+        }
+        else if (ntuscope->applychopper == true) {
+            if (mapping->ConfigureBoardTwoChannel(mapping->LISSAJOUS_2D)) {
+                cout << "Configure AlazarTwoChannel : Success" << endl;
+                cout << "---------------------" << endl;
+            }
         }
         if (scanning->twoD_lissajous_configure()) {
             cout << "Configure NIDAQ and ETL : Success" << endl;
@@ -122,9 +130,18 @@ namespace NTU {
         ntuscope->zoffset = focaloffset;
         ntuscope->zstep = 0;
         ntuscope->zlayer = 0;
-        if (mapping->ConfigureBoard(mapping->RASTER)) {
-            cout << "Configure Alazar : Success" << endl;
-            cout << "---------------------" << endl;
+
+        if (ntuscope->applychopper == false) {
+            if (mapping->ConfigureBoard(mapping->RASTER)) {
+                cout << "Configure Alazar : Success" << endl;
+                cout << "---------------------" << endl;
+            }
+        }
+        else if (ntuscope->applychopper == true) {
+            if (mapping->ConfigureBoardTwoChannel(mapping->RASTER)) {
+                cout << "Configure AlazarTwoChannel : Success" << endl;
+                cout << "---------------------" << endl;
+            }
         }
         if (scanning->twoD_raster_configure()) {
             cout << "Configure NIDAQ and ETL : Success" << endl;
@@ -148,9 +165,17 @@ namespace NTU {
         ntuscope->zoffset = focaloffset;
         ntuscope->zstep = 0;
         ntuscope->zlayer = 0;
-        if (mapping->ConfigureBoard(mapping->RASTER_SLOW)) {
-            cout << "Configure Alazar : Success" << endl;
-            cout << "---------------------" << endl;
+        if (ntuscope->applychopper == false) {
+            if (mapping->ConfigureBoard(mapping->RASTER_SLOW)) {
+                cout << "Configure Alazar : Success" << endl;
+                cout << "---------------------" << endl;
+            }
+        }
+        else if (ntuscope->applychopper == true) {
+            if (mapping->ConfigureBoardTwoChannel(mapping->RASTER_SLOW)) {
+                cout << "Configure AlazarTwoChannel : Success" << endl;
+                cout << "---------------------" << endl;
+            }
         }
         if (scanning->twoD_raster_slow_configure()) {
             cout << "Configure NIDAQ and ETL : Success" << endl;
