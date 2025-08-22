@@ -38,13 +38,35 @@ namespace NTU {
 		YSImageMerge(NTU::CudaCalPara* cudacalpara);
 		~YSImageMerge();
 
+		//General
+		string RASTERFolderPath;
+		string RASTERPath, LISSAJOUSPath;
+		string LISSAJOUSFolderPath;
+		int channelcount = 1;
+		double ampx = 0;
+		double ampy = 0;
+		int linefreq = 0;
+		int num_of_line = 0;
+		int xfreq = 0;
+		int yfreq = 0;
+		double lissajousphase = 0;
+		int num_of_sample = 0;
+		int samplingrate = 0;
+		int chopperfreq = 0;
+		double chopperphase = 0;
+		double progresspercentage = 0;
+		//SampleMap
+		cv::Mat sin_weight;
+		int* sampleMap = nullptr;
+		void Generate2D_RASTER_SampleMap();
+		void Generate2D_LISSAJOUS_SampleMap();
+
 		//Processimage
 		void displayprocessImage(string& input_path);
 		void processImage(string& input_path);
 
 		//Calculate parameters
 		CudaCalPara* calpara;
-		
 		void CreateCUDACalPara(string Path, int width, int height, double samplingrate);
 		static void onMouse(int event, int x, int y, int flags, void* userdata);
 		void moveTarget(int dx, int dy);
@@ -72,7 +94,8 @@ namespace NTU {
 		bool GetChopperTTLSignal(int sampleIndex, int totalSamples);
 
 		//Transfer to .tiff
-		void ConvertBinToTiff();
+		void ConvertBinToTiff_lissajous();
+		void ConvertBinToTiff_raster();
 
 		//Scanmode merge
 		bool savestate = 0;
@@ -82,23 +105,9 @@ namespace NTU {
 		double upscalefactorX = 1;
 		double upscalefactorY = 1;
 		int offset_lissajous = 0;
-		string RASTERPath,LISSAJOUSPath;
-		string LISSAJOUSFolderPath;
-		int xfreq = 0;
-		int yfreq = 0;
-		int num_of_sample = 0;
-		int samplingrate = 0;
-		int chopperfreq = 0;
-		double ampx = 0;
-		double ampy =0;
 		int pixelnum = 512;
-		double lissajousphase = 0;
-		double chopperphase =0;
-		double progresspercentage = 0;
-		double progresspercentage_scanmodemerge = 0;
 		void DISPLAYRASTER();
 		void RLMERGEDISPLAY();
-		void GenerateSampleMap();
 		void LoadLissajousImage();
 
 		//Reconstruct
@@ -107,10 +116,6 @@ namespace NTU {
 		void ReconstructAllTiffInFolder();
 
 		//Extract hymograph
-		string RASTERPath_EK, LISSAJOUSPath_EK;
-		string LISSAJOUSFolderPath_EK;
-		int xfreq_EK, yfreq_EK, num_of_sample_EK, samplingrate_EK;
-		double lissajous_phase_EK;
 		cv::Mat rasterImage_EK;                      
 		cv::Mat lissajousImage_EK;
 		vector<cv::Point> scannedPixelList;
@@ -122,7 +127,6 @@ namespace NTU {
 
 		//Supplementart functions
 		void LOADspec(string path);
-		void LOADspec_EK(string path);
 		bool LissajousIdxFromSample(int sample_idx, double sampling_rate, int widthpixelnum, int heightpixelnum, double xfreq, double yfreq, double lissajous_phase, int& x_out, int& y_out);
 		void CopyScanSpecCSV(string& sourceFolder, string& targetFolder);
 		int extractNumber(const string& filename);
@@ -134,7 +138,6 @@ namespace NTU {
 		int rasterimgindex,lissajousimgindex;
 		double* LissajousrawData = nullptr;
 		double* LissajoustempData = nullptr;
-		int* sampleMap = nullptr;
 		double* Image = nullptr;
 
 	};

@@ -1261,58 +1261,13 @@ namespace NTU {
 
     bool YSMapping::ProcessBufferAndFill_2DRasterImageTwoChannel(U16* Buffer, high_resolution_clock::time_point starttime, system_clock::time_point starttime_system, U32 frameorder) {
         //Mapping
-        cv::cuda::GpuMat gpu_image_1, gpu_image_2;
+        cv::cuda::GpuMat gpu_image;
+        //cv::cuda::GpuMat gpu_image_1, gpu_image_2;
         U16 recStride = U16(samplesPerRecord) * 2;
 
         int phase_forward = max(0, ntuscope->raster_phase);
         int phase_backward = max(0, -ntuscope->raster_phase);
-
-        //sample mapping1---
-        //U16* h_image_1 = new U16[int(samplesPerBuffer)];
-        //memset(h_image_1, 0, int(samplesPerBuffer) * sizeof(U16));
-        //U16* h_image_2 = new U16[int(samplesPerBuffer)];
-        //memset(h_image_2, 0, int(samplesPerBuffer) * sizeof(U16));
-
-        //for (int line = 0; line < ntuscope->Pixelnumy; line++) {
-        //    int phase = (line % 2 == 0) ? phase_forward : phase_backward;
-        //    phase = std::min(phase, std::max(0, int(samplesPerRecord) - 1));
-
-        //    U16* srcA = Buffer + U16(line) * U16(recStride);
-        //    U16* srcB = srcA + U16(samplesPerRecord);
-        //    U16* dstA = h_image_1 + U16(line) * U16(samplesPerRecord);
-        //    U16* dstB = h_image_2 + U16(line) * U16(samplesPerRecord);
-
-        //    if (line % 2 == 0) {
-        //        for (int i = 0; i < phase; ++i) {
-        //            dstA[i] = 32768;
-        //            dstB[i] = 32768;
-        //        }
-        //        memcpy(dstA + phase, srcA, sizeof(U16) * (int(samplesPerRecord) - phase));
-        //        memcpy(dstB + phase, srcB, sizeof(U16) * (int(samplesPerRecord) - phase));
-        //    }
-        //    else {
-        //        for (int s = 0; s < int(samplesPerRecord); ++s) {
-        //            int dstIdx = (int(samplesPerRecord) - 1) - s; // 反向
-        //            bool use_baseline = (s >= (int(samplesPerRecord) - phase));
-        //            if (use_baseline) {
-        //                dstA[dstIdx] = 32768;
-        //                dstB[dstIdx] = 32768;
-        //            }
-        //            else {
-        //                dstA[dstIdx] = srcA[s];
-        //                dstB[dstIdx] = srcB[s];
-        //            }
-        //        }
-        //    }
-        //}
-        //cv::cuda::GpuMat gpu_image_pre_1(ntuscope->Pixelnumy, int(samplesPerRecord), CV_16UC1);
-        //gpu_image_pre_1.upload(cv::Mat(ntuscope->Pixelnumy, int(samplesPerRecord), CV_16UC1, h_image_1));
-        //cv::cuda::GpuMat gpu_image_pre_2(ntuscope->Pixelnumy, int(samplesPerRecord), CV_16UC1);
-        //gpu_image_pre_2.upload(cv::Mat(ntuscope->Pixelnumy, int(samplesPerRecord), CV_16UC1, h_image_2));
-
-        ////cv::cuda::resize(gpu_image_pre_1, gpu_image_1, cv::Size(1024, 1024), 0, 0, cv::INTER_AREA);
-        ////cv::cuda::resize(gpu_image_pre_2, gpu_image_2, cv::Size(1024, 1024), 0, 0, cv::INTER_AREA);
-        
+       
         //sine wave mapping
         cv::Mat sin_image_1(ntuscope->Pixelnumy, 1024, CV_32FC1, cv::Scalar(0));
         cv::Mat sin_image_2(ntuscope->Pixelnumy, 1024, CV_32FC1, cv::Scalar(0));
@@ -1385,37 +1340,62 @@ namespace NTU {
             }
         }
 
-        cv::cuda::GpuMat gpu_image_prepre_1;
-        gpu_image_prepre_1.upload(sin_image_u16_1);
-        cv::cuda::resize(gpu_image_prepre_1, gpu_image_1, cv::Size(1024, 1024), 0, 0, cv::INTER_AREA);
-        cv::cuda::GpuMat gpu_image_prepre_2;
-        gpu_image_prepre_2.upload(sin_image_u16_2);
-        cv::cuda::resize(gpu_image_prepre_2, gpu_image_2, cv::Size(1024, 1024), 0, 0, cv::INTER_AREA);
+        cv::cuda::GpuMat gpu_image_prepre;
+        if (ntuscope->channeldisplay == false) {
+            gpu_image_prepre.upload(sin_image_u16_1);
+        }
+        else if (ntuscope->channeldisplay == true) {
+            gpu_image_prepre.upload(sin_image_u16_2);
+        }
+        cv::cuda::resize(gpu_image_prepre, gpu_image, cv::Size(1024, 1024), 0, 0, cv::INTER_AREA);
+
+        //cv::cuda::GpuMat gpu_image_prepre_1;
+        //gpu_image_prepre_1.upload(sin_image_u16_1);
+        //cv::cuda::resize(gpu_image_prepre_1, gpu_image_1, cv::Size(1024, 1024), 0, 0, cv::INTER_AREA);
+        //cv::cuda::GpuMat gpu_image_prepre_2;
+        //gpu_image_prepre_2.upload(sin_image_u16_2);
+        //cv::cuda::resize(gpu_image_prepre_2, gpu_image_2, cv::Size(1024, 1024), 0, 0, cv::INTER_AREA);
         
         //If raster fast scan need to flip
         if (scanmode == RASTER) {
             if (frameorder % 2 == 1) { //flip the upward and downward
-                cv::cuda::flip(gpu_image_1, gpu_image_1, 0);
-                cv::cuda::flip(gpu_image_2, gpu_image_2, 0);
+                //cv::cuda::flip(gpu_image_1, gpu_image_1, 0);
+                //cv::cuda::flip(gpu_image_2, gpu_image_2, 0);
+
+                cv::cuda::flip(gpu_image, gpu_image, 0);
             }
         }
 
         if (ntuscope->YSapply_signalprocessing == false) {
             // INITIAL WINDOWING | Zero-negVolt | 32768-0
-            cv::cuda::subtract(65535, gpu_image_1, gpu_image_1, cv::noArray(), -1, stream);
-            cv::cuda::threshold(gpu_image_1, gpu_image_1, 65535, 0, cv::THRESH_TRUNC, stream);
-            cv::cuda::subtract(gpu_image_1, 32768, gpu_image_1, cv::noArray(), -1, stream);
-            cv::cuda::multiply(gpu_image_1, 2.0, gpu_image_1, 1.0, -1, stream);
-            cv::cuda::subtract(gpu_image_2, 32768, gpu_image_2, cv::noArray(), -1, stream);
-            cv::cuda::multiply(gpu_image_2, 2.0, gpu_image_2, 1.0, -1, stream);
+            if (ntuscope->channeldisplay == false) {
+                cv::cuda::subtract(65535, gpu_image, gpu_image, cv::noArray(), -1, stream);
+                cv::cuda::threshold(gpu_image, gpu_image, 65535, 0, cv::THRESH_TRUNC, stream);
+            }
+            cv::cuda::subtract(gpu_image, 32768, gpu_image, cv::noArray(), -1, stream);
+            cv::cuda::multiply(gpu_image, 2.0, gpu_image, 1.0, -1, stream);
+
+            //cv::cuda::subtract(65535, gpu_image_1, gpu_image_1, cv::noArray(), -1, stream);
+            //cv::cuda::threshold(gpu_image_1, gpu_image_1, 65535, 0, cv::THRESH_TRUNC, stream);
+            //cv::cuda::subtract(gpu_image_1, 32768, gpu_image_1, cv::noArray(), -1, stream);
+            //cv::cuda::multiply(gpu_image_1, 2.0, gpu_image_1, 1.0, -1, stream);
+            //cv::cuda::subtract(gpu_image_2, 32768, gpu_image_2, cv::noArray(), -1, stream);
+            //cv::cuda::multiply(gpu_image_2, 2.0, gpu_image_2, 1.0, -1, stream);
         }
         else if (ntuscope->YSapply_signalprocessing == true) {
-            cv::cuda::subtract(65535, gpu_image_1, gpu_image_1, cv::noArray(), -1, stream);
-            cv::cuda::threshold(gpu_image_1, gpu_image_1, 65535, 0, cv::THRESH_TRUNC, stream);
-            cv::cuda::subtract(gpu_image_1, ntuscope->YSoffsetvalueSP, gpu_image_1, cv::noArray(), -1, stream);
-            cv::cuda::multiply(gpu_image_1, ntuscope->YSmultiplySP, gpu_image_1, 1.0, -1, stream);
-            cv::cuda::subtract(gpu_image_2, ntuscope->YSoffsetvalueSP, gpu_image_2, cv::noArray(), -1, stream);
-            cv::cuda::multiply(gpu_image_2, ntuscope->YSmultiplySP, gpu_image_2, 1.0, -1, stream);
+            if (ntuscope->channeldisplay == false) {
+                cv::cuda::subtract(65535, gpu_image, gpu_image, cv::noArray(), -1, stream);
+                cv::cuda::threshold(gpu_image, gpu_image, 65535, 0, cv::THRESH_TRUNC, stream);
+            }
+            cv::cuda::subtract(gpu_image, ntuscope->YSoffsetvalueSP, gpu_image, cv::noArray(), -1, stream);
+            cv::cuda::multiply(gpu_image, ntuscope->YSmultiplySP, gpu_image, 1.0, -1, stream);
+
+            //cv::cuda::subtract(65535, gpu_image_1, gpu_image_1, cv::noArray(), -1, stream);
+            //cv::cuda::threshold(gpu_image_1, gpu_image_1, 65535, 0, cv::THRESH_TRUNC, stream);
+            //cv::cuda::subtract(gpu_image_1, ntuscope->YSoffsetvalueSP, gpu_image_1, cv::noArray(), -1, stream);
+            //cv::cuda::multiply(gpu_image_1, ntuscope->YSmultiplySP, gpu_image_1, 1.0, -1, stream);
+            //cv::cuda::subtract(gpu_image_2, ntuscope->YSoffsetvalueSP, gpu_image_2, cv::noArray(), -1, stream);
+            //cv::cuda::multiply(gpu_image_2, ntuscope->YSmultiplySP, gpu_image_2, 1.0, -1, stream);
         }
 
         //Calculate acquisition_rate
@@ -1426,67 +1406,77 @@ namespace NTU {
         previoustimepoint = end_time;
 
         //Transfer to CPU
-        cv::Mat Img16bit_1, Img16bit_2;
-        gpu_image_1.download(Img16bit_1);
-        gpu_image_2.download(Img16bit_2);
+        cv::Mat Img16bit;
+        gpu_image.download(Img16bit);
+        //cv::Mat Img16bit_1, Img16bit_2;
+        //gpu_image_1.download(Img16bit_1);
+        //gpu_image_2.download(Img16bit_2);
 
         ////Average
-        //if (ntuscope->avgstate == true) {
-        //    lock_guard<mutex> lock(queueMutex);
-        //    image_average = Img16bit.clone();
-        //    imageQueue.push_back(image_average);
-        //    queueCondition.notify_one();
-        //}
+        if (ntuscope->avgstate == true) {
+            lock_guard<mutex> lock(queueMutex);
+            image_average = Img16bit.clone();
+            imageQueue.push_back(image_average);
+            queueCondition.notify_one();
+        }
 
         ////Enhance Contrast 0.0035
-        //if (ntuscope->YSapply_enhancecontrast) {
-        //    cv::cuda::GpuMat ECTEMP;
-        //    EnhanceContrast_16bit(gpu_image, ECTEMP, 0.0035);
-        //    ECTEMP.copyTo(gpu_image);
-        //}
+        if (ntuscope->YSapply_enhancecontrast) {
+            cv::cuda::GpuMat ECTEMP;
+            EnhanceContrast_16bit(gpu_image, ECTEMP, 0.0035);
+            ECTEMP.copyTo(gpu_image);
+        }
 
         //MinMaxValue
         if (ntuscope->YSapply_minmax == true) {
             double scale = 65535.0 / (ntuscope->maxVal16bit - ntuscope->minVal16bit);
             double shift = -ntuscope->minVal16bit * scale;
-            gpu_image_1.convertTo(gpu_image_1, -1, scale, shift, stream);
-            cv::cuda::threshold(gpu_image_1, gpu_image_1, 65535, 65535, cv::THRESH_TRUNC, stream);
-            cv::cuda::threshold(gpu_image_1, gpu_image_1, 0, 0, cv::THRESH_TOZERO, stream);
+            gpu_image.convertTo(gpu_image, -1, scale, shift, stream);
+            cv::cuda::threshold(gpu_image, gpu_image, 65535, 65535, cv::THRESH_TRUNC, stream);
+            cv::cuda::threshold(gpu_image, gpu_image, 0, 0, cv::THRESH_TOZERO, stream);
 
-            gpu_image_2.convertTo(gpu_image_2, -1, scale, shift, stream);
-            cv::cuda::threshold(gpu_image_2, gpu_image_2, 65535, 65535, cv::THRESH_TRUNC, stream);
-            cv::cuda::threshold(gpu_image_2, gpu_image_2, 0, 0, cv::THRESH_TOZERO, stream);
+            //gpu_image_1.convertTo(gpu_image_1, -1, scale, shift, stream);
+            //cv::cuda::threshold(gpu_image_1, gpu_image_1, 65535, 65535, cv::THRESH_TRUNC, stream);
+            //cv::cuda::threshold(gpu_image_1, gpu_image_1, 0, 0, cv::THRESH_TOZERO, stream);
+
+            //gpu_image_2.convertTo(gpu_image_2, -1, scale, shift, stream);
+            //cv::cuda::threshold(gpu_image_2, gpu_image_2, 65535, 65535, cv::THRESH_TRUNC, stream);
+            //cv::cuda::threshold(gpu_image_2, gpu_image_2, 0, 0, cv::THRESH_TOZERO, stream);
         }
 
         ////Normalize
-        //if (ntuscope->YSapply_normalize == true) {
-        //    cv::cuda::normalize(gpu_image, gpu_image, ntuscope->normalize_alpha, ntuscope->normalize_beta, cv::NORM_MINMAX, -1, cv::noArray(), stream);
-        //}
+        if (ntuscope->YSapply_normalize == true) {
+            cv::cuda::normalize(gpu_image, gpu_image, ntuscope->normalize_alpha, ntuscope->normalize_beta, cv::NORM_MINMAX, -1, cv::noArray(), stream);
+        }
 
         ////Binning
-        //if (ntuscope->YSapply_binning == true) {
-        //    int sizeRaw_width = int(samplesPerRecord);
-        //    int size_width = ntuscope->Xpixelsize_display;
-        //    int sizeRaw_height = ntuscope->Pixelnumy;
-        //    int size_height = ntuscope->Ypixelsize_display;
-        //    if (sizeRaw_width > ntuscope->Xpixelsize_display && size_height >= sizeRaw_height) {
-        //        cv::cuda::GpuMat RES_UP;
-        //        int binPixel_x = int(sizeRaw_width / size_width) + 1;
-        //        int binPixel_y = int(size_height / sizeRaw_height);
-        //        cv::cuda::resize(gpu_image, RES_UP, cv::Size((size_width * binPixel_x), (size_height * 1 / binPixel_y)), 0, 0, cv::INTER_AREA, stream);
-        //        cv::cuda::resize(RES_UP, gpu_image, RES_UP.size() / 1, 0, 0, cv::INTER_AREA, stream);
-        //    }
-        //    else {
-        //        cv::cuda::resize(gpu_image, gpu_image, cv::Size(size_width, size_height), 0, 0, cv::INTER_CUBIC, stream);
-        //    }
-        //    stream.waitForCompletion();
-        //}
+        if (ntuscope->YSapply_binning == true) {
+            int sizeRaw_width = int(samplesPerRecord);
+            int size_width = ntuscope->Xpixelsize_display;
+            int sizeRaw_height = ntuscope->Pixelnumy;
+            int size_height = ntuscope->Ypixelsize_display;
+            if (sizeRaw_width > ntuscope->Xpixelsize_display && size_height >= sizeRaw_height) {
+                cv::cuda::GpuMat RES_UP;
+                int binPixel_x = int(sizeRaw_width / size_width) + 1;
+                int binPixel_y = int(size_height / sizeRaw_height);
+                cv::cuda::resize(gpu_image, RES_UP, cv::Size((size_width * binPixel_x), (size_height * 1 / binPixel_y)), 0, 0, cv::INTER_AREA, stream);
+                cv::cuda::resize(RES_UP, gpu_image, RES_UP.size() / 1, 0, 0, cv::INTER_AREA, stream);
+            }
+            else {
+                cv::cuda::resize(gpu_image, gpu_image, cv::Size(size_width, size_height), 0, 0, cv::INTER_CUBIC, stream);
+            }
+            stream.waitForCompletion();
+        }
 
         //Convert to 8-bit
-        cv::cuda::GpuMat gpu_8bit_1, gpu_8bit_2;
-        gpu_image_1.convertTo(gpu_8bit_1, CV_8UC1, 1 / 257.0, 0, stream);
-        gpu_image_2.convertTo(gpu_8bit_2, CV_8UC1, 1 / 257.0, 0, stream);
+        cv::cuda::GpuMat gpu_8bit;
+        gpu_image.convertTo(gpu_8bit, CV_8UC1, 1 / 257.0, 0, stream);
         stream.waitForCompletion();
+
+        //cv::cuda::GpuMat gpu_8bit_1, gpu_8bit_2;
+        //gpu_image_1.convertTo(gpu_8bit_1, CV_8UC1, 1 / 257.0, 0, stream);
+        //gpu_image_2.convertTo(gpu_8bit_2, CV_8UC1, 1 / 257.0, 0, stream);
+        //stream.waitForCompletion();
 
         ////Histogram equalize
         //if (ntuscope->YSapply_equalizehistogram) {
@@ -1502,33 +1492,49 @@ namespace NTU {
                 pointer[i] = (int)(pow((double)(i / 255.0), ntuscope->YSgamma) * 255.0);
             }
             cv::Ptr<cv::cuda::LookUpTable> cudaLookUpTable = cv::cuda::createLookUpTable(LUT_matrix);
-            cudaLookUpTable->transform(gpu_8bit_1, gpu_8bit_1, stream);
-            cudaLookUpTable->transform(gpu_8bit_2, gpu_8bit_2, stream);
-            gpu_8bit_1.cv::cuda::GpuMat::convertTo(gpu_8bit_1, -1, ntuscope->YSconstrat, ntuscope->YSbrightness - 150, stream);
-            gpu_8bit_2.cv::cuda::GpuMat::convertTo(gpu_8bit_2, -1, ntuscope->YSconstrat, ntuscope->YSbrightness - 150, stream);
+            cudaLookUpTable->transform(gpu_8bit, gpu_8bit, stream);
+            gpu_8bit.cv::cuda::GpuMat::convertTo(gpu_8bit, -1, ntuscope->YSconstrat, ntuscope->YSbrightness - 150, stream);
             stream.waitForCompletion();
+
+
+            //cudaLookUpTable->transform(gpu_8bit_1, gpu_8bit_1, stream);
+            //cudaLookUpTable->transform(gpu_8bit_2, gpu_8bit_2, stream);
+            //gpu_8bit_1.cv::cuda::GpuMat::convertTo(gpu_8bit_1, -1, ntuscope->YSconstrat, ntuscope->YSbrightness - 150, stream);
+            //gpu_8bit_2.cv::cuda::GpuMat::convertTo(gpu_8bit_2, -1, ntuscope->YSconstrat, ntuscope->YSbrightness - 150, stream);
+            //stream.waitForCompletion();
         }
 
         //Filter apply
-        ApplyFilter(gpu_8bit_1, stream);
-        ApplyFilter(gpu_8bit_2, stream);
+        ApplyFilter(gpu_8bit, stream);
+        //ApplyFilter(gpu_8bit_1, stream);
+        //ApplyFilter(gpu_8bit_2, stream);
         stream.waitForCompletion();
 
         //Resize
-        cv::cuda::GpuMat gpu_8bitresizedImage_1, gpu_8bitresizedImage_2;
-        cv::cuda::resize(gpu_8bit_1, gpu_8bitresizedImage_1, cv::Size(ntuscope->Xpixelsize_display, ntuscope->Ypixelsize_display), 0, 0, cv::INTER_AREA);//cv::INTER_AREAcv::INTER_LINEAR
-        cv::cuda::resize(gpu_8bit_2, gpu_8bitresizedImage_2, cv::Size(ntuscope->Xpixelsize_display, ntuscope->Ypixelsize_display), 0, 0, cv::INTER_AREA);//cv::INTER_AREAcv::INTER_LINEAR
+        cv::cuda::GpuMat gpu_8bitresizedImage;
+        cv::cuda::resize(gpu_8bit, gpu_8bitresizedImage, cv::Size(ntuscope->Xpixelsize_display, ntuscope->Ypixelsize_display), 0, 0, cv::INTER_AREA);//cv::INTER_AREAcv::INTER_LINEAR
         stream.waitForCompletion();
+
+        //cv::cuda::GpuMat gpu_8bitresizedImage_1, gpu_8bitresizedImage_2;
+        //cv::cuda::resize(gpu_8bit_1, gpu_8bitresizedImage_1, cv::Size(ntuscope->Xpixelsize_display, ntuscope->Ypixelsize_display), 0, 0, cv::INTER_AREA);//cv::INTER_AREAcv::INTER_LINEAR
+        //cv::cuda::resize(gpu_8bit_2, gpu_8bitresizedImage_2, cv::Size(ntuscope->Xpixelsize_display, ntuscope->Ypixelsize_display), 0, 0, cv::INTER_AREA);//cv::INTER_AREAcv::INTER_LINEAR
+        //stream.waitForCompletion();
 
         //Save images
         if (ntuscope->savestate == true && SavedCount < ntuscope->save_num) {
             lock_guard<mutex> lock(saveMutex);
             if (ntuscope->saveprocessedstate == true) {
-                gpu_8bitresizedImage_1.download(image_save);
+                gpu_8bitresizedImage.download(image_save);
             }
             else if (ntuscope->saveprocessedstate == false) {
-                image_save = Img16bit_1.clone();
+                image_save = Img16bit.clone();
             }
+            //if (ntuscope->saveprocessedstate == true) {
+            //    gpu_8bitresizedImage_1.download(image_save);
+            //}
+            //else if (ntuscope->saveprocessedstate == false) {
+            //    image_save = Img16bit_1.clone();
+            //}
             vector<U16> buffer_vector(Buffer, Buffer + samplesPerBuffer*channelCount);
             saveQueue.emplace_back(image_save, buffer_vector, starttime_system);
             SavedCount++;
@@ -1536,27 +1542,38 @@ namespace NTU {
         }
 
         //Convert to RGB
-        cv::cuda::GpuMat gpu_8bitRGB_1, gpu_8bitRGB_2;
-        gpu_8bitRGB_1.create(gpu_8bitresizedImage_1.size(), CV_8UC3);
-        if (gpu_8bit_1.channels() == 1) {
-            cv::cuda::cvtColor(gpu_8bitresizedImage_1, gpu_8bitRGB_1, cv::COLOR_GRAY2BGR, 0, stream);
+        cv::cuda::GpuMat gpu_8bitRGB;
+        gpu_8bitRGB.create(gpu_8bitresizedImage.size(), CV_8UC3);
+        if (gpu_8bit.channels() == 1) {
+            cv::cuda::cvtColor(gpu_8bitresizedImage, gpu_8bitRGB, cv::COLOR_GRAY2BGR, 0, stream);
             stream.waitForCompletion();
         }
-        gpu_8bitRGB_2.create(gpu_8bitresizedImage_2.size(), CV_8UC3);
-        if (gpu_8bit_2.channels() == 1) {
-            cv::cuda::cvtColor(gpu_8bitresizedImage_2, gpu_8bitRGB_2, cv::COLOR_GRAY2BGR, 0, stream);
-            stream.waitForCompletion();
-        }
+        //cv::cuda::GpuMat gpu_8bitRGB_1, gpu_8bitRGB_2;
+        //gpu_8bitRGB_1.create(gpu_8bitresizedImage_1.size(), CV_8UC3);
+        //if (gpu_8bit_1.channels() == 1) {
+        //    cv::cuda::cvtColor(gpu_8bitresizedImage_1, gpu_8bitRGB_1, cv::COLOR_GRAY2BGR, 0, stream);
+        //    stream.waitForCompletion();
+        //}
+        //gpu_8bitRGB_2.create(gpu_8bitresizedImage_2.size(), CV_8UC3);
+        //if (gpu_8bit_2.channels() == 1) {
+        //    cv::cuda::cvtColor(gpu_8bitresizedImage_2, gpu_8bitRGB_2, cv::COLOR_GRAY2BGR, 0, stream);
+        //    stream.waitForCompletion();
+        //}
 
         //Display img generate
-        cv::Mat finalImage_1, finalImage_2;
-        gpu_8bitRGB_1.download(finalImage_1);
-        gpu_8bitRGB_2.download(finalImage_2);
+        cv::Mat finalImage;
+        gpu_8bitRGB.download(finalImage);
+        //cv::Mat finalImage_1, finalImage_2;
+        //gpu_8bitRGB_1.download(finalImage_1);
+        //gpu_8bitRGB_2.download(finalImage_2);
 
-        Addtext(finalImage_1, ntuscope->refreshtime, ntuscope->Xpixelsize_display, ntuscope->Ypixelsize_display);
-        cv::imshow("Real-Time Image", finalImage_1);
-        Addtext(finalImage_2, ntuscope->refreshtime, ntuscope->Xpixelsize_display, ntuscope->Ypixelsize_display);
-        cv::imshow("Chopper Image", finalImage_2);
+
+        Addtext(finalImage, ntuscope->refreshtime, ntuscope->Xpixelsize_display, ntuscope->Ypixelsize_display);
+        cv::imshow("Real-Time Image", finalImage);
+        //Addtext(finalImage_1, ntuscope->refreshtime, ntuscope->Xpixelsize_display, ntuscope->Ypixelsize_display);
+        //cv::imshow("Real-Time Image", finalImage_1);
+        //Addtext(finalImage_2, ntuscope->refreshtime, ntuscope->Xpixelsize_display, ntuscope->Ypixelsize_display);
+        //cv::imshow("Chopper Image", finalImage_2);
         cv::waitKey(1);
 
         //delete[] h_image_1, h_image_2;
@@ -2230,10 +2247,16 @@ namespace NTU {
             file << "chopperfreq," << ntuscope->chopperfreq << endl;
             file << "chopperphase," << ntuscope->chopperphase << endl;
             file << "channelnumber," << channelCount << endl;
+            if (ntuscope->channeldisplay == false) {
+                file << "channelsave," << 1 << endl;
+            }
+            else if (ntuscope->channeldisplay == true) {
+                file << "channelsave," << 2 << endl;
+            }
             file.close();
             cout << "CSV file created successfully at: " << csvpath << endl;
                       
-            if (ntuscope->saverawstate == true) {
+            if (ntuscope->saverawstate == true || ntuscope->applychopper == true) {
                 string rawcsvpath = ntuscope->folderPathRaw + "\\scan_spec.csv";
                 ofstream rawfile(rawcsvpath);
                 rawfile << "linefreq," << ntuscope->xfreq * 2 << endl;
@@ -2254,6 +2277,12 @@ namespace NTU {
                 rawfile << "chopperfreq," << ntuscope->chopperfreq << endl;
                 rawfile << "chopperphase," << ntuscope->chopperphase << endl;
                 rawfile << "channelnumber," << channelCount << endl;
+                if (ntuscope->channeldisplay == false) {
+                    rawfile << "channelsave," << 1 << endl;
+                }
+                else if (ntuscope->channeldisplay == true) {
+                    rawfile << "channelsave," << 2 << endl;
+                }
                 rawfile.close();
                 cout << "CSV file created successfully at: " << rawcsvpath << endl;
             }   

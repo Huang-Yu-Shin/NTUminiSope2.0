@@ -7002,14 +7002,22 @@ private:
 		aNTU->apply_median = toggleButtons_Median->Checked;
 		aNTU->apply_CLAHE = toggleButtons_CLAHE->Checked;
 
-		if (aYSNTU->highspeedmode == true) {
+		if (aYSNTU->highspeedmode == true ) {
 			this->textBox_highspeedmode->BackColor = System::Drawing::Color::LimeGreen;
 			this->textBox_highspeedmode->ForeColor = System::Drawing::Color::White;
-
+			this->YScheckBox_saveraw->Enabled = false;
+			this->checkBox_saveprocessedimage->Enabled = false;
 		}
 		else if (aYSNTU->highspeedmode == false) {
 			this->textBox_highspeedmode->BackColor = System::Drawing::Color::DimGray;
 			this->textBox_highspeedmode->ForeColor = System::Drawing::Color::Gray;
+			if (aYSNTU->applychopper == true) {
+				this->YScheckBox_saveraw->Enabled = false;
+			}
+			else if (aYSNTU->applychopper == false) {
+				this->YScheckBox_saveraw->Enabled = true;
+			}
+			this->checkBox_saveprocessedimage->Enabled = true;
 		}
 		
 	}
@@ -7354,8 +7362,11 @@ private: System::Void toggleButtons_raster_chopper_CheckedChanged(System::Object
 	}
 	else if (toggleButtons_raster_chopper->Checked == false) {
 		aYSNTU->applychopper = false;
+		aYSNTU->channeldisplay = false;
+		toggleButtons_label_channeldisplay->Checked = false;
 		toggleButtons_label_channeldisplay->Enabled = false;
 		label_channel->Text = "1 Channel";
+		label_channeldisplay->Text = "PMT signal";
 	}
 }
 //ETL
@@ -7415,9 +7426,11 @@ private: System::Void button_ETL_downdown_Click(System::Object^ sender, System::
 private: System::Void toggleButtons_label_channeldisplay_CheckedChanged(System::Object^ sender, System::EventArgs^ e) {
 	if (toggleButtons_label_channeldisplay->Checked == true) {
 		aYSNTU->channeldisplay = true;
+		label_channeldisplay->Text = "Lock-in signal";
 	}
 	else if (toggleButtons_label_channeldisplay->Checked == false) {
 		aYSNTU->channeldisplay = false;
+		label_channeldisplay->Text = "PMT signal";
 	}
 }
 private: System::Void YStrackBar__raster_x_amp_Scroll(System::Object^ sender, System::EventArgs^ e) {
