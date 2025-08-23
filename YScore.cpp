@@ -115,7 +115,7 @@ namespace NTU {
 
         mapping->CloseAlazar();
         scanning->stop();
-
+        ntuscope->highspeedmode = false;
     }
 
     void YSCore::TWODRaster_configure(double focaloffset, double xfreq, double MEMSXamplitude, double MEMSYamplitude, int num_lines, double midx, double midy, int clocktype) {

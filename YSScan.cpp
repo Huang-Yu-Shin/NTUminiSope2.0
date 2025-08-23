@@ -192,33 +192,16 @@ namespace NTU {
             }
             //chopper trigger
             int phase_offset_samples = static_cast<int>((ntuscope->chopperphase / 360.0) * gap);
-            //for (int pulse = 0; pulse < numPulses; pulse++) {
-            //    int pulse_start = risingEdgeDelaySamples + pulse * gap;
-            //    int pulse_end = min(pulse_start + pulseWidth_chopper, total_samples);
-            //    for (int i = pulse_start; i < pulse_end; ++i) {
-            //        ttldata[i * 2 + 1] = 1;
-            //    }
-            //}
             phase_offset_samples = (phase_offset_samples % gap + gap) % gap;
             for (int pulse = 0; pulse < numPulses; pulse++) {
                 int pulse_start = risingEdgeDelaySamples + (pulse * gap) + phase_offset_samples;
-                if (pulse_start >= total_samples) {
-                    pulse_start -= total_samples;
-                }
+                if (pulse_start >= total_samples) continue;
 
                 int pulse_end = pulse_start + pulseWidth_chopper;
-                if (pulse_end <= total_samples) {
-                    for (int i = pulse_start; i < pulse_end; ++i) {
-                        ttldata[i * 2 + 1] = 1;
-                    }
-                }
-                else {
-                    for (int i = pulse_start; i < total_samples; ++i) {
-                        ttldata[i * 2 + 1] = 1;
-                    }
-                    for (int i = 0; i < (pulse_end % total_samples); ++i) {
-                        ttldata[i * 2 + 1] = 1;
-                    }
+                if (pulse_end > total_samples) pulse_end = total_samples;
+
+                for (int i = pulse_start; i < pulse_end; ++i) {
+                    ttldata[i * 2 + 1] = 1;
                 }
             }
             DAQmxErrChk(DAQmxWriteDigitalLines(taskHandleTTL, total_samples, FALSE, 10, DAQmx_Val_GroupByScanNumber, ttldata, NULL, NULL));
@@ -432,7 +415,7 @@ namespace NTU {
             NIgenerateRaster_slow(rasterdata, real_xamp, real_yamp, ntuscope->xoffset, ntuscope->yoffset, ntuscope->num_lines, ntuscope->xfreq, ntuscope->samplingRate);
             DAQmxErrChk(DAQmxCfgSampClkTiming(taskHandle, "", ntuscope->samplingRate, DAQmx_Val_Rising, DAQmx_Val_ContSamps, allsample));
             DAQmxErrChk(DAQmxWriteAnalogF64(taskHandle, allsample, FALSE, DAQmx_Val_WaitInfinitely, DAQmx_Val_GroupByScanNumber, rasterdata, NULL, NULL));
-            
+                        
             //MEMS TTL setup (line.frame trigger)            
             DAQmxErrChk(DAQmxCreateDOChan(taskHandleTTL, "Dev1/port0/line1", "", DAQmx_Val_ChanPerLine));
             DAQmxErrChk(DAQmxCreateDOChan(taskHandleTTL, "Dev1/port0/line0", "", DAQmx_Val_ChanPerLine));
@@ -835,13 +818,3 @@ namespace NTU {
     }
 
 }
-//DAQmxErrChk(DAQmxCfgSampClkTiming(taskHandleTTL, "/Dev1/ao/SampleClock", ntuscope->samplingRate, DAQmx_Val_Rising, DAQmx_Val_FiniteSamps, total_samples * 2));
-//if (a > 5) {
-//    break;
-//}
-//cout << "a: " << a << endl;
-//DAQmxErrChk(DAQmxStartTask(taskHandleTTL));
-//a++;
-//DAQmxErrChk(DAQmxWaitUntilTaskDone(taskHandleTTL, 1));
-//DAQmxErrChk(DAQmxStopTask(taskHandleTTL));
-//DAQmxErrChk(DAQmxSetWriteOffset(taskHandleTTL, 0));

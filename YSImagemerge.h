@@ -55,6 +55,8 @@ namespace NTU {
 		int chopperfreq = 0;
 		double chopperphase = 0;
 		double progresspercentage = 0;
+		int pixelnum = 256;
+
 		//SampleMap
 		cv::Mat sin_weight;
 		int* sampleMap = nullptr;
@@ -105,7 +107,6 @@ namespace NTU {
 		double upscalefactorX = 1;
 		double upscalefactorY = 1;
 		int offset_lissajous = 0;
-		int pixelnum = 512;
 		void DISPLAYRASTER();
 		void RLMERGEDISPLAY();
 		void LoadLissajousImage();
@@ -137,9 +138,11 @@ namespace NTU {
 		cv::cuda::Stream stream;
 		int rasterimgindex,lissajousimgindex;
 		double* LissajousrawData = nullptr;
+		double* LissajousrawData_ch2 = nullptr;
 		double* LissajoustempData = nullptr;
+		double* LissajoustempData_ch2 = nullptr;
 		double* Image = nullptr;
-
+		double* Image_ch2 = nullptr;
 	};
 }
 

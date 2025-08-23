@@ -10,11 +10,20 @@ namespace NTU {
 		if (LissajousrawData != nullptr) {
 			delete[] LissajousrawData;
 		}
-		if (LissajousrawData != nullptr) {
+		if (LissajousrawData_ch2 != nullptr) {
+			delete[] LissajoustempData_ch2;
+		}
+		if (LissajoustempData != nullptr) {
 			delete[] LissajoustempData;
+		}
+		if (LissajoustempData_ch2 != nullptr) {
+			delete[] LissajoustempData_ch2;
 		}
 		if (Image != nullptr) {
 			delete[] Image;
+		}
+		if (Image_ch2 != nullptr) {
+			delete[] Image_ch2;
 		}
 		if (sampleMap != nullptr) {
 			delete[] sampleMap;
@@ -801,14 +810,12 @@ namespace NTU {
 				g_ch1.upload(cv::Mat(1, num_of_sample, CV_16UC1, ch1_ptr));
 				g_ch2.upload(cv::Mat(1, num_of_sample, CV_16UC1, ch2_ptr));
 
-				auto process = [&](cv::cuda::GpuMat& g) {
-					cv::cuda::subtract(65535, g, g, cv::noArray(), -1, stream);
-					cv::cuda::threshold(g, g, 65535, 0, cv::THRESH_TRUNC, stream);
-					cv::cuda::subtract(g, 32768, g, cv::noArray(), -1, stream);
-					cv::cuda::multiply(g, 2.0, g, 1.0, -1, stream);
-					};
-				process(g_ch1);
-				process(g_ch2);
+				cv::cuda::subtract(65535, g_ch1, g_ch1, cv::noArray(), -1, stream);
+				cv::cuda::threshold(g_ch1, g_ch1, 65535, 0, cv::THRESH_TRUNC, stream);
+				cv::cuda::subtract(g_ch1, 32768, g_ch1, cv::noArray(), -1, stream);
+				cv::cuda::multiply(g_ch1, 2.0, g_ch1, 1.0, -1, stream);
+				cv::cuda::subtract(g_ch2, 32768, g_ch2, cv::noArray(), -1, stream);
+				cv::cuda::multiply(g_ch2, 2.0, g_ch2, 1.0, -1, stream);
 
 				cv::Mat Img16bit_ch1, Img16bit_ch2;
 				g_ch1.download(Img16bit_ch1);
@@ -822,7 +829,6 @@ namespace NTU {
 			} while (FindNextFileA(hFind, &find_data));
 
 			FindClose(hFind);
-
 		}
 	}
 	
@@ -968,13 +974,15 @@ namespace NTU {
 				}
 			}
 
-			cv::cuda::GpuMat gpu_image_prepre_1;
-			gpu_image_prepre_1.upload(sin_image_u16_1);
-			cv::cuda::resize(gpu_image_prepre_1, gpu_image_ch1, cv::Size(256, 256), 0, 0, cv::INTER_AREA);
+			cv::cuda::GpuMat gpu_image_prepre_1, gpu_image_preprepre_1;
+			gpu_image_preprepre_1.upload(sin_image_u16_1);
+			cv::cuda::resize(gpu_image_preprepre_1, gpu_image_prepre_1, cv::Size(1024,1024), 0, 0, cv::INTER_AREA);
+			cv::cuda::resize(gpu_image_prepre_1, gpu_image_ch1, cv::Size(num_of_line, num_of_line), 0, 0, cv::INTER_AREA);
 
-			cv::cuda::GpuMat gpu_image_prepre_2;
-			gpu_image_prepre_2.upload(sin_image_u16_2);
-			cv::cuda::resize(gpu_image_prepre_2, gpu_image_ch2, cv::Size(256, 256), 0, 0, cv::INTER_AREA);
+			cv::cuda::GpuMat gpu_image_prepre_2, gpu_image_preprepre_2;
+			gpu_image_preprepre_2.upload(sin_image_u16_2);
+			cv::cuda::resize(gpu_image_preprepre_2, gpu_image_prepre_2, cv::Size(1024, 1024), 0, 0, cv::INTER_AREA);
+			cv::cuda::resize(gpu_image_prepre_2, gpu_image_ch2, cv::Size(num_of_line, num_of_line), 0, 0, cv::INTER_AREA);
 
 			long long frame_idx = parse_frame_index(bin_filename);
 			bool need_flip_vertically = (frame_idx >= 0) ? (frame_idx % 2LL == 1LL) : false;
@@ -1020,111 +1028,22 @@ namespace NTU {
 
 	//Reconstruct//
 	void YSImageMerge::DisplayReconstructedLissajousImage() {
-		cv::Mat avergeimg16;
-		AVERAGE(LISSAJOUSFolderPath, avergeimg16);
+		if (channelcount == 1) {
+			cv::Mat avergeimg16;
+			AVERAGE(LISSAJOUSFolderPath, avergeimg16);
 
-		LissajousrawData = new double[num_of_sample];
-		memset(LissajousrawData, 0, num_of_sample * sizeof(double));
-		cv::Mat avergeimg64;
-		avergeimg16.convertTo(avergeimg64, CV_64FC1);
-		memcpy(LissajousrawData, avergeimg64.ptr<double>(), num_of_sample * sizeof(double));
+			LissajousrawData = new double[num_of_sample];
+			memset(LissajousrawData, 0, num_of_sample * sizeof(double));
+			cv::Mat avergeimg64;
+			avergeimg16.convertTo(avergeimg64, CV_64FC1);
+			memcpy(LissajousrawData, avergeimg64.ptr<double>(), num_of_sample * sizeof(double));
 
-		Image = new double[pixelnum * pixelnum];
-		memset(Image, 0, pixelnum * pixelnum * sizeof(double));
-		LissajoustempData = new double[num_of_sample];
-		memset(LissajoustempData, 0, num_of_sample * sizeof(double));
-
-		memcpy(LissajoustempData, LissajousrawData, num_of_sample * sizeof(double));
-		if (offset_lissajous < num_of_sample) {
-			for (int i = num_of_sample - 1; i >= offset_lissajous; --i)
-				LissajoustempData[i] = LissajoustempData[i - offset_lissajous];
-			for (int i = 0; i < offset_lissajous; ++i)
-				LissajoustempData[i] = 0;
-		}
-
-		for (int i = 0; i < num_of_sample; ++i) {
-			int x = 0;
-			int y = 0;
-			bool inrange = LissajousIdxFromSample(i, samplingrate, pixelnum, pixelnum, double(xfreq), double(yfreq), lissajousphase, x, y);
-			if (inrange == true) {
-				int idx = y * pixelnum + x;
-				if (sampleMap[idx] > 0)
-					Image[idx] += LissajoustempData[i];
-			}
-		}
-		for (int i = 0; i < pixelnum * pixelnum; ++i) {
-			if (sampleMap[i] > 0)
-				Image[i] /= sampleMap[i];
-		}
-		
-		cv::Mat image64F(pixelnum, pixelnum, CV_64FC1, Image);
-		cv::Mat image16U;
-		image64F.convertTo(image16U, CV_16UC1, 1.0);
-
-		cv::Mat image8U;
-		image16U.convertTo(image8U, CV_8UC1, 1.0 / 257); 
-		cv::imshow("Reconstruct Image", image8U);
-		cv::waitKey(1);
-
-		if (LissajousrawData != nullptr) {
-			delete[] LissajoustempData;
-		}
-		if (Image != nullptr) {
-			delete[] Image;
-		}
-
-	}
-
-	void YSImageMerge::ReconstructAllTiffInFolder() {
-		// Store valid filenames
-		string lissajousFolderPathwithtiff = LISSAJOUSFolderPath + "\\*.tiff";
-		vector<string> filenames;
-		WIN32_FIND_DATA findFileData;
-		HANDLE hFind = FindFirstFile(lissajousFolderPathwithtiff.c_str(), &findFileData);
-		if (hFind == INVALID_HANDLE_VALUE) {
-			cout << "Error: No .tiff files found in directory " << lissajousFolderPathwithtiff << endl;
-			return;
-		}
-		// Collect all valid filenames
-		do {
-			filenames.push_back(findFileData.cFileName);
-		} while (FindNextFile(hFind, &findFileData) != 0);
-
-		FindClose(hFind);
-
-		string outputFolderPath = LISSAJOUSFolderPath;
-		size_t pos = outputFolderPath.find("2DLISSAJOUS_RAW");
-		if (pos != string::npos) {
-			outputFolderPath.replace(pos, strlen("2DLISSAJOUS_RAW"), "2DLISSAJOUS");
-		}
-		CreateDirectory(outputFolderPath.c_str(), NULL);
-
-		// Sort filenames based on the numeric part
-		sort(filenames.begin(), filenames.end(), [this](const string& a, const string& b) {
-			return extractNumber(a) < extractNumber(b);
-			});
-
-		int total_lissajousimage_count = filenames.size();
-		lissajousimgindex = 0;
-		for (const auto& filename : filenames) {
-			string fullPath = LISSAJOUSFolderPath + "\\" + filename;
-			cv::Mat updateImage = cv::imread(fullPath, cv::IMREAD_UNCHANGED);
-
-			if (updateImage.empty() || updateImage.type() != CV_16UC1) {
-				cout << "Error: TIFF not found or not CV_16UC1 format " << fullPath << endl;
-				continue;
-			}
-
-			num_of_sample = updateImage.rows * updateImage.cols;
-			LissajoustempData = new double[num_of_sample];
 			Image = new double[pixelnum * pixelnum];
-			memset(LissajoustempData, 0, num_of_sample * sizeof(double));
 			memset(Image, 0, pixelnum * pixelnum * sizeof(double));
+			LissajoustempData = new double[num_of_sample];
+			memset(LissajoustempData, 0, num_of_sample * sizeof(double));
 
-			cv::Mat updateImage64;
-			updateImage.convertTo(updateImage64, CV_64FC1);
-			memcpy(LissajoustempData, updateImage64.ptr<double>(), num_of_sample * sizeof(double));
-
+			memcpy(LissajoustempData, LissajousrawData, num_of_sample * sizeof(double));
 			if (offset_lissajous < num_of_sample) {
 				for (int i = num_of_sample - 1; i >= offset_lissajous; --i)
 					LissajoustempData[i] = LissajoustempData[i - offset_lissajous];
@@ -1135,8 +1054,8 @@ namespace NTU {
 			for (int i = 0; i < num_of_sample; ++i) {
 				int x = 0;
 				int y = 0;
-				bool inrange= LissajousIdxFromSample(i, samplingrate, pixelnum, pixelnum, double(xfreq), double(yfreq), lissajousphase, x, y);
-				if (inrange==true) {
+				bool inrange = LissajousIdxFromSample(i, samplingrate, pixelnum, pixelnum, double(xfreq), double(yfreq), lissajousphase, x, y);
+				if (inrange == true) {
 					int idx = y * pixelnum + x;
 					if (sampleMap[idx] > 0)
 						Image[idx] += LissajoustempData[i];
@@ -1151,21 +1070,298 @@ namespace NTU {
 			cv::Mat image16U;
 			image64F.convertTo(image16U, CV_16UC1, 1.0);
 
-			ostringstream savePath;
-			savePath << outputFolderPath << "\\Image" << (lissajousimgindex + 1) << ".tiff";
-			if (!cv::imwrite(savePath.str(), image16U)) {
-				cerr << "Error: Failed to save image " << savePath.str() << endl;
-			}
-
-			lissajousimgindex++;
-			progresspercentage = double(lissajousimgindex) / double(total_lissajousimage_count) * 100;
-
 			cv::Mat image8U;
 			image16U.convertTo(image8U, CV_8UC1, 1.0 / 257);
-			//cv::imshow("Reconstruct Image folder", image8U);
-			//cv::waitKey(0);
+			cv::imshow("Reconstruct Image", image8U);
+			cv::waitKey(1);
 		}
-		CopyScanSpecCSV(LISSAJOUSFolderPath, outputFolderPath);
+		else if (channelcount == 2) {
+			cv::Mat averageimg16_ch1,averageimg16_ch2;
+			string channel1path = LISSAJOUSFolderPath + "\\CH1";
+			string channel2path = LISSAJOUSFolderPath + "\\CH1";
+			AVERAGE(channel1path, averageimg16_ch1);
+			AVERAGE(channel2path, averageimg16_ch2);
+
+			LissajousrawData = new double[num_of_sample];
+			LissajousrawData_ch2 = new double[num_of_sample];
+			memset(LissajousrawData, 0, num_of_sample * sizeof(double));
+			memset(LissajousrawData_ch2, 0, num_of_sample * sizeof(double));
+			cv::Mat averageimg64_ch1, averageimg64_ch2;
+			averageimg16_ch1.convertTo(averageimg64_ch1, CV_64FC1);
+			memcpy(LissajousrawData, averageimg64_ch1.ptr<double>(), num_of_sample * sizeof(double));
+
+			Image = new double[pixelnum * pixelnum];
+			Image_ch2 = new double[pixelnum * pixelnum];
+			memset(Image, 0, pixelnum * pixelnum * sizeof(double));
+			memset(Image_ch2, 0, pixelnum * pixelnum * sizeof(double));
+			LissajoustempData = new double[num_of_sample];
+			LissajoustempData_ch2 = new double[num_of_sample];
+			memset(LissajoustempData, 0, num_of_sample * sizeof(double));
+			memset(LissajoustempData_ch2, 0, num_of_sample * sizeof(double));
+
+			memcpy(LissajoustempData, LissajousrawData, num_of_sample * sizeof(double));
+			memcpy(LissajoustempData_ch2, LissajousrawData_ch2, num_of_sample * sizeof(double));
+			if (offset_lissajous < num_of_sample) {
+				for (int i = num_of_sample - 1; i >= offset_lissajous; --i) {
+					LissajoustempData[i] = LissajoustempData[i - offset_lissajous];
+					LissajoustempData_ch2[i] = LissajoustempData[i - offset_lissajous];
+				}
+				for (int i = 0; i < offset_lissajous; ++i) {
+					LissajoustempData[i] = 0;
+					LissajoustempData_ch2[i] = 0;
+				}
+			}
+
+			for (int i = 0; i < num_of_sample; ++i) {
+				int x = 0;
+				int y = 0;
+				bool inrange = LissajousIdxFromSample(i, samplingrate, pixelnum, pixelnum, double(xfreq), double(yfreq), lissajousphase, x, y);
+				if (inrange == true) {
+					int idx = y * pixelnum + x;
+					if (sampleMap[idx] > 0) {
+						Image[idx] += LissajoustempData[i];
+						Image_ch2[idx] += LissajoustempData_ch2[i];
+					}
+				}
+			}
+			for (int i = 0; i < pixelnum * pixelnum; ++i) {
+				if (sampleMap[i] > 0) {
+					Image[i] /= sampleMap[i];
+					Image_ch2[i] /= sampleMap[i];
+				}
+					
+			}
+
+			cv::Mat image64F_ch1(pixelnum, pixelnum, CV_64FC1, Image);
+			cv::Mat image64F_ch2(pixelnum, pixelnum, CV_64FC1, Image_ch2);
+			cv::Mat image16U_ch1, image16U_ch2;
+			image64F_ch1.convertTo(image16U_ch1, CV_16UC1, 1.0);
+			image64F_ch2.convertTo(image16U_ch2, CV_16UC1, 1.0);
+
+			cv::Mat image8U_ch1, image8U_ch2;
+			image16U_ch1.convertTo(image8U_ch1, CV_8UC1, 1.0 / 257);
+			image16U_ch2.convertTo(image8U_ch2, CV_8UC1, 1.0 / 257);
+			cv::imshow("Reconstruct Image CH1", image8U_ch1);
+			cv::imshow("Reconstruct Image CH2", image8U_ch2);
+			cv::waitKey(1);
+		}
+
+		if (LissajousrawData != nullptr) {
+			delete[] LissajoustempData;
+		}
+		if (LissajousrawData_ch2 != nullptr) {
+			delete[] LissajoustempData_ch2;
+		}
+		if (Image != nullptr) {
+			delete[] Image;
+		}
+		if (Image_ch2 != nullptr) {
+			delete[] Image_ch2;
+		}
+	}
+
+	void YSImageMerge::ReconstructAllTiffInFolder() {
+		if (channelcount == 1) {
+			// Store valid filenames
+			string lissajousFolderPathwithtiff = LISSAJOUSFolderPath + "\\*.tiff";
+			vector<string> filenames;
+			WIN32_FIND_DATA findFileData;
+			HANDLE hFind = FindFirstFile(lissajousFolderPathwithtiff.c_str(), &findFileData);
+			if (hFind == INVALID_HANDLE_VALUE) {
+				cout << "Error: No .tiff files found in directory " << lissajousFolderPathwithtiff << endl;
+				return;
+			}
+			// Collect all valid filenames
+			do {
+				filenames.push_back(findFileData.cFileName);
+			} while (FindNextFile(hFind, &findFileData) != 0);
+
+			FindClose(hFind);
+
+			string outputFolderPath = LISSAJOUSFolderPath;
+			size_t pos = outputFolderPath.find("2DLISSAJOUS_RAW");
+			if (pos != string::npos) {
+				outputFolderPath.replace(pos, strlen("2DLISSAJOUS_RAW"), "2DLISSAJOUS");
+			}
+			CreateDirectory(outputFolderPath.c_str(), NULL);
+			CopyScanSpecCSV(LISSAJOUSFolderPath, outputFolderPath);
+
+			// Sort filenames based on the numeric part
+			sort(filenames.begin(), filenames.end(), [this](const string& a, const string& b) {
+				return extractNumber(a) < extractNumber(b);
+				});
+
+			int total_lissajousimage_count = filenames.size();
+			lissajousimgindex = 0;
+			for (const auto& filename : filenames) {
+				string fullPath = LISSAJOUSFolderPath + "\\" + filename;
+				cv::Mat updateImage = cv::imread(fullPath, cv::IMREAD_UNCHANGED);
+
+				if (updateImage.empty() || updateImage.type() != CV_16UC1) {
+					cout << "Error: TIFF not found or not CV_16UC1 format " << fullPath << endl;
+					continue;
+				}
+
+				num_of_sample = updateImage.rows * updateImage.cols;
+				LissajoustempData = new double[num_of_sample];
+				Image = new double[pixelnum * pixelnum];
+				memset(LissajoustempData, 0, num_of_sample * sizeof(double));
+				memset(Image, 0, pixelnum * pixelnum * sizeof(double));
+
+				cv::Mat updateImage64;
+				updateImage.convertTo(updateImage64, CV_64FC1);
+				memcpy(LissajoustempData, updateImage64.ptr<double>(), num_of_sample * sizeof(double));
+
+				if (offset_lissajous < num_of_sample) {
+					for (int i = num_of_sample - 1; i >= offset_lissajous; --i)
+						LissajoustempData[i] = LissajoustempData[i - offset_lissajous];
+					for (int i = 0; i < offset_lissajous; ++i)
+						LissajoustempData[i] = 0;
+				}
+
+				for (int i = 0; i < num_of_sample; ++i) {
+					int x = 0;
+					int y = 0;
+					bool inrange = LissajousIdxFromSample(i, samplingrate, pixelnum, pixelnum, double(xfreq), double(yfreq), lissajousphase, x, y);
+					if (inrange == true) {
+						int idx = y * pixelnum + x;
+						if (sampleMap[idx] > 0)
+							Image[idx] += LissajoustempData[i];
+					}
+				}
+				for (int i = 0; i < pixelnum * pixelnum; ++i) {
+					if (sampleMap[i] > 0)
+						Image[i] /= sampleMap[i];
+				}
+
+				cv::Mat image64F(pixelnum, pixelnum, CV_64FC1, Image);
+				cv::Mat image16U;
+				image64F.convertTo(image16U, CV_16UC1, 1.0);
+
+				ostringstream savePath;
+				savePath << outputFolderPath << "\\Image" << (lissajousimgindex + 1) << ".tiff";
+				if (!cv::imwrite(savePath.str(), image16U)) {
+					cerr << "Error: Failed to save image " << savePath.str() << endl;
+				}
+
+				lissajousimgindex++;
+				progresspercentage = double(lissajousimgindex) / double(total_lissajousimage_count) * 100;
+			}
+		}
+		else if (channelcount == 2) {
+			string lissajousFolderPathwithtiff_ch1 = LISSAJOUSFolderPath + "\\CH1\\*.tiff";
+			string lissajousFolderPathwithtiff_ch2 = LISSAJOUSFolderPath + "\\CH2\\*.tiff";
+			vector<string> filenames;
+			WIN32_FIND_DATA findFileData;
+			HANDLE hFind = FindFirstFile(lissajousFolderPathwithtiff_ch1.c_str(), &findFileData);
+			if (hFind == INVALID_HANDLE_VALUE) {
+				cout << "Error: No .tiff files found in directory " << lissajousFolderPathwithtiff_ch1 << endl;
+				return;
+			}
+			do {
+				filenames.push_back(findFileData.cFileName);
+			} while (FindNextFile(hFind, &findFileData) != 0);
+			FindClose(hFind);
+
+			string outputFolderPath = LISSAJOUSFolderPath;
+			size_t pos = outputFolderPath.find("2DLISSAJOUS_RAW");
+			if (pos != string::npos) {
+				outputFolderPath.replace(pos, strlen("2DLISSAJOUS_RAW"), "2DLISSAJOUS");
+			}
+			string outputFolderPath_ch1 = outputFolderPath + "\\CH1";
+			string outputFolderPath_ch2 = outputFolderPath + "\\CH2";
+			CreateDirectory(outputFolderPath.c_str(), NULL);
+			CreateDirectory(outputFolderPath_ch1.c_str(), NULL);
+			CreateDirectory(outputFolderPath_ch2.c_str(), NULL);
+			CopyScanSpecCSV(LISSAJOUSFolderPath, outputFolderPath);
+
+			// Sort filenames based on the numeric part
+			sort(filenames.begin(), filenames.end(), [this](const string& a, const string& b) {
+				return extractNumber(a) < extractNumber(b);
+				});
+
+			int total_lissajousimage_count = filenames.size();
+			lissajousimgindex = 0;
+			for (const auto& filename : filenames) {
+				string fullPath_ch1 = LISSAJOUSFolderPath + "\\CH1" + "\\" + filename;
+				string fullPath_ch2 = LISSAJOUSFolderPath + "\\CH2" + "\\" + filename;
+				cv::Mat updateImage_ch1 = cv::imread(fullPath_ch1, cv::IMREAD_UNCHANGED);
+				cv::Mat updateImage_ch2 = cv::imread(fullPath_ch2, cv::IMREAD_UNCHANGED);
+				if (updateImage_ch1.empty() || updateImage_ch1.type() != CV_16UC1) {
+					cout << "Error: TIFF not found or not CV_16UC1 format " << fullPath_ch1 << endl;
+					continue;
+				}
+				if (updateImage_ch2.empty() || updateImage_ch2.type() != CV_16UC1) {
+					cout << "Error: TIFF not found or not CV_16UC1 format " << fullPath_ch2 << endl;
+					continue;
+				}
+
+				LissajoustempData = new double[num_of_sample];
+				LissajoustempData_ch2 = new double[num_of_sample];
+				Image = new double[pixelnum * pixelnum];
+				Image_ch2 = new double[pixelnum * pixelnum];
+				memset(LissajoustempData, 0, num_of_sample * sizeof(double));
+				memset(LissajoustempData_ch2, 0, num_of_sample * sizeof(double));
+				memset(Image, 0, pixelnum * pixelnum * sizeof(double));
+				memset(Image_ch2, 0, pixelnum* pixelnum * sizeof(double));
+
+				cv::Mat updateImage64_ch1, updateImage64_ch2;
+				updateImage_ch1.convertTo(updateImage64_ch1, CV_64FC1);
+				updateImage_ch2.convertTo(updateImage64_ch2, CV_64FC1);
+				memcpy(LissajoustempData, updateImage64_ch1.ptr<double>(), num_of_sample * sizeof(double));
+				memcpy(LissajoustempData_ch2, updateImage64_ch2.ptr<double>(), num_of_sample * sizeof(double));
+
+				if (offset_lissajous < num_of_sample) {
+					for (int i = num_of_sample - 1; i >= offset_lissajous; --i) {
+						LissajoustempData[i] = LissajoustempData[i - offset_lissajous];
+						LissajoustempData_ch2[i] = LissajoustempData_ch2[i - offset_lissajous];
+					}					
+					for (int i = 0; i < offset_lissajous; ++i) {
+						LissajoustempData[i] = 0;
+						LissajoustempData_ch2[i] = 0;
+					}
+				}
+
+				for (int i = 0; i < num_of_sample; ++i) {
+					int x = 0;
+					int y = 0;
+					bool inrange = LissajousIdxFromSample(i, samplingrate, pixelnum, pixelnum, double(xfreq), double(yfreq), lissajousphase, x, y);
+					if (inrange == true) {
+						int idx = y * pixelnum + x;
+						if (sampleMap[idx] > 0) {
+							Image[idx] += LissajoustempData[i];
+							Image_ch2[idx] += LissajoustempData_ch2[i];
+						}			
+					}
+				}
+				for (int i = 0; i < pixelnum * pixelnum; ++i) {
+					if (sampleMap[i] > 0) {
+						Image[i] /= sampleMap[i];
+						Image_ch2[i] /= sampleMap[i];
+					}
+						
+				}
+
+				cv::Mat image64F_ch1(pixelnum, pixelnum, CV_64FC1, Image);
+				cv::Mat image64F_ch2(pixelnum, pixelnum, CV_64FC1, Image_ch2);
+				cv::Mat image16U_ch1, image16U_ch2;
+				image64F_ch1.convertTo(image16U_ch1, CV_16UC1, 1.0);
+				image64F_ch2.convertTo(image16U_ch2, CV_16UC1, 1.0);
+				ostringstream savePath_ch1, savePath_ch2;
+				savePath_ch1 << outputFolderPath_ch1 << "\\Image" << (lissajousimgindex + 1) << ".tiff";
+				savePath_ch2 << outputFolderPath_ch2 << "\\Image" << (lissajousimgindex + 1) << ".tiff";
+				if (!cv::imwrite(savePath_ch1.str(), image16U_ch1)) {
+					cerr << "Error: Failed to save image " << savePath_ch1.str() << endl;
+				}
+				if (!cv::imwrite(savePath_ch2.str(), image16U_ch2)) {
+					cerr << "Error: Failed to save image " << savePath_ch2.str() << endl;
+				}
+
+				lissajousimgindex++;
+				progresspercentage = double(lissajousimgindex) / double(total_lissajousimage_count) * 100;
+			}
+		}
+		
 	}
 
 	//Supplementart functions
