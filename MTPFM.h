@@ -7002,7 +7002,7 @@ private:
 		aNTU->apply_median = toggleButtons_Median->Checked;
 		aNTU->apply_CLAHE = toggleButtons_CLAHE->Checked;
 
-		if (aYSNTU->highspeedmode == true ) {
+		if (aYSNTU->highspeedmode == true || aYSNTU->applychopper == true) {
 			this->textBox_highspeedmode->BackColor = System::Drawing::Color::LimeGreen;
 			this->textBox_highspeedmode->ForeColor = System::Drawing::Color::White;
 			this->YScheckBox_saveraw->Enabled = false;
@@ -7011,12 +7011,6 @@ private:
 		else if (aYSNTU->highspeedmode == false) {
 			this->textBox_highspeedmode->BackColor = System::Drawing::Color::DimGray;
 			this->textBox_highspeedmode->ForeColor = System::Drawing::Color::Gray;
-			if (aYSNTU->applychopper == true) {
-				this->YScheckBox_saveraw->Enabled = false;
-			}
-			else if (aYSNTU->applychopper == false) {
-				this->YScheckBox_saveraw->Enabled = true;
-			}
 			this->checkBox_saveprocessedimage->Enabled = true;
 		}
 		

@@ -29,7 +29,7 @@
 
 
 #define BUFFER_COUNT 16
-#define TRANSIENT_BUFFER_COUNT 200
+#define TRANSIENT_BUFFER_COUNT 100
 
 namespace NTU
 {

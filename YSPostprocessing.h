@@ -168,7 +168,7 @@ namespace MTPFM {
 	private: System::Windows::Forms::Label^ label38;
 	private: System::Windows::Forms::Label^ label39;
 	private: System::Windows::Forms::Label^ label40;
-	private: System::Windows::Forms::Button^ button_shut_down;
+
 
 
 
@@ -606,7 +606,6 @@ private: System::ComponentModel::IContainer^ components;
 			this->textBox_ScanPreview_LOADRASTER = (gcnew System::Windows::Forms::TextBox());
 			this->tabPage3 = (gcnew System::Windows::Forms::TabPage());
 			this->label39 = (gcnew System::Windows::Forms::Label());
-			this->button_shut_down = (gcnew System::Windows::Forms::Button());
 			this->LOAD_RASTERRAW_FOLDER = (gcnew System::Windows::Forms::FolderBrowserDialog());
 			(cli::safe_cast<System::ComponentModel::ISupportInitialize^>(this->trackBar_lissajousoffset))->BeginInit();
 			(cli::safe_cast<System::ComponentModel::ISupportInitialize^>(this->trackBar_resizey))->BeginInit();
@@ -1719,25 +1718,25 @@ private: System::ComponentModel::IContainer^ components;
 			this->tableLayoutPanel_CalPara_result->Name = L"tableLayoutPanel_CalPara_result";
 			this->tableLayoutPanel_CalPara_result->RowCount = 1;
 			this->tableLayoutPanel_CalPara_result->RowStyles->Add((gcnew System::Windows::Forms::RowStyle(System::Windows::Forms::SizeType::Absolute,
-				510)));
+				512)));
 			this->tableLayoutPanel_CalPara_result->RowStyles->Add((gcnew System::Windows::Forms::RowStyle(System::Windows::Forms::SizeType::Absolute,
-				510)));
+				512)));
 			this->tableLayoutPanel_CalPara_result->RowStyles->Add((gcnew System::Windows::Forms::RowStyle(System::Windows::Forms::SizeType::Absolute,
-				510)));
+				512)));
 			this->tableLayoutPanel_CalPara_result->RowStyles->Add((gcnew System::Windows::Forms::RowStyle(System::Windows::Forms::SizeType::Absolute,
-				510)));
+				512)));
 			this->tableLayoutPanel_CalPara_result->RowStyles->Add((gcnew System::Windows::Forms::RowStyle(System::Windows::Forms::SizeType::Absolute,
-				510)));
+				512)));
 			this->tableLayoutPanel_CalPara_result->RowStyles->Add((gcnew System::Windows::Forms::RowStyle(System::Windows::Forms::SizeType::Absolute,
-				510)));
+				512)));
 			this->tableLayoutPanel_CalPara_result->RowStyles->Add((gcnew System::Windows::Forms::RowStyle(System::Windows::Forms::SizeType::Absolute,
-				510)));
+				512)));
 			this->tableLayoutPanel_CalPara_result->RowStyles->Add((gcnew System::Windows::Forms::RowStyle(System::Windows::Forms::SizeType::Absolute,
-				510)));
+				512)));
 			this->tableLayoutPanel_CalPara_result->RowStyles->Add((gcnew System::Windows::Forms::RowStyle(System::Windows::Forms::SizeType::Absolute,
-				510)));
+				512)));
 			this->tableLayoutPanel_CalPara_result->RowStyles->Add((gcnew System::Windows::Forms::RowStyle(System::Windows::Forms::SizeType::Absolute,
-				510)));
+				512)));
 			this->tableLayoutPanel_CalPara_result->Size = System::Drawing::Size(495, 286);
 			this->tableLayoutPanel_CalPara_result->TabIndex = 51;
 			// 
@@ -1755,10 +1754,10 @@ private: System::ComponentModel::IContainer^ components;
 			// 
 			// tabControl1
 			// 
+			this->tabControl1->Controls->Add(this->tabPage6);
 			this->tabControl1->Controls->Add(this->tabPage2);
 			this->tabControl1->Controls->Add(this->tabPage1);
 			this->tabControl1->Controls->Add(this->tabPage5);
-			this->tabControl1->Controls->Add(this->tabPage6);
 			this->tabControl1->Font = (gcnew System::Drawing::Font(L"Segoe UI", 8.25F));
 			this->tabControl1->Location = System::Drawing::Point(3, 443);
 			this->tabControl1->Margin = System::Windows::Forms::Padding(4);
@@ -1794,7 +1793,7 @@ private: System::ComponentModel::IContainer^ components;
 			this->tabPage2->Padding = System::Windows::Forms::Padding(4);
 			this->tabPage2->Size = System::Drawing::Size(679, 458);
 			this->tabPage2->TabIndex = 1;
-			this->tabPage2->Text = L"Lissajous Raw Data Phase Offset";
+			this->tabPage2->Text = L"Lissajous conversion";
 			// 
 			// checkBox_quickreconstruct
 			// 
@@ -2193,7 +2192,7 @@ private: System::ComponentModel::IContainer^ components;
 			this->tabPage6->Name = L"tabPage6";
 			this->tabPage6->Size = System::Drawing::Size(679, 458);
 			this->tabPage6->TabIndex = 3;
-			this->tabPage6->Text = L"Process Image";
+			this->tabPage6->Text = L"Raster conversion";
 			// 
 			// label54
 			// 
@@ -2820,19 +2819,6 @@ private: System::ComponentModel::IContainer^ components;
 			this->label39->TabIndex = 123;
 			this->label39->Text = L"Note: Raster and Lissajous have the same FOV";
 			// 
-			// button_shut_down
-			// 
-			this->button_shut_down->Font = (gcnew System::Drawing::Font(L"Segoe UI", 15, static_cast<System::Drawing::FontStyle>((System::Drawing::FontStyle::Bold | System::Drawing::FontStyle::Italic))));
-			this->button_shut_down->ForeColor = System::Drawing::Color::DarkGoldenrod;
-			this->button_shut_down->Location = System::Drawing::Point(1085, 15);
-			this->button_shut_down->Margin = System::Windows::Forms::Padding(4);
-			this->button_shut_down->Name = L"button_shut_down";
-			this->button_shut_down->Size = System::Drawing::Size(132, 41);
-			this->button_shut_down->TabIndex = 112;
-			this->button_shut_down->Text = L"Close";
-			this->button_shut_down->UseVisualStyleBackColor = true;
-			this->button_shut_down->Click += gcnew System::EventHandler(this, &YSPostprocessing::button_shut_down_Click);
-			// 
 			// LOAD_RASTERRAW_FOLDER
 			// 
 			this->LOAD_RASTERRAW_FOLDER->SelectedPath = L"C:\\NTU_miniScope_Imaging\\2DRASTER_RAW";
@@ -2844,7 +2830,6 @@ private: System::ComponentModel::IContainer^ components;
 			this->BackColor = System::Drawing::SystemColors::InactiveCaption;
 			this->CausesValidation = false;
 			this->ClientSize = System::Drawing::Size(1233, 940);
-			this->Controls->Add(this->button_shut_down);
 			this->Controls->Add(this->tabControl2);
 			this->Controls->Add(this->tabControl1);
 			this->Controls->Add(this->panel5);

@@ -862,18 +862,17 @@ namespace NTU {
 		}
 
 		auto parse_frame_index = [](const std::string& filename) -> long long {
-			size_t p = filename.find("Image0");
+			size_t p = filename.find("Image");
 			if (p == std::string::npos) return -1;
-			p += 6;
+			p += 5; 
 			while (p < filename.size() && !std::isdigit(static_cast<unsigned char>(filename[p]))) ++p;
 			size_t start = p;
 			while (p < filename.size() && std::isdigit(static_cast<unsigned char>(filename[p]))) ++p;
 			if (start == p) return -1;
-			try {
-				return std::stoll(filename.substr(start, p - start));
-			}
+			try { return std::stoll(filename.substr(start, p - start)); }
 			catch (...) { return -1; }
-		};
+			};
+
 
 		do {
 			if (find_data.dwFileAttributes & FILE_ATTRIBUTE_DIRECTORY) continue;
@@ -905,7 +904,6 @@ namespace NTU {
 			}
 
 			cv::cuda::GpuMat gpu_image_ch1, gpu_image_ch2;
-
 			U16 samplesPerRecord = U16(num_of_sample / num_of_line);
 			U16 recStride = samplesPerRecord * 2;
 
@@ -985,7 +983,7 @@ namespace NTU {
 			cv::cuda::resize(gpu_image_prepre_2, gpu_image_ch2, cv::Size(num_of_line, num_of_line), 0, 0, cv::INTER_AREA);
 
 			long long frame_idx = parse_frame_index(bin_filename);
-			bool need_flip_vertically = (frame_idx >= 0) ? (frame_idx % 2LL == 1LL) : false;
+			bool need_flip_vertically = (frame_idx >= 0) && ((frame_idx % 2LL) == 0LL);
 
 			if (need_flip_vertically) {
 				cv::cuda::flip(gpu_image_raw_ch1, gpu_image_raw_ch1, 0);
