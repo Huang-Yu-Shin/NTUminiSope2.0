@@ -645,6 +645,51 @@ private: System::Windows::Forms::ComboBox^ comboBox_lissajous_chopperphase;
 private: System::Windows::Forms::Label^ label_channel;
 private: System::Windows::Forms::Label^ label_channeldisplay;
 private: CustomControls::DefineControls::ToggleButtons^ toggleButtons_label_channeldisplay;
+private: System::Windows::Forms::TabPage^ tabPage7;
+private: System::Windows::Forms::Label^ label_superraster_channeldisplay;
+
+private: CustomControls::DefineControls::ToggleButtons^ toggleButtons_superraster_channeldisplay;
+
+private: System::Windows::Forms::Label^ label70;
+private: System::Windows::Forms::ComboBox^ YScomboBox__superraster_chopperfreq;
+
+private: System::Windows::Forms::Label^ label71;
+private: System::Windows::Forms::Button^ YSbutton_superraster_setamp;
+private: System::Windows::Forms::TextBox^ YStextBox__superraster_spaceperline;
+
+
+private: System::Windows::Forms::TextBox^ YStextBox__superraster_longaxisamp;
+private: System::Windows::Forms::Label^ YSlabel_superraster_phase;
+
+
+
+private: System::Windows::Forms::TrackBar^ YStrackBar_superraster_phase;
+
+private: System::Windows::Forms::Label^ label73;
+private: System::Windows::Forms::Button^ YSbutton_superraster_startimg;
+private: System::Windows::Forms::Button^ YSbutton_superraster_stop;
+
+
+private: System::Windows::Forms::Button^ YSbutton_superraster_configure;
+private: System::Windows::Forms::ComboBox^ YScomboBox__superraster_yline;
+
+
+private: System::Windows::Forms::Label^ label74;
+private: System::Windows::Forms::ComboBox^ YScomboBox__superraster_linefreq;
+
+private: System::Windows::Forms::Label^ label75;
+private: System::Windows::Forms::TextBox^ YStextBox__superraster_yoffset;
+
+private: System::Windows::Forms::TextBox^ YStextBox__superraster_xoffset;
+
+private: System::Windows::Forms::Label^ label76;
+private: System::Windows::Forms::Label^ label77;
+private: System::Windows::Forms::TrackBar^ YStrackBar__superraster_spaceperline;
+
+private: System::Windows::Forms::Label^ label78;
+private: System::Windows::Forms::TrackBar^ YStrackBar__superraster_longaxisamp;
+
+private: System::Windows::Forms::Label^ label79;
 
 
 
@@ -1389,6 +1434,33 @@ private:
 			this->label_y_posi = (gcnew System::Windows::Forms::Label());
 			this->label_x_posi = (gcnew System::Windows::Forms::Label());
 			this->button1_manual_control = (gcnew System::Windows::Forms::Button());
+			this->tabPage7 = (gcnew System::Windows::Forms::TabPage());
+			this->label_superraster_channeldisplay = (gcnew System::Windows::Forms::Label());
+			this->toggleButtons_superraster_channeldisplay = (gcnew CustomControls::DefineControls::ToggleButtons());
+			this->label70 = (gcnew System::Windows::Forms::Label());
+			this->YScomboBox__superraster_chopperfreq = (gcnew System::Windows::Forms::ComboBox());
+			this->label71 = (gcnew System::Windows::Forms::Label());
+			this->YSbutton_superraster_setamp = (gcnew System::Windows::Forms::Button());
+			this->YStextBox__superraster_spaceperline = (gcnew System::Windows::Forms::TextBox());
+			this->YStextBox__superraster_longaxisamp = (gcnew System::Windows::Forms::TextBox());
+			this->YSlabel_superraster_phase = (gcnew System::Windows::Forms::Label());
+			this->YStrackBar_superraster_phase = (gcnew System::Windows::Forms::TrackBar());
+			this->label73 = (gcnew System::Windows::Forms::Label());
+			this->YSbutton_superraster_startimg = (gcnew System::Windows::Forms::Button());
+			this->YSbutton_superraster_stop = (gcnew System::Windows::Forms::Button());
+			this->YSbutton_superraster_configure = (gcnew System::Windows::Forms::Button());
+			this->YScomboBox__superraster_yline = (gcnew System::Windows::Forms::ComboBox());
+			this->label74 = (gcnew System::Windows::Forms::Label());
+			this->YScomboBox__superraster_linefreq = (gcnew System::Windows::Forms::ComboBox());
+			this->label75 = (gcnew System::Windows::Forms::Label());
+			this->YStextBox__superraster_yoffset = (gcnew System::Windows::Forms::TextBox());
+			this->YStextBox__superraster_xoffset = (gcnew System::Windows::Forms::TextBox());
+			this->label76 = (gcnew System::Windows::Forms::Label());
+			this->label77 = (gcnew System::Windows::Forms::Label());
+			this->YStrackBar__superraster_spaceperline = (gcnew System::Windows::Forms::TrackBar());
+			this->label78 = (gcnew System::Windows::Forms::Label());
+			this->YStrackBar__superraster_longaxisamp = (gcnew System::Windows::Forms::TrackBar());
+			this->label79 = (gcnew System::Windows::Forms::Label());
 			this->panel_real_time->SuspendLayout();
 			this->panel1->SuspendLayout();
 			this->panel_Stage->SuspendLayout();
@@ -1451,6 +1523,10 @@ private:
 			(cli::safe_cast<System::ComponentModel::ISupportInitialize^>(this->trackBar3_raster_y_amp))->BeginInit();
 			(cli::safe_cast<System::ComponentModel::ISupportInitialize^>(this->trackBar2__raster_x_amp))->BeginInit();
 			this->tabPage4->SuspendLayout();
+			this->tabPage7->SuspendLayout();
+			(cli::safe_cast<System::ComponentModel::ISupportInitialize^>(this->YStrackBar_superraster_phase))->BeginInit();
+			(cli::safe_cast<System::ComponentModel::ISupportInitialize^>(this->YStrackBar__superraster_spaceperline))->BeginInit();
+			(cli::safe_cast<System::ComponentModel::ISupportInitialize^>(this->YStrackBar__superraster_longaxisamp))->BeginInit();
 			this->SuspendLayout();
 			// 
 			// checkBox_biDirection
@@ -2228,7 +2304,7 @@ private:
 			// 
 			this->YStextBox_title->Location = System::Drawing::Point(55, 7);
 			this->YStextBox_title->Name = L"YStextBox_title";
-			this->YStextBox_title->Size = System::Drawing::Size(226, 23);
+			this->YStextBox_title->Size = System::Drawing::Size(203, 23);
 			this->YStextBox_title->TabIndex = 107;
 			// 
 			// YScheckBox_saveraw
@@ -2263,7 +2339,7 @@ private:
 			this->progressBar1->ForeColor = System::Drawing::Color::LimeGreen;
 			this->progressBar1->Location = System::Drawing::Point(6, 35);
 			this->progressBar1->Name = L"progressBar1";
-			this->progressBar1->Size = System::Drawing::Size(275, 21);
+			this->progressBar1->Size = System::Drawing::Size(252, 21);
 			this->progressBar1->Step = 1;
 			this->progressBar1->Style = System::Windows::Forms::ProgressBarStyle::Continuous;
 			this->progressBar1->TabIndex = 99;
@@ -2302,7 +2378,7 @@ private:
 			this->textBox2->Font = (gcnew System::Drawing::Font(L"Segoe UI", 11.25F, System::Drawing::FontStyle::Bold, System::Drawing::GraphicsUnit::Point,
 				static_cast<System::Byte>(0)));
 			this->textBox2->ForeColor = System::Drawing::Color::White;
-			this->textBox2->Location = System::Drawing::Point(279, 35);
+			this->textBox2->Location = System::Drawing::Point(269, 35);
 			this->textBox2->Name = L"textBox2";
 			this->textBox2->ReadOnly = true;
 			this->textBox2->Size = System::Drawing::Size(63, 27);
@@ -3961,6 +4037,7 @@ private:
 			// 
 			this->YSbutton_lissajous_setamp->Controls->Add(this->tabPage16);
 			this->YSbutton_lissajous_setamp->Controls->Add(this->tabPage15);
+			this->YSbutton_lissajous_setamp->Controls->Add(this->tabPage7);
 			this->YSbutton_lissajous_setamp->Controls->Add(this->tabPage17);
 			this->YSbutton_lissajous_setamp->Location = System::Drawing::Point(7, 112);
 			this->YSbutton_lissajous_setamp->Name = L"YSbutton_lissajous_setamp";
@@ -5788,6 +5865,369 @@ private:
 			this->button1_manual_control->UseVisualStyleBackColor = false;
 			this->button1_manual_control->Click += gcnew System::EventHandler(this, &MTPFM::button1_manual_control_Click);
 			// 
+			// tabPage7
+			// 
+			this->tabPage7->BackColor = System::Drawing::Color::DimGray;
+			this->tabPage7->Controls->Add(this->label_superraster_channeldisplay);
+			this->tabPage7->Controls->Add(this->toggleButtons_superraster_channeldisplay);
+			this->tabPage7->Controls->Add(this->label70);
+			this->tabPage7->Controls->Add(this->YScomboBox__superraster_chopperfreq);
+			this->tabPage7->Controls->Add(this->label71);
+			this->tabPage7->Controls->Add(this->YSbutton_superraster_setamp);
+			this->tabPage7->Controls->Add(this->YStextBox__superraster_spaceperline);
+			this->tabPage7->Controls->Add(this->YStextBox__superraster_longaxisamp);
+			this->tabPage7->Controls->Add(this->YSlabel_superraster_phase);
+			this->tabPage7->Controls->Add(this->YStrackBar_superraster_phase);
+			this->tabPage7->Controls->Add(this->label73);
+			this->tabPage7->Controls->Add(this->YSbutton_superraster_startimg);
+			this->tabPage7->Controls->Add(this->YSbutton_superraster_stop);
+			this->tabPage7->Controls->Add(this->YSbutton_superraster_configure);
+			this->tabPage7->Controls->Add(this->YScomboBox__superraster_yline);
+			this->tabPage7->Controls->Add(this->label74);
+			this->tabPage7->Controls->Add(this->YScomboBox__superraster_linefreq);
+			this->tabPage7->Controls->Add(this->label75);
+			this->tabPage7->Controls->Add(this->YStextBox__superraster_yoffset);
+			this->tabPage7->Controls->Add(this->YStextBox__superraster_xoffset);
+			this->tabPage7->Controls->Add(this->label76);
+			this->tabPage7->Controls->Add(this->label77);
+			this->tabPage7->Controls->Add(this->YStrackBar__superraster_spaceperline);
+			this->tabPage7->Controls->Add(this->label78);
+			this->tabPage7->Controls->Add(this->YStrackBar__superraster_longaxisamp);
+			this->tabPage7->Controls->Add(this->label79);
+			this->tabPage7->ForeColor = System::Drawing::Color::DarkGray;
+			this->tabPage7->Location = System::Drawing::Point(4, 24);
+			this->tabPage7->Name = L"tabPage7";
+			this->tabPage7->Size = System::Drawing::Size(390, 306);
+			this->tabPage7->TabIndex = 3;
+			this->tabPage7->Text = L"2D Super Raster";
+			// 
+			// label_superraster_channeldisplay
+			// 
+			this->label_superraster_channeldisplay->AutoSize = true;
+			this->label_superraster_channeldisplay->Font = (gcnew System::Drawing::Font(L"Segoe UI", 11.25F, System::Drawing::FontStyle::Bold,
+				System::Drawing::GraphicsUnit::Point, static_cast<System::Byte>(0)));
+			this->label_superraster_channeldisplay->ForeColor = System::Drawing::Color::White;
+			this->label_superraster_channeldisplay->Location = System::Drawing::Point(70, 280);
+			this->label_superraster_channeldisplay->Name = L"label_superraster_channeldisplay";
+			this->label_superraster_channeldisplay->Size = System::Drawing::Size(86, 20);
+			this->label_superraster_channeldisplay->TabIndex = 139;
+			this->label_superraster_channeldisplay->Text = L"PMT signal";
+			// 
+			// toggleButtons_superraster_channeldisplay
+			// 
+			this->toggleButtons_superraster_channeldisplay->Enabled = false;
+			this->toggleButtons_superraster_channeldisplay->Location = System::Drawing::Point(17, 278);
+			this->toggleButtons_superraster_channeldisplay->MinimumSize = System::Drawing::Size(45, 22);
+			this->toggleButtons_superraster_channeldisplay->Name = L"toggleButtons_superraster_channeldisplay";
+			this->toggleButtons_superraster_channeldisplay->OffBackColor = System::Drawing::Color::WhiteSmoke;
+			this->toggleButtons_superraster_channeldisplay->OffToggleColor = System::Drawing::Color::Gainsboro;
+			this->toggleButtons_superraster_channeldisplay->OnBackColor = System::Drawing::Color::WhiteSmoke;
+			this->toggleButtons_superraster_channeldisplay->OnToggleColor = System::Drawing::Color::DodgerBlue;
+			this->toggleButtons_superraster_channeldisplay->Size = System::Drawing::Size(47, 25);
+			this->toggleButtons_superraster_channeldisplay->SolidStyle = false;
+			this->toggleButtons_superraster_channeldisplay->TabIndex = 138;
+			this->toggleButtons_superraster_channeldisplay->UseVisualStyleBackColor = true;
+			// 
+			// label70
+			// 
+			this->label70->AutoSize = true;
+			this->label70->Font = (gcnew System::Drawing::Font(L"Segoe UI", 8, System::Drawing::FontStyle::Bold));
+			this->label70->ForeColor = System::Drawing::Color::White;
+			this->label70->Location = System::Drawing::Point(15, 260);
+			this->label70->Name = L"label70";
+			this->label70->Size = System::Drawing::Size(145, 13);
+			this->label70->TabIndex = 137;
+			this->label70->Text = L"Downscale from Line Freq.";
+			// 
+			// YScomboBox__superraster_chopperfreq
+			// 
+			this->YScomboBox__superraster_chopperfreq->BackColor = System::Drawing::SystemColors::ScrollBar;
+			this->YScomboBox__superraster_chopperfreq->Font = (gcnew System::Drawing::Font(L"Segoe UI", 11.25F, System::Drawing::FontStyle::Regular,
+				System::Drawing::GraphicsUnit::Point, static_cast<System::Byte>(0)));
+			this->YScomboBox__superraster_chopperfreq->FormattingEnabled = true;
+			this->YScomboBox__superraster_chopperfreq->Items->AddRange(gcnew cli::array< System::Object^  >(3) { L"1x", L"2x", L"4x" });
+			this->YScomboBox__superraster_chopperfreq->Location = System::Drawing::Point(162, 240);
+			this->YScomboBox__superraster_chopperfreq->Name = L"YScomboBox__superraster_chopperfreq";
+			this->YScomboBox__superraster_chopperfreq->Size = System::Drawing::Size(73, 28);
+			this->YScomboBox__superraster_chopperfreq->TabIndex = 136;
+			// 
+			// label71
+			// 
+			this->label71->AutoSize = true;
+			this->label71->Font = (gcnew System::Drawing::Font(L"Segoe UI", 11.25F, System::Drawing::FontStyle::Bold, System::Drawing::GraphicsUnit::Point,
+				static_cast<System::Byte>(0)));
+			this->label71->ForeColor = System::Drawing::Color::White;
+			this->label71->Location = System::Drawing::Point(14, 242);
+			this->label71->Name = L"label71";
+			this->label71->Size = System::Drawing::Size(107, 20);
+			this->label71->TabIndex = 135;
+			this->label71->Text = L"Chopper Freq.";
+			// 
+			// YSbutton_superraster_setamp
+			// 
+			this->YSbutton_superraster_setamp->Font = (gcnew System::Drawing::Font(L"Segoe UI", 11.25F, static_cast<System::Drawing::FontStyle>((System::Drawing::FontStyle::Bold | System::Drawing::FontStyle::Italic)),
+				System::Drawing::GraphicsUnit::Point, static_cast<System::Byte>(0)));
+			this->YSbutton_superraster_setamp->ForeColor = System::Drawing::Color::RoyalBlue;
+			this->YSbutton_superraster_setamp->Location = System::Drawing::Point(282, 56);
+			this->YSbutton_superraster_setamp->Name = L"YSbutton_superraster_setamp";
+			this->YSbutton_superraster_setamp->Size = System::Drawing::Size(107, 29);
+			this->YSbutton_superraster_setamp->TabIndex = 134;
+			this->YSbutton_superraster_setamp->Text = L"Set amp.";
+			this->YSbutton_superraster_setamp->UseVisualStyleBackColor = true;
+			// 
+			// YStextBox__superraster_spaceperline
+			// 
+			this->YStextBox__superraster_spaceperline->BackColor = System::Drawing::Color::Silver;
+			this->YStextBox__superraster_spaceperline->Font = (gcnew System::Drawing::Font(L"Segoe UI", 11.25F, System::Drawing::FontStyle::Bold,
+				System::Drawing::GraphicsUnit::Point, static_cast<System::Byte>(0)));
+			this->YStextBox__superraster_spaceperline->Location = System::Drawing::Point(284, 123);
+			this->YStextBox__superraster_spaceperline->Name = L"YStextBox__superraster_spaceperline";
+			this->YStextBox__superraster_spaceperline->Size = System::Drawing::Size(61, 27);
+			this->YStextBox__superraster_spaceperline->TabIndex = 133;
+			this->YStextBox__superraster_spaceperline->Text = L"0.5";
+			this->YStextBox__superraster_spaceperline->TextAlign = System::Windows::Forms::HorizontalAlignment::Center;
+			// 
+			// YStextBox__superraster_longaxisamp
+			// 
+			this->YStextBox__superraster_longaxisamp->BackColor = System::Drawing::Color::Silver;
+			this->YStextBox__superraster_longaxisamp->Font = (gcnew System::Drawing::Font(L"Segoe UI", 11.25F, System::Drawing::FontStyle::Bold,
+				System::Drawing::GraphicsUnit::Point, static_cast<System::Byte>(0)));
+			this->YStextBox__superraster_longaxisamp->Location = System::Drawing::Point(284, 90);
+			this->YStextBox__superraster_longaxisamp->Name = L"YStextBox__superraster_longaxisamp";
+			this->YStextBox__superraster_longaxisamp->Size = System::Drawing::Size(61, 27);
+			this->YStextBox__superraster_longaxisamp->TabIndex = 132;
+			this->YStextBox__superraster_longaxisamp->Text = L"0.5";
+			this->YStextBox__superraster_longaxisamp->TextAlign = System::Windows::Forms::HorizontalAlignment::Center;
+			// 
+			// YSlabel_superraster_phase
+			// 
+			this->YSlabel_superraster_phase->AutoSize = true;
+			this->YSlabel_superraster_phase->Font = (gcnew System::Drawing::Font(L"Segoe UI", 11.25F, System::Drawing::FontStyle::Bold, System::Drawing::GraphicsUnit::Point,
+				static_cast<System::Byte>(0)));
+			this->YSlabel_superraster_phase->Location = System::Drawing::Point(254, 210);
+			this->YSlabel_superraster_phase->Name = L"YSlabel_superraster_phase";
+			this->YSlabel_superraster_phase->Size = System::Drawing::Size(18, 20);
+			this->YSlabel_superraster_phase->TabIndex = 130;
+			this->YSlabel_superraster_phase->Text = L"0";
+			// 
+			// YStrackBar_superraster_phase
+			// 
+			this->YStrackBar_superraster_phase->AutoSize = false;
+			this->YStrackBar_superraster_phase->BackColor = System::Drawing::Color::DimGray;
+			this->YStrackBar_superraster_phase->LargeChange = 0;
+			this->YStrackBar_superraster_phase->Location = System::Drawing::Point(91, 210);
+			this->YStrackBar_superraster_phase->Maximum = 1000;
+			this->YStrackBar_superraster_phase->Name = L"YStrackBar_superraster_phase";
+			this->YStrackBar_superraster_phase->Size = System::Drawing::Size(163, 30);
+			this->YStrackBar_superraster_phase->TabIndex = 129;
+			this->YStrackBar_superraster_phase->TickFrequency = 200;
+			this->YStrackBar_superraster_phase->Value = 500;
+			// 
+			// label73
+			// 
+			this->label73->AutoSize = true;
+			this->label73->Font = (gcnew System::Drawing::Font(L"Segoe UI", 11.25F, System::Drawing::FontStyle::Bold, System::Drawing::GraphicsUnit::Point,
+				static_cast<System::Byte>(0)));
+			this->label73->ForeColor = System::Drawing::Color::White;
+			this->label73->Location = System::Drawing::Point(14, 206);
+			this->label73->Name = L"label73";
+			this->label73->Size = System::Drawing::Size(50, 20);
+			this->label73->TabIndex = 128;
+			this->label73->Text = L"Phase";
+			// 
+			// YSbutton_superraster_startimg
+			// 
+			this->YSbutton_superraster_startimg->BackColor = System::Drawing::Color::LightGray;
+			this->YSbutton_superraster_startimg->FlatStyle = System::Windows::Forms::FlatStyle::Popup;
+			this->YSbutton_superraster_startimg->Font = (gcnew System::Drawing::Font(L"Segoe UI", 12, System::Drawing::FontStyle::Bold, System::Drawing::GraphicsUnit::Point,
+				static_cast<System::Byte>(0)));
+			this->YSbutton_superraster_startimg->ForeColor = System::Drawing::Color::DarkGoldenrod;
+			this->YSbutton_superraster_startimg->Image = (cli::safe_cast<System::Drawing::Image^>(resources->GetObject(L"YSbutton_superraster_startimg.Image")));
+			this->YSbutton_superraster_startimg->ImageAlign = System::Drawing::ContentAlignment::MiddleLeft;
+			this->YSbutton_superraster_startimg->Location = System::Drawing::Point(127, 17);
+			this->YSbutton_superraster_startimg->Name = L"YSbutton_superraster_startimg";
+			this->YSbutton_superraster_startimg->Size = System::Drawing::Size(169, 32);
+			this->YSbutton_superraster_startimg->TabIndex = 127;
+			this->YSbutton_superraster_startimg->Text = L"START Imaging";
+			this->YSbutton_superraster_startimg->TextAlign = System::Drawing::ContentAlignment::MiddleRight;
+			this->YSbutton_superraster_startimg->UseVisualStyleBackColor = false;
+			// 
+			// YSbutton_superraster_stop
+			// 
+			this->YSbutton_superraster_stop->Font = (gcnew System::Drawing::Font(L"Segoe UI", 11.25F, static_cast<System::Drawing::FontStyle>((System::Drawing::FontStyle::Bold | System::Drawing::FontStyle::Italic)),
+				System::Drawing::GraphicsUnit::Point, static_cast<System::Byte>(0)));
+			this->YSbutton_superraster_stop->ForeColor = System::Drawing::Color::RoyalBlue;
+			this->YSbutton_superraster_stop->Location = System::Drawing::Point(307, 18);
+			this->YSbutton_superraster_stop->Name = L"YSbutton_superraster_stop";
+			this->YSbutton_superraster_stop->Size = System::Drawing::Size(65, 30);
+			this->YSbutton_superraster_stop->TabIndex = 126;
+			this->YSbutton_superraster_stop->Text = L"Stop";
+			this->YSbutton_superraster_stop->UseVisualStyleBackColor = true;
+			// 
+			// YSbutton_superraster_configure
+			// 
+			this->YSbutton_superraster_configure->Font = (gcnew System::Drawing::Font(L"Segoe UI", 10.8F, static_cast<System::Drawing::FontStyle>((System::Drawing::FontStyle::Bold | System::Drawing::FontStyle::Italic)),
+				System::Drawing::GraphicsUnit::Point, static_cast<System::Byte>(0)));
+			this->YSbutton_superraster_configure->ForeColor = System::Drawing::Color::DarkGoldenrod;
+			this->YSbutton_superraster_configure->Location = System::Drawing::Point(18, 17);
+			this->YSbutton_superraster_configure->Name = L"YSbutton_superraster_configure";
+			this->YSbutton_superraster_configure->Size = System::Drawing::Size(101, 31);
+			this->YSbutton_superraster_configure->TabIndex = 125;
+			this->YSbutton_superraster_configure->Text = L"Configure";
+			this->YSbutton_superraster_configure->UseVisualStyleBackColor = true;
+			// 
+			// YScomboBox__superraster_yline
+			// 
+			this->YScomboBox__superraster_yline->BackColor = System::Drawing::SystemColors::ScrollBar;
+			this->YScomboBox__superraster_yline->Font = (gcnew System::Drawing::Font(L"Segoe UI", 11.25F, System::Drawing::FontStyle::Regular,
+				System::Drawing::GraphicsUnit::Point, static_cast<System::Byte>(0)));
+			this->YScomboBox__superraster_yline->FormattingEnabled = true;
+			this->YScomboBox__superraster_yline->Items->AddRange(gcnew cli::array< System::Object^  >(7) {
+				L"16", L"32", L"64", L"128",
+					L"256", L"512", L"1024"
+			});
+			this->YScomboBox__superraster_yline->Location = System::Drawing::Point(268, 165);
+			this->YScomboBox__superraster_yline->Name = L"YScomboBox__superraster_yline";
+			this->YScomboBox__superraster_yline->Size = System::Drawing::Size(73, 28);
+			this->YScomboBox__superraster_yline->TabIndex = 124;
+			// 
+			// label74
+			// 
+			this->label74->AutoSize = true;
+			this->label74->Font = (gcnew System::Drawing::Font(L"Segoe UI", 11.25F, System::Drawing::FontStyle::Bold, System::Drawing::GraphicsUnit::Point,
+				static_cast<System::Byte>(0)));
+			this->label74->ForeColor = System::Drawing::Color::White;
+			this->label74->Location = System::Drawing::Point(188, 168);
+			this->label74->Name = L"label74";
+			this->label74->Size = System::Drawing::Size(66, 20);
+			this->label74->TabIndex = 123;
+			this->label74->Text = L"# Y-Line";
+			// 
+			// YScomboBox__superraster_linefreq
+			// 
+			this->YScomboBox__superraster_linefreq->BackColor = System::Drawing::SystemColors::ScrollBar;
+			this->YScomboBox__superraster_linefreq->Font = (gcnew System::Drawing::Font(L"Segoe UI", 11.25F, System::Drawing::FontStyle::Regular,
+				System::Drawing::GraphicsUnit::Point, static_cast<System::Byte>(0)));
+			this->YScomboBox__superraster_linefreq->FormattingEnabled = true;
+			this->YScomboBox__superraster_linefreq->Items->AddRange(gcnew cli::array< System::Object^  >(10) {
+				L"200", L"250", L"400",
+					L"500", L"800", L"1000", L"1250", L"1600", L"2000", L"2500"
+			});
+			this->YScomboBox__superraster_linefreq->Location = System::Drawing::Point(97, 166);
+			this->YScomboBox__superraster_linefreq->Name = L"YScomboBox__superraster_linefreq";
+			this->YScomboBox__superraster_linefreq->Size = System::Drawing::Size(73, 28);
+			this->YScomboBox__superraster_linefreq->TabIndex = 122;
+			// 
+			// label75
+			// 
+			this->label75->AutoSize = true;
+			this->label75->Font = (gcnew System::Drawing::Font(L"Segoe UI", 11.25F, System::Drawing::FontStyle::Bold, System::Drawing::GraphicsUnit::Point,
+				static_cast<System::Byte>(0)));
+			this->label75->ForeColor = System::Drawing::Color::White;
+			this->label75->Location = System::Drawing::Point(14, 168);
+			this->label75->Name = L"label75";
+			this->label75->Size = System::Drawing::Size(77, 20);
+			this->label75->TabIndex = 121;
+			this->label75->Text = L"Line Freq.";
+			// 
+			// YStextBox__superraster_yoffset
+			// 
+			this->YStextBox__superraster_yoffset->BackColor = System::Drawing::Color::Silver;
+			this->YStextBox__superraster_yoffset->Font = (gcnew System::Drawing::Font(L"Segoe UI", 11.25F, System::Drawing::FontStyle::Bold,
+				System::Drawing::GraphicsUnit::Point, static_cast<System::Byte>(0)));
+			this->YStextBox__superraster_yoffset->Location = System::Drawing::Point(215, 58);
+			this->YStextBox__superraster_yoffset->Name = L"YStextBox__superraster_yoffset";
+			this->YStextBox__superraster_yoffset->Size = System::Drawing::Size(61, 27);
+			this->YStextBox__superraster_yoffset->TabIndex = 120;
+			this->YStextBox__superraster_yoffset->Text = L"0";
+			this->YStextBox__superraster_yoffset->TextAlign = System::Windows::Forms::HorizontalAlignment::Center;
+			// 
+			// YStextBox__superraster_xoffset
+			// 
+			this->YStextBox__superraster_xoffset->BackColor = System::Drawing::Color::Silver;
+			this->YStextBox__superraster_xoffset->Font = (gcnew System::Drawing::Font(L"Segoe UI", 11.25F, System::Drawing::FontStyle::Bold,
+				System::Drawing::GraphicsUnit::Point, static_cast<System::Byte>(0)));
+			this->YStextBox__superraster_xoffset->Location = System::Drawing::Point(83, 58);
+			this->YStextBox__superraster_xoffset->Name = L"YStextBox__superraster_xoffset";
+			this->YStextBox__superraster_xoffset->Size = System::Drawing::Size(61, 27);
+			this->YStextBox__superraster_xoffset->TabIndex = 119;
+			this->YStextBox__superraster_xoffset->Text = L"0";
+			this->YStextBox__superraster_xoffset->TextAlign = System::Windows::Forms::HorizontalAlignment::Center;
+			// 
+			// label76
+			// 
+			this->label76->AutoSize = true;
+			this->label76->Font = (gcnew System::Drawing::Font(L"Segoe UI", 11.25F, System::Drawing::FontStyle::Bold, System::Drawing::GraphicsUnit::Point,
+				static_cast<System::Byte>(0)));
+			this->label76->ForeColor = System::Drawing::Color::White;
+			this->label76->Location = System::Drawing::Point(149, 61);
+			this->label76->Name = L"label76";
+			this->label76->Size = System::Drawing::Size(62, 20);
+			this->label76->TabIndex = 118;
+			this->label76->Text = L"YOffset";
+			// 
+			// label77
+			// 
+			this->label77->AutoSize = true;
+			this->label77->Font = (gcnew System::Drawing::Font(L"Segoe UI", 11.25F, System::Drawing::FontStyle::Bold, System::Drawing::GraphicsUnit::Point,
+				static_cast<System::Byte>(0)));
+			this->label77->ForeColor = System::Drawing::Color::White;
+			this->label77->Location = System::Drawing::Point(14, 61);
+			this->label77->Name = L"label77";
+			this->label77->Size = System::Drawing::Size(63, 20);
+			this->label77->TabIndex = 117;
+			this->label77->Text = L"XOffset";
+			// 
+			// YStrackBar__superraster_spaceperline
+			// 
+			this->YStrackBar__superraster_spaceperline->AutoSize = false;
+			this->YStrackBar__superraster_spaceperline->BackColor = System::Drawing::Color::DimGray;
+			this->YStrackBar__superraster_spaceperline->LargeChange = 1;
+			this->YStrackBar__superraster_spaceperline->Location = System::Drawing::Point(119, 125);
+			this->YStrackBar__superraster_spaceperline->Maximum = 400;
+			this->YStrackBar__superraster_spaceperline->Name = L"YStrackBar__superraster_spaceperline";
+			this->YStrackBar__superraster_spaceperline->Size = System::Drawing::Size(163, 30);
+			this->YStrackBar__superraster_spaceperline->TabIndex = 115;
+			this->YStrackBar__superraster_spaceperline->TickFrequency = 5;
+			this->YStrackBar__superraster_spaceperline->Value = 50;
+			// 
+			// label78
+			// 
+			this->label78->AutoSize = true;
+			this->label78->Font = (gcnew System::Drawing::Font(L"Segoe UI", 11.25F, System::Drawing::FontStyle::Bold, System::Drawing::GraphicsUnit::Point,
+				static_cast<System::Byte>(0)));
+			this->label78->ForeColor = System::Drawing::Color::White;
+			this->label78->Location = System::Drawing::Point(14, 125);
+			this->label78->Name = L"label78";
+			this->label78->Size = System::Drawing::Size(105, 20);
+			this->label78->TabIndex = 116;
+			this->label78->Text = L"Space per line";
+			// 
+			// YStrackBar__superraster_longaxisamp
+			// 
+			this->YStrackBar__superraster_longaxisamp->AutoSize = false;
+			this->YStrackBar__superraster_longaxisamp->BackColor = System::Drawing::Color::DimGray;
+			this->YStrackBar__superraster_longaxisamp->LargeChange = 1;
+			this->YStrackBar__superraster_longaxisamp->Location = System::Drawing::Point(119, 93);
+			this->YStrackBar__superraster_longaxisamp->Maximum = 400;
+			this->YStrackBar__superraster_longaxisamp->Name = L"YStrackBar__superraster_longaxisamp";
+			this->YStrackBar__superraster_longaxisamp->Size = System::Drawing::Size(163, 30);
+			this->YStrackBar__superraster_longaxisamp->TabIndex = 113;
+			this->YStrackBar__superraster_longaxisamp->TickFrequency = 5;
+			this->YStrackBar__superraster_longaxisamp->Value = 50;
+			// 
+			// label79
+			// 
+			this->label79->AutoSize = true;
+			this->label79->Font = (gcnew System::Drawing::Font(L"Segoe UI", 11.25F, System::Drawing::FontStyle::Bold, System::Drawing::GraphicsUnit::Point,
+				static_cast<System::Byte>(0)));
+			this->label79->ForeColor = System::Drawing::Color::White;
+			this->label79->Location = System::Drawing::Point(14, 94);
+			this->label79->Name = L"label79";
+			this->label79->Size = System::Drawing::Size(56, 20);
+			this->label79->TabIndex = 114;
+			this->label79->Text = L"x amp.";
+			// 
 			// MTPFM
 			// 
 			this->AutoScaleDimensions = System::Drawing::SizeF(7, 15);
@@ -5901,6 +6341,11 @@ private:
 			(cli::safe_cast<System::ComponentModel::ISupportInitialize^>(this->trackBar2__raster_x_amp))->EndInit();
 			this->tabPage4->ResumeLayout(false);
 			this->tabPage4->PerformLayout();
+			this->tabPage7->ResumeLayout(false);
+			this->tabPage7->PerformLayout();
+			(cli::safe_cast<System::ComponentModel::ISupportInitialize^>(this->YStrackBar_superraster_phase))->EndInit();
+			(cli::safe_cast<System::ComponentModel::ISupportInitialize^>(this->YStrackBar__superraster_spaceperline))->EndInit();
+			(cli::safe_cast<System::ComponentModel::ISupportInitialize^>(this->YStrackBar__superraster_longaxisamp))->EndInit();
 			this->ResumeLayout(false);
 			this->PerformLayout();
 

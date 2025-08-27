@@ -200,8 +200,8 @@ namespace NTU {
                 int pulse_end = pulse_start + pulseWidth_chopper;
                 if (pulse_end > total_samples) pulse_end = total_samples;
 
-                for (int i = pulse_start; i < pulse_end; ++i) {
-                    ttldata[i * 2 + 1] = 1;
+                for (int i = pulse_start; i < pulse_end; ++i) { 
+                    ttldata[i * 2 + 1] = 1; 
                 }
             }
             DAQmxErrChk(DAQmxWriteDigitalLines(taskHandleTTL, total_samples, FALSE, 10, DAQmx_Val_GroupByScanNumber, ttldata, NULL, NULL));

@@ -403,8 +403,9 @@ namespace NTU {
 			int segments = 2;
 			int samplesPerSegment = totalSamples / segments;
 			if (samplesPerSegment <= 0) return true;
+			double chopperphase = chopper_phase - 55;
 
-			double ph = std::fmod(chopper_phase, 360.0);
+			double ph = std::fmod(chopperphase, 360.0);
 			if (ph < 0.0) ph += 360.0;
 			int shiftSamples = static_cast<int>(std::round(ph / 360.0 * totalSamples));
 
@@ -439,8 +440,9 @@ namespace NTU {
 			int segments = 8;
 			int samplesPerSegment = totalSamples / segments;
 			if (samplesPerSegment <= 0) return true;
+			double chopperphase = chopper_phase - 55;
 
-			double ph = std::fmod(chopper_phase, 360.0);
+			double ph = std::fmod(chopperphase, 360.0);
 			if (ph < 0.0) ph += 360.0;
 
 			int samplesPerChopper = totalSamples / 4;
