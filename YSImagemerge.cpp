@@ -1029,13 +1029,14 @@ namespace NTU {
 	//Reconstruct//
 	void YSImageMerge::DisplayReconstructedLissajousImage() {
 		if (channelcount == 1) {
-			cv::Mat avergeimg16;
-			AVERAGE(LISSAJOUSFolderPath, avergeimg16);
-
+			if (firstreconstruct == true) {
+				AVERAGE(LISSAJOUSFolderPath, averageImg16);
+			}
+			
 			LissajousrawData = new double[num_of_sample];
 			memset(LissajousrawData, 0, num_of_sample * sizeof(double));
 			cv::Mat avergeimg64;
-			avergeimg16.convertTo(avergeimg64, CV_64FC1);
+			averageImg16.convertTo(avergeimg64, CV_64FC1);
 			memcpy(LissajousrawData, avergeimg64.ptr<double>(), num_of_sample * sizeof(double));
 
 			Image = new double[pixelnum * pixelnum];
@@ -1072,7 +1073,22 @@ namespace NTU {
 
 			cv::Mat image8U;
 			image16U.convertTo(image8U, CV_8UC1, 1.0 / 257);
-			cv::imshow("Reconstruct Image", image8U);
+
+			cv::cuda::GpuMat gpuimg;
+			gpuimg.upload(image8U);
+			cv::Mat LUT_matrix(1, 256, CV_8UC1);
+			uchar* pointer = LUT_matrix.ptr();
+			for (int i = 0; i < 256; i++) {
+				pointer[i] = (int)(pow((double)(i / 255.0), 1.1) * 255.0);
+			}
+			cv::Ptr<cv::cuda::LookUpTable> cudaLookUpTable = cv::cuda::createLookUpTable(LUT_matrix);
+			cudaLookUpTable->transform(gpuimg, gpuimg, stream);
+			gpuimg.cv::cuda::GpuMat::convertTo(gpuimg, -1, 3, 150 - 150, stream);
+			stream.waitForCompletion();
+			cv::Mat img;
+			gpuimg.download(img);
+
+			cv::imshow("Reconstruct Image", img);
 			cv::waitKey(1);
 		}
 		else if (channelcount == 2) {
@@ -1146,18 +1162,18 @@ namespace NTU {
 			cv::waitKey(1);
 		}
 
-		if (LissajousrawData != nullptr) {
-			delete[] LissajoustempData;
-		}
-		if (LissajousrawData_ch2 != nullptr) {
-			delete[] LissajoustempData_ch2;
-		}
-		if (Image != nullptr) {
-			delete[] Image;
-		}
-		if (Image_ch2 != nullptr) {
-			delete[] Image_ch2;
-		}
+		//if (LissajousrawData != nullptr) {
+		//	delete[] LissajoustempData;
+		//}
+		//if (LissajousrawData_ch2 != nullptr) {
+		//	delete[] LissajoustempData_ch2;
+		//}
+		//if (Image != nullptr) {
+		//	delete[] Image;
+		//}
+		//if (Image_ch2 != nullptr) {
+		//	delete[] Image_ch2;
+		//}
 	}
 
 	void YSImageMerge::ReconstructAllTiffInFolder() {
@@ -1462,8 +1478,8 @@ namespace NTU {
 		}
 
 		double t = double(sample_idx) / sampling_rate;
-		int x = int(round((widthpixelnum / 2.0) * (1 + sin(2 * M_PI * double(xfreq) * t))));
-		int y = int(round((heightpixelnum / 2.0) * (1 + sin(2 * M_PI * double(yfreq) * t + lissajous_phase))));
+		int x = int(round((widthpixelnum / 2.0) * (1 - sin(2 * M_PI * double(xfreq) * t))));
+		int y = int(round((heightpixelnum / 2.0) * (1 - sin(2 * M_PI * double(yfreq) * t + lissajous_phase))));
 		bool in_bounds = (0 <= x && x < widthpixelnum) && (0 <= y && y < heightpixelnum);
 		x_out = x;
 		y_out = y;

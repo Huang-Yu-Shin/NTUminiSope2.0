@@ -113,6 +113,8 @@ namespace NTU {
 
 		//Reconstruct
 		bool quickreconstruct = false;
+		bool firstreconstruct = true;
+		cv::Mat averageImg16;
 		void DisplayReconstructedLissajousImage();
 		void ReconstructAllTiffInFolder();
 

@@ -104,7 +104,7 @@ namespace NTU {
             int samplingratio = int(ntuscope->samplingRate / int(framerate));
             ntuscope->samplingRate = int(framerate) * samplingratio;
             total_samples = int(ntuscope->samplingRate / framerate);
-            float64 real_xamp = ntuscope->MEMS_xamp * MEMS_Xampratio_clk_Lissajous * MEMSampratio * ntuscope->MEMS_Xampratio_headmount* 0.9 ;
+            float64 real_xamp = ntuscope->MEMS_xamp * MEMS_Xampratio_clk_Lissajous * MEMSampratio * ntuscope->MEMS_Xampratio_headmount* 0.7 ;
             float64 real_yamp = ntuscope->MEMS_yamp * MEMS_Yampratio_clk_Lissajous * ntuscope->MEMS_Yampratio_headmount * 0.75;
             if (ntuscope->xfreq > 2200 || ntuscope->yfreq > 2200) {
                 MEMScutofffreq = MEMScutofffreq_high;

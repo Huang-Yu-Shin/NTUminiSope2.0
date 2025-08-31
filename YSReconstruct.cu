@@ -183,8 +183,8 @@ __global__ void processSamples_LISSAJOUS(U16* pBuffer, float64* tempImage, U16* 
     if (sampleIndex < totalsample) {
         double t = double(sampleIndex) / samplesPerSec;
 
-        int xPixel = int(std::round((xpixelnumber / 2) * (1 + sin(2 * M_PI * double(xfreq) * t))));
-        int yPixel = int(std::round((ypixelnumber / 2) * (1 + sin((2 * M_PI * double(yfreq) * t)+ phase))));
+        int xPixel = int(std::round((xpixelnumber / 2) * (1 - sin(2 * M_PI * double(xfreq) * t))));
+        int yPixel = int(std::round((ypixelnumber / 2) * (1 - sin((2 * M_PI * double(yfreq) * t)+ phase))));
 
         if (xPixel < xpixelnumber && yPixel < ypixelnumber && sampleMap[yPixel * xpixelnumber + xPixel] > 0) {
             tempImage[yPixel * xpixelnumber + xPixel] += float64(pBuffer[sampleIndex]);
