@@ -453,6 +453,134 @@ namespace NTU {
         }
     }
 
+    bool YSScan::twoD_raster_ultra_configure() {
+        if (taskHandlefilter != 0 && taskHandle != 0 && taskHandleTTL != 0) {
+            running = true;
+
+            if (!ReadCalibrationRatio_Raster(ntuscope->MEMS_xamp, ntuscope->MEMS_yamp, ntuscope->xfreq, MEMS_Xampratio_clk_raster, MEMS_Yampratio_clk_raster)) {
+                cout << "ERROR:ReadCalibrationRatio_Raster" << endl;
+            }
+            ntuscope->samplingRate = 500000;
+            samples_per_line = int(ntuscope->samplingRate / (2 * ntuscope->xfreq));  // 2 because we're working with half sine wave per line
+            total_samples = samples_per_line * ntuscope->num_lines;
+            double framerate = double(ntuscope->samplingRate) / double(total_samples);
+            ntuscope->framerate = framerate;
+            ntuscope->FOVx = ntuscope->MEMS_xamp * 90;
+            ntuscope->FOVy = ntuscope->MEMS_yamp * 90;
+            float64 real_xamp = ntuscope->MEMS_xamp * MEMS_Xampratio_clk_raster * MEMSampratio * ntuscope->MEMS_Xampratio_headmount;
+            float64 real_yamp = ntuscope->MEMS_yamp * MEMS_Yampratio_clk_raster * ntuscope->MEMS_Yampratio_headmount;
+            cout << "NI Sampling rate: " << ntuscope->samplingRate << endl;
+            cout << "NI samples per line: " << samples_per_line << endl;
+            cout << "NI total sample: " << total_samples << endl;
+            cout << "Frame rate: " << framerate << endl;
+            cout << "MEMS amp: " << real_xamp << " , " << real_yamp << endl;
+            cout << "FCLK ratio: " << MEMS_Xampratio_clk_raster << " , " << MEMS_Yampratio_clk_raster << endl;
+            cout << "Headmount ratio: " << ntuscope->MEMS_Xampratio_headmount << " , " << ntuscope->MEMS_Yampratio_headmount << endl;
+            cout << "MEMS offset: " << ntuscope->xoffset << " , " << ntuscope->yoffset << endl;
+            cout << "NI triggerdelay: " << NItriggerdelay << endl;
+            //ETL setup
+            //eCOMCaspErr setfocus_state = Casp_SetFocusVoltage(ntuscope->zoffset);
+
+            //MEMS start transient setup
+            transientdata_start = new float64[10000];
+            float64 increment_x_start = (ntuscope->xoffset - 0) / (5000 - 1);
+            float64 increment_y_start = (ntuscope->yoffset - 0) / (5000 - 1);
+            for (int i = 0; i < 5000; i++) {
+                transientdata_start[2 * i] = i * increment_x_start;
+                transientdata_start[2 * i + 1] = i * increment_y_start;
+            }
+            //MEMS stop transient setup
+            transientdata = new float64[10000];
+            float64 increment_x = (0 - ntuscope->xoffset) / (5000 - 1);
+            float64 increment_y = (0 - ntuscope->yoffset) / (5000 - 1);
+            for (int i = 0; i < 5000; i++) {
+                transientdata[2 * i] = ntuscope->xoffset + i * increment_x;
+                transientdata[2 * i + 1] = ntuscope->yoffset + i * increment_y;
+            }
+
+            DAQmxErrChk(DAQmxCfgSampClkTiming(taskHandle, "", ntuscope->samplingRate, DAQmx_Val_Rising, DAQmx_Val_FiniteSamps, 5000));
+            DAQmxErrChk(DAQmxWriteAnalogF64(taskHandle, 5000, false, 0.000000001, DAQmx_Val_GroupByScanNumber, transientdata_start, NULL, NULL));
+
+            DAQmxErrChk(DAQmxCreateCOPulseChanFreq(taskHandlefilter, "Dev1/ctr1", "filter clk", DAQmx_Val_Hz, DAQmx_Val_Low, 0.0, MEMScutofffreq, 0.5));
+            DAQmxErrChk(DAQmxCfgImplicitTiming(taskHandlefilter, DAQmx_Val_ContSamps, total_samples));
+            DAQmxErrChk(DAQmxCfgDigEdgeStartTrig(taskHandlefilter, "/Dev1/ao/SampleClock", DAQmx_Val_Rising));
+            DAQmxErrChk(DAQmxSetTrigAttribute(taskHandlefilter, DAQmx_StartTrig_Retriggerable, TRUE));
+
+            DAQmxErrChk(DAQmxStartTask(taskHandlefilter));
+            DAQmxErrChk(DAQmxStartTask(taskHandle));
+            DAQmxErrChk(DAQmxWaitUntilTaskDone(taskHandle, 0));
+            DAQmxErrChk(DAQmxStopTask(taskHandle));
+            DAQmxErrChk(DAQmxStopTask(taskHandlefilter));
+            DAQmxErrChk(DAQmxSetWriteOffset(taskHandlefilter, 0));
+            DAQmxErrChk(DAQmxSetWriteOffset(taskHandle, 0));
+
+            //MEMS input setup
+            rasterdata = new float64[total_samples * 2 * 2]; //for two frame
+            NIgenerateRaster(rasterdata, real_xamp, real_yamp, ntuscope->xoffset, ntuscope->yoffset, ntuscope->num_lines, ntuscope->xfreq, ntuscope->samplingRate);
+            DAQmxErrChk(DAQmxCfgSampClkTiming(taskHandle, "", ntuscope->samplingRate, DAQmx_Val_Rising, DAQmx_Val_ContSamps, total_samples * 2));
+            DAQmxErrChk(DAQmxWriteAnalogF64(taskHandle, total_samples * 2, FALSE, DAQmx_Val_WaitInfinitely, DAQmx_Val_GroupByScanNumber, rasterdata, NULL, NULL));
+
+            //MEMS TTL setup (line.frame trigger)            
+            DAQmxErrChk(DAQmxCreateDOChan(taskHandleTTL, "Dev1/port0/line1", "", DAQmx_Val_ChanPerLine));
+            DAQmxErrChk(DAQmxCreateDOChan(taskHandleTTL, "Dev1/port0/line0", "", DAQmx_Val_ChanPerLine));
+            DAQmxErrChk(DAQmxCreateDOChan(taskHandleTTL, "Dev1/port0/line2", "", DAQmx_Val_ChanPerLine));
+            DAQmxErrChk(DAQmxCfgSampClkTiming(taskHandleTTL, "/Dev1/ao/SampleClock", ntuscope->samplingRate, DAQmx_Val_Rising, DAQmx_Val_ContSamps, total_samples * 2));
+            int numberofchannel = 3;
+            ttldata = new uInt8[total_samples * 2 * numberofchannel];
+            fill(ttldata, ttldata + (total_samples * 2 * numberofchannel), 0);
+            int risingEdgeDelaySamples = static_cast<int>(ntuscope->samplingRate * NItriggerdelay);
+            int risingEdgeDelaySamples_frame = risingEdgeDelaySamples - 5;
+
+            //frame trigger
+            for (int frame = 0; frame < 2; frame++) {
+                int frame_offset = frame * total_samples;
+                int frame_startIndex = frame_offset + risingEdgeDelaySamples_frame;
+                int frame_endIndex = frame_startIndex + int((total_samples - risingEdgeDelaySamples_frame) / 2);
+                for (int i = frame_startIndex; i < frame_endIndex; i++) {
+                    ttldata[i * numberofchannel + 0] = 1;
+                }
+            }
+            //line trigger
+            for (int frame = 0; frame < 2; frame++) {
+                int frame_offset = frame * total_samples;
+                for (int line = 0; line < ntuscope->num_lines; ++line) {
+                    int line_startIndex = frame_offset + line * samples_per_line + risingEdgeDelaySamples;
+                    int line_endIndex = line_startIndex + int((samples_per_line - risingEdgeDelaySamples) / 2);
+                    int line_endBoundary = frame_offset + (line + 1) * samples_per_line;
+                    for (int i = line_startIndex; i < line_endIndex && i < line_endBoundary; i++) {
+                        ttldata[i * numberofchannel + 1] = 1;
+                    }
+                }
+            }
+            //chopper trigger
+            ntuscope->chopperfreq = int(int(2 * ntuscope->xfreq) / ntuscope->chopperdownscale);
+            for (int frame = 0; frame < 2; frame++) {
+                int frame_offset = frame * total_samples;
+                for (int line = 0; line < ntuscope->num_lines; ++line) {
+                    if (line % ntuscope->chopperdownscale == 0) {
+                        int chopper_index = frame_offset + line * samples_per_line + risingEdgeDelaySamples;
+                        int chopper_endIndex = chopper_index + int((samples_per_line - risingEdgeDelaySamples) / 2 * ntuscope->chopperdownscale);
+                        int chopper_boundary = frame_offset + (line + 1) * samples_per_line * ntuscope->chopperdownscale;
+                        for (int i = chopper_index; i < chopper_endIndex && i < chopper_boundary; i++) {
+                            ttldata[i * numberofchannel + 2] = 1;
+                        }
+                    }
+                }
+            }
+            DAQmxErrChk(DAQmxWriteDigitalLines(taskHandleTTL, total_samples * 2, FALSE, 10, DAQmx_Val_GroupByScanNumber, ttldata, NULL, NULL));
+
+
+            //MEMS filter clk setup
+            DAQmxErrChk(DAQmxCfgImplicitTiming(taskHandlefilter, DAQmx_Val_ContSamps, total_samples));
+            DAQmxErrChk(DAQmxCfgDigEdgeStartTrig(taskHandlefilter, "/Dev1/ao/SampleClock", DAQmx_Val_Rising));
+
+            return true;
+        }
+        else {
+            return false;
+        }
+    }
+
     void YSScan::alignment() {
 
         if (ntuscope->xoffset > 10 || ntuscope->xoffset < -10 || ntuscope->yoffset>10 || ntuscope->yoffset < -10) {

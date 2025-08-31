@@ -104,6 +104,14 @@ namespace NTU {
             ntuscope->Xpixelsize_save= int(double(ntuscope->Ypixelsize_save) * double(ntuscope->MEMS_xamp / ntuscope->MEMS_yamp));
             totalsample = int(ntuscope->samplesPerSec / (2 * ntuscope->xfreq) * ntuscope->num_lines);
         }
+        else if (scanmode == RASTER_ULTRA) {
+            ntuscope->Pixelnumy = ntuscope->num_lines;
+            ntuscope->Pixelnumx = int(double(ntuscope->Pixelnumy) * double(ntuscope->MEMS_xamp / ntuscope->MEMS_yamp));
+            ntuscope->Ypixelsize_display = int(double(ntuscope->Xpixelsize_display) * double(ntuscope->MEMS_yamp / ntuscope->MEMS_xamp));
+            ntuscope->Ypixelsize_save = ntuscope->num_lines;
+            ntuscope->Xpixelsize_save = int(double(ntuscope->Ypixelsize_save) * double(ntuscope->MEMS_xamp / ntuscope->MEMS_yamp));
+            totalsample = int(double(ntuscope->samplesPerSec) / (2 * ntuscope->xfreq) * double(ntuscope->num_lines));
+        }
         else if (scanmode == LISSAJOUS_2D) {
             if (ntuscope->MEMS_yamp<=0.5 || ntuscope->MEMS_xamp<=0.5) {
                 ntuscope->Pixelnumx = 128;
@@ -140,11 +148,6 @@ namespace NTU {
             cerr << "Error: AlazarInputControl failed -- " << AlazarErrorToText(retCode) << endl;
             success = false;
         }
-        //retCode = AlazarInputControlEx(boardHandle, CHANNEL_B, DC_COUPLING, INPUT_RANGE_PM_800_MV, IMPEDANCE_50_OHM);
-        //if (retCode != ApiSuccess) {
-        //    cerr << "Error: AlazarInputControl failed -- " << AlazarErrorToText(retCode) << endl;
-        //    success = false;
-        //}
 
         // Set clock AuxIO output
         if (scanmode == LISSAJOUS_2D) {
@@ -154,7 +157,7 @@ namespace NTU {
                 success = false;
             }
         }
-        else if (scanmode == RASTER || scanmode == RASTER_SLOW) {
+        else if (scanmode == RASTER || scanmode == RASTER_SLOW || scanmode == RASTER_ULTRA) {
             retCode = AlazarConfigureAuxIO(boardHandle, AUX_IN_TRIGGER_ENABLE, TRIGGER_SLOPE_POSITIVE);
             if (retCode != ApiSuccess) {
                 cerr << "Error: AlazarConfigureAuxIO failed -- " << AlazarErrorToText(retCode) << endl;
@@ -187,7 +190,7 @@ namespace NTU {
         }
 
         // To set up sample points
-        if (scanmode == RASTER || scanmode == RASTER_SLOW) {
+        if (scanmode == RASTER || scanmode == RASTER_SLOW || scanmode == RASTER_ULTRA) {
             U32 sampleinrecord = totalsample / ntuscope->num_lines;
             sampleinrecord = sampleinrecord - (sampleinrecord % 128); //Because the number of sample points must be multiple of 16
             postTriggerSamples = sampleinrecord;
@@ -206,7 +209,7 @@ namespace NTU {
         }
         cout << "Bits per sample: " << int(bitsPerSample) << " Max samples per channel: " << maxSamplesPerChannel << endl;
 
-        if (scanmode == RASTER || scanmode == RASTER_SLOW) recordsPerBuffer = ntuscope->num_lines; //defalt is 1
+        if (scanmode == RASTER || scanmode == RASTER_SLOW || scanmode == RASTER_ULTRA) recordsPerBuffer = ntuscope->num_lines; //defalt is 1
         float bytesPerSample = static_cast<float>((bitsPerSample + 7) / 8);
         samplesPerRecord = (preTriggerSamples + postTriggerSamples);
         U32 bytesPerRecord = static_cast<U32>(bytesPerSample * samplesPerRecord + 0.5);
@@ -238,7 +241,7 @@ namespace NTU {
             if (scanmode == LISSAJOUS_2D) {
                 recordsPerAcquisition = 0x7FFFFFFF;
             }
-            else if (scanmode == RASTER || scanmode == RASTER_SLOW) {
+            else if (scanmode == RASTER || scanmode == RASTER_SLOW || scanmode == RASTER_ULTRA) {
                 buffersPerAcquisition = 1;
                 //recordsPerAcquisition = recordsPerBuffer * buffersPerAcquisition;
                 recordsPerAcquisition = 0x7FFFFFFF;
@@ -340,6 +343,14 @@ namespace NTU {
             ntuscope->Xpixelsize_save = int(double(ntuscope->Ypixelsize_save) * double(ntuscope->MEMS_xamp / ntuscope->MEMS_yamp));
             totalsample = int(ntuscope->samplesPerSec / (2 * ntuscope->xfreq) * ntuscope->num_lines);
         }
+        else if (scanmode == RASTER_ULTRA) {
+            ntuscope->Pixelnumx = 256;
+            ntuscope->Pixelnumy = ntuscope->num_lines;
+            ntuscope->Ypixelsize_display = int(double(ntuscope->Xpixelsize_display) * double(ntuscope->MEMS_yamp / ntuscope->MEMS_xamp));
+            ntuscope->Ypixelsize_save = ntuscope->num_lines;
+            ntuscope->Xpixelsize_save = int(double(ntuscope->Ypixelsize_save) * double(ntuscope->MEMS_xamp / ntuscope->MEMS_yamp));
+            totalsample = int(double(ntuscope->samplesPerSec) / (2 * ntuscope->xfreq) * double(ntuscope->num_lines));
+        }
         else if (scanmode == LISSAJOUS_2D) {
             if (ntuscope->MEMS_yamp <= 0.5 || ntuscope->MEMS_xamp <= 0.5) {
                 ntuscope->Pixelnumx = 128;
@@ -385,7 +396,7 @@ namespace NTU {
                 success = false;
             }
         }
-        else if (scanmode == RASTER || scanmode == RASTER_SLOW) {
+        else if (scanmode == RASTER || scanmode == RASTER_SLOW || scanmode == RASTER_ULTRA) {
             retCode = AlazarConfigureAuxIO(boardHandle, AUX_IN_TRIGGER_ENABLE, TRIGGER_SLOPE_POSITIVE);
             if (retCode != ApiSuccess) {
                 cerr << "Error: AlazarConfigureAuxIO failed -- " << AlazarErrorToText(retCode) << endl;
@@ -418,7 +429,7 @@ namespace NTU {
         }
 
         // To set up sample points
-        if (scanmode == RASTER || scanmode == RASTER_SLOW) {
+        if (scanmode == RASTER || scanmode == RASTER_SLOW || scanmode == RASTER_ULTRA) {
             U32 sampleinrecord = totalsample / ntuscope->num_lines;
             sampleinrecord = sampleinrecord - (sampleinrecord % 128); //Because the number of sample points must be multiple of 16
             postTriggerSamples = sampleinrecord;
@@ -437,7 +448,7 @@ namespace NTU {
         }
         cout << "Bits per sample: " << int(bitsPerSample) << " Max samples per channel: " << maxSamplesPerChannel << endl;
 
-        if (scanmode == RASTER || scanmode == RASTER_SLOW) recordsPerBuffer = ntuscope->num_lines; //defalt is 1
+        if (scanmode == RASTER || scanmode == RASTER_SLOW || scanmode == RASTER_ULTRA) recordsPerBuffer = ntuscope->num_lines; //defalt is 1
         float bytesPerSample = static_cast<float>((bitsPerSample + 7) / 8);
         samplesPerRecord = (preTriggerSamples + postTriggerSamples);
         U32 bytesPerRecord = static_cast<U32>(bytesPerSample * samplesPerRecord + 0.5);
@@ -475,7 +486,7 @@ namespace NTU {
             if (scanmode == LISSAJOUS_2D) {
                 recordsPerAcquisition = 0x7FFFFFFF;
             }
-            else if (scanmode == RASTER || scanmode == RASTER_SLOW) {
+            else if (scanmode == RASTER || scanmode == RASTER_SLOW || scanmode == RASTER_ULTRA) {
                 buffersPerAcquisition = 1;
                 //recordsPerAcquisition = recordsPerBuffer * buffersPerAcquisition;
                 recordsPerAcquisition = 0x7FFFFFFF;
@@ -655,7 +666,7 @@ namespace NTU {
                                 processed = ProcessBufferAndFill_2DLissajousImage(transientBuffers[bufferIndex], bufferStartTimes[bufferIndex], bufferStartTimes_system[bufferIndex],frameorder[bufferIndex]);
                             }   
                         }
-                        else if (scanmode == RASTER || scanmode == RASTER_SLOW) {
+                        else if (scanmode == RASTER || scanmode == RASTER_SLOW || scanmode == RASTER_ULTRA) {
                             if (ntuscope->applychopper == true) {
                                 processed = ProcessBufferAndFill_2DRasterImageTwoChannel(transientBuffers[bufferIndex], bufferStartTimes[bufferIndex], bufferStartTimes_system[bufferIndex], frameorder[bufferIndex]);
                             }
@@ -1250,7 +1261,6 @@ namespace NTU {
         //Display img generate
         cv::Mat finalImage;
         gpu_8bitRGB.download(finalImage);
-
         Addtext(finalImage, ntuscope->refreshtime, ntuscope->Xpixelsize_display, ntuscope->Ypixelsize_display);
         cv::imshow("Real-Time Image", finalImage);
         cv::waitKey(1);
@@ -2141,7 +2151,7 @@ namespace NTU {
             rawfile.close();
             cout << "CSV file created successfully at: " << rawcsvpath << endl;
         }
-        if (scanmode == RASTER) {
+        if (scanmode == RASTER || scanmode ==RASTER_ULTRA) {
             if (ntuscope->applychopper == false) {
                 string csvpath = ntuscope->folderPath + "\\scan_spec.csv";
                 ofstream file(csvpath);
@@ -2149,6 +2159,7 @@ namespace NTU {
                 file << "num_of_line," << ntuscope->num_lines << endl;
                 file << "xamp," << ntuscope->MEMS_xamp << endl;
                 file << "yamp," << ntuscope->MEMS_yamp << endl;
+                file << "spaceperline," << ntuscope->MEMS_spaceoerkine << endl;
                 file << "samplingrate," << ntuscope->samplesPerSec << endl;
                 file << "num of samples," << int(samplesPerBuffer) << endl;
                 if (ntuscope->inputrangetype == INPUT_RANGE_PM_500_MV) {
@@ -2180,6 +2191,7 @@ namespace NTU {
                 rawfile << "num_of_line," << ntuscope->num_lines << endl;
                 rawfile << "xamp," << ntuscope->MEMS_xamp << endl;
                 rawfile << "yamp," << ntuscope->MEMS_yamp << endl;
+                rawfile << "spaceperline," << ntuscope->MEMS_spaceoerkine << endl;
                 rawfile << "samplingrate," << ntuscope->samplesPerSec << endl;
                 rawfile << "num of samples," << int(samplesPerBuffer) << endl;
                 if (ntuscope->inputrangetype == INPUT_RANGE_PM_500_MV) {

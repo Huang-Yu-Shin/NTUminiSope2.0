@@ -41,6 +41,7 @@ namespace NTU {
         bool twoD_lissajous_configure();
         bool twoD_raster_configure();
         bool twoD_raster_slow_configure();
+        bool twoD_raster_ultra_configure();
         bool ReadCalibrationRatio_Raster(double xAmp, double yAmp, double inputFreq, double& xRatio, double& yRatio);
         bool ReadCalibrationRatio_Lissajous(double xAmp, double yAmp, double inputXFreq, double inputYFreq, double& xRatio, double& yRatio);
         double NItriggerdelay;

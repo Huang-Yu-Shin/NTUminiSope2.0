@@ -12,7 +12,7 @@ namespace NTU {
         YSNTUscope* ntuscope;
         CudaMemoryManager* cudamanager;
 
-        enum ScanMode { LISSAJOUS_2D, RASTER, RASTER_SLOW, LISSAJOUS_3D };
+        enum ScanMode { LISSAJOUS_2D, RASTER, RASTER_SLOW, RASTER_ULTRA, LISSAJOUS_3D };
         enum ClockType { INTClock2M, INTClock10M, INTClock20M, INTClock50M, INTClock100M, INTClock125M, EXTClock };
         ScanMode scanmode;
         ClockType clocktype_mapping;

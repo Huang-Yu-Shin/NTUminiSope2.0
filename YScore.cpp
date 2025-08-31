@@ -183,6 +183,40 @@ namespace NTU {
         }
     }
 
+    void YSCore::TWODRaster_ultrafast_configure(double focaloffset, double xfreq, double MEMSFASTamplitude, double SpaceOfLine, int num_lines, double midx, double midy, int clocktype) {
+        ntuscope->clocktype = clocktype;
+        ntuscope->MEMS_xamp = MEMSFASTamplitude;
+        ntuscope->MEMS_spaceoerkine = SpaceOfLine;
+        ntuscope->MEMS_yamp = double(num_lines-1) * SpaceOfLine;
+        ntuscope->xfreq = xfreq;
+        ntuscope->yfreq = 0;
+        ntuscope->xoffset = midx;
+        ntuscope->yoffset = midy;
+        ntuscope->num_lines = num_lines;
+        ntuscope->zoffset = focaloffset;
+        ntuscope->zstep = 0;
+        ntuscope->zlayer = 0;
+        cout << "XAMP:" << ntuscope->MEMS_xamp << "   YAMP:" << ntuscope->MEMS_yamp<<endl;
+        cout << "NUMLINE:" << ntuscope->num_lines << "   SPACEPERLINE:" << ntuscope->MEMS_spaceoerkine << endl;
+        cout << "LINEFREQ:" << ntuscope->xfreq << endl;
+        if (ntuscope->applychopper == false) {
+            if (mapping->ConfigureBoard(mapping->RASTER_ULTRA)) {
+                cout << "Configure Alazar : Success" << endl;
+                cout << "---------------------" << endl;
+            }
+        }
+        else if (ntuscope->applychopper == true) {
+            if (mapping->ConfigureBoardTwoChannel(mapping->RASTER_ULTRA)) {
+                cout << "Configure AlazarTwoChannel : Success" << endl;
+                cout << "---------------------" << endl;
+            }
+        }
+        if (scanning->twoD_raster_ultra_configure()) {
+            cout << "Configure NIDAQ and ETL : Success" << endl;
+            cout << "---------------------" << endl;
+        }
+    }
+
     void YSCore::TWODrasterimage() {
         if (mapping->StartAcquireData()) {
             cout << "Start Alazar data: Success" << endl;

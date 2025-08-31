@@ -50,6 +50,7 @@ namespace NTU
 		//MEMS
 		double MEMS_xamp = 1;
 		double MEMS_yamp = 1;
+		double MEMS_spaceoerkine = 0.5;
 		double xfreq = 2100;
 		double yfreq = 2000;
 		double xoffset = 0;
