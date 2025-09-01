@@ -43,6 +43,7 @@ namespace NTU {
         bool ProcessBufferAndFill_2DLissajousImage(U16* Buffer, high_resolution_clock::time_point starttime, system_clock::time_point starttime_system, U32 frameorder);
         bool ProcessBufferAndFill_2DLissajousImage_highspeed(U16* Buffer, high_resolution_clock::time_point starttime, system_clock::time_point starttime_system, U32 frameorder);
         bool ProcessBufferAndFill_2DRasterImage(U16* Buffer, high_resolution_clock::time_point starttime, system_clock::time_point starttime_system, U32 frameorder);
+        bool ProcessBufferAndFill_2DRasterImage_highspeed(U16* Buffer, high_resolution_clock::time_point starttime, system_clock::time_point starttime_system, U32 frameorder);
         bool ProcessBufferAndFill_2DRasterImageTwoChannel(U16* Buffer, high_resolution_clock::time_point starttime, system_clock::time_point starttime_system, U32 frameorder);
         void WarmupLissajousImageProcessing();
         bool StartAcquireData();
@@ -53,6 +54,7 @@ namespace NTU {
         bool Saveimage_RASTER(cv::Mat final_display_img , vector<U16>& buffer_save, system_clock::time_point starttime_system);
         bool Saveimage_LISSAJOUS(cv::Mat final_display_img, vector<U16>& buffer_save, system_clock::time_point starttime_system);
         bool Saveimage_LISSAJOUSBin_highspeed(U16* Buffer, system_clock::time_point starttime_system);
+        bool Saveimage_RASTER_highspeed(cv::Mat final_display_img, vector<U16>& buffer_save, system_clock::time_point starttime_system);
         bool Saveimage_RASTER2CH_highspeed(cv::Mat final_display_img, vector<U16>& buffer_save, system_clock::time_point starttime_system);
         void CloseAlazar();
         void Trensientstep();

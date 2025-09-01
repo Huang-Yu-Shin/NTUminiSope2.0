@@ -52,11 +52,12 @@ double YSlinefreq_array[10] = {100,125,200,250,400,500,625,800,1000,1250};
 double YSUltraRasterlinefreq_array[5] = { 1250,1300,1400,1500,1600 };
 int YSchopperdownscale_array[3] = { 1,2,4 };
 int YSyline_array[7] = { 16,32,64,128,256,512,1024 };
-int YSUltraRasteryline_array[8] = { 2,4,6,8,10,12,14,16 };
+int YSUltraRasteryline_array[8] = {1,2,3,4,5,6 };
 double YSphase[8] = { 0 ,M_PI_4, M_PI_2 ,3*M_PI_4, M_PI , 5*M_PI_4,  3 * M_PI_2, 7*M_PI_4 };
 std::string YSphasename[8] = {"0","PI/4" ,"PI/2","3PI/4" ,"PI","5PI/4", "3PI/2","7PI/4"};
 U32 inputrange[3] = { INPUT_RANGE_PM_500_MV,INPUT_RANGE_PM_800_MV,INPUT_RANGE_PM_1_V };
 int YSchopperphase[9] = { 0,45,90,135,180,225,270,315,360 };
+double YSspaceperline[4] = { 0.04 , 0.03 , 0.02 , 0.01 };
 // Timer
 clock_t t_before, t_after;
 
@@ -660,7 +661,7 @@ private: System::Windows::Forms::ComboBox^ YScomboBox__ultraraster_chopperfreq;
 
 private: System::Windows::Forms::Label^ label71;
 private: System::Windows::Forms::Button^ YSbutton_ultraraster_setamp;
-private: System::Windows::Forms::TextBox^ YStextBox__ultraraster_spaceperline;
+
 
 
 private: System::Windows::Forms::TextBox^ YStextBox__ultraraster_longaxisamp;
@@ -701,7 +702,7 @@ private: System::Windows::Forms::TextBox^ YStextBox__ultraraster_xoffset;
 
 private: System::Windows::Forms::Label^ label76;
 private: System::Windows::Forms::Label^ label77;
-private: System::Windows::Forms::TrackBar^ YStrackBar__ultraraster_spaceperline;
+
 
 
 private: System::Windows::Forms::Label^ label78;
@@ -710,6 +711,9 @@ private: System::Windows::Forms::TrackBar^ YStrackBar__ultraraster_longaxisamp;
 
 private: System::Windows::Forms::Label^ label79;
 private: System::Windows::Forms::TextBox^ textBox_raster_chopperphase;
+private: System::Windows::Forms::ComboBox^ comboBox_ultraraster_spaceperline;
+
+
 
 
 
@@ -927,9 +931,10 @@ private: System::Windows::Forms::TextBox^ textBox_raster_chopperphase;
 			this->YScomboBox__raster_linefreq->SelectedIndex = 9;
 			this->YScomboBox__raster_yline->SelectedIndex = 4;
 			this->YScomboBox__raster_chopperfreq->SelectedIndex = 2;
-			this->YScomboBox__ultraraster_linefreq->SelectedIndex = 0;
-			this->YScomboBox__ultraraster_yline->SelectedIndex = 0;
+			this->YScomboBox__ultraraster_linefreq->SelectedIndex = 4;
+			this->YScomboBox__ultraraster_yline->SelectedIndex = 2;
 			this->YScomboBox__ultraraster_chopperfreq->SelectedIndex = 2;
+			this->comboBox_ultraraster_spaceperline->SelectedIndex = 1;
 			// Loading progress
 			load_obj->send_progress(85);
 
@@ -1381,13 +1386,13 @@ private:
 			this->YStrackBar__lissajous_x_amp = (gcnew System::Windows::Forms::TrackBar());
 			this->label40 = (gcnew System::Windows::Forms::Label());
 			this->tabPage7 = (gcnew System::Windows::Forms::TabPage());
+			this->comboBox_ultraraster_spaceperline = (gcnew System::Windows::Forms::ComboBox());
 			this->label_ultraraster_channeldisplay = (gcnew System::Windows::Forms::Label());
 			this->toggleButtons_ultraraster_channeldisplay = (gcnew CustomControls::DefineControls::ToggleButtons());
 			this->label70 = (gcnew System::Windows::Forms::Label());
 			this->YScomboBox__ultraraster_chopperfreq = (gcnew System::Windows::Forms::ComboBox());
 			this->label71 = (gcnew System::Windows::Forms::Label());
 			this->YSbutton_ultraraster_setamp = (gcnew System::Windows::Forms::Button());
-			this->YStextBox__ultraraster_spaceperline = (gcnew System::Windows::Forms::TextBox());
 			this->YStextBox__ultraraster_longaxisamp = (gcnew System::Windows::Forms::TextBox());
 			this->YSlabel_ultraraster_phase = (gcnew System::Windows::Forms::Label());
 			this->YStrackBar_ultraraster_phase = (gcnew System::Windows::Forms::TrackBar());
@@ -1403,7 +1408,6 @@ private:
 			this->YStextBox__ultraraster_xoffset = (gcnew System::Windows::Forms::TextBox());
 			this->label76 = (gcnew System::Windows::Forms::Label());
 			this->label77 = (gcnew System::Windows::Forms::Label());
-			this->YStrackBar__ultraraster_spaceperline = (gcnew System::Windows::Forms::TrackBar());
 			this->label78 = (gcnew System::Windows::Forms::Label());
 			this->YStrackBar__ultraraster_longaxisamp = (gcnew System::Windows::Forms::TrackBar());
 			this->label79 = (gcnew System::Windows::Forms::Label());
@@ -1537,7 +1541,6 @@ private:
 			(cli::safe_cast<System::ComponentModel::ISupportInitialize^>(this->YStrackBar__lissajous_x_amp))->BeginInit();
 			this->tabPage7->SuspendLayout();
 			(cli::safe_cast<System::ComponentModel::ISupportInitialize^>(this->YStrackBar_ultraraster_phase))->BeginInit();
-			(cli::safe_cast<System::ComponentModel::ISupportInitialize^>(this->YStrackBar__ultraraster_spaceperline))->BeginInit();
 			(cli::safe_cast<System::ComponentModel::ISupportInitialize^>(this->YStrackBar__ultraraster_longaxisamp))->BeginInit();
 			this->tabPage17->SuspendLayout();
 			this->panel2->SuspendLayout();
@@ -4860,13 +4863,13 @@ private:
 			// tabPage7
 			// 
 			this->tabPage7->BackColor = System::Drawing::Color::DimGray;
+			this->tabPage7->Controls->Add(this->comboBox_ultraraster_spaceperline);
 			this->tabPage7->Controls->Add(this->label_ultraraster_channeldisplay);
 			this->tabPage7->Controls->Add(this->toggleButtons_ultraraster_channeldisplay);
 			this->tabPage7->Controls->Add(this->label70);
 			this->tabPage7->Controls->Add(this->YScomboBox__ultraraster_chopperfreq);
 			this->tabPage7->Controls->Add(this->label71);
 			this->tabPage7->Controls->Add(this->YSbutton_ultraraster_setamp);
-			this->tabPage7->Controls->Add(this->YStextBox__ultraraster_spaceperline);
 			this->tabPage7->Controls->Add(this->YStextBox__ultraraster_longaxisamp);
 			this->tabPage7->Controls->Add(this->YSlabel_ultraraster_phase);
 			this->tabPage7->Controls->Add(this->YStrackBar_ultraraster_phase);
@@ -4882,7 +4885,6 @@ private:
 			this->tabPage7->Controls->Add(this->YStextBox__ultraraster_xoffset);
 			this->tabPage7->Controls->Add(this->label76);
 			this->tabPage7->Controls->Add(this->label77);
-			this->tabPage7->Controls->Add(this->YStrackBar__ultraraster_spaceperline);
 			this->tabPage7->Controls->Add(this->label78);
 			this->tabPage7->Controls->Add(this->YStrackBar__ultraraster_longaxisamp);
 			this->tabPage7->Controls->Add(this->label79);
@@ -4892,6 +4894,21 @@ private:
 			this->tabPage7->Size = System::Drawing::Size(390, 301);
 			this->tabPage7->TabIndex = 3;
 			this->tabPage7->Text = L"2D Ultrafast Raster";
+			// 
+			// comboBox_ultraraster_spaceperline
+			// 
+			this->comboBox_ultraraster_spaceperline->BackColor = System::Drawing::SystemColors::ScrollBar;
+			this->comboBox_ultraraster_spaceperline->Font = (gcnew System::Drawing::Font(L"Segoe UI", 11.25F, System::Drawing::FontStyle::Regular,
+				System::Drawing::GraphicsUnit::Point, static_cast<System::Byte>(0)));
+			this->comboBox_ultraraster_spaceperline->FormattingEnabled = true;
+			this->comboBox_ultraraster_spaceperline->Items->AddRange(gcnew cli::array< System::Object^  >(4) {
+				L"0.04", L"0.03", L"0.02",
+					L"0.01"
+			});
+			this->comboBox_ultraraster_spaceperline->Location = System::Drawing::Point(156, 129);
+			this->comboBox_ultraraster_spaceperline->Name = L"comboBox_ultraraster_spaceperline";
+			this->comboBox_ultraraster_spaceperline->Size = System::Drawing::Size(137, 33);
+			this->comboBox_ultraraster_spaceperline->TabIndex = 140;
 			// 
 			// label_ultraraster_channeldisplay
 			// 
@@ -4968,18 +4985,6 @@ private:
 			this->YSbutton_ultraraster_setamp->Text = L"Set amp.";
 			this->YSbutton_ultraraster_setamp->UseVisualStyleBackColor = true;
 			this->YSbutton_ultraraster_setamp->Click += gcnew System::EventHandler(this, &MTPFM::YSbutton_ultraraster_setamp_Click);
-			// 
-			// YStextBox__ultraraster_spaceperline
-			// 
-			this->YStextBox__ultraraster_spaceperline->BackColor = System::Drawing::Color::Silver;
-			this->YStextBox__ultraraster_spaceperline->Font = (gcnew System::Drawing::Font(L"Segoe UI", 11.25F, System::Drawing::FontStyle::Bold,
-				System::Drawing::GraphicsUnit::Point, static_cast<System::Byte>(0)));
-			this->YStextBox__ultraraster_spaceperline->Location = System::Drawing::Point(284, 123);
-			this->YStextBox__ultraraster_spaceperline->Name = L"YStextBox__ultraraster_spaceperline";
-			this->YStextBox__ultraraster_spaceperline->Size = System::Drawing::Size(61, 32);
-			this->YStextBox__ultraraster_spaceperline->TabIndex = 133;
-			this->YStextBox__ultraraster_spaceperline->Text = L"0.5";
-			this->YStextBox__ultraraster_spaceperline->TextAlign = System::Windows::Forms::HorizontalAlignment::Center;
 			// 
 			// YStextBox__ultraraster_longaxisamp
 			// 
@@ -5080,9 +5085,9 @@ private:
 			this->YScomboBox__ultraraster_yline->Font = (gcnew System::Drawing::Font(L"Segoe UI", 11.25F, System::Drawing::FontStyle::Regular,
 				System::Drawing::GraphicsUnit::Point, static_cast<System::Byte>(0)));
 			this->YScomboBox__ultraraster_yline->FormattingEnabled = true;
-			this->YScomboBox__ultraraster_yline->Items->AddRange(gcnew cli::array< System::Object^  >(8) {
-				L"2", L"4", L"6", L"8", L"10",
-					L"12", L"14", L"16"
+			this->YScomboBox__ultraraster_yline->Items->AddRange(gcnew cli::array< System::Object^  >(6) {
+				L"1", L"2", L"3", L"4", L"5",
+					L"6"
 			});
 			this->YScomboBox__ultraraster_yline->Location = System::Drawing::Point(268, 165);
 			this->YScomboBox__ultraraster_yline->Name = L"YScomboBox__ultraraster_yline";
@@ -5175,20 +5180,6 @@ private:
 			this->label77->Size = System::Drawing::Size(77, 25);
 			this->label77->TabIndex = 117;
 			this->label77->Text = L"XOffset";
-			// 
-			// YStrackBar__ultraraster_spaceperline
-			// 
-			this->YStrackBar__ultraraster_spaceperline->AutoSize = false;
-			this->YStrackBar__ultraraster_spaceperline->BackColor = System::Drawing::Color::DimGray;
-			this->YStrackBar__ultraraster_spaceperline->LargeChange = 1;
-			this->YStrackBar__ultraraster_spaceperline->Location = System::Drawing::Point(119, 125);
-			this->YStrackBar__ultraraster_spaceperline->Maximum = 100;
-			this->YStrackBar__ultraraster_spaceperline->Name = L"YStrackBar__ultraraster_spaceperline";
-			this->YStrackBar__ultraraster_spaceperline->Size = System::Drawing::Size(163, 30);
-			this->YStrackBar__ultraraster_spaceperline->TabIndex = 115;
-			this->YStrackBar__ultraraster_spaceperline->TickFrequency = 5;
-			this->YStrackBar__ultraraster_spaceperline->Value = 100;
-			this->YStrackBar__ultraraster_spaceperline->Scroll += gcnew System::EventHandler(this, &MTPFM::YStrackBar__ultraraster_spaceperline_Scroll);
 			// 
 			// label78
 			// 
@@ -6355,7 +6346,6 @@ private:
 			this->tabPage7->ResumeLayout(false);
 			this->tabPage7->PerformLayout();
 			(cli::safe_cast<System::ComponentModel::ISupportInitialize^>(this->YStrackBar_ultraraster_phase))->EndInit();
-			(cli::safe_cast<System::ComponentModel::ISupportInitialize^>(this->YStrackBar__ultraraster_spaceperline))->EndInit();
 			(cli::safe_cast<System::ComponentModel::ISupportInitialize^>(this->YStrackBar__ultraraster_longaxisamp))->EndInit();
 			this->tabPage17->ResumeLayout(false);
 			this->tabPage17->PerformLayout();
@@ -7475,16 +7465,17 @@ private:
 		aNTU->apply_median = toggleButtons_Median->Checked;
 		aNTU->apply_CLAHE = toggleButtons_CLAHE->Checked;
 
-		if (aYSNTU->highspeedmode == true || aYSNTU->applychopper == true) {
+		if (aYSNTU->highspeedmode == true || aYSNTU->applychopper == true || aYSNTU->highspeedmode_raster ==true) {
 			this->textBox_highspeedmode->BackColor = System::Drawing::Color::LimeGreen;
 			this->textBox_highspeedmode->ForeColor = System::Drawing::Color::White;
 			this->YScheckBox_saveraw->Enabled = false;
 			this->checkBox_saveprocessedimage->Enabled = false;
 		}
-		else if (aYSNTU->highspeedmode == false) {
+		else {
 			this->textBox_highspeedmode->BackColor = System::Drawing::Color::DimGray;
 			this->textBox_highspeedmode->ForeColor = System::Drawing::Color::Gray;
 			this->checkBox_saveprocessedimage->Enabled = true;
+			this->YScheckBox_saveraw->Enabled = true;
 		}
 		
 	}
@@ -7825,6 +7816,7 @@ private: System::Void toggleButtons_raster_chopper_CheckedChanged(System::Object
 	if (toggleButtons_raster_chopper->Checked == true) {
 		aYSNTU->applychopper = true;
 		toggleButtons_label_channeldisplay->Enabled = true;
+		toggleButtons_ultraraster_channeldisplay->Enabled = true;
 		label_channel->Text = "2 Channels";
 	}
 	else if (toggleButtons_raster_chopper->Checked == false) {
@@ -7832,6 +7824,8 @@ private: System::Void toggleButtons_raster_chopper_CheckedChanged(System::Object
 		aYSNTU->channeldisplay = false;
 		toggleButtons_label_channeldisplay->Checked = false;
 		toggleButtons_label_channeldisplay->Enabled = false;
+		toggleButtons_ultraraster_channeldisplay->Checked = false;
+		toggleButtons_ultraraster_channeldisplay->Enabled =false;
 		label_channel->Text = "1 Channel";
 		label_channeldisplay->Text = "PMT signal";
 	}
@@ -8449,15 +8443,10 @@ private: System::Void toggleButtons_defaltimageprocessing_CheckedChanged(System:
 
 private: System::Void YSbutton_ultraraster_setamp_Click(System::Object^ sender, System::EventArgs^ e) {
 	YStrackBar__ultraraster_longaxisamp->Value = System::Convert::ToInt32(System::Convert::ToDouble(YStextBox__ultraraster_longaxisamp->Text) * 100);
-	YStrackBar__ultraraster_spaceperline->Value = System::Convert::ToInt32(System::Convert::ToDouble(YStextBox__ultraraster_spaceperline->Text) * 200);
 }
 private: System::Void YStrackBar__ultraraster_longaxisamp_Scroll(System::Object^ sender, System::EventArgs^ e) {
 	double MEMS_longaxisamp = ((static_cast<double>(YStrackBar__ultraraster_longaxisamp->Value)) / 100);
 	YStextBox__ultraraster_longaxisamp->Text = MEMS_longaxisamp.ToString();
-}
-private: System::Void YStrackBar__ultraraster_spaceperline_Scroll(System::Object^ sender, System::EventArgs^ e) {
-	double MEMS_spaceperline = ((static_cast<double>(YStrackBar__ultraraster_spaceperline->Value)) / 200);
-	YStextBox__ultraraster_spaceperline->Text = MEMS_spaceperline.ToString();
 }
 private: System::Void YStrackBar_ultraraster_phase_Scroll(System::Object^ sender, System::EventArgs^ e) {
 	int phase_value = this->YStrackBar_ultraraster_phase->Value - 500;
@@ -8493,8 +8482,7 @@ private: System::Void YSbutton_ultraraster_configure_Click(System::Object^ sende
 	double ETLvoltage = System::Convert::ToDouble(textBox_ETL_voltage->Text);
 	double MEMS_xamplitude = ((static_cast<double>(YStrackBar__ultraraster_longaxisamp->Value)) / 100);
 	YStextBox__ultraraster_longaxisamp->Text = MEMS_xamplitude.ToString();
-	double MEMS_spaceperline = ((static_cast<double>(YStrackBar__ultraraster_spaceperline->Value)) / 200);
-	YStextBox__ultraraster_spaceperline->Text = MEMS_spaceperline.ToString();
+	double MEMS_spaceperline = YSspaceperline[comboBox_ultraraster_spaceperline->SelectedIndex];
 	double MEMS_linefreq = YSUltraRasterlinefreq_array[YScomboBox__ultraraster_linefreq->SelectedIndex];
 	double MEMS_xoffset = System::Convert::ToDouble(YStextBox__ultraraster_xoffset->Text);
 	double MEMS_yoffset = System::Convert::ToDouble(YStextBox__ultraraster_yoffset->Text);
@@ -8506,9 +8494,8 @@ private: System::Void YSbutton_ultraraster_configure_Click(System::Object^ sende
 		YSbutton_ultraraster_configure->Enabled = false;
 		YScomboBox_headmount->Enabled = false;
 		YStrackBar__ultraraster_longaxisamp->Enabled = false;
-		YStrackBar__ultraraster_spaceperline->Enabled = false;
+		comboBox_ultraraster_spaceperline->Enabled = false;
 		YStextBox__ultraraster_longaxisamp->Enabled = false;
-		YStextBox__ultraraster_spaceperline->Enabled = false;
 		YScomboBox__ultraraster_chopperfreq->Enabled = false;
 		toggleButtons_raster_chopper->Enabled = false;
 		YSbutton_ultraraster_stop->Enabled = true;
@@ -8545,9 +8532,8 @@ private: System::Void YSbutton_ultraraster_stop_Click(System::Object^ sender, Sy
 	YSbutton_ultraraster_configure->Enabled = true;
 	YScomboBox_headmount->Enabled = true;
 	YStrackBar__ultraraster_longaxisamp->Enabled = true;
-	YStrackBar__ultraraster_spaceperline->Enabled = true;
+	comboBox_ultraraster_spaceperline->Enabled = true;
 	YStextBox__ultraraster_longaxisamp->Enabled = true;
-	YStextBox__ultraraster_spaceperline->Enabled = true;
 	YScomboBox__ultraraster_chopperfreq->Enabled = true;
 	toggleButtons_raster_chopper->Enabled = true;
 	toggleButtons_allow_averaging->Checked = false;

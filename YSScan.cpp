@@ -460,7 +460,7 @@ namespace NTU {
             if (!ReadCalibrationRatio_Raster(ntuscope->MEMS_xamp, ntuscope->MEMS_yamp, ntuscope->xfreq, MEMS_Xampratio_clk_raster, MEMS_Yampratio_clk_raster)) {
                 cout << "ERROR:ReadCalibrationRatio_Raster" << endl;
             }
-            ntuscope->samplingRate = 500000;
+            ntuscope->samplingRate = int(500000/ ntuscope->xfreq)* ntuscope->xfreq;
             samples_per_line = int(ntuscope->samplingRate / (2 * ntuscope->xfreq));  // 2 because we're working with half sine wave per line
             total_samples = samples_per_line * ntuscope->num_lines;
             double framerate = double(ntuscope->samplingRate) / double(total_samples);

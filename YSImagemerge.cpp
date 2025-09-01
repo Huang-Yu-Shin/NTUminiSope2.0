@@ -2,8 +2,9 @@
 
 namespace NTU {
 
-	YSImageMerge::YSImageMerge(NTU::CudaCalPara* cudacalpara) {
+	YSImageMerge::YSImageMerge(NTU::CudaCalPara* cudacalpara, NTU::ReconstructPost* cudareconstruct) {
 		calpara = cudacalpara;
+		reconstruct = cudareconstruct;
 	}
 
 	YSImageMerge::~YSImageMerge() {
@@ -764,9 +765,22 @@ namespace NTU {
 			CopyScanSpecCSV(LISSAJOUSFolderPath, output_folder);
 		}
 		else if (channelcount == 2) {
+			size_t pos1 = LISSAJOUSFolderPath.find_last_of("\\/");
+			string tempfoldername = LISSAJOUSFolderPath.substr(pos1 + 1);
+			string folderrealname;
+			int underscores = 0;
+			for (size_t i = 0; i < tempfoldername.size(); ++i) {
+				if (tempfoldername[i] == '_') {
+					++underscores;
+					if (underscores == 3) {
+						folderrealname = tempfoldername.substr(i + 1);
+					}
+				}
+			}
+
 			string output_folder = LISSAJOUSFolderPath + "_TIFF";
-			string output_folder_ch1 = output_folder + "\\Ch1";
-			string output_folder_ch2 = output_folder + "\\Ch2";
+			string output_folder_ch1 = output_folder + "\\"+ folderrealname+"_Ch1";
+			string output_folder_ch2 = output_folder + "\\"+ folderrealname+"_Ch2";
 			CreateDirectoryA(output_folder.c_str(), NULL);
 			CreateDirectoryA(output_folder_ch1.c_str(), NULL);
 			CreateDirectoryA(output_folder_ch2.c_str(), NULL);
@@ -1045,11 +1059,19 @@ namespace NTU {
 			memset(LissajoustempData, 0, num_of_sample * sizeof(double));
 
 			memcpy(LissajoustempData, LissajousrawData, num_of_sample * sizeof(double));
-			if (offset_lissajous < num_of_sample) {
-				for (int i = num_of_sample - 1; i >= offset_lissajous; --i)
-					LissajoustempData[i] = LissajoustempData[i - offset_lissajous];
-				for (int i = 0; i < offset_lissajous; ++i)
-					LissajoustempData[i] = 0;
+			if (abs(offset_lissajous) < num_of_sample) {
+				if (offset_lissajous > 0) {
+					for (int i = num_of_sample - 1; i >= offset_lissajous; --i)
+						LissajoustempData[i] = LissajoustempData[i - offset_lissajous];
+					for (int i = 0; i < offset_lissajous; ++i)
+						LissajoustempData[i] = 0;
+				}
+				else if (offset_lissajous < 0) {
+					for (int i = 0; i < num_of_sample - abs(offset_lissajous); ++i)
+						LissajoustempData[i] = LissajoustempData[i + abs(offset_lissajous)];
+					for (int i = num_of_sample - abs(offset_lissajous); i < num_of_sample; ++i)
+						LissajoustempData[i] = 0;
+				}
 			}
 
 			for (int i = 0; i < num_of_sample; ++i) {
@@ -1228,11 +1250,19 @@ namespace NTU {
 				updateImage.convertTo(updateImage64, CV_64FC1);
 				memcpy(LissajoustempData, updateImage64.ptr<double>(), num_of_sample * sizeof(double));
 
-				if (offset_lissajous < num_of_sample) {
-					for (int i = num_of_sample - 1; i >= offset_lissajous; --i)
-						LissajoustempData[i] = LissajoustempData[i - offset_lissajous];
-					for (int i = 0; i < offset_lissajous; ++i)
-						LissajoustempData[i] = 0;
+				if (abs(offset_lissajous) < num_of_sample) {
+					if (offset_lissajous > 0) {
+						for (int i = num_of_sample - 1; i >= offset_lissajous; --i)
+							LissajoustempData[i] = LissajoustempData[i - offset_lissajous];
+						for (int i = 0; i < offset_lissajous; ++i)
+							LissajoustempData[i] = 0;
+					}
+					else if (offset_lissajous < 0) {
+						for (int i = 0; i < num_of_sample - abs(offset_lissajous); ++i)
+							LissajoustempData[i] = LissajoustempData[i + abs(offset_lissajous)];
+						for (int i = num_of_sample - abs(offset_lissajous); i < num_of_sample; ++i)
+							LissajoustempData[i] = 0;
+					}
 				}
 
 				for (int i = 0; i < num_of_sample; ++i) {

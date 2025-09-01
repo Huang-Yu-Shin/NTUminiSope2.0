@@ -28,14 +28,14 @@
 #include <stdio.h>
 #include <algorithm>
 #include "YSCalculatePara.cuh"
-
+#include "YSReconstructPost.cuh"
 namespace NTU {
 	using namespace std;
 	using namespace std::chrono;
 	class YSImageMerge {
 	public:
 
-		YSImageMerge(NTU::CudaCalPara* cudacalpara);
+		YSImageMerge(NTU::CudaCalPara* cudacalpara, NTU::ReconstructPost* cudareconstruct);
 		~YSImageMerge();
 
 		//General
@@ -112,6 +112,7 @@ namespace NTU {
 		void LoadLissajousImage();
 
 		//Reconstruct
+		ReconstructPost* reconstruct;
 		bool quickreconstruct = false;
 		bool firstreconstruct = true;
 		cv::Mat averageImg16;

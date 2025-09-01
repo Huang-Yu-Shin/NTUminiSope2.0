@@ -1,6 +1,7 @@
 #pragma once
 #include "YSImagemerge.h"
 #include "YSCalculatePara.cuh"
+#include "YSReconstructPost.cuh"
 #include <iostream>
 #include <string>
 #include <msclr/marshal_cppstd.h>
@@ -28,7 +29,7 @@ namespace MTPFM {
 	private:
 		NTU::YSImageMerge* imagemerge;
 		NTU::CudaCalPara* cudacalpara;
-
+		NTU::ReconstructPost* cudareconstruct;
 	private: System::Windows::Forms::TextBox^ textBox_CalPara_LOADRASTER;
 
 	private: System::Windows::Forms::Button^ button_CalPara_LOADRASTER;
@@ -276,7 +277,8 @@ private: System::Windows::Forms::Button^ button_lissajousquickset;
 			//TODO: Add the constructor code here
 			//
 			cudacalpara = new NTU::CudaCalPara();
-			imagemerge = new NTU::YSImageMerge(cudacalpara);
+			cudareconstruct = new NTU::ReconstructPost();
+			imagemerge = new NTU::YSImageMerge(cudacalpara, cudareconstruct);
 			timer_refresh_UI->Interval = 250;
 			timer_refresh_UI->Enabled = true;
 			timer_refresh_UI->Start();
@@ -892,6 +894,7 @@ private: System::ComponentModel::IContainer^ components;
 			this->trackBar_lissajousoffset->Size = System::Drawing::Size(492, 30);
 			this->trackBar_lissajousoffset->TabIndex = 99;
 			this->trackBar_lissajousoffset->TickFrequency = 5;
+			this->trackBar_lissajousoffset->Value = 25000;
 			this->trackBar_lissajousoffset->Scroll += gcnew System::EventHandler(this, &YSPostprocessing::trackBar_lissajousoffset_Scroll);
 			// 
 			// LOAD_LISSAJOUS_FOLDER
@@ -1712,25 +1715,25 @@ private: System::ComponentModel::IContainer^ components;
 			this->tableLayoutPanel_CalPara_result->Name = L"tableLayoutPanel_CalPara_result";
 			this->tableLayoutPanel_CalPara_result->RowCount = 1;
 			this->tableLayoutPanel_CalPara_result->RowStyles->Add((gcnew System::Windows::Forms::RowStyle(System::Windows::Forms::SizeType::Absolute,
-				520)));
+				521)));
 			this->tableLayoutPanel_CalPara_result->RowStyles->Add((gcnew System::Windows::Forms::RowStyle(System::Windows::Forms::SizeType::Absolute,
-				520)));
+				521)));
 			this->tableLayoutPanel_CalPara_result->RowStyles->Add((gcnew System::Windows::Forms::RowStyle(System::Windows::Forms::SizeType::Absolute,
-				520)));
+				521)));
 			this->tableLayoutPanel_CalPara_result->RowStyles->Add((gcnew System::Windows::Forms::RowStyle(System::Windows::Forms::SizeType::Absolute,
-				520)));
+				521)));
 			this->tableLayoutPanel_CalPara_result->RowStyles->Add((gcnew System::Windows::Forms::RowStyle(System::Windows::Forms::SizeType::Absolute,
-				520)));
+				521)));
 			this->tableLayoutPanel_CalPara_result->RowStyles->Add((gcnew System::Windows::Forms::RowStyle(System::Windows::Forms::SizeType::Absolute,
-				520)));
+				521)));
 			this->tableLayoutPanel_CalPara_result->RowStyles->Add((gcnew System::Windows::Forms::RowStyle(System::Windows::Forms::SizeType::Absolute,
-				520)));
+				521)));
 			this->tableLayoutPanel_CalPara_result->RowStyles->Add((gcnew System::Windows::Forms::RowStyle(System::Windows::Forms::SizeType::Absolute,
-				520)));
+				521)));
 			this->tableLayoutPanel_CalPara_result->RowStyles->Add((gcnew System::Windows::Forms::RowStyle(System::Windows::Forms::SizeType::Absolute,
-				520)));
+				521)));
 			this->tableLayoutPanel_CalPara_result->RowStyles->Add((gcnew System::Windows::Forms::RowStyle(System::Windows::Forms::SizeType::Absolute,
-				520)));
+				521)));
 			this->tableLayoutPanel_CalPara_result->Size = System::Drawing::Size(495, 286);
 			this->tableLayoutPanel_CalPara_result->TabIndex = 51;
 			// 
@@ -2988,12 +2991,13 @@ private: System::Void button_TRANSFERTOTIFF_Click_1(System::Object^ sender, Syst
 	imagemerge->ConvertBinToTiff_lissajous();
 	this->button_TRANSFERTOTIFF->Enabled = false;
 	this->label_TRANSFERTOTIFF->Text = "Complete";
-
+	imagemerge->firstreconstruct = true;
 	if (imagemerge->quickreconstruct == true) {
 		imagemerge->LISSAJOUSFolderPath = imagemerge->LISSAJOUSFolderPath + "_TIFF";
 		imagemerge->LOADspec(imagemerge->LISSAJOUSFolderPath);
 		imagemerge->Generate2D_LISSAJOUS_SampleMap();
 		imagemerge->DisplayReconstructedLissajousImage();
+		imagemerge->firstreconstruct = false;
 		System::Threading::Thread^ startreconstruct = gcnew System::Threading::Thread(gcnew System::Threading::ThreadStart(this, &YSPostprocessing::StartReconstruct));
 		startreconstruct->Start();
 	}
@@ -3011,9 +3015,9 @@ private: System::Void checkBox_quickreconstruct_CheckedChanged(System::Object^ s
 	}
 }
 private: System::Void trackBar_lissajousoffset_Scroll(System::Object^ sender, System::EventArgs^ e) {
-	this->trackBar_lissajousoffset->Enabled == false;
-	int offset = int(this->trackBar_lissajousoffset->Value);
-	if (offset > imagemerge->num_of_sample) {
+	this->trackBar_lissajousoffset->Enabled = false;
+	int offset = int(this->trackBar_lissajousoffset->Value)-25000;
+	if (abs(offset) > imagemerge->num_of_sample) {
 		this->textBox_lissajousoffset->Text = "ERROR";
 	}
 	else {
@@ -3021,25 +3025,26 @@ private: System::Void trackBar_lissajousoffset_Scroll(System::Object^ sender, Sy
 		imagemerge->offset_lissajous = offset;
 		imagemerge->DisplayReconstructedLissajousImage();
 	}
-	this->trackBar_lissajousoffset->Enabled == true;
+	this->trackBar_lissajousoffset->Enabled = true;
 }
 private: System::Void button_lissajousquickset_Click(System::Object^ sender, System::EventArgs^ e) {
-	this->trackBar_lissajousoffset->Enabled == false;
+	this->trackBar_lissajousoffset->Enabled = false;
 	int offset = System::Convert::ToInt32(this->textBox_lissajousoffset->Text);
-	if (offset > imagemerge->num_of_sample) {
+	if (abs(offset) > imagemerge->num_of_sample) {
 		this->textBox_lissajousoffset->Text = "ERROR";
 	}
 	else {
-		this->trackBar_lissajousoffset->Value= offset;
+		this->trackBar_lissajousoffset->Value= offset+25000;
 		imagemerge->offset_lissajous = offset;
 		imagemerge->DisplayReconstructedLissajousImage();
 	}
-	this->trackBar_lissajousoffset->Enabled == true;
+	this->trackBar_lissajousoffset->Enabled = true;
 }
 private: System::Void button_LOADLISSAJOUSFOLDER2_Click(System::Object^ sender, System::EventArgs^ e) {
 	if (this->LOAD_LISSAJOUSRAW_FOLDER->ShowDialog() == System::Windows::Forms::DialogResult::OK) {
 		System::String^ selectedPath = this->LOAD_LISSAJOUSRAW_FOLDER->SelectedPath;
 		this->textBox__LOADLISSAJOUSFOLDER2->Text = selectedPath;
+		imagemerge->firstreconstruct = true;
 		imagemerge->LISSAJOUSFolderPath = msclr::interop::marshal_as<std::string>(selectedPath);
 		imagemerge->LOADspec(imagemerge->LISSAJOUSFolderPath);
 		imagemerge->Generate2D_LISSAJOUS_SampleMap();
@@ -3311,9 +3316,9 @@ private: System::Void trackBar_ExtractKymograph_endpixel_Scroll(System::Object^ 
 }
 private: System::Void button_ExtractKymograph_quickset_Click(System::Object^ sender, System::EventArgs^ e) {
 	double startpercentage = System::Convert::ToDouble(this->textBox_ExtractKymograph_startpixel->Text);
-	this->trackBar_ExtractKymograph_startpixel->Value = startpercentage * 10000;
+	this->trackBar_ExtractKymograph_startpixel->Value = int(startpercentage) * 10000;
 	double endpercentage = System::Convert::ToDouble(this->textBox_ExtractKymograph_endpixel->Text);
-	this->trackBar_ExtractKymograph_endpixel->Value = endpercentage * 10000;
+	this->trackBar_ExtractKymograph_endpixel->Value = int(endpercentage) * 10000;
 	imagemerge->startPixelIndexpercentage = startpercentage;
 	imagemerge->endPixelIndexpercentage = endpercentage;
 	imagemerge->DrawLissajousPattern();
@@ -3325,9 +3330,9 @@ private: System::Void toggleButtons_ExtractKymograph_choosedisplay_CheckedChange
 	if (this->toggleButtons_ExtractKymograph_choosedisplay->Checked == true) {
 		this->label_ExtractKymograph_choosedisplay->Text = "Draw Lissajous pattern";
 		double startpercentage = System::Convert::ToDouble(this->textBox_ExtractKymograph_startpixel->Text);
-		this->trackBar_ExtractKymograph_startpixel->Value = startpercentage * 10000;
+		this->trackBar_ExtractKymograph_startpixel->Value = int(startpercentage) * 10000;
 		double endpercentage = System::Convert::ToDouble(this->textBox_ExtractKymograph_endpixel->Text);
-		this->trackBar_ExtractKymograph_endpixel->Value = endpercentage * 10000;
+		this->trackBar_ExtractKymograph_endpixel->Value = int(endpercentage) * 10000;
 		imagemerge->startPixelIndexpercentage = startpercentage;
 		imagemerge->endPixelIndexpercentage = endpercentage;
 		imagemerge->DrawLissajousPattern();

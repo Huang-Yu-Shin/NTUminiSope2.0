@@ -142,6 +142,7 @@ namespace NTU
 		double lissajous_delay = 0;
 		bool samplemapsave = false;
 		bool highspeedmode = false;
+		bool highspeedmode_raster = false;
 		bool applychopper = false;
 		bool channeldisplay = false; //false for CH1, true for CH2
 		//NI

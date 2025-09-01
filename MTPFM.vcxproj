@@ -165,6 +165,7 @@
       <FileType>CppForm</FileType>
     </ClInclude>
     <ClInclude Include="NTUcore.h" />
+    <ClInclude Include="YSReconstructPost.cuh" />
     <ClInclude Include="resource.h" />
     <ClInclude Include="Tokens.h" />
     <ClInclude Include="YSCalculatePara.cuh" />
@@ -231,6 +232,7 @@
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>
+    <CudaCompile Include="YSReconstructPost.cu" />
     <CudaCompile Include="YSCalculatePara.cu" />
     <CudaCompile Include="YSReconstruct.cu">
       <FileType>Document</FileType>

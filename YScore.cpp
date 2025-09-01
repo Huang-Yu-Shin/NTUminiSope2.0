@@ -215,6 +215,10 @@ namespace NTU {
             cout << "Configure NIDAQ and ETL : Success" << endl;
             cout << "---------------------" << endl;
         }
+        if (mapping->Generate2D_RASTER_SampleMap()) {
+            cout << "Configure SampleMap : Success" << endl;
+            cout << "---------------------" << endl;
+        }
     }
 
     void YSCore::TWODrasterimage() {

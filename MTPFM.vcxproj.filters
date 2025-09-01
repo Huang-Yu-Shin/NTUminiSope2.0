@@ -128,6 +128,9 @@
     <ClInclude Include="YSMotionCorrection.h">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="YSReconstructPost.cuh">
+      <Filter>Header Files</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ResourceCompile Include="MTPFM.rc">
@@ -156,6 +159,9 @@
       <Filter>Source Files</Filter>
     </CudaCompile>
     <CudaCompile Include="YSCalculatePara.cu">
+      <Filter>Source Files</Filter>
+    </CudaCompile>
+    <CudaCompile Include="YSReconstructPost.cu">
       <Filter>Source Files</Filter>
     </CudaCompile>
   </ItemGroup>
