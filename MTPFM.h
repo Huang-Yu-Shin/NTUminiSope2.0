@@ -52,7 +52,7 @@ double YSlinefreq_array[10] = {100,125,200,250,400,500,625,800,1000,1250};
 double YSUltraRasterlinefreq_array[5] = { 1250,1300,1400,1500,1600 };
 int YSchopperdownscale_array[3] = { 1,2,4 };
 int YSyline_array[7] = { 16,32,64,128,256,512,1024 };
-int YSUltraRasteryline_array[8] = {1,2,3,4,5,6 };
+int YSUltraRasteryline_array[5] = {1,2,3,4,6 };
 double YSphase[8] = { 0 ,M_PI_4, M_PI_2 ,3*M_PI_4, M_PI , 5*M_PI_4,  3 * M_PI_2, 7*M_PI_4 };
 std::string YSphasename[8] = {"0","PI/4" ,"PI/2","3PI/4" ,"PI","5PI/4", "3PI/2","7PI/4"};
 U32 inputrange[3] = { INPUT_RANGE_PM_500_MV,INPUT_RANGE_PM_800_MV,INPUT_RANGE_PM_1_V };
@@ -712,6 +712,12 @@ private: System::Windows::Forms::TrackBar^ YStrackBar__ultraraster_longaxisamp;
 private: System::Windows::Forms::Label^ label79;
 private: System::Windows::Forms::TextBox^ textBox_raster_chopperphase;
 private: System::Windows::Forms::ComboBox^ comboBox_ultraraster_spaceperline;
+private: CustomControls::DefineControls::ToggleButtons^ toggleButtons_ultraraster_revereseaxis;
+
+
+
+private: System::Windows::Forms::Label^ label66;
+
 
 
 
@@ -1386,6 +1392,8 @@ private:
 			this->YStrackBar__lissajous_x_amp = (gcnew System::Windows::Forms::TrackBar());
 			this->label40 = (gcnew System::Windows::Forms::Label());
 			this->tabPage7 = (gcnew System::Windows::Forms::TabPage());
+			this->label66 = (gcnew System::Windows::Forms::Label());
+			this->toggleButtons_ultraraster_revereseaxis = (gcnew CustomControls::DefineControls::ToggleButtons());
 			this->comboBox_ultraraster_spaceperline = (gcnew System::Windows::Forms::ComboBox());
 			this->label_ultraraster_channeldisplay = (gcnew System::Windows::Forms::Label());
 			this->toggleButtons_ultraraster_channeldisplay = (gcnew CustomControls::DefineControls::ToggleButtons());
@@ -4863,6 +4871,8 @@ private:
 			// tabPage7
 			// 
 			this->tabPage7->BackColor = System::Drawing::Color::DimGray;
+			this->tabPage7->Controls->Add(this->label66);
+			this->tabPage7->Controls->Add(this->toggleButtons_ultraraster_revereseaxis);
 			this->tabPage7->Controls->Add(this->comboBox_ultraraster_spaceperline);
 			this->tabPage7->Controls->Add(this->label_ultraraster_channeldisplay);
 			this->tabPage7->Controls->Add(this->toggleButtons_ultraraster_channeldisplay);
@@ -4894,6 +4904,33 @@ private:
 			this->tabPage7->Size = System::Drawing::Size(390, 301);
 			this->tabPage7->TabIndex = 3;
 			this->tabPage7->Text = L"2D Ultrafast Raster";
+			// 
+			// label66
+			// 
+			this->label66->AutoSize = true;
+			this->label66->Font = (gcnew System::Drawing::Font(L"Segoe UI", 11.25F, System::Drawing::FontStyle::Bold, System::Drawing::GraphicsUnit::Point,
+				static_cast<System::Byte>(0)));
+			this->label66->ForeColor = System::Drawing::Color::White;
+			this->label66->Location = System::Drawing::Point(229, 279);
+			this->label66->Name = L"label66";
+			this->label66->Size = System::Drawing::Size(202, 25);
+			this->label66->TabIndex = 142;
+			this->label66->Text = L"Two-axis interchange";
+			// 
+			// toggleButtons_ultraraster_revereseaxis
+			// 
+			this->toggleButtons_ultraraster_revereseaxis->Enabled = false;
+			this->toggleButtons_ultraraster_revereseaxis->Location = System::Drawing::Point(178, 278);
+			this->toggleButtons_ultraraster_revereseaxis->MinimumSize = System::Drawing::Size(45, 22);
+			this->toggleButtons_ultraraster_revereseaxis->Name = L"toggleButtons_ultraraster_revereseaxis";
+			this->toggleButtons_ultraraster_revereseaxis->OffBackColor = System::Drawing::Color::WhiteSmoke;
+			this->toggleButtons_ultraraster_revereseaxis->OffToggleColor = System::Drawing::Color::Gainsboro;
+			this->toggleButtons_ultraraster_revereseaxis->OnBackColor = System::Drawing::Color::WhiteSmoke;
+			this->toggleButtons_ultraraster_revereseaxis->OnToggleColor = System::Drawing::Color::DodgerBlue;
+			this->toggleButtons_ultraraster_revereseaxis->Size = System::Drawing::Size(47, 25);
+			this->toggleButtons_ultraraster_revereseaxis->SolidStyle = false;
+			this->toggleButtons_ultraraster_revereseaxis->TabIndex = 141;
+			this->toggleButtons_ultraraster_revereseaxis->UseVisualStyleBackColor = true;
 			// 
 			// comboBox_ultraraster_spaceperline
 			// 
@@ -5085,10 +5122,7 @@ private:
 			this->YScomboBox__ultraraster_yline->Font = (gcnew System::Drawing::Font(L"Segoe UI", 11.25F, System::Drawing::FontStyle::Regular,
 				System::Drawing::GraphicsUnit::Point, static_cast<System::Byte>(0)));
 			this->YScomboBox__ultraraster_yline->FormattingEnabled = true;
-			this->YScomboBox__ultraraster_yline->Items->AddRange(gcnew cli::array< System::Object^  >(6) {
-				L"1", L"2", L"3", L"4", L"5",
-					L"6"
-			});
+			this->YScomboBox__ultraraster_yline->Items->AddRange(gcnew cli::array< System::Object^  >(5) { L"1", L"2", L"3", L"4", L"6" });
 			this->YScomboBox__ultraraster_yline->Location = System::Drawing::Point(268, 165);
 			this->YScomboBox__ultraraster_yline->Name = L"YScomboBox__ultraraster_yline";
 			this->YScomboBox__ultraraster_yline->Size = System::Drawing::Size(73, 33);
@@ -8488,6 +8522,13 @@ private: System::Void YSbutton_ultraraster_configure_Click(System::Object^ sende
 	double MEMS_yoffset = System::Convert::ToDouble(YStextBox__ultraraster_yoffset->Text);
 	int MEMS_yline = YSUltraRasteryline_array[YScomboBox__ultraraster_yline->SelectedIndex];
 	aYSNTU->chopperdownscale = YSchopperdownscale_array[YScomboBox__ultraraster_chopperfreq->SelectedIndex];
+	if (this->toggleButtons_ultraraster_revereseaxis->Checked == true) {
+		aYSNTU->reverse_axis = true;
+	}
+	else if (this->toggleButtons_ultraraster_revereseaxis->Checked == false) {
+		aYSNTU->reverse_axis = false;
+	}
+
 
 	if (double(MEMS_linefreq / double(MEMS_yline)) > 1) {
 		YSCORE->TWODRaster_ultrafast_configure(ETLvoltage, MEMS_linefreq, MEMS_xamplitude, MEMS_spaceperline, MEMS_yline, MEMS_xoffset, MEMS_yoffset, clockstate);
@@ -8498,6 +8539,7 @@ private: System::Void YSbutton_ultraraster_configure_Click(System::Object^ sende
 		YStextBox__ultraraster_longaxisamp->Enabled = false;
 		YScomboBox__ultraraster_chopperfreq->Enabled = false;
 		toggleButtons_raster_chopper->Enabled = false;
+		toggleButtons_ultraraster_revereseaxis->Enabled = false;
 		YSbutton_ultraraster_stop->Enabled = true;
 		YSbutton_ultraraster_configure->Text = L"Configured";
 		status->ForeColor = Color::LightGreen;
@@ -8536,6 +8578,7 @@ private: System::Void YSbutton_ultraraster_stop_Click(System::Object^ sender, Sy
 	YStextBox__ultraraster_longaxisamp->Enabled = true;
 	YScomboBox__ultraraster_chopperfreq->Enabled = true;
 	toggleButtons_raster_chopper->Enabled = true;
+	toggleButtons_ultraraster_revereseaxis->Enabled = true;
 	toggleButtons_allow_averaging->Checked = false;
 }
 };

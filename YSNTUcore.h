@@ -60,6 +60,7 @@ namespace NTU
 		double lissajous_phase = 0;
 		int num_lines = 256;
 		bool firstinitialize = true;
+		bool reverse_axis = false;
 		int chopperdownscale = 1;
 		int chopperupscale = 1;
 		int chopperphase = 0;

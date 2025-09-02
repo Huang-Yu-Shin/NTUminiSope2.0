@@ -108,6 +108,7 @@ namespace NTU {
         else if (scanmode == RASTER_ULTRA) {
             ntuscope->Pixelnumy = ntuscope->num_lines;
             ntuscope->Pixelnumx = int(double(ntuscope->Pixelnumy) * double(ntuscope->MEMS_xamp / ntuscope->MEMS_yamp));
+            ntuscope->Xpixelsize_display = 1024;
             ntuscope->Ypixelsize_display = int(double(ntuscope->Xpixelsize_display) * double(ntuscope->MEMS_yamp / ntuscope->MEMS_xamp));
             ntuscope->Ypixelsize_save = ntuscope->num_lines;
             ntuscope->Xpixelsize_save = int(double(ntuscope->Ypixelsize_save) * double(ntuscope->MEMS_xamp / ntuscope->MEMS_yamp));
@@ -347,8 +348,9 @@ namespace NTU {
             ntuscope->highspeedmode_raster = false;
         }
         else if (scanmode == RASTER_ULTRA) {
-            ntuscope->Pixelnumx = 256;
             ntuscope->Pixelnumy = ntuscope->num_lines;
+            ntuscope->Pixelnumx = int(double(ntuscope->Pixelnumy) * double(ntuscope->MEMS_xamp / ntuscope->MEMS_yamp));
+            ntuscope->Xpixelsize_display = 1024;
             ntuscope->Ypixelsize_display = int(double(ntuscope->Xpixelsize_display) * double(ntuscope->MEMS_yamp / ntuscope->MEMS_xamp));
             ntuscope->Ypixelsize_save = ntuscope->num_lines;
             ntuscope->Xpixelsize_save = int(double(ntuscope->Ypixelsize_save) * double(ntuscope->MEMS_xamp / ntuscope->MEMS_yamp));
@@ -649,11 +651,11 @@ namespace NTU {
 
 //Set up the trensient step to conduct image reconstruct and display and save
     void YSMapping::Trensientstep() {
-        if (ntuscope->highspeedmode == true && scanmode == LISSAJOUS_2D) {
-            cv::destroyAllWindows();
+        if (scanmode == LISSAJOUS_2D && ntuscope->highspeedmode == false){
+            WarmupLissajousImageProcessing();
         }
         else {
-            WarmupLissajousImageProcessing();
+            cv::destroyAllWindows();
         }
         previoustimepoint = high_resolution_clock::now();
         while (running) {
@@ -1323,10 +1325,7 @@ namespace NTU {
 
                 }
             }
-
-            cv::cuda::GpuMat gpu_image_prepre;
-            gpu_image_prepre.upload(sin_image_u16);
-            cv::cuda::resize(gpu_image_prepre, gpu_image, cv::Size(1024, 1024), 0, 0, cv::INTER_AREA);
+            gpu_image.upload(sin_image_u16);
 
             //If raster fast scan need to flip
             if (scanmode == RASTER_ULTRA) {
@@ -2433,11 +2432,17 @@ namespace NTU {
                 else if (ntuscope->channeldisplay == true) {
                     file << "channelsave," << 2 << endl;
                 }
+                if (ntuscope->reverse_axis == true) {
+                    file << "reverseaxis," << "true" << endl;
+                }
+                else if (ntuscope->reverse_axis == false) {
+                    file << "reverseaxis," << "false" << endl;
+                }
                 file.close();
                 cout << "CSV file created successfully at: " << csvpath << endl;
             }
         
-            if (ntuscope->saverawstate == true || ntuscope->applychopper == true) {
+            if (ntuscope->saverawstate == true || ntuscope->applychopper == true || ntuscope->highspeedmode_raster == true) {
                 string rawcsvpath = ntuscope->folderPathRaw + "\\scan_spec.csv";
                 ofstream rawfile(rawcsvpath);
                 rawfile << "linefreq," << ntuscope->xfreq * 2 << endl;
@@ -2464,6 +2469,12 @@ namespace NTU {
                 }
                 else if (ntuscope->channeldisplay == true) {
                     rawfile << "channelsave," << 2 << endl;
+                }
+                if (ntuscope->reverse_axis == true) {
+                    rawfile << "reverseaxis," << "true" << endl;
+                }
+                else if (ntuscope->reverse_axis == false) {
+                    rawfile << "reverseaxis," << "false" << endl;
                 }
                 rawfile.close();
                 cout << "CSV file created successfully at: " << rawcsvpath << endl;

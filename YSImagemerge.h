@@ -97,7 +97,8 @@ namespace NTU {
 
 		//Transfer to .tiff
 		void ConvertBinToTiff_lissajous();
-		void ConvertBinToTiff_raster();
+		void ConvertBinToTiff_raster_1ch();
+		void ConvertBinToTiff_raster_2chs();
 
 		//Scanmode merge
 		bool savestate = 0;

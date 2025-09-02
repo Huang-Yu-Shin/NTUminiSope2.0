@@ -456,19 +456,29 @@ namespace NTU {
     bool YSScan::twoD_raster_ultra_configure() {
         if (taskHandlefilter != 0 && taskHandle != 0 && taskHandleTTL != 0) {
             running = true;
-
-            if (!ReadCalibrationRatio_Raster(ntuscope->MEMS_xamp, ntuscope->MEMS_yamp, ntuscope->xfreq, MEMS_Xampratio_clk_raster, MEMS_Yampratio_clk_raster)) {
-                cout << "ERROR:ReadCalibrationRatio_Raster" << endl;
+            if (!ReadCalibrationRatio_UltrafastRaster(ntuscope->MEMS_xamp, ntuscope->MEMS_yamp, ntuscope->xfreq, MEMS_Xampratio_clk_raster, MEMS_Yampratio_clk_raster)) {
+                cout << "ERROR:ReadCalibrationRatio_UltrafastRaster" << endl;
             }
             ntuscope->samplingRate = int(500000/ ntuscope->xfreq)* ntuscope->xfreq;
             samples_per_line = int(ntuscope->samplingRate / (2 * ntuscope->xfreq));  // 2 because we're working with half sine wave per line
             total_samples = samples_per_line * ntuscope->num_lines;
             double framerate = double(ntuscope->samplingRate) / double(total_samples);
             ntuscope->framerate = framerate;
-            ntuscope->FOVx = ntuscope->MEMS_xamp * 90;
-            ntuscope->FOVy = ntuscope->MEMS_yamp * 90;
-            float64 real_xamp = ntuscope->MEMS_xamp * MEMS_Xampratio_clk_raster * MEMSampratio * ntuscope->MEMS_Xampratio_headmount;
-            float64 real_yamp = ntuscope->MEMS_yamp * MEMS_Yampratio_clk_raster * ntuscope->MEMS_Yampratio_headmount;
+            ntuscope->MEMS_yamp = 0.5;
+            float64 real_xamp = 0;
+            float64 real_yamp = 0;
+            if (ntuscope->reverse_axis == true) {
+                ntuscope->FOVx = ntuscope->MEMS_yamp * 90;
+                ntuscope->FOVy = ntuscope->MEMS_xamp * 90;
+                real_xamp = ntuscope->MEMS_yamp * MEMS_Yampratio_clk_raster * MEMSampratio* ntuscope->MEMS_Xampratio_headmount;
+                real_yamp = ntuscope->MEMS_xamp * MEMS_Xampratio_clk_raster * ntuscope->MEMS_Yampratio_headmount;
+            }
+            else if (ntuscope->reverse_axis == false) {
+                ntuscope->FOVx = ntuscope->MEMS_xamp * 90;
+                ntuscope->FOVy = ntuscope->MEMS_yamp * 90;
+                real_xamp = ntuscope->MEMS_xamp * MEMS_Xampratio_clk_raster * MEMSampratio * ntuscope->MEMS_Xampratio_headmount;
+                real_yamp = ntuscope->MEMS_yamp * MEMS_Yampratio_clk_raster * ntuscope->MEMS_Yampratio_headmount;
+            }
             cout << "NI Sampling rate: " << ntuscope->samplingRate << endl;
             cout << "NI samples per line: " << samples_per_line << endl;
             cout << "NI total sample: " << total_samples << endl;
@@ -516,7 +526,12 @@ namespace NTU {
 
             //MEMS input setup
             rasterdata = new float64[total_samples * 2 * 2]; //for two frame
-            NIgenerateRaster(rasterdata, real_xamp, real_yamp, ntuscope->xoffset, ntuscope->yoffset, ntuscope->num_lines, ntuscope->xfreq, ntuscope->samplingRate);
+            if (ntuscope->reverse_axis == true) {
+                NIgenerateRaster_reverseaxis(rasterdata, real_xamp, real_yamp, ntuscope->xoffset, ntuscope->yoffset, ntuscope->num_lines, ntuscope->xfreq, ntuscope->samplingRate);
+            }
+            else if (ntuscope->reverse_axis == false) {
+                NIgenerateRaster(rasterdata, real_xamp, real_yamp, ntuscope->xoffset, ntuscope->yoffset, ntuscope->num_lines, ntuscope->xfreq, ntuscope->samplingRate);
+            }
             DAQmxErrChk(DAQmxCfgSampClkTiming(taskHandle, "", ntuscope->samplingRate, DAQmx_Val_Rising, DAQmx_Val_ContSamps, total_samples * 2));
             DAQmxErrChk(DAQmxWriteAnalogF64(taskHandle, total_samples * 2, FALSE, DAQmx_Val_WaitInfinitely, DAQmx_Val_GroupByScanNumber, rasterdata, NULL, NULL));
 
@@ -781,6 +796,46 @@ namespace NTU {
         }
     }
 
+    void YSScan::NIgenerateRaster_reverseaxis(float64* data, float64 xamplitude, float64 yamplitude, float64 offsetx, float64 offsety, int num_lines, float64 freq_x, float64 samplingRate) {
+        if (xamplitude + offsetx > 10 || offsetx - xamplitude < -10 || yamplitude + offsety > 10 || offsety - yamplitude < -10) {
+            cout << xamplitude << yamplitude << offsetx << offsety << endl;
+            cout << "---------------------" << endl;
+            cout << "ERROR: The MEMS input is out of range !!" << endl;
+            cout << "---------------------" << endl;
+        }
+        float64 delta_time = 1.0 / samplingRate;
+        int index = 0;
+        float64 period = 1.0 / freq_x;
+        float64 time = 0;
+
+        for (int line = 0; line < num_lines; ++line) {
+            float64 x_value = xamplitude - (2 * xamplitude * line) / (num_lines - 1) + offsetx;
+            for (int i = 0; i < samples_per_line; ++i) {
+                time += delta_time;
+                float64 phase = fmod(freq_x * time, 1.0);
+                float64 tri = 4.0 * fabs(phase - 0.5) - 1.0;
+                float64 y_value = offsety + yamplitude * tri;
+ 
+                // Store X and Y values interleaved in the data array
+                data[index++] = x_value;  // X value (constant for each full cycle of the sine wave)
+                data[index++] = y_value;  // Y value (sine wave)
+            }
+        }
+        for (int line = 0; line < num_lines; ++line) {
+            float64 x_value = -xamplitude + (2 * xamplitude * line) / (num_lines - 1) + offsetx;
+            for (int i = 0; i < samples_per_line; ++i) {
+                time += delta_time;
+                float64 phase = fmod(freq_x * time, 1.0);
+                float64 tri = 4.0 * fabs(phase - 0.5) - 1.0;
+                float64 y_value = offsety + yamplitude * tri;
+
+                // Store X and Y values interleaved in the data array
+                data[index++] = x_value;  // X value (sine wave)
+                data[index++] = y_value;  // Y value (constant for each full cycle of the sine wave)
+            }
+        }
+    }
+
     void YSScan::NIgenerateRaster_slow(float64* data, float64 xamplitude, float64 yamplitude, float64 offsetx, float64 offsety, int num_lines, float64 freq_x, float64 samplingRate) {
         if (xamplitude + offsetx > 10 || offsetx - xamplitude < -10 || yamplitude + offsety > 10 || offsety - yamplitude < -10) {
             cout << xamplitude << yamplitude << offsetx << offsety << endl;
@@ -878,6 +933,50 @@ namespace NTU {
                     yRatio = yratio;
                     file.close();
                     return true; 
+                }
+            }
+        }
+
+        file.close();
+        return false;
+    }
+
+    bool YSScan::ReadCalibrationRatio_UltrafastRaster(double xAmp, double yAmp, double inputFreq, double& xRatio, double& yRatio) {
+        string filename;
+        if (xAmp == 0.5) {
+            if (ntuscope->reverse_axis == true) {
+                filename = "C:\\Ian\\MTPFM\\Calibrations\\default_settings\\FCLK_Calibration_UltrafastRaster_Driver_132000-0.5amp_reverse.txt";
+            }
+            else if (ntuscope->reverse_axis == false) {
+                filename = "C:\\Ian\\MTPFM\\Calibrations\\default_settings\\FCLK_Calibration_UltrafastRaster_Driver_132000-0.5amp.txt";
+            }
+        }
+  
+        ifstream file(filename);
+        if (!file.is_open()) {
+            cerr << "Error: Cannot open file" << endl;
+            return false;
+        }
+
+        string line;
+        bool skipHeader = true;
+
+        while (getline(file, line)) {
+            if (skipHeader) {
+                skipHeader = false;
+                continue;
+            }
+
+            stringstream ss(line);
+            double freq, yamp,xratio, yratio;
+            char comma;
+
+            if (ss >> freq >> comma >> yamp>>comma>> xratio >> comma >> yratio) {
+                if (freq == inputFreq && yamp ==yAmp) {
+                    xRatio = xratio;
+                    yRatio = yratio;
+                    file.close();
+                    return true;
                 }
             }
         }

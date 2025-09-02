@@ -36,7 +36,8 @@ namespace NTU {
         void NIgenerateRaster(float64* data, float64 xamplitude, float64 yamplitude, float64 offsetx, float64 offsety, int num_lines, float64 freq_x, float64 samplingRate);
         void getOffsetFromVoltage(double voltage);
         void NIgenerateRaster_slow(float64* data, float64 xamplitude, float64 yamplitude, float64 offsetx, float64 offsety, int num_lines, float64 freq_x, float64 samplingRate);
-
+        void NIgenerateRaster_reverseaxis(float64* data, float64 xamplitude, float64 yamplitude, float64 offsetx, float64 offsety, int num_lines, float64 freq_x, float64 samplingRate);
+        
         //config
         bool twoD_lissajous_configure();
         bool twoD_raster_configure();
@@ -44,6 +45,7 @@ namespace NTU {
         bool twoD_raster_ultra_configure();
         bool ReadCalibrationRatio_Raster(double xAmp, double yAmp, double inputFreq, double& xRatio, double& yRatio);
         bool ReadCalibrationRatio_Lissajous(double xAmp, double yAmp, double inputXFreq, double inputYFreq, double& xRatio, double& yRatio);
+        bool ReadCalibrationRatio_UltrafastRaster(double xAmp, double yAmp, double inputFreq, double& xRatio, double& yRatio);
         double NItriggerdelay;
         double NItriggerdelay_high;
         int MEMScutofffreq;

@@ -848,13 +848,173 @@ namespace NTU {
 		}
 	}
 	
-	void YSImageMerge::ConvertBinToTiff_raster() {
+	void YSImageMerge::ConvertBinToTiff_raster_1ch() {
+		Generate2D_RASTER_SampleMap();
+
+		size_t pos = RASTERFolderPath.find_last_of("\\/");
+		std::string folderName = (pos == std::string::npos) ? RASTERFolderPath : RASTERFolderPath.substr(pos + 1);
+
+		std::string output_folder = "C:\\NTU_miniScope_Imaging\\2DRASTER\\" + folderName;
+		std::string output_folder_raw = RASTERFolderPath + "_TIFF";
+
+		CreateDirectoryA(output_folder.c_str(), NULL);
+		CreateDirectoryA(output_folder_raw.c_str(), NULL);
+
+		CopyScanSpecCSV(RASTERFolderPath, output_folder);
+		CopyScanSpecCSV(RASTERFolderPath, output_folder_raw);
+
+		std::string search_path = RASTERFolderPath + "\\*.bin";
+		WIN32_FIND_DATAA find_data;
+		HANDLE hFind = FindFirstFileA(search_path.c_str(), &find_data);
+		if (hFind == INVALID_HANDLE_VALUE) {
+			std::cerr << "Error: Unable to find any .bin in " << RASTERFolderPath << std::endl;
+			return;
+		}
+
+		auto parse_frame_index = [](const std::string& filename) -> long long {
+			size_t p = filename.find("Image");
+			if (p == std::string::npos) return -1;
+			p += 5;
+			while (p < filename.size() && !std::isdigit(static_cast<unsigned char>(filename[p]))) ++p;
+			size_t start = p;
+			while (p < filename.size() && std::isdigit(static_cast<unsigned char>(filename[p]))) ++p;
+			if (start == p) return -1;
+			try { return std::stoll(filename.substr(start, p - start)); }
+			catch (...) { return -1; }
+			};
+
+		do {
+			if (find_data.dwFileAttributes & FILE_ATTRIBUTE_DIRECTORY) continue;
+
+			std::string bin_filename = find_data.cFileName;
+			std::string bin_path = RASTERFolderPath + "\\" + bin_filename;
+
+			std::string output_filename = bin_filename.substr(0, bin_filename.find_last_of(".")) + ".tiff";
+			std::string raw_ch1_path = output_folder_raw + "\\" + output_filename;
+			std::string ch1_path = output_folder + "\\" + output_filename;
+
+			std::ifstream file(bin_path, std::ios::binary);
+			if (!file) {
+				std::cerr << "Error: Unable to read " << bin_path << std::endl;
+				continue;
+			}
+
+			std::vector<U16> buffer(static_cast<size_t>(num_of_sample));
+			file.read(reinterpret_cast<char*>(buffer.data()), static_cast<std::streamsize>(num_of_sample * sizeof(U16)));
+			std::streamsize got = file.gcount();
+			file.close();
+			cout << bin_filename << "  check0" << endl;
+			if (got != static_cast<std::streamsize>(num_of_sample * sizeof(U16))) {
+				std::cerr << "Error: The length of this read is mismatch " << bin_path << std::endl;
+				continue;
+			}
+
+			U16 samplesPerRecord = U16(num_of_sample / num_of_line);
+			std::vector<U16> h_image_1(static_cast<size_t>(num_of_sample), 0);
+
+
+			for (int line = 0; line < num_of_line; ++line) {
+				U16* src = buffer.data() + line * samplesPerRecord;
+				U16* dst = h_image_1.data() + line * samplesPerRecord;
+
+				if (line % 2 == 0) {
+					memcpy(dst, src, sizeof(U16) * int(samplesPerRecord));
+				}
+				else {
+					for (int s = 0; s < int(samplesPerRecord); ++s) {
+						int dstIdx = int(samplesPerRecord) - 1 - s;
+						dst[dstIdx] = src[s];
+					}
+				}
+			}
+			cout << bin_filename << "  check1" << endl;
+
+			cv::Mat sin_image_1(num_of_line, 1024, CV_32FC1, cv::Scalar(0));
+			for (int line = 0; line < num_of_line; ++line) {
+				bool is_forward = (line % 2 == 0);
+				U16* src = buffer.data() + line * samplesPerRecord;
+				int srcIdx = 0;
+
+				for (int sample = 0; sample < int(samplesPerRecord); ++sample) {
+					float t = float(sample) / float(std::max(1, int(samplesPerRecord) - 1));
+					float angle = is_forward ? (CV_PI * t - 0.5f * CV_PI)
+						: (CV_PI * (1.0f - t) - 0.5f * CV_PI);
+					float x = 0.5f * (1.0f + std::sinf(angle));
+					int x_idx = int(x * (1024 - 1));
+					if (x_idx < 0 || x_idx >= 1024) continue;
+					if (srcIdx < int(samplesPerRecord)) sin_image_1.at<float>(line, x_idx) += float(src[srcIdx++]);
+				}
+			}
+
+
+			cv::Mat sin_image_u16_1(num_of_line, 1024, CV_16UC1);
+			for (int y = 0; y < num_of_line; ++y) {
+				for (int x = 0; x < 1024; ++x) {
+					float weight = sin_weight.at<float>(y, x);
+					float v1 = sin_image_1.at<float>(y, x);
+					if (weight > 0) v1 /= weight;
+					v1 = std::min(std::max(v1, 0.0f), 65535.0f);
+					sin_image_u16_1.at<U16>(y, x) = static_cast<U16>(v1);
+				}
+			}
+			cout << bin_filename << "  check2" << endl;
+
+			cv::cuda::GpuMat gpu_image_ch1, gpu_image_raw_ch1;
+			gpu_image_ch1.upload(sin_image_u16_1);
+			gpu_image_raw_ch1.upload(cv::Mat(num_of_line, int(samplesPerRecord), CV_16UC1, h_image_1.data()));
+			cout << bin_filename << "  check2.5" << endl;
+			long long frame_idx = parse_frame_index(bin_filename);
+			cout << bin_filename << "  check2.6" << endl;
+			bool need_flip_vertically = (frame_idx >= 0) && ((frame_idx % 2LL) == 0LL);
+			cout << bin_filename << "  check2.7" << endl;
+			cout << "need_flip_vertically: " << need_flip_vertically << endl;
+			if (need_flip_vertically) {
+				cv::cuda::GpuMat tmp;
+				cv::cuda::flip(gpu_image_raw_ch1, tmp, 0, stream);
+				stream.waitForCompletion();
+				gpu_image_raw_ch1.swap(tmp);
+				tmp.release();
+
+				cv::cuda::flip(gpu_image_ch1, tmp, 0, stream);
+				stream.waitForCompletion();
+				gpu_image_ch1.swap(tmp);
+				tmp.release();
+			}
+			cout << bin_filename << "  check3" << endl;
+			// normalize & scale
+			cv::cuda::subtract(65535, gpu_image_ch1, gpu_image_ch1, cv::noArray(), -1, stream);
+			cv::cuda::threshold(gpu_image_ch1, gpu_image_ch1, 65535, 0, cv::THRESH_TRUNC, stream);
+			cv::cuda::subtract(gpu_image_ch1, 32768, gpu_image_ch1, cv::noArray(), -1, stream);
+			cv::cuda::multiply(gpu_image_ch1, 2.0, gpu_image_ch1, 1.0, -1, stream);
+
+			cv::cuda::subtract(65535, gpu_image_raw_ch1, gpu_image_raw_ch1, cv::noArray(), -1, stream);
+			cv::cuda::threshold(gpu_image_raw_ch1, gpu_image_raw_ch1, 65535, 0, cv::THRESH_TRUNC, stream);
+			cv::cuda::subtract(gpu_image_raw_ch1, 32768, gpu_image_raw_ch1, cv::noArray(), -1, stream);
+			cv::cuda::multiply(gpu_image_raw_ch1, 2.0, gpu_image_raw_ch1, 1.0, -1, stream);
+
+			// download to CPU
+			cv::Mat Img16bit_ch1, Img16bit_raw_ch1;
+			gpu_image_ch1.download(Img16bit_ch1);
+			gpu_image_raw_ch1.download(Img16bit_raw_ch1);
+
+			if (!cv::imwrite(ch1_path, Img16bit_ch1))
+				std::cerr << "Error: Unable to save the image " << ch1_path << std::endl;
+			if (!cv::imwrite(raw_ch1_path, Img16bit_raw_ch1))
+				std::cerr << "Error: Unable to save the raw image " << raw_ch1_path << std::endl;
+			cout << bin_filename << "  check4" << endl;
+		} while (FindNextFileA(hFind, &find_data));
+
+		FindClose(hFind);
+
+	}
+
+	void YSImageMerge::ConvertBinToTiff_raster_2chs() {
 		Generate2D_RASTER_SampleMap();
 
 		size_t pos = RASTERFolderPath.find_last_of("\\/");
 		string folderName = (pos == string::npos) ? RASTERFolderPath : RASTERFolderPath.substr(pos + 1);
 		string output_folder = "C:\\NTU_miniScope_Imaging\\2DRASTER\\" + folderName;
-		string output_folder_ch1 = output_folder +"\\Ch1";
+		string output_folder_ch1 = output_folder + "\\Ch1";
 		string output_folder_ch2 = output_folder + "\\Ch2";
 		string output_folder_raw = RASTERFolderPath + "_TIFF";
 		string output_folder_raw_ch1 = output_folder_raw + "\\Ch1";
@@ -880,7 +1040,7 @@ namespace NTU {
 		auto parse_frame_index = [](const std::string& filename) -> long long {
 			size_t p = filename.find("Image");
 			if (p == std::string::npos) return -1;
-			p += 5; 
+			p += 5;
 			while (p < filename.size() && !std::isdigit(static_cast<unsigned char>(filename[p]))) ++p;
 			size_t start = p;
 			while (p < filename.size() && std::isdigit(static_cast<unsigned char>(filename[p]))) ++p;
@@ -987,25 +1147,45 @@ namespace NTU {
 					sin_image_u16_2.at<U16>(y, x) = static_cast<U16>(v2);
 				}
 			}
+			if (num_of_line > 20) {
+				cv::cuda::GpuMat gpu_image_prepre_1, gpu_image_preprepre_1;
+				gpu_image_preprepre_1.upload(sin_image_u16_1);
+				cv::cuda::resize(gpu_image_preprepre_1, gpu_image_prepre_1, cv::Size(1024, 1024), 0, 0, cv::INTER_AREA);
+				cv::cuda::resize(gpu_image_prepre_1, gpu_image_ch1, cv::Size(num_of_line, num_of_line), 0, 0, cv::INTER_AREA);
 
-			cv::cuda::GpuMat gpu_image_prepre_1, gpu_image_preprepre_1;
-			gpu_image_preprepre_1.upload(sin_image_u16_1);
-			cv::cuda::resize(gpu_image_preprepre_1, gpu_image_prepre_1, cv::Size(1024,1024), 0, 0, cv::INTER_AREA);
-			cv::cuda::resize(gpu_image_prepre_1, gpu_image_ch1, cv::Size(num_of_line, num_of_line), 0, 0, cv::INTER_AREA);
+				cv::cuda::GpuMat gpu_image_prepre_2, gpu_image_preprepre_2;
+				gpu_image_preprepre_2.upload(sin_image_u16_2);
+				cv::cuda::resize(gpu_image_preprepre_2, gpu_image_prepre_2, cv::Size(1024, 1024), 0, 0, cv::INTER_AREA);
+				cv::cuda::resize(gpu_image_prepre_2, gpu_image_ch2, cv::Size(num_of_line, num_of_line), 0, 0, cv::INTER_AREA);
+			}
+			else {
+				gpu_image_ch1.upload(sin_image_u16_1);
+				gpu_image_ch2.upload(sin_image_u16_2);
+			}
 
-			cv::cuda::GpuMat gpu_image_prepre_2, gpu_image_preprepre_2;
-			gpu_image_preprepre_2.upload(sin_image_u16_2);
-			cv::cuda::resize(gpu_image_preprepre_2, gpu_image_prepre_2, cv::Size(1024, 1024), 0, 0, cv::INTER_AREA);
-			cv::cuda::resize(gpu_image_prepre_2, gpu_image_ch2, cv::Size(num_of_line, num_of_line), 0, 0, cv::INTER_AREA);
 
 			long long frame_idx = parse_frame_index(bin_filename);
 			bool need_flip_vertically = (frame_idx >= 0) && ((frame_idx % 2LL) == 0LL);
 
 			if (need_flip_vertically) {
-				cv::cuda::flip(gpu_image_raw_ch1, gpu_image_raw_ch1, 0);
-				cv::cuda::flip(gpu_image_raw_ch2, gpu_image_raw_ch2, 0);
-				cv::cuda::flip(gpu_image_ch1, gpu_image_ch1, 0);
-				cv::cuda::flip(gpu_image_ch2, gpu_image_ch2, 0);
+				cv::cuda::GpuMat tmp;
+				cv::cuda::flip(gpu_image_raw_ch1, tmp, 0, stream);
+				stream.waitForCompletion();
+				gpu_image_raw_ch1.swap(tmp);
+				tmp.release();
+				cv::cuda::flip(gpu_image_raw_ch2, tmp, 0, stream);
+				stream.waitForCompletion();
+				gpu_image_raw_ch2.swap(tmp);
+				tmp.release();
+
+				cv::cuda::flip(gpu_image_ch1, tmp, 0, stream);
+				stream.waitForCompletion();
+				gpu_image_ch1.swap(tmp);
+				tmp.release();
+				cv::cuda::flip(gpu_image_ch2, tmp, 0, stream);
+				stream.waitForCompletion();
+				gpu_image_ch1.swap(tmp);
+				tmp.release();
 			}
 
 			cv::cuda::subtract(65535, gpu_image_ch1, gpu_image_ch1, cv::noArray(), -1, stream);
@@ -1038,6 +1218,7 @@ namespace NTU {
 		} while (FindNextFileA(hFind, &find_data));
 
 		FindClose(hFind);
+
 	}
 
 	//Reconstruct//

@@ -3367,15 +3367,18 @@ private: System::Void button_loadrasterrawfolder_Click(System::Object^ sender, S
 		this->textBox_loadrasterrawfolder->Text = selectedPath;
 		imagemerge->RASTERFolderPath = msclr::interop::marshal_as<std::string>(selectedPath);
 		imagemerge->LOADspec(imagemerge->RASTERFolderPath);
-		if (imagemerge->channelcount == 2) {
-			this->button_TRANSFERTOTIFF_RASTER->Enabled = true;
-			this->label_TRANSFERTOTIFF_RASTER->Text = "--";
-		}
+		this->button_TRANSFERTOTIFF_RASTER->Enabled = true;
+		this->label_TRANSFERTOTIFF_RASTER->Text = "--";
 	}
 }
 
 private: System::Void button_TRANSFERTOTIFF_RASTER_Click(System::Object^ sender, System::EventArgs^ e) {
-	imagemerge->ConvertBinToTiff_raster();
+	if (imagemerge->channelcount == 2) {
+		imagemerge->ConvertBinToTiff_raster_2chs();
+	}
+	else if (imagemerge->channelcount == 1) {
+		imagemerge->ConvertBinToTiff_raster_1ch();
+	}
 	this->button_TRANSFERTOTIFF_RASTER->Enabled = false;
 	this->label_TRANSFERTOTIFF_RASTER->Text = "Complete";
 }
