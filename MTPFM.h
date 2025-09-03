@@ -936,10 +936,10 @@ private: System::Windows::Forms::Label^ label66;
 			this->YScomboBox_intclock->SelectedIndex = 3;
 			this->YScomboBox__raster_linefreq->SelectedIndex = 9;
 			this->YScomboBox__raster_yline->SelectedIndex = 4;
-			this->YScomboBox__raster_chopperfreq->SelectedIndex = 2;
+			this->YScomboBox__raster_chopperfreq->SelectedIndex = 0;
 			this->YScomboBox__ultraraster_linefreq->SelectedIndex = 4;
 			this->YScomboBox__ultraraster_yline->SelectedIndex = 2;
-			this->YScomboBox__ultraraster_chopperfreq->SelectedIndex = 2;
+			this->YScomboBox__ultraraster_chopperfreq->SelectedIndex = 0;
 			this->comboBox_ultraraster_spaceperline->SelectedIndex = 1;
 			// Loading progress
 			load_obj->send_progress(85);

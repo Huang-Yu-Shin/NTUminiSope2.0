@@ -115,7 +115,7 @@ namespace NTU {
             }
             ntuscope->Xpixelsize_display = 1024;
             if (ntuscope->num_lines == 1) {
-                ntuscope->Ypixelsize_display = 1;
+                ntuscope->Ypixelsize_display = 10;
             }
             else {
                 ntuscope->Ypixelsize_display = int(double(ntuscope->Xpixelsize_display) * double(ntuscope->MEMS_yamp / ntuscope->MEMS_xamp));
@@ -372,7 +372,7 @@ namespace NTU {
             }
             ntuscope->Xpixelsize_display = 1024;
             if (ntuscope->num_lines == 1) {
-                ntuscope->Ypixelsize_display = 1;
+                ntuscope->Ypixelsize_display = 10;
             }
             else {
                 ntuscope->Ypixelsize_display = int(double(ntuscope->Xpixelsize_display) * double(ntuscope->MEMS_yamp / ntuscope->MEMS_xamp));
@@ -1468,7 +1468,7 @@ namespace NTU {
 
             //Resize
             cv::cuda::GpuMat gpu_8bitresizedImage;
-            cv::cuda::resize(gpu_8bit, gpu_8bitresizedImage, cv::Size(ntuscope->Xpixelsize_display, ntuscope->Ypixelsize_display), 0, 0, cv::INTER_AREA);//cv::INTER_AREAcv::INTER_LINEAR
+            cv::cuda::resize(gpu_8bit, gpu_8bitresizedImage, cv::Size(ntuscope->Xpixelsize_display, ntuscope->Ypixelsize_display), 0, 0, cv::INTER_NEAREST);//cv::INTER_AREAcv::INTER_LINEAR
             stream.waitForCompletion();
 
             //Convert to RGB
@@ -1698,7 +1698,12 @@ namespace NTU {
 
             //Resize
             cv::cuda::GpuMat gpu_8bitresizedImage;
-            cv::cuda::resize(gpu_8bit, gpu_8bitresizedImage, cv::Size(ntuscope->Xpixelsize_display, ntuscope->Ypixelsize_display), 0, 0, cv::INTER_AREA);//cv::INTER_AREAcv::INTER_LINEAR
+            if (scanmode == RASTER_ULTRA) {
+                cv::cuda::resize(gpu_8bit, gpu_8bitresizedImage, cv::Size(ntuscope->Xpixelsize_display, ntuscope->Ypixelsize_display), 0, 0, cv::INTER_NEAREST);
+            }
+            else {
+                cv::cuda::resize(gpu_8bit, gpu_8bitresizedImage, cv::Size(ntuscope->Xpixelsize_display, ntuscope->Ypixelsize_display), 0, 0, cv::INTER_AREA);
+            }
             stream.waitForCompletion();
 
             //Convert to RGB
