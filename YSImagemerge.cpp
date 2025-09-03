@@ -903,7 +903,6 @@ namespace NTU {
 			file.read(reinterpret_cast<char*>(buffer.data()), static_cast<std::streamsize>(num_of_sample * sizeof(U16)));
 			std::streamsize got = file.gcount();
 			file.close();
-			cout << bin_filename << "  check0" << endl;
 			if (got != static_cast<std::streamsize>(num_of_sample * sizeof(U16))) {
 				std::cerr << "Error: The length of this read is mismatch " << bin_path << std::endl;
 				continue;
@@ -927,7 +926,6 @@ namespace NTU {
 					}
 				}
 			}
-			cout << bin_filename << "  check1" << endl;
 
 			cv::Mat sin_image_1(num_of_line, 1024, CV_32FC1, cv::Scalar(0));
 			for (int line = 0; line < num_of_line; ++line) {
@@ -962,11 +960,8 @@ namespace NTU {
 			cv::cuda::GpuMat gpu_image_ch1, gpu_image_raw_ch1;
 			gpu_image_ch1.upload(sin_image_u16_1);
 			gpu_image_raw_ch1.upload(cv::Mat(num_of_line, int(samplesPerRecord), CV_16UC1, h_image_1.data()));
-			cout << bin_filename << "  check2.5" << endl;
 			long long frame_idx = parse_frame_index(bin_filename);
-			cout << bin_filename << "  check2.6" << endl;
 			bool need_flip_vertically = (frame_idx >= 0) && ((frame_idx % 2LL) == 0LL);
-			cout << bin_filename << "  check2.7" << endl;
 			cout << "need_flip_vertically: " << need_flip_vertically << endl;
 			if (need_flip_vertically) {
 				cv::cuda::GpuMat tmp;
@@ -980,7 +975,6 @@ namespace NTU {
 				gpu_image_ch1.swap(tmp);
 				tmp.release();
 			}
-			cout << bin_filename << "  check3" << endl;
 			// normalize & scale
 			cv::cuda::subtract(65535, gpu_image_ch1, gpu_image_ch1, cv::noArray(), -1, stream);
 			cv::cuda::threshold(gpu_image_ch1, gpu_image_ch1, 65535, 0, cv::THRESH_TRUNC, stream);
@@ -1001,7 +995,6 @@ namespace NTU {
 				std::cerr << "Error: Unable to save the image " << ch1_path << std::endl;
 			if (!cv::imwrite(raw_ch1_path, Img16bit_raw_ch1))
 				std::cerr << "Error: Unable to save the raw image " << raw_ch1_path << std::endl;
-			cout << bin_filename << "  check4" << endl;
 		} while (FindNextFileA(hFind, &find_data));
 
 		FindClose(hFind);

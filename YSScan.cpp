@@ -464,7 +464,6 @@ namespace NTU {
             total_samples = samples_per_line * ntuscope->num_lines;
             double framerate = double(ntuscope->samplingRate) / double(total_samples);
             ntuscope->framerate = framerate;
-            ntuscope->MEMS_yamp = 0.5;
             float64 real_xamp = 0;
             float64 real_yamp = 0;
             if (ntuscope->reverse_axis == true) {
@@ -543,6 +542,7 @@ namespace NTU {
             int numberofchannel = 3;
             ttldata = new uInt8[total_samples * 2 * numberofchannel];
             fill(ttldata, ttldata + (total_samples * 2 * numberofchannel), 0);
+            NItriggerdelay = 0.0002995;
             int risingEdgeDelaySamples = static_cast<int>(ntuscope->samplingRate * NItriggerdelay);
             int risingEdgeDelaySamples_frame = risingEdgeDelaySamples - 5;
 
@@ -560,7 +560,7 @@ namespace NTU {
                 int frame_offset = frame * total_samples;
                 for (int line = 0; line < ntuscope->num_lines; ++line) {
                     int line_startIndex = frame_offset + line * samples_per_line + risingEdgeDelaySamples;
-                    int line_endIndex = line_startIndex + int((samples_per_line - risingEdgeDelaySamples) / 2);
+                    int line_endIndex = line_startIndex + int(2*(samples_per_line - risingEdgeDelaySamples) / 3);
                     int line_endBoundary = frame_offset + (line + 1) * samples_per_line;
                     for (int i = line_startIndex; i < line_endIndex && i < line_endBoundary; i++) {
                         ttldata[i * numberofchannel + 1] = 1;

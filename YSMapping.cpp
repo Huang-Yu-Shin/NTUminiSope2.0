@@ -107,11 +107,26 @@ namespace NTU {
         }
         else if (scanmode == RASTER_ULTRA) {
             ntuscope->Pixelnumy = ntuscope->num_lines;
-            ntuscope->Pixelnumx = int(double(ntuscope->Pixelnumy) * double(ntuscope->MEMS_xamp / ntuscope->MEMS_yamp));
+            if (ntuscope->num_lines == 1) {
+                ntuscope->Pixelnumx = 1024;
+            }
+            else {
+                ntuscope->Pixelnumx = int(double(ntuscope->Pixelnumy) * double(ntuscope->MEMS_xamp / ntuscope->MEMS_yamp));
+            }
             ntuscope->Xpixelsize_display = 1024;
-            ntuscope->Ypixelsize_display = int(double(ntuscope->Xpixelsize_display) * double(ntuscope->MEMS_yamp / ntuscope->MEMS_xamp));
+            if (ntuscope->num_lines == 1) {
+                ntuscope->Ypixelsize_display = 1;
+            }
+            else {
+                ntuscope->Ypixelsize_display = int(double(ntuscope->Xpixelsize_display) * double(ntuscope->MEMS_yamp / ntuscope->MEMS_xamp));
+            }
             ntuscope->Ypixelsize_save = ntuscope->num_lines;
-            ntuscope->Xpixelsize_save = int(double(ntuscope->Ypixelsize_save) * double(ntuscope->MEMS_xamp / ntuscope->MEMS_yamp));
+            if (ntuscope->num_lines == 1) {
+                ntuscope->Xpixelsize_save = 1024;
+            }
+            else {
+                ntuscope->Xpixelsize_save = int(double(ntuscope->Ypixelsize_save) * double(ntuscope->MEMS_xamp / ntuscope->MEMS_yamp));
+            }
             totalsample = int(double(ntuscope->samplesPerSec) / (2 * ntuscope->xfreq) * double(ntuscope->num_lines));
             ntuscope->highspeedmode_raster = true;
         }
@@ -349,11 +364,26 @@ namespace NTU {
         }
         else if (scanmode == RASTER_ULTRA) {
             ntuscope->Pixelnumy = ntuscope->num_lines;
-            ntuscope->Pixelnumx = int(double(ntuscope->Pixelnumy) * double(ntuscope->MEMS_xamp / ntuscope->MEMS_yamp));
+            if (ntuscope->num_lines == 1) {
+                ntuscope->Pixelnumx = 1024;
+            }
+            else {
+                ntuscope->Pixelnumx = int(double(ntuscope->Pixelnumy) * double(ntuscope->MEMS_xamp / ntuscope->MEMS_yamp));
+            }
             ntuscope->Xpixelsize_display = 1024;
-            ntuscope->Ypixelsize_display = int(double(ntuscope->Xpixelsize_display) * double(ntuscope->MEMS_yamp / ntuscope->MEMS_xamp));
+            if (ntuscope->num_lines == 1) {
+                ntuscope->Ypixelsize_display = 1;
+            }
+            else {
+                ntuscope->Ypixelsize_display = int(double(ntuscope->Xpixelsize_display) * double(ntuscope->MEMS_yamp / ntuscope->MEMS_xamp));
+            }
             ntuscope->Ypixelsize_save = ntuscope->num_lines;
-            ntuscope->Xpixelsize_save = int(double(ntuscope->Ypixelsize_save) * double(ntuscope->MEMS_xamp / ntuscope->MEMS_yamp));
+            if (ntuscope->num_lines == 1) {
+                ntuscope->Xpixelsize_save = 1024;
+            }
+            else {
+                ntuscope->Xpixelsize_save = int(double(ntuscope->Ypixelsize_save) * double(ntuscope->MEMS_xamp / ntuscope->MEMS_yamp));
+            }
             totalsample = int(double(ntuscope->samplesPerSec) / (2 * ntuscope->xfreq) * double(ntuscope->num_lines));
             ntuscope->highspeedmode_raster = true;
         }
