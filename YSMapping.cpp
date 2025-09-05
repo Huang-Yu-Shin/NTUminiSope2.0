@@ -1289,7 +1289,7 @@ namespace NTU {
 
     bool YSMapping::ProcessBufferAndFill_2DRasterImage_highspeed(U16* Buffer, high_resolution_clock::time_point starttime, system_clock::time_point starttime_system, U32 frameorder) {
         //Mapping
-        if (frameorder % 4 == 0) {
+        if (ntuscope->num_lines>1 && frameorder % 4 == 0) {
             cv::cuda::GpuMat gpu_image;
             //sine wave mapping
             cv::Mat sin_image(ntuscope->Pixelnumy, 1024, CV_32FC1, cv::Scalar(0));
@@ -1490,6 +1490,9 @@ namespace NTU {
         //Save images
         if (ntuscope->savestate == true && SavedCount < ntuscope->save_num) {
             lock_guard<mutex> lock(saveMutex);
+            if (frameorder % 2 == 1) {
+                reverse(Buffer, Buffer + samplesPerBuffer * channelCount);
+            }
             vector<U16> buffer_vector(Buffer, Buffer + samplesPerBuffer * channelCount);
             saveQueue.emplace_back(image_save, buffer_vector, starttime_system);
             SavedCount++;

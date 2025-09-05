@@ -27,6 +27,7 @@
 #include <vector>
 #include <stdio.h>
 #include <algorithm>
+#include <future>
 #include "YSCalculatePara.cuh"
 #include "YSReconstructPost.cuh"
 namespace NTU {
@@ -60,6 +61,7 @@ namespace NTU {
 		//SampleMap
 		cv::Mat sin_weight;
 		int* sampleMap = nullptr;
+		float64* sampleMap_f64 = nullptr;
 		void Generate2D_RASTER_SampleMap();
 		void Generate2D_LISSAJOUS_SampleMap();
 
@@ -96,6 +98,13 @@ namespace NTU {
 		bool GetChopperTTLSignal(int sampleIndex, int totalSamples);
 
 		//Transfer to .tiff
+		void ConvertBinToTiff_lisssajous_parallel();
+		void ProcessSingleBin_lissajous_1ch(const string& bin_path, const string& tiff_path);
+		void ProcessSingleBin_lissajous_2chs(const string& bin_path, const string& tiff_ch1_path, const string& tiff_ch2_path);
+		void ProcessSingleBin_raster_1ch(const string& bin_path, const string& ch1_path, const string& raw_ch1_path);
+		void ConvertBinToTiff_raster_1ch_parallel();
+		void ConvertBinToTiff_raster_2chs_parallel();
+		void ProcessSingleBin_raster_2ch(const string& bin_path, const string& ch1_path, const string& raw_ch1_path, const string& ch2_path, const string& raw_ch2_path);
 		void ConvertBinToTiff_lissajous();
 		void ConvertBinToTiff_raster_1ch();
 		void ConvertBinToTiff_raster_2chs();
@@ -116,7 +125,7 @@ namespace NTU {
 		ReconstructPost* reconstruct;
 		bool quickreconstruct = false;
 		bool firstreconstruct = true;
-		cv::Mat averageImg16;
+		cv::Mat averageImg16, averageImg16_ch2;
 		void DisplayReconstructedLissajousImage();
 		void ReconstructAllTiffInFolder();
 
@@ -141,12 +150,12 @@ namespace NTU {
 		cv::Mat rasterImage;
 		cv::cuda::Stream stream;
 		int rasterimgindex,lissajousimgindex;
-		double* LissajousrawData = nullptr;
-		double* LissajousrawData_ch2 = nullptr;
-		double* LissajoustempData = nullptr;
-		double* LissajoustempData_ch2 = nullptr;
-		double* Image = nullptr;
-		double* Image_ch2 = nullptr;
+		float64* LissajousrawData = nullptr;
+		float64* LissajousrawData_ch2 = nullptr;
+		float64* LissajoustempData = nullptr;
+		float64* LissajoustempData_ch2 = nullptr;
+		float64* Image = nullptr;
+		float64* Image_ch2 = nullptr;
 	};
 }
 

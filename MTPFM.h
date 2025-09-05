@@ -52,7 +52,7 @@ double YSlinefreq_array[10] = {100,125,200,250,400,500,625,800,1000,1250};
 double YSUltraRasterlinefreq_array[5] = { 1250,1300,1400,1500,1600 };
 int YSchopperdownscale_array[3] = { 1,2,4 };
 int YSyline_array[7] = { 16,32,64,128,256,512,1024 };
-int YSUltraRasteryline_array[5] = {1,2,3,4,6 };
+int YSUltraRasteryline_array[7] = {1,2,3,4,6,8,16};
 double YSphase[8] = { 0 ,M_PI_4, M_PI_2 ,3*M_PI_4, M_PI , 5*M_PI_4,  3 * M_PI_2, 7*M_PI_4 };
 std::string YSphasename[8] = {"0","PI/4" ,"PI/2","3PI/4" ,"PI","5PI/4", "3PI/2","7PI/4"};
 U32 inputrange[3] = { INPUT_RANGE_PM_500_MV,INPUT_RANGE_PM_800_MV,INPUT_RANGE_PM_1_V };
@@ -489,7 +489,7 @@ private: System::Windows::Forms::CheckBox^ YScheckBox_saveraw;
 private: System::Windows::Forms::Button^ YSbutton_save;
 
 private: System::Windows::Forms::ProgressBar^ progressBar1;
-private: System::Windows::Forms::Label^ YSlabel_savenum;
+
 
 
 private: System::Windows::Forms::TrackBar^ YStrackBar_savenum;
@@ -713,10 +713,15 @@ private: System::Windows::Forms::Label^ label79;
 private: System::Windows::Forms::TextBox^ textBox_raster_chopperphase;
 private: System::Windows::Forms::ComboBox^ comboBox_ultraraster_spaceperline;
 private: CustomControls::DefineControls::ToggleButtons^ toggleButtons_ultraraster_revereseaxis;
+private: System::Windows::Forms::Label^ label_reverseaxis;
 
 
 
-private: System::Windows::Forms::Label^ label66;
+
+private: System::Windows::Forms::TextBox^ textBox_savenum;
+private: System::Windows::Forms::Button^ button_setsavenum;
+
+
 
 
 
@@ -1201,6 +1206,8 @@ private:
 			this->label12 = (gcnew System::Windows::Forms::Label());
 			this->tabControl3 = (gcnew System::Windows::Forms::TabControl());
 			this->tabPage13 = (gcnew System::Windows::Forms::TabPage());
+			this->button_setsavenum = (gcnew System::Windows::Forms::Button());
+			this->textBox_savenum = (gcnew System::Windows::Forms::TextBox());
 			this->checkBox_saveprocessedimage = (gcnew System::Windows::Forms::CheckBox());
 			this->YSbutton_clear = (gcnew System::Windows::Forms::Button());
 			this->label25 = (gcnew System::Windows::Forms::Label());
@@ -1208,7 +1215,6 @@ private:
 			this->YScheckBox_saveraw = (gcnew System::Windows::Forms::CheckBox());
 			this->YSbutton_save = (gcnew System::Windows::Forms::Button());
 			this->progressBar1 = (gcnew System::Windows::Forms::ProgressBar());
-			this->YSlabel_savenum = (gcnew System::Windows::Forms::Label());
 			this->YStrackBar_savenum = (gcnew System::Windows::Forms::TrackBar());
 			this->textBox2 = (gcnew System::Windows::Forms::TextBox());
 			this->label38 = (gcnew System::Windows::Forms::Label());
@@ -1392,7 +1398,7 @@ private:
 			this->YStrackBar__lissajous_x_amp = (gcnew System::Windows::Forms::TrackBar());
 			this->label40 = (gcnew System::Windows::Forms::Label());
 			this->tabPage7 = (gcnew System::Windows::Forms::TabPage());
-			this->label66 = (gcnew System::Windows::Forms::Label());
+			this->label_reverseaxis = (gcnew System::Windows::Forms::Label());
 			this->toggleButtons_ultraraster_revereseaxis = (gcnew CustomControls::DefineControls::ToggleButtons());
 			this->comboBox_ultraraster_spaceperline = (gcnew System::Windows::Forms::ComboBox());
 			this->label_ultraraster_channeldisplay = (gcnew System::Windows::Forms::Label());
@@ -2280,6 +2286,8 @@ private:
 			// tabPage13
 			// 
 			this->tabPage13->BackColor = System::Drawing::Color::DimGray;
+			this->tabPage13->Controls->Add(this->button_setsavenum);
+			this->tabPage13->Controls->Add(this->textBox_savenum);
 			this->tabPage13->Controls->Add(this->checkBox_saveprocessedimage);
 			this->tabPage13->Controls->Add(this->YSbutton_clear);
 			this->tabPage13->Controls->Add(this->label25);
@@ -2287,7 +2295,6 @@ private:
 			this->tabPage13->Controls->Add(this->YScheckBox_saveraw);
 			this->tabPage13->Controls->Add(this->YSbutton_save);
 			this->tabPage13->Controls->Add(this->progressBar1);
-			this->tabPage13->Controls->Add(this->YSlabel_savenum);
 			this->tabPage13->Controls->Add(this->YStrackBar_savenum);
 			this->tabPage13->Controls->Add(this->textBox2);
 			this->tabPage13->Controls->Add(this->label38);
@@ -2297,6 +2304,30 @@ private:
 			this->tabPage13->Size = System::Drawing::Size(420, 138);
 			this->tabPage13->TabIndex = 3;
 			this->tabPage13->Text = L"YS Image acq.";
+			// 
+			// button_setsavenum
+			// 
+			this->button_setsavenum->Font = (gcnew System::Drawing::Font(L"Segoe UI", 9, static_cast<System::Drawing::FontStyle>((System::Drawing::FontStyle::Bold | System::Drawing::FontStyle::Italic))));
+			this->button_setsavenum->ForeColor = System::Drawing::Color::RoyalBlue;
+			this->button_setsavenum->Location = System::Drawing::Point(342, 68);
+			this->button_setsavenum->Name = L"button_setsavenum";
+			this->button_setsavenum->Size = System::Drawing::Size(72, 34);
+			this->button_setsavenum->TabIndex = 134;
+			this->button_setsavenum->Text = L"Set num.";
+			this->button_setsavenum->UseVisualStyleBackColor = true;
+			this->button_setsavenum->Click += gcnew System::EventHandler(this, &MTPFM::button_setsavenum_Click);
+			// 
+			// textBox_savenum
+			// 
+			this->textBox_savenum->BackColor = System::Drawing::Color::Silver;
+			this->textBox_savenum->Font = (gcnew System::Drawing::Font(L"Segoe UI", 11.25F, System::Drawing::FontStyle::Bold, System::Drawing::GraphicsUnit::Point,
+				static_cast<System::Byte>(0)));
+			this->textBox_savenum->Location = System::Drawing::Point(352, 106);
+			this->textBox_savenum->Name = L"textBox_savenum";
+			this->textBox_savenum->Size = System::Drawing::Size(61, 27);
+			this->textBox_savenum->TabIndex = 133;
+			this->textBox_savenum->Text = L"0";
+			this->textBox_savenum->TextAlign = System::Windows::Forms::HorizontalAlignment::Center;
 			// 
 			// checkBox_saveprocessedimage
 			// 
@@ -2378,28 +2409,16 @@ private:
 			this->progressBar1->Style = System::Windows::Forms::ProgressBarStyle::Continuous;
 			this->progressBar1->TabIndex = 99;
 			// 
-			// YSlabel_savenum
-			// 
-			this->YSlabel_savenum->AutoSize = true;
-			this->YSlabel_savenum->Font = (gcnew System::Drawing::Font(L"Segoe UI", 11.25F, System::Drawing::FontStyle::Bold, System::Drawing::GraphicsUnit::Point,
-				static_cast<System::Byte>(0)));
-			this->YSlabel_savenum->ForeColor = System::Drawing::Color::White;
-			this->YSlabel_savenum->Location = System::Drawing::Point(318, 110);
-			this->YSlabel_savenum->Name = L"YSlabel_savenum";
-			this->YSlabel_savenum->Size = System::Drawing::Size(72, 20);
-			this->YSlabel_savenum->TabIndex = 103;
-			this->YSlabel_savenum->Text = L"Num = 1";
-			// 
 			// YStrackBar_savenum
 			// 
 			this->YStrackBar_savenum->AutoSize = false;
 			this->YStrackBar_savenum->BackColor = System::Drawing::Color::DimGray;
 			this->YStrackBar_savenum->LargeChange = 10;
 			this->YStrackBar_savenum->Location = System::Drawing::Point(95, 113);
-			this->YStrackBar_savenum->Maximum = 2500;
+			this->YStrackBar_savenum->Maximum = 6000;
 			this->YStrackBar_savenum->Minimum = 1;
 			this->YStrackBar_savenum->Name = L"YStrackBar_savenum";
-			this->YStrackBar_savenum->Size = System::Drawing::Size(225, 20);
+			this->YStrackBar_savenum->Size = System::Drawing::Size(251, 20);
 			this->YStrackBar_savenum->TabIndex = 104;
 			this->YStrackBar_savenum->TickFrequency = 100;
 			this->YStrackBar_savenum->Value = 1;
@@ -4871,7 +4890,7 @@ private:
 			// tabPage7
 			// 
 			this->tabPage7->BackColor = System::Drawing::Color::DimGray;
-			this->tabPage7->Controls->Add(this->label66);
+			this->tabPage7->Controls->Add(this->label_reverseaxis);
 			this->tabPage7->Controls->Add(this->toggleButtons_ultraraster_revereseaxis);
 			this->tabPage7->Controls->Add(this->comboBox_ultraraster_spaceperline);
 			this->tabPage7->Controls->Add(this->label_ultraraster_channeldisplay);
@@ -4905,17 +4924,17 @@ private:
 			this->tabPage7->TabIndex = 3;
 			this->tabPage7->Text = L"2D Ultrafast Raster";
 			// 
-			// label66
+			// label_reverseaxis
 			// 
-			this->label66->AutoSize = true;
-			this->label66->Font = (gcnew System::Drawing::Font(L"Segoe UI", 11.25F, System::Drawing::FontStyle::Bold, System::Drawing::GraphicsUnit::Point,
+			this->label_reverseaxis->AutoSize = true;
+			this->label_reverseaxis->Font = (gcnew System::Drawing::Font(L"Segoe UI", 11.25F, System::Drawing::FontStyle::Bold, System::Drawing::GraphicsUnit::Point,
 				static_cast<System::Byte>(0)));
-			this->label66->ForeColor = System::Drawing::Color::White;
-			this->label66->Location = System::Drawing::Point(229, 279);
-			this->label66->Name = L"label66";
-			this->label66->Size = System::Drawing::Size(158, 20);
-			this->label66->TabIndex = 142;
-			this->label66->Text = L"Two-axis interchange";
+			this->label_reverseaxis->ForeColor = System::Drawing::Color::DarkGray;
+			this->label_reverseaxis->Location = System::Drawing::Point(229, 279);
+			this->label_reverseaxis->Name = L"label_reverseaxis";
+			this->label_reverseaxis->Size = System::Drawing::Size(158, 20);
+			this->label_reverseaxis->TabIndex = 142;
+			this->label_reverseaxis->Text = L"Two-axis interchange";
 			// 
 			// toggleButtons_ultraraster_revereseaxis
 			// 
@@ -4931,6 +4950,7 @@ private:
 			this->toggleButtons_ultraraster_revereseaxis->SolidStyle = false;
 			this->toggleButtons_ultraraster_revereseaxis->TabIndex = 141;
 			this->toggleButtons_ultraraster_revereseaxis->UseVisualStyleBackColor = true;
+			this->toggleButtons_ultraraster_revereseaxis->CheckedChanged += gcnew System::EventHandler(this, &MTPFM::toggleButtons_ultraraster_revereseaxis_CheckedChanged);
 			// 
 			// comboBox_ultraraster_spaceperline
 			// 
@@ -5122,7 +5142,10 @@ private:
 			this->YScomboBox__ultraraster_yline->Font = (gcnew System::Drawing::Font(L"Segoe UI", 11.25F, System::Drawing::FontStyle::Regular,
 				System::Drawing::GraphicsUnit::Point, static_cast<System::Byte>(0)));
 			this->YScomboBox__ultraraster_yline->FormattingEnabled = true;
-			this->YScomboBox__ultraraster_yline->Items->AddRange(gcnew cli::array< System::Object^  >(5) { L"1", L"2", L"3", L"4", L"6" });
+			this->YScomboBox__ultraraster_yline->Items->AddRange(gcnew cli::array< System::Object^  >(7) {
+				L"1", L"2", L"3", L"4", L"6",
+					L"8", L"16"
+			});
 			this->YScomboBox__ultraraster_yline->Location = System::Drawing::Point(268, 165);
 			this->YScomboBox__ultraraster_yline->Name = L"YScomboBox__ultraraster_yline";
 			this->YScomboBox__ultraraster_yline->Size = System::Drawing::Size(73, 28);
@@ -8160,7 +8183,7 @@ private: System::Void button9_Click(System::Object^ sender, System::EventArgs^ e
 //YSSave
 private: System::Void YSbutton_save_Click(System::Object^ sender, System::EventArgs^ e) {
 	aYSNTU->chopperphase = System::Convert::ToInt32(textBox_raster_chopperphase->Text);
-	int savenum_value = this->YStrackBar_savenum->Value;
+	int savenum_value = System::Convert::ToInt32(this->textBox_savenum->Text);
 	aYSNTU->titleFolder = msclr::interop::marshal_as<std::string>(this->YStextBox_title->Text);
 	if (this->YScheckBox_saveraw->CheckState == CheckState::Checked) {
 		aYSNTU->saverawstate = true;
@@ -8178,8 +8201,12 @@ private: System::Void YSbutton_save_Click(System::Object^ sender, System::EventA
 	this->YSbutton_clear->Enabled = false;
 }
 private: System::Void YStrackBar_savenum_Scroll(System::Object^ sender, System::EventArgs^ e) {
-	int savenum_value = this->YStrackBar_savenum->Value;
-	this->YSlabel_savenum->Text = "Num = "+savenum_value.ToString();
+	int savenum_value = this->YStrackBar_savenum->Value*20;
+	this->textBox_savenum->Text = savenum_value.ToString();
+}
+private: System::Void button_setsavenum_Click(System::Object^ sender, System::EventArgs^ e) {
+	int savenum_value = int(System::Convert::ToInt32(this->textBox_savenum->Text)/20);
+	this->YStrackBar_savenum->Value = savenum_value;
 }
 private: System::Void YSbutton_clear_Click(System::Object^ sender, System::EventArgs^ e) {
 	this->YSbutton_save->Enabled = true;
@@ -8580,6 +8607,16 @@ private: System::Void YSbutton_ultraraster_stop_Click(System::Object^ sender, Sy
 	toggleButtons_raster_chopper->Enabled = true;
 	toggleButtons_ultraraster_revereseaxis->Enabled = true;
 	toggleButtons_allow_averaging->Checked = false;
+}
+
+
+private: System::Void toggleButtons_ultraraster_revereseaxis_CheckedChanged(System::Object^ sender, System::EventArgs^ e) {
+	if (toggleButtons_ultraraster_revereseaxis->Checked == true) {
+		this->label_reverseaxis->ForeColor = Color::White;
+	}
+	else if (toggleButtons_ultraraster_revereseaxis->Checked == false) {
+		this->label_reverseaxis->ForeColor = Color::DarkGray;
+	}
 }
 };
 }

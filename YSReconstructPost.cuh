@@ -11,24 +11,32 @@ namespace NTU {
 		ReconstructPost();
 		~ReconstructPost();
 		void CudaMemoryManagerStop();
-		void CudaMemoryAllocate(int totalsample);
-		void CudaSampleMap(U16* sampleMap);
+		void CudaMemoryAllocate();
+		void CudaSampleMap(float64* sampleMap);
 		void getDeviceInf();
-		void launchProcessSamples_LISSAJOUS(U16* pBuffer, U16* h_image);
-	private:
-		float64* d_tempImage = nullptr;
-		U16* d_image = nullptr;
-		U16* d_sampleMap = nullptr;
-		U16* d_pBuffer = nullptr;
+		void launchProcessSamples_LISSAJOUS(float64* pBuffer, float64* h_image);
+
+		int pixelnumX = 0;
+		int pixelnumY = 0;
 		int total_sample = 0;
+		int sampling_rate = 0;
+		int freqx = 0;
+		int freqy = 0;
+		double phase = 0;
+	private:
+		float64* d_image = nullptr;
+		float64* d_sampleMap = nullptr;
+		float64* d_pBuffer = nullptr;
+
 		cudaStream_t stream;
 		cudaDeviceProp prop;
 		int num = 0;
+
+
 	};
 }
-//__global__ void convertToU16_LISSAJOUS(float64* tempImage, U16* image, int xpixelnumber, int ypixelnumber);
-__global__ void processSamples_LISSAJOUS_POST(U16* pBuffer, float64* tempImage, U16* sampleMap, int xpixelnumber, int ypixelnumber, int totalsample, double samplesPerSec, int xfreq, int yfreq, double phase);
-__global__ void invertBuffer_POST(U16* Buffer, int totalsample, bool SPconduct, int SPoffsetvalue);
-__global__ void normalizeImage_POST(U16* image, float64* tempImage, U16* sampleMap, int xpixelnumber, int ypixelnumber);
-//extern "C" void launchProcessSamples_LISSAJOUS_OLD(U16* pBuffer, U16* sampleMap, U16* h_image, int xpixelnumber, int ypixelnumber, int totalsample, double samplesPerSec, int xfreq, int yfreq);
+
+__global__ void processSamples_LISSAJOUS_POST(float64* pBuffer, float64* tempImage, float64* sampleMap, int xpixelnumber, int ypixelnumber, int totalsample, double samplesPerSec, int xfreq, int yfreq, double phase);
+__global__ void invertBuffer_POST(float64* Buffer, int totalsample);
+__global__ void normalizeImage_POST(float64* image, float64* tempImage, float64* sampleMap, int xpixelnumber, int ypixelnumber);
 #endif  

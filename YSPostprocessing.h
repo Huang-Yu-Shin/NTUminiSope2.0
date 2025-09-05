@@ -1715,25 +1715,25 @@ private: System::ComponentModel::IContainer^ components;
 			this->tableLayoutPanel_CalPara_result->Name = L"tableLayoutPanel_CalPara_result";
 			this->tableLayoutPanel_CalPara_result->RowCount = 1;
 			this->tableLayoutPanel_CalPara_result->RowStyles->Add((gcnew System::Windows::Forms::RowStyle(System::Windows::Forms::SizeType::Absolute,
-				521)));
+				522)));
 			this->tableLayoutPanel_CalPara_result->RowStyles->Add((gcnew System::Windows::Forms::RowStyle(System::Windows::Forms::SizeType::Absolute,
-				521)));
+				522)));
 			this->tableLayoutPanel_CalPara_result->RowStyles->Add((gcnew System::Windows::Forms::RowStyle(System::Windows::Forms::SizeType::Absolute,
-				521)));
+				522)));
 			this->tableLayoutPanel_CalPara_result->RowStyles->Add((gcnew System::Windows::Forms::RowStyle(System::Windows::Forms::SizeType::Absolute,
-				521)));
+				522)));
 			this->tableLayoutPanel_CalPara_result->RowStyles->Add((gcnew System::Windows::Forms::RowStyle(System::Windows::Forms::SizeType::Absolute,
-				521)));
+				522)));
 			this->tableLayoutPanel_CalPara_result->RowStyles->Add((gcnew System::Windows::Forms::RowStyle(System::Windows::Forms::SizeType::Absolute,
-				521)));
+				522)));
 			this->tableLayoutPanel_CalPara_result->RowStyles->Add((gcnew System::Windows::Forms::RowStyle(System::Windows::Forms::SizeType::Absolute,
-				521)));
+				522)));
 			this->tableLayoutPanel_CalPara_result->RowStyles->Add((gcnew System::Windows::Forms::RowStyle(System::Windows::Forms::SizeType::Absolute,
-				521)));
+				522)));
 			this->tableLayoutPanel_CalPara_result->RowStyles->Add((gcnew System::Windows::Forms::RowStyle(System::Windows::Forms::SizeType::Absolute,
-				521)));
+				522)));
 			this->tableLayoutPanel_CalPara_result->RowStyles->Add((gcnew System::Windows::Forms::RowStyle(System::Windows::Forms::SizeType::Absolute,
-				521)));
+				522)));
 			this->tableLayoutPanel_CalPara_result->Size = System::Drawing::Size(495, 286);
 			this->tableLayoutPanel_CalPara_result->TabIndex = 51;
 			// 
@@ -1851,9 +1851,9 @@ private: System::ComponentModel::IContainer^ components;
 			this->label51->ForeColor = System::Drawing::SystemColors::ControlLightLight;
 			this->label51->Location = System::Drawing::Point(23, 12);
 			this->label51->Name = L"label51";
-			this->label51->Size = System::Drawing::Size(312, 28);
+			this->label51->Size = System::Drawing::Size(157, 28);
 			this->label51->TabIndex = 120;
-			this->label51->Text = L".Bin convertion (for 2 channels)";
+			this->label51->Text = L".Bin convertion";
 			// 
 			// label_processimage
 			// 
@@ -2988,7 +2988,7 @@ private: System::Void button_LOADLISSAJOUS_RAWBIN_Click_1(System::Object^ sender
 	}
 }
 private: System::Void button_TRANSFERTOTIFF_Click_1(System::Object^ sender, System::EventArgs^ e) {
-	imagemerge->ConvertBinToTiff_lissajous();
+	imagemerge->ConvertBinToTiff_lisssajous_parallel();
 	this->button_TRANSFERTOTIFF->Enabled = false;
 	this->label_TRANSFERTOTIFF->Text = "Complete";
 	imagemerge->firstreconstruct = true;
@@ -3374,10 +3374,10 @@ private: System::Void button_loadrasterrawfolder_Click(System::Object^ sender, S
 
 private: System::Void button_TRANSFERTOTIFF_RASTER_Click(System::Object^ sender, System::EventArgs^ e) {
 	if (imagemerge->channelcount == 2) {
-		imagemerge->ConvertBinToTiff_raster_2chs();
+		imagemerge->ConvertBinToTiff_raster_2chs_parallel();
 	}
 	else if (imagemerge->channelcount == 1) {
-		imagemerge->ConvertBinToTiff_raster_1ch();
+		imagemerge->ConvertBinToTiff_raster_1ch_parallel();
 	}
 	this->button_TRANSFERTOTIFF_RASTER->Enabled = false;
 	this->label_TRANSFERTOTIFF_RASTER->Text = "Complete";

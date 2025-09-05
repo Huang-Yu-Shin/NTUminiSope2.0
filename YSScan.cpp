@@ -765,7 +765,6 @@ namespace NTU {
         int index = 0;
         float64 period = 1.0 / freq_x;
         float64 time = 0;
-
         for (int line = 0; line < num_lines; ++line) {
             float64 y_value = yamplitude - (2 * yamplitude * line) / (num_lines - 1) + offsety;
             for (int i = 0; i < samples_per_line; ++i) {
@@ -807,7 +806,6 @@ namespace NTU {
         int index = 0;
         float64 period = 1.0 / freq_x;
         float64 time = 0;
-
         for (int line = 0; line < num_lines; ++line) {
             float64 x_value = xamplitude - (2 * xamplitude * line) / (num_lines - 1) + offsetx;
             for (int i = 0; i < samples_per_line; ++i) {
