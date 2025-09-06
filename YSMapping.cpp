@@ -986,6 +986,9 @@ namespace NTU {
 
         //to save
         if (ntuscope->savestate == true && SavedCount < ntuscope->save_num) {
+            if (SavedCount == 0) {
+                frameorder_savestart = U32(frameorder);
+            }
             lock_guard<mutex> lock(saveMutex);
             if (ntuscope->saveprocessedstate == true) {
                 gpu_8bitresizedImage.download(image_save);
@@ -1036,39 +1039,6 @@ namespace NTU {
 
     bool YSMapping::ProcessBufferAndFill_2DRasterImage(U16* Buffer, high_resolution_clock::time_point starttime, system_clock::time_point starttime_system, U32 frameorder) {
         //Mapping
-        //sample mapping
-        //U16* h_image = new U16[int(samplesPerBuffer)];
-        //memset(h_image, 0, int(samplesPerBuffer) * sizeof(U16));
-
-        //U16* buffer_ptr = Buffer;
-        //U16* buffer_end = Buffer + U16(samplesPerBuffer);
-
-        //for (int line = 0; line < ntuscope->Pixelnumy; line++) {
-        //    U16* image_ptr = h_image + U16(line) * U16(samplesPerRecord);
-        //    if (line % 2 == 0) {  //forward
-
-        //        for (int sample = 0; sample < ntuscope->raster_phase; sample++) {
-        //            *(image_ptr++) = 32768;
-        //        }
-        //        for (int sample = 0; sample < int(int(samplesPerRecord) - ntuscope->raster_phase); sample++) {
-        //            *(image_ptr++) = *(buffer_ptr++);
-        //        }
-        //        buffer_ptr = buffer_ptr + ntuscope->raster_phase;
-        //    }
-        //    else if (line % 2 == 1) { //reverse
-        //        U16* reverse_ptr = image_ptr + U16(samplesPerRecord) - 1;
-
-        //        for (int sample = 0; sample < int(samplesPerRecord); sample++) {
-        //            *(reverse_ptr--) = *(buffer_ptr++);
-        //        }
-        //    }
-        //}
-
-        //cv::cuda::GpuMat gpu_image_pre(ntuscope->Pixelnumy, int(samplesPerRecord), CV_16UC1);
-        //gpu_image_pre.upload(cv::Mat(ntuscope->Pixelnumy, int(samplesPerRecord), CV_16UC1, h_image));
-        /*cv::cuda::GpuMat gpu_image;*/
-        /*cv::cuda::resize(gpu_image_pre, gpu_image, cv::Size(1024, 1024), 0, 0, cv::INTER_AREA);*/
-
         cv::cuda::GpuMat gpu_image;
         //sine wave mapping
         cv::Mat sin_image(ntuscope->Pixelnumy, 1024, CV_32FC1, cv::Scalar(0));
@@ -1255,6 +1225,9 @@ namespace NTU {
 
         //Save images
         if (ntuscope->savestate == true && SavedCount < ntuscope->save_num) {
+            if (SavedCount == 0) {
+                frameorder_savestart = U32(frameorder);
+            }
             lock_guard<mutex> lock(saveMutex);
             if (ntuscope->saveprocessedstate == true) {
                 gpu_8bitresizedImage.download(image_save);
@@ -1489,6 +1462,9 @@ namespace NTU {
 
         //Save images
         if (ntuscope->savestate == true && SavedCount < ntuscope->save_num) {
+            if (SavedCount == 0) {
+                frameorder_savestart = U32(frameorder);
+            }
             lock_guard<mutex> lock(saveMutex);
             if (frameorder % 2 == 1) {
                 reverse(Buffer, Buffer + samplesPerBuffer * channelCount);
@@ -1728,6 +1704,9 @@ namespace NTU {
 
         //Save images
         if (ntuscope->savestate == true && SavedCount < ntuscope->save_num) {
+            if (SavedCount == 0) {
+                frameorder_savestart = U32(frameorder);
+            }
             lock_guard<mutex> lock(saveMutex);
             vector<U16> buffer_vector(Buffer, Buffer + samplesPerBuffer * channelCount);
             saveQueue.emplace_back(image_save, buffer_vector, starttime_system);
@@ -2470,6 +2449,7 @@ namespace NTU {
                 else if (ntuscope->channeldisplay == true) {
                     file << "channelsave," << 2 << endl;
                 }
+                file << "savestart_frameorder," << frameorder_savestart << endl;
                 if (ntuscope->reverse_axis == true) {
                     file << "reverseaxis," << "true" << endl;
                 }
@@ -2508,6 +2488,7 @@ namespace NTU {
                 else if (ntuscope->channeldisplay == true) {
                     rawfile << "channelsave," << 2 << endl;
                 }
+                rawfile << "savestart_frameorder," << frameorder_savestart << endl;
                 if (ntuscope->reverse_axis == true) {
                     rawfile << "reverseaxis," << "true" << endl;
                 }

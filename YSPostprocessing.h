@@ -259,6 +259,8 @@ private: System::Windows::Forms::Label^ label53;
 private: System::Windows::Forms::Label^ label54;
 private: System::Windows::Forms::TextBox^ textBox_lissajousoffset;
 private: System::Windows::Forms::Button^ button_lissajousquickset;
+private: System::Windows::Forms::TextBox^ textBox_savestartorder;
+private: System::Windows::Forms::Label^ label55;
 
 
 
@@ -613,6 +615,8 @@ private: System::ComponentModel::IContainer^ components;
 			this->tabPage3 = (gcnew System::Windows::Forms::TabPage());
 			this->label39 = (gcnew System::Windows::Forms::Label());
 			this->LOAD_RASTERRAW_FOLDER = (gcnew System::Windows::Forms::FolderBrowserDialog());
+			this->label55 = (gcnew System::Windows::Forms::Label());
+			this->textBox_savestartorder = (gcnew System::Windows::Forms::TextBox());
 			(cli::safe_cast<System::ComponentModel::ISupportInitialize^>(this->trackBar_lissajousoffset))->BeginInit();
 			(cli::safe_cast<System::ComponentModel::ISupportInitialize^>(this->trackBar_resizey))->BeginInit();
 			(cli::safe_cast<System::ComponentModel::ISupportInitialize^>(this->trackBar_resizex))->BeginInit();
@@ -1068,6 +1072,8 @@ private: System::ComponentModel::IContainer^ components;
 			// panel3
 			// 
 			this->panel3->BackColor = System::Drawing::Color::LightSteelBlue;
+			this->panel3->Controls->Add(this->textBox_savestartorder);
+			this->panel3->Controls->Add(this->label55);
 			this->panel3->Controls->Add(this->textBox_linefreq);
 			this->panel3->Controls->Add(this->label52);
 			this->panel3->Controls->Add(this->textBox_numline);
@@ -1145,10 +1151,10 @@ private: System::ComponentModel::IContainer^ components;
 			// 
 			this->textBox_channelcount->Enabled = false;
 			this->textBox_channelcount->Font = (gcnew System::Drawing::Font(L"Segoe UI", 11.25F, System::Drawing::FontStyle::Bold));
-			this->textBox_channelcount->Location = System::Drawing::Point(244, 49);
+			this->textBox_channelcount->Location = System::Drawing::Point(167, 46);
 			this->textBox_channelcount->Margin = System::Windows::Forms::Padding(3, 2, 3, 2);
 			this->textBox_channelcount->Name = L"textBox_channelcount";
-			this->textBox_channelcount->Size = System::Drawing::Size(131, 32);
+			this->textBox_channelcount->Size = System::Drawing::Size(100, 32);
 			this->textBox_channelcount->TabIndex = 27;
 			this->textBox_channelcount->TextAlign = System::Windows::Forms::HorizontalAlignment::Center;
 			// 
@@ -1715,25 +1721,25 @@ private: System::ComponentModel::IContainer^ components;
 			this->tableLayoutPanel_CalPara_result->Name = L"tableLayoutPanel_CalPara_result";
 			this->tableLayoutPanel_CalPara_result->RowCount = 1;
 			this->tableLayoutPanel_CalPara_result->RowStyles->Add((gcnew System::Windows::Forms::RowStyle(System::Windows::Forms::SizeType::Absolute,
-				522)));
+				523)));
 			this->tableLayoutPanel_CalPara_result->RowStyles->Add((gcnew System::Windows::Forms::RowStyle(System::Windows::Forms::SizeType::Absolute,
-				522)));
+				523)));
 			this->tableLayoutPanel_CalPara_result->RowStyles->Add((gcnew System::Windows::Forms::RowStyle(System::Windows::Forms::SizeType::Absolute,
-				522)));
+				523)));
 			this->tableLayoutPanel_CalPara_result->RowStyles->Add((gcnew System::Windows::Forms::RowStyle(System::Windows::Forms::SizeType::Absolute,
-				522)));
+				523)));
 			this->tableLayoutPanel_CalPara_result->RowStyles->Add((gcnew System::Windows::Forms::RowStyle(System::Windows::Forms::SizeType::Absolute,
-				522)));
+				523)));
 			this->tableLayoutPanel_CalPara_result->RowStyles->Add((gcnew System::Windows::Forms::RowStyle(System::Windows::Forms::SizeType::Absolute,
-				522)));
+				523)));
 			this->tableLayoutPanel_CalPara_result->RowStyles->Add((gcnew System::Windows::Forms::RowStyle(System::Windows::Forms::SizeType::Absolute,
-				522)));
+				523)));
 			this->tableLayoutPanel_CalPara_result->RowStyles->Add((gcnew System::Windows::Forms::RowStyle(System::Windows::Forms::SizeType::Absolute,
-				522)));
+				523)));
 			this->tableLayoutPanel_CalPara_result->RowStyles->Add((gcnew System::Windows::Forms::RowStyle(System::Windows::Forms::SizeType::Absolute,
-				522)));
+				523)));
 			this->tableLayoutPanel_CalPara_result->RowStyles->Add((gcnew System::Windows::Forms::RowStyle(System::Windows::Forms::SizeType::Absolute,
-				522)));
+				523)));
 			this->tableLayoutPanel_CalPara_result->Size = System::Drawing::Size(495, 286);
 			this->tableLayoutPanel_CalPara_result->TabIndex = 51;
 			// 
@@ -2844,6 +2850,27 @@ private: System::ComponentModel::IContainer^ components;
 			// 
 			this->LOAD_RASTERRAW_FOLDER->SelectedPath = L"C:\\NTU_miniScope_Imaging\\2DRASTER_RAW";
 			// 
+			// label55
+			// 
+			this->label55->AutoSize = true;
+			this->label55->Font = (gcnew System::Drawing::Font(L"Segoe UI", 11.25F, System::Drawing::FontStyle::Bold));
+			this->label55->Location = System::Drawing::Point(273, 49);
+			this->label55->Name = L"label55";
+			this->label55->Size = System::Drawing::Size(154, 25);
+			this->label55->TabIndex = 32;
+			this->label55->Text = L"Save start order";
+			// 
+			// textBox_savestartorder
+			// 
+			this->textBox_savestartorder->Enabled = false;
+			this->textBox_savestartorder->Font = (gcnew System::Drawing::Font(L"Segoe UI", 11.25F, System::Drawing::FontStyle::Bold));
+			this->textBox_savestartorder->Location = System::Drawing::Point(426, 46);
+			this->textBox_savestartorder->Margin = System::Windows::Forms::Padding(3, 2, 3, 2);
+			this->textBox_savestartorder->Name = L"textBox_savestartorder";
+			this->textBox_savestartorder->Size = System::Drawing::Size(100, 32);
+			this->textBox_savestartorder->TabIndex = 33;
+			this->textBox_savestartorder->TextAlign = System::Windows::Forms::HorizontalAlignment::Center;
+			// 
 			// YSPostprocessing
 			// 
 			this->AutoScaleDimensions = System::Drawing::SizeF(8, 16);
@@ -3385,6 +3412,7 @@ private: System::Void button_TRANSFERTOTIFF_RASTER_Click(System::Object^ sender,
 
 private: System::Void timer_refresh_UI_Tick(System::Object^ sender, System::EventArgs^ e) {
 	this->textBox_channelcount->Text = imagemerge->channelcount.ToString();
+	this->textBox_savestartorder->Text = imagemerge->savestart_frameorder.ToString();
 	this->textBox_lissajousfreqx->Text = imagemerge->xfreq.ToString();
 	this->textBox_lissajousfreqy->Text = imagemerge->yfreq.ToString();
 	this->textBox_lissajousphase->Text = imagemerge->lissajousphase.ToString();

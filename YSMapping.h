@@ -35,6 +35,7 @@ namespace NTU {
         int Zpixelnum;
         int imageIndex = 0;
         int SavedCount = 0;
+        U32 frameorder_savestart = 0;
 
         bool ConfigureBoard(ScanMode mode);
         bool ConfigureBoardTwoChannel(ScanMode mode);

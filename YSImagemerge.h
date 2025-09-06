@@ -57,6 +57,7 @@ namespace NTU {
 		double chopperphase = 0;
 		double progresspercentage = 0;
 		int pixelnum = 256;
+		U32 savestart_frameorder = 0;
 
 		//SampleMap
 		cv::Mat sin_weight;
@@ -105,9 +106,6 @@ namespace NTU {
 		void ConvertBinToTiff_raster_1ch_parallel();
 		void ConvertBinToTiff_raster_2chs_parallel();
 		void ProcessSingleBin_raster_2ch(const string& bin_path, const string& ch1_path, const string& raw_ch1_path, const string& ch2_path, const string& raw_ch2_path);
-		void ConvertBinToTiff_lissajous();
-		void ConvertBinToTiff_raster_1ch();
-		void ConvertBinToTiff_raster_2chs();
 
 		//Scanmode merge
 		bool savestate = 0;

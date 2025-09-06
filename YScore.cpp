@@ -262,6 +262,7 @@ namespace NTU {
         if (save_num > 0) {
             mapping->imageIndex = 0;
             mapping->SavedCount = 0;
+            mapping->frameorder_savestart = 0;
             ntuscope->savestate = true;
             ntuscope->save_num = save_num;
         }
