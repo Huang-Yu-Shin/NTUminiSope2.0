@@ -36,6 +36,7 @@ namespace NTU {
         int imageIndex = 0;
         int SavedCount = 0;
         U32 frameorder_savestart = 0;
+        int interdisplay = 1;
 
         bool ConfigureBoard(ScanMode mode);
         bool ConfigureBoardTwoChannel(ScanMode mode);
@@ -46,6 +47,7 @@ namespace NTU {
         bool ProcessBufferAndFill_2DRasterImage(U16* Buffer, high_resolution_clock::time_point starttime, system_clock::time_point starttime_system, U32 frameorder);
         bool ProcessBufferAndFill_2DRasterImage_highspeed(U16* Buffer, high_resolution_clock::time_point starttime, system_clock::time_point starttime_system, U32 frameorder);
         bool ProcessBufferAndFill_2DRasterImageTwoChannel(U16* Buffer, high_resolution_clock::time_point starttime, system_clock::time_point starttime_system, U32 frameorder);
+        bool ProcessBufferAndFill_2DRasterImageTwoChannel_highspeed(U16* Buffer, high_resolution_clock::time_point starttime, system_clock::time_point starttime_system, U32 frameorder);
         void WarmupLissajousImageProcessing();
         bool StartAcquireData();
         bool AcquireData_RASTER();
@@ -54,7 +56,8 @@ namespace NTU {
         void SavelissajousimageFunction();
         bool Saveimage_RASTER(cv::Mat final_display_img , vector<U16>& buffer_save, system_clock::time_point starttime_system);
         bool Saveimage_LISSAJOUS(cv::Mat final_display_img, vector<U16>& buffer_save, system_clock::time_point starttime_system);
-        bool Saveimage_LISSAJOUSBin_highspeed(U16* Buffer, system_clock::time_point starttime_system);
+        //bool Saveimage_LISSAJOUSBin_highspeed(U16* Buffer, system_clock::time_point starttime_system);
+        bool Saveimage_LISSAJOUSBin_highspeed(vector<U16>& buffer_save, system_clock::time_point starttime_system);
         bool Saveimage_RASTER_highspeed(cv::Mat final_display_img, vector<U16>& buffer_save, system_clock::time_point starttime_system);
         bool Saveimage_RASTER2CH_highspeed(cv::Mat final_display_img, vector<U16>& buffer_save, system_clock::time_point starttime_system);
         void CloseAlazar();
@@ -103,7 +106,6 @@ namespace NTU {
         //save state
         deque<tuple<cv::Mat, vector<U16>, std::chrono::system_clock::time_point>> saveQueue;
         deque<tuple<cv::Mat, vector<U16>, std::chrono::system_clock::time_point>> saveLissajousQueue;
-        deque<pair<vector<U16>, std::chrono::system_clock::time_point>> saveLissajousQueue_highspeed;
         mutex saveMutex;
         condition_variable saveCondition;
         atomic<bool> stopsaveThread;

@@ -261,6 +261,7 @@ private: System::Windows::Forms::TextBox^ textBox_lissajousoffset;
 private: System::Windows::Forms::Button^ button_lissajousquickset;
 private: System::Windows::Forms::TextBox^ textBox_savestartorder;
 private: System::Windows::Forms::Label^ label55;
+private: System::Windows::Forms::Button^ button_shut_down_MEMS;
 
 
 
@@ -474,6 +475,8 @@ private: System::ComponentModel::IContainer^ components;
 			this->label4 = (gcnew System::Windows::Forms::Label());
 			this->label17 = (gcnew System::Windows::Forms::Label());
 			this->panel3 = (gcnew System::Windows::Forms::Panel());
+			this->textBox_savestartorder = (gcnew System::Windows::Forms::TextBox());
+			this->label55 = (gcnew System::Windows::Forms::Label());
 			this->textBox_linefreq = (gcnew System::Windows::Forms::TextBox());
 			this->label52 = (gcnew System::Windows::Forms::Label());
 			this->textBox_numline = (gcnew System::Windows::Forms::TextBox());
@@ -615,8 +618,7 @@ private: System::ComponentModel::IContainer^ components;
 			this->tabPage3 = (gcnew System::Windows::Forms::TabPage());
 			this->label39 = (gcnew System::Windows::Forms::Label());
 			this->LOAD_RASTERRAW_FOLDER = (gcnew System::Windows::Forms::FolderBrowserDialog());
-			this->label55 = (gcnew System::Windows::Forms::Label());
-			this->textBox_savestartorder = (gcnew System::Windows::Forms::TextBox());
+			this->button_shut_down_MEMS = (gcnew System::Windows::Forms::Button());
 			(cli::safe_cast<System::ComponentModel::ISupportInitialize^>(this->trackBar_lissajousoffset))->BeginInit();
 			(cli::safe_cast<System::ComponentModel::ISupportInitialize^>(this->trackBar_resizey))->BeginInit();
 			(cli::safe_cast<System::ComponentModel::ISupportInitialize^>(this->trackBar_resizex))->BeginInit();
@@ -1104,6 +1106,27 @@ private: System::ComponentModel::IContainer^ components;
 			this->panel3->Name = L"panel3";
 			this->panel3->Size = System::Drawing::Size(529, 462);
 			this->panel3->TabIndex = 105;
+			// 
+			// textBox_savestartorder
+			// 
+			this->textBox_savestartorder->Enabled = false;
+			this->textBox_savestartorder->Font = (gcnew System::Drawing::Font(L"Segoe UI", 11.25F, System::Drawing::FontStyle::Bold));
+			this->textBox_savestartorder->Location = System::Drawing::Point(426, 46);
+			this->textBox_savestartorder->Margin = System::Windows::Forms::Padding(3, 2, 3, 2);
+			this->textBox_savestartorder->Name = L"textBox_savestartorder";
+			this->textBox_savestartorder->Size = System::Drawing::Size(100, 32);
+			this->textBox_savestartorder->TabIndex = 33;
+			this->textBox_savestartorder->TextAlign = System::Windows::Forms::HorizontalAlignment::Center;
+			// 
+			// label55
+			// 
+			this->label55->AutoSize = true;
+			this->label55->Font = (gcnew System::Drawing::Font(L"Segoe UI", 11.25F, System::Drawing::FontStyle::Bold));
+			this->label55->Location = System::Drawing::Point(273, 49);
+			this->label55->Name = L"label55";
+			this->label55->Size = System::Drawing::Size(154, 25);
+			this->label55->TabIndex = 32;
+			this->label55->Text = L"Save start order";
 			// 
 			// textBox_linefreq
 			// 
@@ -1721,25 +1744,25 @@ private: System::ComponentModel::IContainer^ components;
 			this->tableLayoutPanel_CalPara_result->Name = L"tableLayoutPanel_CalPara_result";
 			this->tableLayoutPanel_CalPara_result->RowCount = 1;
 			this->tableLayoutPanel_CalPara_result->RowStyles->Add((gcnew System::Windows::Forms::RowStyle(System::Windows::Forms::SizeType::Absolute,
-				523)));
+				524)));
 			this->tableLayoutPanel_CalPara_result->RowStyles->Add((gcnew System::Windows::Forms::RowStyle(System::Windows::Forms::SizeType::Absolute,
-				523)));
+				524)));
 			this->tableLayoutPanel_CalPara_result->RowStyles->Add((gcnew System::Windows::Forms::RowStyle(System::Windows::Forms::SizeType::Absolute,
-				523)));
+				524)));
 			this->tableLayoutPanel_CalPara_result->RowStyles->Add((gcnew System::Windows::Forms::RowStyle(System::Windows::Forms::SizeType::Absolute,
-				523)));
+				524)));
 			this->tableLayoutPanel_CalPara_result->RowStyles->Add((gcnew System::Windows::Forms::RowStyle(System::Windows::Forms::SizeType::Absolute,
-				523)));
+				524)));
 			this->tableLayoutPanel_CalPara_result->RowStyles->Add((gcnew System::Windows::Forms::RowStyle(System::Windows::Forms::SizeType::Absolute,
-				523)));
+				524)));
 			this->tableLayoutPanel_CalPara_result->RowStyles->Add((gcnew System::Windows::Forms::RowStyle(System::Windows::Forms::SizeType::Absolute,
-				523)));
+				524)));
 			this->tableLayoutPanel_CalPara_result->RowStyles->Add((gcnew System::Windows::Forms::RowStyle(System::Windows::Forms::SizeType::Absolute,
-				523)));
+				524)));
 			this->tableLayoutPanel_CalPara_result->RowStyles->Add((gcnew System::Windows::Forms::RowStyle(System::Windows::Forms::SizeType::Absolute,
-				523)));
+				524)));
 			this->tableLayoutPanel_CalPara_result->RowStyles->Add((gcnew System::Windows::Forms::RowStyle(System::Windows::Forms::SizeType::Absolute,
-				523)));
+				524)));
 			this->tableLayoutPanel_CalPara_result->Size = System::Drawing::Size(495, 286);
 			this->tableLayoutPanel_CalPara_result->TabIndex = 51;
 			// 
@@ -2850,26 +2873,18 @@ private: System::ComponentModel::IContainer^ components;
 			// 
 			this->LOAD_RASTERRAW_FOLDER->SelectedPath = L"C:\\NTU_miniScope_Imaging\\2DRASTER_RAW";
 			// 
-			// label55
+			// button_shut_down_MEMS
 			// 
-			this->label55->AutoSize = true;
-			this->label55->Font = (gcnew System::Drawing::Font(L"Segoe UI", 11.25F, System::Drawing::FontStyle::Bold));
-			this->label55->Location = System::Drawing::Point(273, 49);
-			this->label55->Name = L"label55";
-			this->label55->Size = System::Drawing::Size(154, 25);
-			this->label55->TabIndex = 32;
-			this->label55->Text = L"Save start order";
-			// 
-			// textBox_savestartorder
-			// 
-			this->textBox_savestartorder->Enabled = false;
-			this->textBox_savestartorder->Font = (gcnew System::Drawing::Font(L"Segoe UI", 11.25F, System::Drawing::FontStyle::Bold));
-			this->textBox_savestartorder->Location = System::Drawing::Point(426, 46);
-			this->textBox_savestartorder->Margin = System::Windows::Forms::Padding(3, 2, 3, 2);
-			this->textBox_savestartorder->Name = L"textBox_savestartorder";
-			this->textBox_savestartorder->Size = System::Drawing::Size(100, 32);
-			this->textBox_savestartorder->TabIndex = 33;
-			this->textBox_savestartorder->TextAlign = System::Windows::Forms::HorizontalAlignment::Center;
+			this->button_shut_down_MEMS->Font = (gcnew System::Drawing::Font(L"Segoe UI", 10.8F, static_cast<System::Drawing::FontStyle>((System::Drawing::FontStyle::Bold | System::Drawing::FontStyle::Italic)),
+				System::Drawing::GraphicsUnit::Point, static_cast<System::Byte>(0)));
+			this->button_shut_down_MEMS->ForeColor = System::Drawing::Color::DarkGoldenrod;
+			this->button_shut_down_MEMS->Location = System::Drawing::Point(1117, 26);
+			this->button_shut_down_MEMS->Name = L"button_shut_down_MEMS";
+			this->button_shut_down_MEMS->Size = System::Drawing::Size(111, 38);
+			this->button_shut_down_MEMS->TabIndex = 111;
+			this->button_shut_down_MEMS->Text = L"Close";
+			this->button_shut_down_MEMS->UseVisualStyleBackColor = true;
+			this->button_shut_down_MEMS->Click += gcnew System::EventHandler(this, &YSPostprocessing::button_shut_down_Click);
 			// 
 			// YSPostprocessing
 			// 
@@ -2878,6 +2893,7 @@ private: System::ComponentModel::IContainer^ components;
 			this->BackColor = System::Drawing::SystemColors::InactiveCaption;
 			this->CausesValidation = false;
 			this->ClientSize = System::Drawing::Size(1233, 940);
+			this->Controls->Add(this->button_shut_down_MEMS);
 			this->Controls->Add(this->tabControl2);
 			this->Controls->Add(this->tabControl1);
 			this->Controls->Add(this->panel5);
@@ -3087,7 +3103,8 @@ private: System::Void button_setphaseandsave_Click(System::Object^ sender, Syste
 	startreconstruct->Start();
 }
 private: void StartReconstruct() {
-	imagemerge->ReconstructAllTiffInFolder();  
+	/*imagemerge->ReconstructAllTiffInFolder();  */
+	imagemerge-> ReconstructAllTiffInFolder_parallel();
 }
 //Calculate Parameters
 private: System::Void button_CalPara_LOADRASTER_Click(System::Object^ sender, System::EventArgs^ e) {
@@ -3438,11 +3455,8 @@ private: System::Void timer_refresh_UI_Tick(System::Object^ sender, System::Even
 }
 
 private: System::Void button_shut_down_Click(System::Object^ sender, System::EventArgs^ e) {
-	imagemerge->~YSImageMerge();
+	imagemerge->Clear();
 }
-
-
-
 
 };
 }

@@ -8,6 +8,7 @@ namespace NTU {
 	}
 
 	YSImageMerge::~YSImageMerge() {
+		cv::destroyAllWindows();
 		if (LissajousrawData != nullptr) {
 			delete[] LissajousrawData;
 		}
@@ -33,7 +34,35 @@ namespace NTU {
 			delete[] sampleMap;
 		}
 		calpara->~CudaCalPara();
+
+	}
+
+	void YSImageMerge::Clear() {
 		cv::destroyAllWindows();
+		if (LissajousrawData != nullptr) {
+			LissajousrawData = nullptr;
+		}
+		if (LissajousrawData_ch2 != nullptr) {
+			LissajoustempData_ch2 = nullptr;;
+		}
+		if (LissajoustempData != nullptr) {
+			LissajoustempData = nullptr;;
+		}
+		if (LissajoustempData_ch2 != nullptr) {
+			LissajoustempData_ch2 = nullptr;;
+		}
+		if (Image != nullptr) {
+			Image = nullptr;;
+		}
+		if (Image_ch2 != nullptr) {
+			Image_ch2 = nullptr;;
+		}
+		if (sampleMap != nullptr) {
+			sampleMap = nullptr;;
+		}
+		if (sampleMap_f64 != nullptr) {
+			sampleMap_f64;
+		}
 	}
 
 	//SampleMap
@@ -155,12 +184,16 @@ namespace NTU {
 
 			cv::Mat img = cv::imread(fullPath, cv::IMREAD_UNCHANGED);
 			if (img.empty()) {
-				std::cerr << "Failed to load: " << fullPath << std::endl;
+				cerr << "Failed to load: " << fullPath << endl;
 				continue;
 			}
 
 			cv::cuda::GpuMat gpu_image;
 			gpu_image.upload(img, stream);
+
+			//cv::cuda::GpuMat DCE;
+			//Dynamic_Contrast_Enhancement_CUDA(gpu_image, DCE, 4);
+			//DCE.copyTo(gpu_image);
 
 			double scale = 65535.0 / (50000.0 - 0.0);
 			double shift = 0.0 * scale;
@@ -184,11 +217,11 @@ namespace NTU {
 			cv::Mat result;
 			gpu_8bit.download(result, stream);
 			stream.waitForCompletion();
-			std::string output_path = output_folder + "\\" + filename;
+			string output_path = output_folder + "\\" + filename;
 			cv::imwrite(output_path, result);
 		}
 
-		std::cout << "All TIFFs processed." << std::endl;
+		cout << "All TIFFs processed." << endl;
 	}
 
 	//Calculate Parameter//
@@ -401,9 +434,9 @@ namespace NTU {
 			//int samplesPerSegment = totalSamples / segments;
 			//if (samplesPerSegment <= 0) return true;
 
-			//double ph = std::fmod(chopper_phase, 360.0);
+			//double ph = fmod(chopper_phase, 360.0);
 			//if (ph < 0.0) ph += 360.0;
-			//int shiftSamples = static_cast<int>(std::round(ph / 360.0 * totalSamples));
+			//int shiftSamples = static_cast<int>(round(ph / 360.0 * totalSamples));
 
 			//int shiftedIndex = (sampleIndex - shiftSamples) % totalSamples; 
 			//if (shiftedIndex < 0) shiftedIndex += totalSamples;       
@@ -421,9 +454,9 @@ namespace NTU {
 			if (samplesPerSegment <= 0) return true;
 			double chopperphase = chopper_phase - 55;
 
-			double ph = std::fmod(chopperphase, 360.0);
+			double ph = fmod(chopperphase, 360.0);
 			if (ph < 0.0) ph += 360.0;
-			int shiftSamples = static_cast<int>(std::round(ph / 360.0 * totalSamples));
+			int shiftSamples = static_cast<int>(round(ph / 360.0 * totalSamples));
 
 			int shiftedIndex = (sampleIndex - shiftSamples) % totalSamples;
 			if (shiftedIndex < 0) shiftedIndex += totalSamples;
@@ -439,11 +472,11 @@ namespace NTU {
 			//int samplesPerSegment_calibration = totalSamples / (segments*4);
 			//if (samplesPerSegment <= 0) return true;
 
-			//double ph = std::fmod(chopper_phase, 360.0);
+			//double ph = fmod(chopper_phase, 360.0);
 			//if (ph < 0.0) ph += 360.0;
 
 			//int samplesPerChopper = totalSamples / 4;    
-			//int shiftSamples = static_cast<int>(std::round(ph / 360.0 * samplesPerChopper));
+			//int shiftSamples = static_cast<int>(round(ph / 360.0 * samplesPerChopper));
 
 			//int shiftedIndex = (sampleIndex - shiftSamples) % totalSamples;
 			//if (shiftedIndex < 0) shiftedIndex += totalSamples;
@@ -458,11 +491,11 @@ namespace NTU {
 			if (samplesPerSegment <= 0) return true;
 			double chopperphase = chopper_phase - 55;
 
-			double ph = std::fmod(chopperphase, 360.0);
+			double ph = fmod(chopperphase, 360.0);
 			if (ph < 0.0) ph += 360.0;
 
 			int samplesPerChopper = totalSamples / 4;
-			int shiftSamples = static_cast<int>(std::round(ph / 360.0 * samplesPerChopper));
+			int shiftSamples = static_cast<int>(round(ph / 360.0 * samplesPerChopper));
 
 			int shiftedIndex = (sampleIndex - shiftSamples) % totalSamples;
 			if (shiftedIndex < 0) shiftedIndex += totalSamples;
@@ -723,16 +756,16 @@ namespace NTU {
 	//Transfer to .tiff
 	void YSImageMerge::ConvertBinToTiff_lisssajous_parallel() {
 		if (channelcount == 1) {
-			std::string output_folder = LISSAJOUSFolderPath + "_TIFF";
+			string output_folder = LISSAJOUSFolderPath + "_TIFF";
 			if (GetFileAttributesA(output_folder.c_str()) == INVALID_FILE_ATTRIBUTES) {
 				if (!CreateDirectoryA(output_folder.c_str(), NULL)) {
-					std::cerr << "Error: Unable to create output folder " << output_folder << std::endl;
+					cerr << "Error: Unable to create output folder " << output_folder << endl;
 					return;
 				}
 			}
 			CopyScanSpecCSV(LISSAJOUSFolderPath, output_folder);
 
-			std::vector<std::string> bin_files;
+			vector<string> bin_files;
 			string search_path = LISSAJOUSFolderPath + "\\*.bin";
 			WIN32_FIND_DATAA find_data;
 			
@@ -787,13 +820,13 @@ namespace NTU {
 			CreateDirectoryA(output_folder_ch2.c_str(), NULL);
 			CopyScanSpecCSV(LISSAJOUSFolderPath, output_folder);
 
-			vector<std::string> bin_files;
+			vector<string> bin_files;
 
 			string search_path = LISSAJOUSFolderPath + "\\*.bin";
 			WIN32_FIND_DATAA find_data;
 			HANDLE hFind = FindFirstFileA(search_path.c_str(), &find_data);
 			if (hFind == INVALID_HANDLE_VALUE) {
-				std::cerr << "Error: Unable to find any .bin in " << LISSAJOUSFolderPath << std::endl;
+				cerr << "Error: Unable to find any .bin in " << LISSAJOUSFolderPath << endl;
 				return;
 			}
 
@@ -807,13 +840,13 @@ namespace NTU {
 			vector<future<void>> futures;
 			futures.reserve(bin_files.size());
 			for (auto& b : bin_files) {
-				std::string bin_filename = b;
-				std::string bin_path = LISSAJOUSFolderPath + "\\" + bin_filename;
-				std::string tiff_filename = bin_filename.substr(0, bin_filename.find_last_of('.')) + ".tiff";
-				std::string tiff_ch1_path = output_folder_ch1 + "\\" + tiff_filename;
-				std::string tiff_ch2_path = output_folder_ch2 + "\\" + tiff_filename;
+				string bin_filename = b;
+				string bin_path = LISSAJOUSFolderPath + "\\" + bin_filename;
+				string tiff_filename = bin_filename.substr(0, bin_filename.find_last_of('.')) + ".tiff";
+				string tiff_ch1_path = output_folder_ch1 + "\\" + tiff_filename;
+				string tiff_ch2_path = output_folder_ch2 + "\\" + tiff_filename;
 
-				futures.push_back(std::async(std::launch::async,
+				futures.push_back(async(launch::async,
 					[this, bin_path, tiff_ch1_path, tiff_ch2_path]() {
 						this->ProcessSingleBin_lissajous_2chs(bin_path, tiff_ch1_path, tiff_ch2_path);
 					}
@@ -831,11 +864,11 @@ namespace NTU {
 			return;
 		}
 
-		std::vector<U16> buffer(num_of_sample);
+		vector<U16> buffer(num_of_sample);
 		file.read(reinterpret_cast<char*>(buffer.data()), num_of_sample * sizeof(U16));
 		file.close();
 
-		if (file.gcount() != static_cast<std::streamsize>(num_of_sample * sizeof(U16))) {
+		if (file.gcount() != static_cast<streamsize>(num_of_sample * sizeof(U16))) {
 			cout << "Error: The length of this read is mismatch " << bin_path << endl;
 			return;
 		}
@@ -916,7 +949,7 @@ namespace NTU {
 		file.read(reinterpret_cast<char*>(buffer.data()), static_cast<streamsize>(num_of_sample * sizeof(U16)));
 		streamsize got = file.gcount();
 		file.close();
-		if (got != static_cast<std::streamsize>(num_of_sample * sizeof(U16))) {
+		if (got != static_cast<streamsize>(num_of_sample * sizeof(U16))) {
 			cout << "Error: The length of this read is mismatch " << bin_path << endl;
 			return;
 		}
@@ -949,7 +982,7 @@ namespace NTU {
 				float t = float(sample) / float(max(1, int(samplesPerRecord) - 1));
 				float angle = is_forward ? (CV_PI * t - 0.5f * CV_PI)
 					: (CV_PI * (1.0f - t) - 0.5f * CV_PI);
-				float x = 0.5f * (1.0f + std::sinf(angle));
+				float x = 0.5f * (1.0f + sinf(angle));
 				int x_idx = int(x * (1024 - 1));
 				if (x_idx < 0 || x_idx >= 1024) continue;
 				if (srcIdx < int(samplesPerRecord)) sin_image_1.at<float>(line, x_idx) += float(src[srcIdx++]);
@@ -1028,17 +1061,17 @@ namespace NTU {
 		} while (FindNextFileA(hFind, &find_data));
 		FindClose(hFind);
 
-		vector<std::future<void>> futures;
+		vector<future<void>> futures;
 		futures.reserve(bin_files.size());
 		for (auto& b : bin_files) {
-			std::string bin_filename = b; 
+			string bin_filename = b; 
 			string bin_path = RASTERFolderPath + "\\" + bin_filename;
 
-			std::string output_filename = bin_filename.substr(0, bin_filename.find_last_of(".")) + ".tiff";
-			std::string ch1_path = output_folder + "\\" + output_filename;
-			std::string raw_ch1_path = output_folder_raw + "\\" + output_filename;
+			string output_filename = bin_filename.substr(0, bin_filename.find_last_of(".")) + ".tiff";
+			string ch1_path = output_folder + "\\" + output_filename;
+			string raw_ch1_path = output_folder_raw + "\\" + output_filename;
 
-			futures.push_back(std::async(std::launch::async,
+			futures.push_back(async(launch::async,
 				[this, bin_path, ch1_path, raw_ch1_path]() {
 					this->ProcessSingleBin_raster_1ch(bin_path, ch1_path, raw_ch1_path);
 				}
@@ -1074,7 +1107,7 @@ namespace NTU {
 		WIN32_FIND_DATAA find_data;
 		HANDLE hFind = FindFirstFileA(search_path.c_str(), &find_data);
 		if (hFind == INVALID_HANDLE_VALUE) {
-			std::cerr << "Error: Unable to find any .bin in " << RASTERFolderPath << std::endl;
+			cerr << "Error: Unable to find any .bin in " << RASTERFolderPath << endl;
 			return;
 		}
 
@@ -1087,15 +1120,15 @@ namespace NTU {
 		vector<future<void>> futures;
 		futures.reserve(bin_files.size());
 		for (auto& b : bin_files) {
-			std::string bin_filename = b;
-			std::string bin_path = RASTERFolderPath + "\\" + bin_filename;
-			std::string output_filename = bin_filename.substr(0, bin_filename.find_last_of(".")) + ".tiff";
-			std::string ch1_path = output_folder_ch1 + "\\" + output_filename;
-			std::string ch2_path = output_folder_ch2 + "\\" + output_filename;
-			std::string raw_ch1_path = output_folder_raw_ch1 + "\\" + output_filename;
-			std::string raw_ch2_path = output_folder_raw_ch2 + "\\" + output_filename;
+			string bin_filename = b;
+			string bin_path = RASTERFolderPath + "\\" + bin_filename;
+			string output_filename = bin_filename.substr(0, bin_filename.find_last_of(".")) + ".tiff";
+			string ch1_path = output_folder_ch1 + "\\" + output_filename;
+			string ch2_path = output_folder_ch2 + "\\" + output_filename;
+			string raw_ch1_path = output_folder_raw_ch1 + "\\" + output_filename;
+			string raw_ch2_path = output_folder_raw_ch2 + "\\" + output_filename;
 
-			futures.push_back(std::async(std::launch::async,
+			futures.push_back(async(launch::async,
 				[this, bin_path, ch1_path, raw_ch1_path, ch2_path, raw_ch2_path]() {
 					this->ProcessSingleBin_raster_2ch(bin_path, ch1_path, raw_ch1_path, ch2_path, raw_ch2_path);
 				}
@@ -1126,8 +1159,8 @@ namespace NTU {
 		U16 samplesPerRecord = U16(num_of_sample / num_of_line);
 		U16 recStride = samplesPerRecord * 2;
 
-		std::vector<U16> h_image_1(static_cast<size_t>(num_of_sample), 0);
-		std::vector<U16> h_image_2(static_cast<size_t>(num_of_sample), 0);
+		vector<U16> h_image_1(static_cast<size_t>(num_of_sample), 0);
+		vector<U16> h_image_2(static_cast<size_t>(num_of_sample), 0);
 
 		for (int line = 0; line < num_of_line; ++line) {
 			U16* srcA = buffer.data() + U16(line) * recStride;
@@ -1248,10 +1281,10 @@ namespace NTU {
 		gpu_image_raw_ch2.download(Img16bit_raw_ch2, local_stream);
 		local_stream.waitForCompletion();
 
-		if (!cv::imwrite(ch1_path, Img16bit_ch1))     std::cerr << "Error: Unable to save the image " << ch1_path << std::endl;
-		if (!cv::imwrite(ch2_path, Img16bit_ch2))     std::cerr << "Error: Unable to save the image " << ch2_path << std::endl;
-		if (!cv::imwrite(raw_ch1_path, Img16bit_raw_ch1)) std::cerr << "Error: Unable to save the image " << raw_ch1_path << std::endl;
-		if (!cv::imwrite(raw_ch2_path, Img16bit_raw_ch2)) std::cerr << "Error: Unable to save the image " << raw_ch2_path << std::endl;
+		if (!cv::imwrite(ch1_path, Img16bit_ch1))     cerr << "Error: Unable to save the image " << ch1_path << endl;
+		if (!cv::imwrite(ch2_path, Img16bit_ch2))     cerr << "Error: Unable to save the image " << ch2_path << endl;
+		if (!cv::imwrite(raw_ch1_path, Img16bit_raw_ch1)) cerr << "Error: Unable to save the image " << raw_ch1_path << endl;
+		if (!cv::imwrite(raw_ch2_path, Img16bit_raw_ch2)) cerr << "Error: Unable to save the image " << raw_ch2_path << endl;
 	}
 
 	//Reconstruct//
@@ -1652,6 +1685,231 @@ namespace NTU {
 		
 	}
 
+	void YSImageMerge::ReconstructAllTiffInFolder_parallel() {
+		if (channelcount == 1) {
+			string pattern = LISSAJOUSFolderPath + "\\*.tiff";
+			vector<string> filenames;
+			WIN32_FIND_DATA findFileData;
+			HANDLE hFind = FindFirstFile(pattern.c_str(), &findFileData);
+			if (hFind == INVALID_HANDLE_VALUE) {
+				cout << "Error: No .tiff files found in directory " << pattern << endl;
+				return;
+			}
+			do { filenames.push_back(findFileData.cFileName); 
+			} while (FindNextFile(hFind, &findFileData) != 0);
+			FindClose(hFind);
+
+			string outputFolderPath = LISSAJOUSFolderPath;
+			size_t pos = outputFolderPath.find("2DLISSAJOUS_RAW");
+			if (pos != string::npos) {
+				outputFolderPath.replace(pos, strlen("2DLISSAJOUS_RAW"), "2DLISSAJOUS");
+			}
+			CreateDirectory(outputFolderPath.c_str(), NULL);
+			CopyScanSpecCSV(LISSAJOUSFolderPath, outputFolderPath);
+
+			sort(filenames.begin(), filenames.end(),
+				[this](const string& a, const string& b) {
+					return extractNumber(a) < extractNumber(b);
+				});
+
+			vector<future<void>> futures;
+			futures.reserve(filenames.size());
+			atomic<int> done{ 0 };
+			const int total = int(filenames.size());
+
+			for (size_t i = 0; i < filenames.size(); ++i) {
+				const int img_index = int(i) + 1; 
+				string fullPath = LISSAJOUSFolderPath + "\\" + filenames[i];
+
+				futures.push_back(async(launch::async,
+					[this, fullPath, outputFolderPath, img_index, &done, total]() {
+						this->ReconstructOneTiff_1ch(fullPath, outputFolderPath, img_index);
+						done.fetch_add(1, memory_order_relaxed);
+						progresspercentage = double(done.load()) / double(total) * 100.0;
+					}
+				));
+			}
+			for (auto& f : futures) f.get();
+		}
+		else if (channelcount == 2) {
+			string patt_ch1 = LISSAJOUSFolderPath + "\\CH1\\*.tiff";
+			string patt_ch2 = LISSAJOUSFolderPath + "\\CH2\\*.tiff";
+			vector<string> filenames;
+			WIN32_FIND_DATA findFileData;
+			HANDLE hFind = FindFirstFile(patt_ch1.c_str(), &findFileData);
+			if (hFind == INVALID_HANDLE_VALUE) {
+				cout << "Error: No .tiff files found in directory " << patt_ch1 << endl;
+				return;
+			}
+			do { filenames.push_back(findFileData.cFileName); 
+			} while (FindNextFile(hFind, &findFileData) != 0);
+			FindClose(hFind);
+
+			string outputFolderPath = LISSAJOUSFolderPath;
+			size_t pos = outputFolderPath.find("2DLISSAJOUS_RAW");
+			if (pos != string::npos) {
+				outputFolderPath.replace(pos, strlen("2DLISSAJOUS_RAW"), "2DLISSAJOUS");
+			}
+			string outputFolderPath_ch1 = outputFolderPath + "\\CH1";
+			string outputFolderPath_ch2 = outputFolderPath + "\\CH2";
+			CreateDirectory(outputFolderPath.c_str(), NULL);
+			CreateDirectory(outputFolderPath_ch1.c_str(), NULL);
+			CreateDirectory(outputFolderPath_ch2.c_str(), NULL);
+			CopyScanSpecCSV(LISSAJOUSFolderPath, outputFolderPath);
+
+			sort(filenames.begin(), filenames.end(),
+				[this](const string& a, const string& b) {
+					return extractNumber(a) < extractNumber(b);
+				});
+
+			vector<future<void>> futures;
+			futures.reserve(filenames.size());
+			atomic<int> done{ 0 };
+			const int total = int(filenames.size());
+
+			for (size_t i = 0; i < filenames.size(); ++i) {
+				const int img_index = int(i) + 1;
+				string fullPath_ch1 = LISSAJOUSFolderPath + "\\CH1\\" + filenames[i];
+				string fullPath_ch2 = LISSAJOUSFolderPath + "\\CH2\\" + filenames[i];
+
+				futures.push_back(async(launch::async,
+					[this, fullPath_ch1, fullPath_ch2,outputFolderPath_ch1, outputFolderPath_ch2,img_index, &done, total]() {
+						this->ReconstructOneTiff_2ch(fullPath_ch1, fullPath_ch2,outputFolderPath_ch1, outputFolderPath_ch2,	img_index);
+						done.fetch_add(1, memory_order_relaxed);
+						progresspercentage = double(done.load()) / double(total) * 100.0;
+					}
+				));
+			}
+			for (auto& f : futures) f.get();
+		}
+	}
+
+	void YSImageMerge::ReconstructOneTiff_1ch(const string& fullPath, const string& savePath, int image_index_for_name) {
+		cv::Mat updateImage = cv::imread(fullPath, cv::IMREAD_UNCHANGED);
+		if (updateImage.empty() || updateImage.type() != CV_16UC1) {
+			cout << "Error: TIFF not found or not CV_16UC1 format " << fullPath << endl;
+			return;
+		}
+
+		const int local_num_of_sample = updateImage.rows * updateImage.cols;
+		vector<double> LissajoustempData(local_num_of_sample, 0.0);
+		vector<double> ImageBuf(size_t(pixelnum) * size_t(pixelnum), 0.0);
+
+		cv::Mat updateImage64;
+		updateImage.convertTo(updateImage64, CV_64FC1);
+		memcpy(LissajoustempData.data(), updateImage64.ptr<double>(), size_t(local_num_of_sample) * sizeof(double));
+
+		if (abs(offset_lissajous) < local_num_of_sample) {
+			if (offset_lissajous > 0) {
+				for (int i = local_num_of_sample - 1; i >= offset_lissajous; --i)
+					LissajoustempData[size_t(i)] = LissajoustempData[size_t(i - offset_lissajous)];
+				for (int i = 0; i < offset_lissajous; ++i)
+					LissajoustempData[size_t(i)] = 0.0;
+			}
+			else if (offset_lissajous < 0) {
+				const int sh = abs(offset_lissajous);
+				for (int i = 0; i < local_num_of_sample - sh; ++i)
+					LissajoustempData[size_t(i)] = LissajoustempData[size_t(i + sh)];
+				for (int i = local_num_of_sample - sh; i < local_num_of_sample; ++i)
+					LissajoustempData[size_t(i)] = 0.0;
+			}
+		}
+
+		for (int i = 0; i < local_num_of_sample; ++i) {
+			int x = 0, y = 0;
+			bool inrange = LissajousIdxFromSample(i, samplingrate, pixelnum, pixelnum, double(xfreq), double(yfreq), lissajousphase, x, y);
+			if (inrange) {
+				const int idx = y * pixelnum + x;
+				if (sampleMap[idx] > 0)
+					ImageBuf[size_t(idx)] += LissajoustempData[size_t(i)];
+			}
+		}
+		for (int i = 0; i < pixelnum * pixelnum; ++i) {
+			if (sampleMap[i] > 0)
+				ImageBuf[size_t(i)] /= sampleMap[i];
+		}
+
+		cv::Mat image64F(pixelnum, pixelnum, CV_64FC1, ImageBuf.data());
+		cv::Mat image16U;
+		image64F.convertTo(image16U, CV_16UC1, 1.0);
+
+		ostringstream name;
+		name << savePath << "\\Image" << image_index_for_name << ".tiff";
+		if (!cv::imwrite(name.str(), image16U)) {
+			cerr << "Error: Failed to save image " << name.str() << endl;
+		}
+	}
+
+	void YSImageMerge::ReconstructOneTiff_2ch(const string& fullPath_ch1,const string& fullPath_ch2,const string& saveDir_ch1,const string& saveDir_ch2,int image_index_for_name){
+		cv::Mat updateImage_ch1 = cv::imread(fullPath_ch1, cv::IMREAD_UNCHANGED);
+		cv::Mat updateImage_ch2 = cv::imread(fullPath_ch2, cv::IMREAD_UNCHANGED);
+		if (updateImage_ch1.empty() || updateImage_ch1.type() != CV_16UC1) {
+			cout << "Error: TIFF not found or not CV_16UC1 format " << fullPath_ch1 << endl;
+			return;
+		}
+		if (updateImage_ch2.empty() || updateImage_ch2.type() != CV_16UC1) {
+			cout << "Error: TIFF not found or not CV_16UC1 format " << fullPath_ch2 << endl;
+			return;
+		}
+
+		const int local_num_of_sample = updateImage_ch1.rows * updateImage_ch1.cols;
+		vector<double> Ltemp1(local_num_of_sample, 0.0);
+		vector<double> Ltemp2(local_num_of_sample, 0.0);
+		vector<double> Img1(size_t(pixelnum) * size_t(pixelnum), 0.0);
+		vector<double> Img2(size_t(pixelnum) * size_t(pixelnum), 0.0);
+
+		cv::Mat updateImage64_ch1, updateImage64_ch2;
+		updateImage_ch1.convertTo(updateImage64_ch1, CV_64FC1);
+		updateImage_ch2.convertTo(updateImage64_ch2, CV_64FC1);
+		memcpy(Ltemp1.data(), updateImage64_ch1.ptr<double>(), size_t(local_num_of_sample) * sizeof(double));
+		memcpy(Ltemp2.data(), updateImage64_ch2.ptr<double>(), size_t(local_num_of_sample) * sizeof(double));
+
+		if (offset_lissajous < local_num_of_sample) {
+			for (int i = local_num_of_sample - 1; i >= offset_lissajous; --i) {
+				Ltemp1[size_t(i)] = Ltemp1[size_t(i - offset_lissajous)];
+				Ltemp2[size_t(i)] = Ltemp2[size_t(i - offset_lissajous)];
+			}
+			for (int i = 0; i < offset_lissajous; ++i) {
+				Ltemp1[size_t(i)] = 0.0;
+				Ltemp2[size_t(i)] = 0.0;
+			}
+		}
+
+		for (int i = 0; i < local_num_of_sample; ++i) {
+			int x = 0, y = 0;
+			bool inrange = LissajousIdxFromSample(i, samplingrate, pixelnum, pixelnum,double(xfreq), double(yfreq), lissajousphase, x, y);
+			if (inrange) {
+				const int idx = y * pixelnum + x;
+				if (sampleMap[idx] > 0) {
+					Img1[size_t(idx)] += Ltemp1[size_t(i)];
+					Img2[size_t(idx)] += Ltemp2[size_t(i)];
+				}
+			}
+		}
+		for (int i = 0; i < pixelnum * pixelnum; ++i) {
+			if (sampleMap[i] > 0) {
+				Img1[size_t(i)] /= sampleMap[i];
+				Img2[size_t(i)] /= sampleMap[i];
+			}
+		}
+
+		cv::Mat image64F_ch1(pixelnum, pixelnum, CV_64FC1, Img1.data());
+		cv::Mat image64F_ch2(pixelnum, pixelnum, CV_64FC1, Img2.data());
+		cv::Mat image16U_ch1, image16U_ch2;
+		image64F_ch1.convertTo(image16U_ch1, CV_16UC1, 1.0);
+		image64F_ch2.convertTo(image16U_ch2, CV_16UC1, 1.0);
+
+		ostringstream savePath_ch1, savePath_ch2;
+		savePath_ch1 << saveDir_ch1 << "\\Image" << image_index_for_name << ".tiff";
+		savePath_ch2 << saveDir_ch2 << "\\Image" << image_index_for_name << ".tiff";
+		if (!cv::imwrite(savePath_ch1.str(), image16U_ch1)) {
+			cerr << "Error: Failed to save image " << savePath_ch1.str() << endl;
+		}
+		if (!cv::imwrite(savePath_ch2.str(), image16U_ch2)) {
+			cerr << "Error: Failed to save image " << savePath_ch2.str() << endl;
+		}
+	}
+
 	//Supplementart functions
 	void YSImageMerge::LOADspec(string path) {
 		string csvFilePath = path + "\\scan_spec.csv";
@@ -1765,11 +2023,11 @@ namespace NTU {
 	}
 
 	void YSImageMerge::CopyScanSpecCSV(string& sourceFolder, string& targetFolder) {
-		std::string sourceCSV = sourceFolder + "\\scan_spec.csv";
-		std::string targetCSV = targetFolder + "\\scan_spec.csv";
+		string sourceCSV = sourceFolder + "\\scan_spec.csv";
+		string targetCSV = targetFolder + "\\scan_spec.csv";
 
 		if (!CopyFileA(sourceCSV.c_str(), targetCSV.c_str(), FALSE)) {
-			std::cerr << "Error: Unable to copy scan_spec.csv to " << targetCSV << std::endl;
+			cerr << "Error: Unable to copy scan_spec.csv to " << targetCSV << endl;
 		}
 	}
 
@@ -1801,11 +2059,14 @@ namespace NTU {
 	void YSImageMerge::AVERAGE(string folderPath, cv::Mat& avgImage) {
 		vector<cv::String> fileNames;
 		cv::glob(folderPath + "/*.tiff", fileNames, false);
+		const size_t total = fileNames.size();
+		const size_t useN = (total <= 100) ? total : 100;
 		int count = 0;
 		cv::Mat sumImage;
 		cv::Size imageSize;
 
-		for (const auto& fileName : fileNames) {
+		for (size_t i = 0; i < useN; ++i) {
+			const auto& fileName = fileNames[i];
 			cv::Mat image = cv::imread(fileName, cv::IMREAD_UNCHANGED);
 			if (image.empty()) {
 				cerr << "Error: Unable to load image at path: " << fileName << endl;
@@ -1829,4 +2090,71 @@ namespace NTU {
 		sumImage.convertTo(avgImage, CV_16UC1);
 	
 	}
+
+	void YSImageMerge::Dynamic_Contrast_Enhancement_CUDA(cv::cuda::GpuMat& IMGDP16_GPU, cv::cuda::GpuMat& IMGDP16OUTPUT_GPU, float alpha_max) {
+		IMGDP16_GPU.convertTo(IMGDP16_GPU, CV_32F);
+
+		// === LAY1 ===
+		cv::cuda::GpuMat RES1;
+		cv::cuda::resize(IMGDP16_GPU, RES1, cv::Size(), 0.1, 0.1, cv::INTER_AREA);
+
+		cv::cuda::GpuMat BLR1;
+		cv::Ptr<cv::cuda::Filter> gauss29 = cv::cuda::createGaussianFilter(CV_32F, CV_32F, cv::Size(29, 29), 0);
+		gauss29->apply(RES1, BLR1);
+
+		cv::cuda::add(BLR1, cv::Scalar(1.0f), BLR1);
+
+		cv::cuda::GpuMat RES2;
+		cv::cuda::resize(BLR1, RES2, cv::Size(IMGDP16_GPU.cols, IMGDP16_GPU.rows), 0, 0, cv::INTER_AREA);
+
+		cv::cuda::GpuMat DIV;
+		cv::cuda::divide(0.9f * 65535.0f, RES2, DIV);
+
+		cv::cuda::GpuMat LAY1;
+		cv::cuda::min(DIV, cv::Scalar(alpha_max), LAY1);
+
+		// === LAY2 ===
+		cv::cuda::GpuMat AMP1;
+		cv::cuda::multiply(IMGDP16_GPU, LAY1, AMP1);
+
+		cv::cuda::GpuMat RES3;
+		cv::cuda::resize(AMP1, RES3, cv::Size(), 1.0 / 3.0, 1.0 / 3.0, cv::INTER_AREA);
+
+		cv::cuda::GpuMat BLR2;
+		gauss29->apply(RES3, BLR2);
+
+		cv::cuda::GpuMat RES4;
+		cv::cuda::resize(RES3, RES4, cv::Size(IMGDP16_GPU.cols, IMGDP16_GPU.rows), 0, 0, cv::INTER_AREA);
+
+		cv::cuda::GpuMat SUB1;
+		cv::cuda::subtract(RES4, AMP1, SUB1);
+
+		cv::Ptr<cv::cuda::Filter> gauss7 = cv::cuda::createGaussianFilter(CV_32F, CV_32F, cv::Size(7, 7), 0);
+		cv::cuda::GpuMat BLR3;
+		gauss7->apply(SUB1, BLR3);
+
+		cv::cuda::GpuMat SUB2;
+		cv::cuda::subtract(cv::Scalar(1.25f * alpha_max), LAY1, SUB2);
+
+		cv::cuda::GpuMat AMP2;
+		cv::cuda::multiply(BLR3, SUB2, AMP2);
+
+		cv::cuda::GpuMat SUB3;
+		cv::cuda::subtract(IMGDP16_GPU, AMP2, SUB3);
+
+		// === LAY3 ===
+		cv::cuda::GpuMat LAY3;
+		cv::cuda::divide(LAY1, cv::Scalar(4.0f), LAY3);
+		cv::cuda::multiply(LAY3, LAY3, LAY3);
+		cv::cuda::add(LAY3, cv::Scalar(0.9f), LAY3);
+
+		cv::cuda::GpuMat AMP3;
+		cv::cuda::multiply(SUB3, LAY3, AMP3);
+
+		// === Clamp and convert to 16-bit ===
+		cv::cuda::threshold(AMP3, AMP3, 65535, 65535, cv::THRESH_TRUNC);
+		cv::cuda::threshold(AMP3, AMP3, 0, 0, cv::THRESH_TOZERO);
+		AMP3.convertTo(IMGDP16OUTPUT_GPU, CV_16UC1);
+	}
+
 }

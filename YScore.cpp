@@ -98,19 +98,26 @@ namespace NTU {
         if (mapping->StartAcquireData()) {
             cout << "Start Alazar data: Success" << endl;
         }
+        cv::destroyAllWindows();
         thread processingThreads = thread(&YSMapping::Trensientstep, mapping);
         Sleep(500);
         thread mappingThread = thread(&YSMapping::AcquireData, mapping);
         thread scanningThread = thread(&YSScan::twoD_lissajous_run, scanning);
-        thread avgThread = thread(&YSMapping::AverageFunction, mapping);
-        thread repairThread = thread(&YSMapping::RepairFunction, mapping);
         thread saveThread = thread(&YSMapping::SavelissajousimageFunction, mapping);
+        thread avgThread, repairThread;
+        if (ntuscope->highspeedmode == false) {
+            avgThread = thread(&YSMapping::AverageFunction, mapping);
+            repairThread = thread(&YSMapping::RepairFunction, mapping);
+        }
+
 
         mappingThread.join();
         scanningThread.join();
         processingThreads.join();
-        avgThread.join();
-        repairThread.join();
+        if (ntuscope->highspeedmode == false) {
+            avgThread.join();
+            repairThread.join();
+        }
         saveThread.join();
 
         mapping->CloseAlazar();
@@ -225,6 +232,7 @@ namespace NTU {
         if (mapping->StartAcquireData()) {
             cout << "Start Alazar data: Success" << endl;
         }
+        cv::destroyAllWindows();
         thread processingThreads = thread(&YSMapping::Trensientstep, mapping);
         Sleep(500);
         thread mappingThread = thread(&YSMapping::AcquireData, mapping);

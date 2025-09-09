@@ -12,9 +12,12 @@
 #include <opencv2/dnn.hpp>
 #include <opencv2/imgproc.hpp>
 #include <opencv2/highgui.hpp>
+#include <opencv2/photo.hpp>
 #include <opencv2/core/cuda.hpp>
 #include <opencv2/cudaarithm.hpp>
 #include <opencv2/cudawarping.hpp>
+#include <opencv2/core.hpp>
+#include <opencv2/cudafilters.hpp>
 #include <mutex>
 #include <condition_variable>
 #include <thread>
@@ -24,6 +27,8 @@
 #include <math.h>
 #include <functional>
 #include <deque>
+#include <iomanip>
+#include <stdint.h>
 #include <vector>
 #include <stdio.h>
 #include <algorithm>
@@ -38,6 +43,8 @@ namespace NTU {
 
 		YSImageMerge(NTU::CudaCalPara* cudacalpara, NTU::ReconstructPost* cudareconstruct);
 		~YSImageMerge();
+
+		void Clear();
 
 		//General
 		string RASTERFolderPath;
@@ -126,6 +133,9 @@ namespace NTU {
 		cv::Mat averageImg16, averageImg16_ch2;
 		void DisplayReconstructedLissajousImage();
 		void ReconstructAllTiffInFolder();
+		void ReconstructAllTiffInFolder_parallel();
+		void ReconstructOneTiff_1ch(const string& fullPath, const string& savePath, int image_index_for_name);
+		void ReconstructOneTiff_2ch(const string& fullPath_ch1, const string& fullPath_ch2, const string& saveDir_ch1, const string& saveDir_ch2, int image_index_for_name);
 
 		//Extract hymograph
 		cv::Mat rasterImage_EK;                      
@@ -144,7 +154,8 @@ namespace NTU {
 		int extractNumber(const string& filename);
 		void AddtextOnImg(cv::Mat& IMGDP8, int Xpixelsize, int Ypixelsize);
 		void AVERAGE(string folderPath, cv::Mat& avgImage);
-	private:
+		void Dynamic_Contrast_Enhancement_CUDA(cv::cuda::GpuMat& IMGDP16_GPU, cv::cuda::GpuMat& IMGDP16OUTPUT_GPU, float alpha_max);
+private:
 		cv::Mat rasterImage;
 		cv::cuda::Stream stream;
 		int rasterimgindex,lissajousimgindex;

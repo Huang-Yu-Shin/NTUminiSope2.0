@@ -29,6 +29,10 @@ namespace NTU {
         cudaMemcpyAsync(d_sampleMap, sampleMap, 512 * 512 * sizeof(float64), cudaMemcpyHostToDevice, stream);
         cudaStreamSynchronize(stream);
         printf("Sample Map sent to GPU! \n");
+        printf("pixelnum = %d * %d \n", pixelnumX, pixelnumY);
+        printf("total sample = %d\n", total_sample);
+        printf("sampling rate = %d \n", sampling_rate);
+        printf("freqx = %d , freqy = %d , phase = %d", freqx, freqy, phase);
     }
 
     void ReconstructPost::getDeviceInf() {

@@ -681,12 +681,19 @@ namespace NTU {
 
 //Set up the trensient step to conduct image reconstruct and display and save
     void YSMapping::Trensientstep() {
-        if (scanmode == LISSAJOUS_2D && ntuscope->highspeedmode == false){
-            WarmupLissajousImageProcessing();
+        if (scanmode == LISSAJOUS_2D) {
+            if (ntuscope->highspeedmode == true || ntuscope->applychopper == true) interdisplay = 1;
+            else if (ntuscope->highspeedmode == false) interdisplay = 1;
         }
-        else {
-            cv::destroyAllWindows();
+        else if (scanmode == RASTER || scanmode == RASTER_SLOW) {
+            if (ntuscope->applychopper == true) interdisplay = 20;
+            else if (ntuscope->applychopper == false) interdisplay = 1;
         }
+        else if (scanmode == RASTER_ULTRA) {
+            if (ntuscope->applychopper == true) interdisplay = 1;
+            else if (ntuscope->applychopper == false) interdisplay = 100;
+        }
+
         previoustimepoint = high_resolution_clock::now();
         while (running) {
             if (startprocessing == true) {
@@ -712,7 +719,7 @@ namespace NTU {
                         }
                         else if (scanmode == RASTER_ULTRA) {
                             if (ntuscope->applychopper == true) {
-                                processed = ProcessBufferAndFill_2DRasterImageTwoChannel(transientBuffers[bufferIndex], bufferStartTimes[bufferIndex], bufferStartTimes_system[bufferIndex], frameorder[bufferIndex]);
+                                processed = ProcessBufferAndFill_2DRasterImageTwoChannel_highspeed(transientBuffers[bufferIndex], bufferStartTimes[bufferIndex], bufferStartTimes_system[bufferIndex], frameorder[bufferIndex]);
                             }
                             else if (ntuscope->applychopper == false) {
                                 processed = ProcessBufferAndFill_2DRasterImage_highspeed(transientBuffers[bufferIndex], bufferStartTimes[bufferIndex], bufferStartTimes_system[bufferIndex], frameorder[bufferIndex]);
@@ -1028,19 +1035,27 @@ namespace NTU {
         auto end_time = high_resolution_clock::now();
         auto duration_ms = duration_cast<nanoseconds>(end_time - starttime);
         ntuscope->acqtime = double(duration_ms.count()) / 1000000000;
+        ntuscope->refreshtime = double(1000000000) / double(duration_cast<nanoseconds>(end_time - previoustimepoint).count());
+        previoustimepoint = end_time;
 
         //to save raw
-        if (ntuscope->savestate == true && imageIndex < ntuscope->save_num) {
-            Saveimage_LISSAJOUSBin_highspeed(Buffer, starttime_system);
-        }
+        //if (ntuscope->savestate == true && imageIndex < ntuscope->save_num) {
+        //    Saveimage_LISSAJOUSBin_highspeed(Buffer, starttime_system);
+        //}
 
+        if (ntuscope->savestate == true && SavedCount < ntuscope->save_num) {
+            lock_guard<mutex> lock(saveMutex);
+            vector<U16> buffer_vector(Buffer, Buffer + samplesPerBuffer * channelCount);
+            saveLissajousQueue.emplace_back(image_save, buffer_vector, starttime_system);
+            SavedCount++;
+            saveCondition.notify_one();
+        }
         return true;
     }
 
     bool YSMapping::ProcessBufferAndFill_2DRasterImage(U16* Buffer, high_resolution_clock::time_point starttime, system_clock::time_point starttime_system, U32 frameorder) {
         //Mapping
         cv::cuda::GpuMat gpu_image;
-        //sine wave mapping
         cv::Mat sin_image(ntuscope->Pixelnumy, 1024, CV_32FC1, cv::Scalar(0));
         U16* buffer_ptr_new = Buffer;
         U16* buffer_end_new = Buffer + U16(samplesPerBuffer);
@@ -1262,9 +1277,8 @@ namespace NTU {
 
     bool YSMapping::ProcessBufferAndFill_2DRasterImage_highspeed(U16* Buffer, high_resolution_clock::time_point starttime, system_clock::time_point starttime_system, U32 frameorder) {
         //Mapping
-        if (ntuscope->num_lines>1 && frameorder % 4 == 0) {
+        if (ntuscope->num_lines>1 && frameorder % U32(interdisplay) == 0) {
             cv::cuda::GpuMat gpu_image;
-            //sine wave mapping
             cv::Mat sin_image(ntuscope->Pixelnumy, 1024, CV_32FC1, cv::Scalar(0));
             U16* buffer_ptr_new = Buffer;
             U16* buffer_end_new = Buffer + U16(samplesPerBuffer);
@@ -1480,9 +1494,8 @@ namespace NTU {
 
     bool YSMapping::ProcessBufferAndFill_2DRasterImageTwoChannel(U16* Buffer, high_resolution_clock::time_point starttime, system_clock::time_point starttime_system, U32 frameorder) {
         //Mapping
-        cv::cuda::GpuMat gpu_image;
-        
-        if (frameorder % 4 == 0) {
+        if (ntuscope->num_lines > 1 && frameorder % U32(interdisplay) == 0) {
+            cv::cuda::GpuMat gpu_image;
             U16 recStride = U16(samplesPerRecord) * 2;
 
             int phase_forward = max(0, ntuscope->raster_phase);
@@ -1717,6 +1730,28 @@ namespace NTU {
         return true;
     }
 
+    bool YSMapping::ProcessBufferAndFill_2DRasterImageTwoChannel_highspeed(U16* Buffer, high_resolution_clock::time_point starttime, system_clock::time_point starttime_system, U32 frameorder) {
+        //Calculate acquisition_rate
+        auto end_time = high_resolution_clock::now();
+        auto duration_ms = duration_cast<nanoseconds>(end_time - starttime);
+        ntuscope->acqtime = double(duration_ms.count()) / 1000000000;
+        ntuscope->refreshtime = double(1000000000) / double(duration_cast<nanoseconds>(end_time - previoustimepoint).count());
+        previoustimepoint = end_time;
+
+        //Save images
+        if (ntuscope->savestate == true && SavedCount < ntuscope->save_num) {
+            if (SavedCount == 0) {
+                frameorder_savestart = U32(frameorder);
+            }
+            lock_guard<mutex> lock(saveMutex);
+            vector<U16> buffer_vector(Buffer, Buffer + samplesPerBuffer * channelCount);
+            saveQueue.emplace_back(image_save, buffer_vector, starttime_system);
+            SavedCount++;
+            saveCondition.notify_one();
+        }
+        return true;
+    }
+
     void YSMapping::WarmupLissajousImageProcessing() {
         int dummy_buffer_size = samplesPerBuffer;
         int dummy_image_size = ntuscope->Pixelnumx * ntuscope->Pixelnumy;
@@ -1763,7 +1798,6 @@ namespace NTU {
         }
 
         //final_display_img
-        //resize
         if (ntuscope->saveprocessedstate == true) {
             if (!cv::imwrite(filePath.str(), final_display_img)) {
                 cerr << "Error: Unable to save image to " << filePath.str() << endl;
@@ -1869,7 +1903,47 @@ namespace NTU {
         return true;
     }
 
-    bool YSMapping::Saveimage_LISSAJOUSBin_highspeed(U16* Buffer, system_clock::time_point starttime_system) {
+    //bool YSMapping::Saveimage_LISSAJOUSBin_highspeed(U16* Buffer, system_clock::time_point starttime_system) {
+    //    if (ntuscope->savestate == true && imageIndex == 0) {
+    //        auto ms = duration_cast<std::chrono::milliseconds>(starttime_system.time_since_epoch()) % 1000;
+    //        std::time_t time_now = std::chrono::system_clock::to_time_t(starttime_system);
+    //        tm local_tm;
+    //        localtime_s(&local_tm, &time_now);
+
+    //        std::ostringstream oss;
+    //        oss << std::put_time(&local_tm, "%Y%m%d_%H%M%S") << '_' << std::setfill('0') << std::setw(3) << ms.count();
+    //        ntuscope->timestampFolder = oss.str();
+
+    //        ntuscope->folderPathRaw = "C:\\NTU_miniScope_Imaging\\2DLISSAJOUS_RAW\\" + ntuscope->timestampFolder + "_" + ntuscope->titleFolder;
+    //        CreateDirectoryA(ntuscope->folderPathRaw.c_str(), NULL);
+    //        Savecsv(LISSAJOUS_2D);
+    //    }
+
+    //    std::ostringstream filePath;
+    //    filePath << ntuscope->folderPathRaw << "\\Image" << (imageIndex + 1) << ".bin";
+    //    FILE* fpData = fopen(filePath.str().c_str(), "wb");
+    //    if (fpData) {
+    //        size_t bytesWritten = fwrite(Buffer, sizeof(BYTE), size_t(bytesPerBuffer), fpData);
+    //        fclose(fpData);
+
+    //        if (bytesWritten != bytesPerBuffer) {
+    //            cout << "Warning: fwrite wrote " << bytesWritten << " bytes, expected " << bytesPerBuffer << std::endl;
+    //        }
+    //    }
+    //    else {
+    //        cout << "Error: Unable to open file " << filePath.str() << " for writing.\n";
+    //    }
+
+    //    if (imageIndex == ntuscope->save_num - 1) {
+    //        ntuscope->savestate = false;
+    //        ntuscope->saverawstate = false;
+    //    }
+    //    imageIndex++;
+    //    ntuscope->saveprogress = (double(imageIndex) / double(ntuscope->save_num)) * 100;
+    //    return true;
+    //}
+
+    bool YSMapping::Saveimage_LISSAJOUSBin_highspeed(vector<U16>& buffer_save, system_clock::time_point starttime_system) {
         if (ntuscope->savestate == true && imageIndex == 0) {
             auto ms = duration_cast<std::chrono::milliseconds>(starttime_system.time_since_epoch()) % 1000;
             std::time_t time_now = std::chrono::system_clock::to_time_t(starttime_system);
@@ -1882,7 +1956,6 @@ namespace NTU {
 
             ntuscope->folderPathRaw = "C:\\NTU_miniScope_Imaging\\2DLISSAJOUS_RAW\\" + ntuscope->timestampFolder + "_" + ntuscope->titleFolder;
             CreateDirectoryA(ntuscope->folderPathRaw.c_str(), NULL);
-
             Savecsv(LISSAJOUS_2D);
         }
 
@@ -1890,17 +1963,29 @@ namespace NTU {
         filePath << ntuscope->folderPathRaw << "\\Image" << (imageIndex + 1) << ".bin";
         FILE* fpData = fopen(filePath.str().c_str(), "wb");
         if (fpData) {
-            size_t bytesPerBuffer = samplesPerBuffer * sizeof(U16) * channelCount;
-            size_t bytesWritten = fwrite(Buffer, sizeof(BYTE), bytesPerBuffer, fpData);
+            size_t bytesPerBuffer = samplesPerBuffer * sizeof(U16) * size_t(channelCount);
+            size_t bytesWritten = fwrite(buffer_save.data(), sizeof(BYTE), bytesPerBuffer, fpData);
             fclose(fpData);
-
             if (bytesWritten != bytesPerBuffer) {
-                std::cerr << "Warning: fwrite wrote " << bytesWritten << " bytes, expected " << bytesPerBuffer << std::endl;
+                return false;
             }
         }
         else {
-            std::cerr << "Error: Unable to open file " << filePath.str() << " for writing.\n";
+            return false;
         }
+
+        //FILE* fpData = fopen(filePath.str().c_str(), "wb");
+        //if (fpData) {
+        //    size_t bytesWritten = fwrite(Buffer, sizeof(BYTE), size_t(bytesPerBuffer), fpData);
+        //    fclose(fpData);
+
+        //    if (bytesWritten != bytesPerBuffer) {
+        //        cout << "Warning: fwrite wrote " << bytesWritten << " bytes, expected " << bytesPerBuffer << std::endl;
+        //    }
+        //}
+        //else {
+        //    cout << "Error: Unable to open file " << filePath.str() << " for writing.\n";
+        //}
 
         if (imageIndex == ntuscope->save_num - 1) {
             ntuscope->savestate = false;
@@ -2076,7 +2161,14 @@ namespace NTU {
             vector<U16> Buffer;
             std::chrono::system_clock::time_point timestamp;
             std::tie(processedImg, Buffer, timestamp) = imageWithTime;
-            Saveimage_LISSAJOUS(processedImg, Buffer, timestamp);
+
+            if (ntuscope->highspeedmode == true || ntuscope->applychopper == true) {
+                Saveimage_LISSAJOUSBin_highspeed(Buffer, timestamp);
+            }
+            else {
+                Saveimage_LISSAJOUS(processedImg, Buffer, timestamp);
+            }
+            
         }
     }
 
