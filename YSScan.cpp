@@ -542,9 +542,9 @@ namespace NTU {
             int numberofchannel = 3;
             ttldata = new uInt8[total_samples * 2 * numberofchannel];
             fill(ttldata, ttldata + (total_samples * 2 * numberofchannel), 0);
-            NItriggerdelay = 0.0002995;
+            //NItriggerdelay = 0.0002995;
             int risingEdgeDelaySamples = static_cast<int>(ntuscope->samplingRate * NItriggerdelay);
-            int risingEdgeDelaySamples_frame = risingEdgeDelaySamples - 5;
+            int risingEdgeDelaySamples_frame = risingEdgeDelaySamples - 100;
 
             //frame trigger
             for (int frame = 0; frame < 2; frame++) {

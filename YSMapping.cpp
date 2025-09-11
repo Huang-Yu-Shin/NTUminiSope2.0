@@ -102,7 +102,7 @@ namespace NTU {
             ntuscope->Xpixelsize_display = int(double(ntuscope->Ypixelsize_display) * double(ntuscope->MEMS_xamp / ntuscope->MEMS_yamp));
             ntuscope->Ypixelsize_save = ntuscope->num_lines;
             ntuscope->Xpixelsize_save= int(double(ntuscope->Ypixelsize_save) * double(ntuscope->MEMS_xamp / ntuscope->MEMS_yamp));
-            totalsample = int(ntuscope->samplesPerSec / (2 * ntuscope->xfreq) * ntuscope->num_lines);
+            totalsample = int(double(ntuscope->samplesPerSec) / (2 * ntuscope->xfreq) * double(ntuscope->num_lines));
             ntuscope->highspeedmode_raster = false;
         }
         else if (scanmode == RASTER_ULTRA) {
@@ -1244,6 +1244,9 @@ namespace NTU {
                 frameorder_savestart = U32(frameorder);
             }
             lock_guard<mutex> lock(saveMutex);
+            if (frameorder % 2 == 1) {
+                reverse(Buffer, Buffer + samplesPerBuffer * channelCount);
+            }
             if (ntuscope->saveprocessedstate == true) {
                 gpu_8bitresizedImage.download(image_save);
             }
