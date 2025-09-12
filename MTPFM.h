@@ -4938,7 +4938,6 @@ private:
 			// 
 			// toggleButtons_ultraraster_revereseaxis
 			// 
-			this->toggleButtons_ultraraster_revereseaxis->Enabled = false;
 			this->toggleButtons_ultraraster_revereseaxis->Location = System::Drawing::Point(178, 278);
 			this->toggleButtons_ultraraster_revereseaxis->MinimumSize = System::Drawing::Size(45, 22);
 			this->toggleButtons_ultraraster_revereseaxis->Name = L"toggleButtons_ultraraster_revereseaxis";
@@ -5052,7 +5051,7 @@ private:
 			this->YStextBox__ultraraster_longaxisamp->Name = L"YStextBox__ultraraster_longaxisamp";
 			this->YStextBox__ultraraster_longaxisamp->Size = System::Drawing::Size(61, 32);
 			this->YStextBox__ultraraster_longaxisamp->TabIndex = 132;
-			this->YStextBox__ultraraster_longaxisamp->Text = L"0.5";
+			this->YStextBox__ultraraster_longaxisamp->Text = L"1";
 			this->YStextBox__ultraraster_longaxisamp->TextAlign = System::Windows::Forms::HorizontalAlignment::Center;
 			// 
 			// YSlabel_ultraraster_phase
@@ -5261,7 +5260,7 @@ private:
 			this->YStrackBar__ultraraster_longaxisamp->Size = System::Drawing::Size(163, 30);
 			this->YStrackBar__ultraraster_longaxisamp->TabIndex = 113;
 			this->YStrackBar__ultraraster_longaxisamp->TickFrequency = 5;
-			this->YStrackBar__ultraraster_longaxisamp->Value = 50;
+			this->YStrackBar__ultraraster_longaxisamp->Value = 100;
 			this->YStrackBar__ultraraster_longaxisamp->Scroll += gcnew System::EventHandler(this, &MTPFM::YStrackBar__ultraraster_longaxisamp_Scroll);
 			// 
 			// label79

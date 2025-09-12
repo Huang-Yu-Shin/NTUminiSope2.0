@@ -949,7 +949,14 @@ namespace NTU {
                 filename = "C:\\Ian\\MTPFM\\Calibrations\\default_settings\\FCLK_Calibration_UltrafastRaster_Driver_132000-0.5amp.txt";
             }
         }
-  
+        else if (xAmp == 1) {
+            if (ntuscope->reverse_axis == true) {
+                filename = "C:\\Ian\\MTPFM\\Calibrations\\default_settings\\FCLK_Calibration_UltrafastRaster_Driver_132000-1amp_reverse.txt";
+            }
+            else if (ntuscope->reverse_axis == false) {
+                filename = "C:\\Ian\\MTPFM\\Calibrations\\default_settings\\FCLK_Calibration_UltrafastRaster_Driver_132000-1amp.txt";
+            }
+        }
         ifstream file(filename);
         if (!file.is_open()) {
             cerr << "Error: Cannot open file" << endl;

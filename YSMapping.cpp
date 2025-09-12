@@ -107,12 +107,7 @@ namespace NTU {
         }
         else if (scanmode == RASTER_ULTRA) {
             ntuscope->Pixelnumy = ntuscope->num_lines;
-            if (ntuscope->num_lines == 1) {
-                ntuscope->Pixelnumx = 1024;
-            }
-            else {
-                ntuscope->Pixelnumx = int(double(ntuscope->Pixelnumy) * double(ntuscope->MEMS_xamp / ntuscope->MEMS_yamp));
-            }
+            ntuscope->Pixelnumx = 1024;
             ntuscope->Xpixelsize_display = 1024;
             if (ntuscope->num_lines == 1) {
                 ntuscope->Ypixelsize_display = 10;
@@ -227,7 +222,12 @@ namespace NTU {
         }
         cout << "Bits per sample: " << int(bitsPerSample) << " Max samples per channel: " << maxSamplesPerChannel << endl;
 
-        if (scanmode == RASTER || scanmode == RASTER_SLOW || scanmode == RASTER_ULTRA) recordsPerBuffer = ntuscope->num_lines; //defalt is 1
+        if (scanmode == RASTER || scanmode == RASTER_SLOW || scanmode == RASTER_ULTRA) {
+            recordsPerBuffer = ntuscope->num_lines; //defalt is 1
+        }
+        else {
+            recordsPerBuffer = 1;
+        }
         float bytesPerSample = static_cast<float>((bitsPerSample + 7) / 8);
         samplesPerRecord = (preTriggerSamples + postTriggerSamples);
         U32 bytesPerRecord = static_cast<U32>(bytesPerSample * samplesPerRecord + 0.5);
@@ -364,12 +364,7 @@ namespace NTU {
         }
         else if (scanmode == RASTER_ULTRA) {
             ntuscope->Pixelnumy = ntuscope->num_lines;
-            if (ntuscope->num_lines == 1) {
-                ntuscope->Pixelnumx = 1024;
-            }
-            else {
-                ntuscope->Pixelnumx = int(double(ntuscope->Pixelnumy) * double(ntuscope->MEMS_xamp / ntuscope->MEMS_yamp));
-            }
+            ntuscope->Pixelnumx = 1024;
             ntuscope->Xpixelsize_display = 1024;
             if (ntuscope->num_lines == 1) {
                 ntuscope->Ypixelsize_display = 10;
@@ -484,7 +479,12 @@ namespace NTU {
         }
         cout << "Bits per sample: " << int(bitsPerSample) << " Max samples per channel: " << maxSamplesPerChannel << endl;
 
-        if (scanmode == RASTER || scanmode == RASTER_SLOW || scanmode == RASTER_ULTRA) recordsPerBuffer = ntuscope->num_lines; //defalt is 1
+        if (scanmode == RASTER || scanmode == RASTER_SLOW || scanmode == RASTER_ULTRA) {
+            recordsPerBuffer = ntuscope->num_lines; //defalt is 1
+        }
+        else {
+            recordsPerBuffer = 1;
+        }
         float bytesPerSample = static_cast<float>((bitsPerSample + 7) / 8);
         samplesPerRecord = (preTriggerSamples + postTriggerSamples);
         U32 bytesPerRecord = static_cast<U32>(bytesPerSample * samplesPerRecord + 0.5);
@@ -1245,7 +1245,7 @@ namespace NTU {
             }
             lock_guard<mutex> lock(saveMutex);
             if (frameorder % 2 == 1) {
-                reverse(Buffer, Buffer + samplesPerBuffer * channelCount);
+                reverse(Buffer, Buffer + samplesPerBuffer);
             }
             if (ntuscope->saveprocessedstate == true) {
                 gpu_8bitresizedImage.download(image_save);
