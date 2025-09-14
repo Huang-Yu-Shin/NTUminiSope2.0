@@ -37,7 +37,8 @@ namespace NTU {
         void getOffsetFromVoltage(double voltage);
         void NIgenerateRaster_slow(float64* data, float64 xamplitude, float64 yamplitude, float64 offsetx, float64 offsety, int num_lines, float64 freq_x, float64 samplingRate);
         void NIgenerateRaster_reverseaxis(float64* data, float64 xamplitude, float64 yamplitude, float64 offsetx, float64 offsety, int num_lines, float64 freq_x, float64 samplingRate);
-        
+        //void NIgenerateUltraRaster(float64* data, float64 xamp, float64 yamp, float64 xoff, float64 yoff, int num_lines, float64 xfreq, float64 samplingRate);
+        //void NIgenerateUltraRaster_reverseaxis(float64* data, float64 xamp, float64 yamp, float64 xoff, float64 yoff, int num_lines, float64 freq_x, float64 samplingRate);
         //config
         bool twoD_lissajous_configure();
         bool twoD_raster_configure();

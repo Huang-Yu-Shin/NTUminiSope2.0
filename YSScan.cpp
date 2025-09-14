@@ -795,6 +795,47 @@ namespace NTU {
         }
     }
 
+    //void YSScan::NIgenerateUltraRaster(float64* data, float64 xamp, float64 yamp, float64 xoff, float64 yoff,int num_lines,float64 xfreq, float64 samplingRate){
+    //    if (xamp + xoff > 10 || xoff - xamp < -10 || yamp + yoff > 10 || yoff - yamp < -10) {
+    //        std::cout << xamp << " " << yamp << " " << xoff << " " << yoff << std::endl;
+    //        std::cout << "---------------------\nERROR: The MEMS input is out of range !!\n---------------------\n";
+    //    }
+
+    //    int spl = samples_per_line;
+    //    int idx = 0;
+    //    int n = 0;
+    //    for (int line = 0; line < num_lines; ++line) {
+    //        double y_val = yamp - (2.0 * yamp * line) / (num_lines - 1) + yoff;
+    //        for (int i = 0; i < spl; ++i, ++n) {
+    //            double angle = double(2.0 * M_PI * xfreq / samplingRate) * double(n) - 0.5 * M_PI;           // = 2πf * (n/Fs) - π/2
+    //            double x_val = xoff + xamp * std::sin(angle);
+
+    //            //double t = (i + 0.5) / double(spl);
+    //            //double tri = -1.0 + 2.0 * t;             
+    //            //double x_val = xoff + xamp * tri;
+
+    //            data[idx++] = x_val;
+    //            data[idx++] = y_val;
+    //        }
+    //    }
+
+    //    for (int line = 0; line < num_lines; ++line) {
+    //        double y_val = -yamp + (2.0 * yamp * line) / (num_lines - 1) + yoff;
+
+    //        for (int i = 0; i < spl; ++i, ++n) {
+    //            const double angle = double(2.0 * M_PI * xfreq / samplingRate) * double(n) - 0.5 * M_PI;
+    //            const double x_val = xoff + xamp * std::sin(angle);
+
+    //            //double t = (i + 0.5) / double(spl);
+    //            //double tri = +1.0 - 2.0 * t;      
+    //            //double x_val = xoff + xamp * tri;
+
+    //            data[idx++] = x_val;
+    //            data[idx++] = y_val;
+    //        }
+    //    }
+    //}
+
     void YSScan::NIgenerateRaster_reverseaxis(float64* data, float64 xamplitude, float64 yamplitude, float64 offsetx, float64 offsety, int num_lines, float64 freq_x, float64 samplingRate) {
         if (xamplitude + offsetx > 10 || offsetx - xamplitude < -10 || yamplitude + offsety > 10 || offsety - yamplitude < -10) {
             cout << xamplitude << yamplitude << offsetx << offsety << endl;
@@ -833,6 +874,48 @@ namespace NTU {
             }
         }
     }
+
+    //void YSScan::NIgenerateUltraRaster_reverseaxis(float64* data,float64 xamp, float64 yamp,float64 xoff, float64 yoff,int num_lines,float64 freq_x, float64 samplingRate) {
+    //    if (xamp + xoff > 10 || xoff - xamp < -10 || yamp + yoff > 10 || yoff - yamp < -10) {
+    //        std::cout << xamp << " " << yamp << " " << xoff << " " << yoff << std::endl;
+    //        std::cout << "---------------------\nERROR: The MEMS input is out of range !!\n---------------------\n";
+    //    }
+
+    //    int spl = samples_per_line; 
+    //    int idx = 0;
+    //    int n = 0;
+    //    for (int line = 0; line < num_lines; ++line) {
+    //        double x_val = xamp - (2.0 * xamp * line) / (num_lines - 1) + xoff;
+
+    //        for (int i = 0; i < spl; ++i, ++n) {
+    //            double angle = double(2.0 * M_PI * freq_x / samplingRate) * double(n) - 0.5 * M_PI;
+    //            double y_val = yoff + yamp * std::sin(angle);
+
+    //            //double t = (i + 0.5) / double(spl);       
+    //            //double tri = -1.0 + 2.0 * t;            
+    //            //double y_val = yoff + yamp * tri;
+
+    //            data[idx++] = x_val;
+    //            data[idx++] = y_val;  
+    //        }
+    //    }
+
+    //    for (int line = 0; line < num_lines; ++line) {
+    //        double x_val = -xamp + (2.0 * xamp * line) / (num_lines - 1) + xoff;
+
+    //        for (int i = 0; i < spl; ++i, ++n) {
+    //            double angle = double(2.0 * M_PI * freq_x / samplingRate) * double(n) - 0.5 * M_PI;
+    //            double y_val = yoff + yamp * std::sin(angle);
+
+    //            //double t = (i + 0.5) / double(spl);       
+    //            //double tri = +1.0 - 2.0 * t;              
+    //            //double y_val = yoff + yamp * tri;
+
+    //            data[idx++] = x_val;
+    //            data[idx++] = y_val;
+    //        }
+    //    }
+    //}
 
     void YSScan::NIgenerateRaster_slow(float64* data, float64 xamplitude, float64 yamplitude, float64 offsetx, float64 offsety, int num_lines, float64 freq_x, float64 samplingRate) {
         if (xamplitude + offsetx > 10 || offsetx - xamplitude < -10 || yamplitude + offsety > 10 || offsety - yamplitude < -10) {
@@ -976,8 +1059,8 @@ namespace NTU {
             double freq, yamp,xratio, yratio;
             char comma;
 
-            if (ss >> freq >> comma >> yamp>>comma>> xratio >> comma >> yratio) {
-                if (freq == inputFreq && yamp ==yAmp) {
+            if (ss >> freq >>comma>> xratio >> comma >> yratio) {
+                if (freq == inputFreq) {
                     xRatio = xratio;
                     yRatio = yratio;
                     file.close();
