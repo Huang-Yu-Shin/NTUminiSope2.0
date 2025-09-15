@@ -292,6 +292,15 @@ namespace NTU {
             bufferStartTimes[i] = high_resolution_clock::now();
             bufferStartTimes_system[i] = system_clock::now();
         }
+        //slotCv.resize(TRANSIENT_BUFFER_COUNT);
+        //slotMtx.resize(TRANSIENT_BUFFER_COUNT);
+        //slotBusy.resize(TRANSIENT_BUFFER_COUNT);
+
+        //for (int i = 0; i < TRANSIENT_BUFFER_COUNT; ++i) {
+        //    slotCv[i] = std::make_unique<std::condition_variable>();
+        //    slotMtx[i] = std::make_unique<std::mutex>();
+        //    slotBusy[i] = std::make_unique<std::atomic<bool>>(false);
+        //}
         cudamanager->CudaMemoryAllocate(int(samplesPerBuffer));
         //if (scanmode == LISSAJOUS_3D) {
         //    threedimdisplay = (U16*)malloc(int(bytesPerBuffer) * ntuscope->zlayer);
@@ -555,6 +564,15 @@ namespace NTU {
             bufferStartTimes[i] = high_resolution_clock::now();
             bufferStartTimes_system[i] = system_clock::now();
         }
+        //slotCv.resize(TRANSIENT_BUFFER_COUNT);
+        //slotMtx.resize(TRANSIENT_BUFFER_COUNT);
+        //slotBusy.resize(TRANSIENT_BUFFER_COUNT);
+
+        //for (int i = 0; i < TRANSIENT_BUFFER_COUNT; ++i) {
+        //    slotCv[i] = std::make_unique<std::condition_variable>();
+        //    slotMtx[i] = std::make_unique<std::mutex>();
+        //    slotBusy[i] = std::make_unique<std::atomic<bool>>(false);
+        //}
         cudamanager->CudaMemoryAllocate(int(samplesPerBuffer));
         //if (scanmode == LISSAJOUS_3D) {
         //    threedimdisplay = (U16*)malloc(int(bytesPerBuffer) * ntuscope->zlayer);
@@ -679,6 +697,35 @@ namespace NTU {
         }
     }
 
+    bool YSMapping::Accelerate_highspeed(U16* Buffer, int bufferIndex, high_resolution_clock::time_point starttime,system_clock::time_point starttime_system,uint64_t frame_id, int max_wait_ms){
+        const auto t0 = high_resolution_clock::now();
+
+        std::unique_lock<std::mutex> lk(*slotMtx[bufferIndex]);
+        if (!slotCv[bufferIndex]->wait_for(
+            lk, milliseconds(max_wait_ms),
+            [&] { return !slotBusy[bufferIndex]->load(std::memory_order_acquire); }))
+        {
+            std::cout << "[Accelerate] TIMEOUT: bufferIndex=" << bufferIndex << " frame_id=" << frame_id << endl;
+            return false;
+        }
+
+        bufferStartTimes[bufferIndex] = starttime;
+        bufferStartTimes_system[bufferIndex] = starttime_system;
+        std::memcpy(transientBuffers[bufferIndex], Buffer, bytesPerBuffer);
+        slotBusy[bufferIndex]->store(true, std::memory_order_release);
+        hasNewData[bufferIndex] = true;
+        startprocessing = true;
+
+        {
+            std::lock_guard<std::mutex> ql(jobMtx);
+            jobQ.push_back(Job{ frame_id, bufferIndex, starttime, starttime_system });
+            framesEnqueued.fetch_add(1, std::memory_order_relaxed);
+        }
+        jobCv.notify_one();
+
+        return true;
+    }
+
 //Set up the trensient step to conduct image reconstruct and display and save
     void YSMapping::Trensientstep() {
         if (scanmode == LISSAJOUS_2D) {
@@ -686,7 +733,7 @@ namespace NTU {
             else if (ntuscope->highspeedmode == false) interdisplay = 1;
         }
         else if (scanmode == RASTER || scanmode == RASTER_SLOW) {
-            if (ntuscope->applychopper == true) interdisplay = 20;
+            if (ntuscope->applychopper == true) interdisplay = 2;
             else if (ntuscope->applychopper == false) interdisplay = 1;
         }
         else if (scanmode == RASTER_ULTRA) {
@@ -725,11 +772,6 @@ namespace NTU {
                                 processed = ProcessBufferAndFill_2DRasterImage_highspeed(transientBuffers[bufferIndex], bufferStartTimes[bufferIndex], bufferStartTimes_system[bufferIndex], frameorder[bufferIndex]);
                             }
                         }
-                        //else if (scanmode == LISSAJOUS_3D) {
-                        //    if (ntuscope->zcallback[bufferIndex]) {
-                        //        processed = ProcessBufferAndFill_3DLissajousImage(transientBuffers[bufferIndex], bufferStartTimes[bufferIndex], frameorder[bufferIndex], ntuscope->zduration_per_change[bufferIndex]);
-                        //    }
-                        //}
                         if (processed) {
                             memset(transientBuffers[bufferIndex], 0, bytesPerBuffer);
                             hasNewData[bufferIndex] = false;
@@ -737,6 +779,79 @@ namespace NTU {
                         }
                     }
                 }
+            }
+        }
+    }
+
+    void YSMapping::Trensientstep_highspeed() {
+        if (scanmode == LISSAJOUS_2D) {
+            interdisplay = 1; 
+            if (ntuscope->highspeedmode == true || ntuscope->applychopper == true) interdisplay = 1;
+        }
+        else if (scanmode == RASTER || scanmode == RASTER_SLOW) {
+            interdisplay = (ntuscope->applychopper ? 2 : 1);
+        }
+        else if (scanmode == RASTER_ULTRA) {
+            interdisplay = (ntuscope->applychopper ? 1 : 100);
+        }
+
+        previoustimepoint = high_resolution_clock::now();
+
+        while (running) {
+            Job j;
+            {
+                std::unique_lock<std::mutex> lk(jobMtx);
+                jobCv.wait(lk, [&] { return !running || !jobQ.empty(); });
+                if (!running) break;
+                j = jobQ.front();
+                jobQ.pop_front();
+            }
+
+            const int i = j.bufferIndex;
+            bool processed = false;
+
+            if (scanmode == LISSAJOUS_2D) {
+                if (ntuscope->highspeedmode || ntuscope->applychopper) {
+                    processed = ProcessBufferAndFill_2DLissajousImage_highspeed(
+                        transientBuffers[i], bufferStartTimes[i],
+                        bufferStartTimes_system[i], (U32)j.frame_id);
+                }
+                else {
+                    processed = ProcessBufferAndFill_2DLissajousImage(
+                        transientBuffers[i], bufferStartTimes[i],
+                        bufferStartTimes_system[i], (U32)j.frame_id);
+                }
+            }
+            else if (scanmode == RASTER || scanmode == RASTER_SLOW) {
+                processed = (ntuscope->applychopper)
+                    ? ProcessBufferAndFill_2DRasterImageTwoChannel(
+                        transientBuffers[i], bufferStartTimes[i],
+                        bufferStartTimes_system[i], (U32)j.frame_id)
+                    : ProcessBufferAndFill_2DRasterImage(
+                        transientBuffers[i], bufferStartTimes[i],
+                        bufferStartTimes_system[i], (U32)j.frame_id);
+            }
+            else if (scanmode == RASTER_ULTRA) {
+                processed = (ntuscope->applychopper)
+                    ? ProcessBufferAndFill_2DRasterImageTwoChannel_highspeed(
+                        transientBuffers[i], bufferStartTimes[i],
+                        bufferStartTimes_system[i], (U32)j.frame_id)
+                    : ProcessBufferAndFill_2DRasterImage_highspeed(
+                        transientBuffers[i], bufferStartTimes[i],
+                        bufferStartTimes_system[i], (U32)j.frame_id);
+            }
+
+            if (processed) {
+                std::memset(transientBuffers[i], 0, bytesPerBuffer);
+                hasNewData[i] = false;
+                ntuscope->zcallback[i] = false;
+
+                {
+                    std::lock_guard<std::mutex> lk(*slotMtx[i]);    
+                    slotBusy[i]->store(false, std::memory_order_release);
+                }
+                slotCv[i]->notify_one();                                    
+                framesProcessed.fetch_add(1, std::memory_order_relaxed);
             }
         }
     }
@@ -805,6 +920,72 @@ namespace NTU {
         repairCondition.notify_all();
         stopsaveThread = true;
         saveCondition.notify_all();
+        //jobCv.notify_all();
+        //for (int i = 0; i < TRANSIENT_BUFFER_COUNT; ++i) {
+        //    if (slotCv.size() > 0 && slotCv[i]) {
+        //        slotCv[i]->notify_all();
+        //    }
+        //}
+        return true;
+    }
+
+    bool YSMapping::AcquireData_highspeed() {
+        U32 timeout_ms = 1000; //Set whatever you want
+        U32 buffersCompleted = 0;
+
+        while (running) {
+            {
+                lock_guard<mutex> lock(mtx);
+                if (!running) break;
+            }
+            //Create the buffer to store the data and wait this buffer complete
+            U16* pBuffer = BufferArray[buffersCompleted % BUFFER_COUNT];
+            auto start_time = high_resolution_clock::now();
+            auto start_time_system = system_clock::now();
+            retCode = AlazarWaitAsyncBufferComplete(boardHandle, pBuffer, timeout_ms);
+            if (retCode != ApiSuccess) {
+                cerr << "Error: AlazarWaitAsyncBufferComplete failed -- " << AlazarErrorToText(retCode) << endl;
+                success = false;
+            }
+
+            auto end_time_acq = high_resolution_clock::now();
+            auto duration_ms_acq = duration_cast<nanoseconds>(end_time_acq - start_time);
+
+            //Copy to transient buffer
+            if (success) {
+                frameorder[buffersCompleted % TRANSIENT_BUFFER_COUNT] = buffersCompleted;
+                int maxwait_ms = int(1000.0 / ntuscope->framerate);
+                Accelerate_highspeed(BufferArray[buffersCompleted % BUFFER_COUNT],buffersCompleted % TRANSIENT_BUFFER_COUNT,start_time, start_time_system,buffersCompleted, maxwait_ms);
+                buffersCompleted++;
+            }
+
+            if (success) {
+                retCode = AlazarPostAsyncBuffer(boardHandle, pBuffer, bytesPerBuffer);
+                if (retCode != ApiSuccess) {
+                    cerr << "Error: AlazarPostAsyncBuffer failed -- " << AlazarErrorToText(retCode) << endl;
+                    success = false;
+                }
+            }
+            if (!success) break;
+
+        }
+        retCode = AlazarAbortAsyncRead(boardHandle);
+        if (retCode != ApiSuccess) {
+            cerr << "Error: AlazarAbortAsyncRead failed -- " << AlazarErrorToText(retCode) << endl;
+            success = false;
+        }
+        stopavgThread = true;
+        queueCondition.notify_all();
+        stoprepairThread = true;
+        repairCondition.notify_all();
+        stopsaveThread = true;
+        saveCondition.notify_all();
+        jobCv.notify_all();
+        for (int i = 0; i < TRANSIENT_BUFFER_COUNT; ++i) {
+            if (slotCv.size() > 0 && slotCv[i]) {
+                slotCv[i]->notify_all();
+            }
+        }
         return true;
     }
 
@@ -2128,6 +2309,7 @@ namespace NTU {
 
             auto imageWithTime = std::move(saveQueue.front());
             saveQueue.pop_front();
+            lock.unlock();
 
             cv::Mat Img;
             vector<U16> Buffer;
@@ -2159,6 +2341,7 @@ namespace NTU {
 
             auto imageWithTime = std::move(saveLissajousQueue.front());
             saveLissajousQueue.pop_front();
+            lock.unlock();
 
             cv::Mat processedImg;
             vector<U16> Buffer;
@@ -3035,6 +3218,18 @@ namespace NTU {
                 free(transientBuffers[i]);
                 transientBuffers[i] = nullptr;
             }
+        }
+
+        //lock_guard<mutex> lk(jobMtx);
+        //jobQ.clear();
+        while (!saveQueue.empty()) saveQueue.pop_front();
+        while (!saveLissajousQueue.empty()) saveLissajousQueue.pop_front();
+        while (!imageQueue.empty()) imageQueue.pop_front();
+        for (int i = 0; i < TRANSIENT_BUFFER_COUNT; ++i) {
+            hasNewData[i] = false;
+            //if (slotBusy.size() > 0 && slotBusy[i]) slotBusy[i]->store(false, std::memory_order_release);
+            bufferStartTimes[i] = {};
+            bufferStartTimes_system[i] = {};
         }
         cudamanager->CudaMemoryManagerStop();
         stream.waitForCompletion();

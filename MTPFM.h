@@ -942,7 +942,7 @@ private: System::Windows::Forms::Button^ button_setsavenum;
 			this->YScomboBox__raster_linefreq->SelectedIndex = 9;
 			this->YScomboBox__raster_yline->SelectedIndex = 4;
 			this->YScomboBox__raster_chopperfreq->SelectedIndex = 0;
-			this->YScomboBox__ultraraster_linefreq->SelectedIndex = 4;
+			this->YScomboBox__ultraraster_linefreq->SelectedIndex = 0;
 			this->YScomboBox__ultraraster_yline->SelectedIndex = 3;
 			this->YScomboBox__ultraraster_chopperfreq->SelectedIndex = 0;
 			this->comboBox_ultraraster_spaceperline->SelectedIndex = 0;
@@ -8246,6 +8246,9 @@ private: void Run2DLissajous() {
 private: void Run2DRaster() {
 	YSCORE->TWODrasterimage();
 }
+private: void Run2DUltraRaster() {
+	YSCORE->TWODultrarasterimage();
+}
 //ImageProcessing
 private: System::Void trackBar_MinVal_Scroll(System::Object^ sender, System::EventArgs^ e) {
 	int MinVal = this->trackBar_MinVal->Value;
@@ -8584,7 +8587,7 @@ private: System::Void YSbutton_ultraraster_startimg_Click(System::Object^ sender
 	textBox_pixel_size_row->Text = aYSNTU->Xpixelsize_display.ToString();
 	textBox_pixel_size_col->Text = aYSNTU->Xpixelsize_display.ToString();
 	textBox_chopper_freq->Text = aYSNTU->chopperfreq.ToString();
-	System::Threading::Thread^ runThread = gcnew System::Threading::Thread(gcnew System::Threading::ThreadStart(this, &MTPFM::Run2DRaster));
+	System::Threading::Thread^ runThread = gcnew System::Threading::Thread(gcnew System::Threading::ThreadStart(this, &MTPFM::Run2DUltraRaster));
 	runThread->Start();
 	status->ForeColor = Color::LightGreen;
 	status->Text = "Start imaging : UltraRaster";

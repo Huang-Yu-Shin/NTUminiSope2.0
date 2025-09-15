@@ -23,6 +23,7 @@ namespace NTU {
         void TWODRaster_slow_configure(double focaloffset, double xfreq, double MEMSXamplitude, double MEMSYamplitude, int num_lines, double midx, double midy, int clocktype);
         void TWODRaster_ultrafast_configure(double focaloffset, double xfreq, double MEMSFASTamplitude, double SpaceOfLine, int num_lines, double midx, double midy, int clocktype);
         void TWODrasterimage();
+        void TWODultrarasterimage();
         void stopAllOperations();
         void Alignmentsetup(double xoffset, double yoffset);
         void stopAlignment();

@@ -203,9 +203,6 @@ namespace NTU {
         ntuscope->zoffset = focaloffset;
         ntuscope->zstep = 0;
         ntuscope->zlayer = 0;
-        cout << "XAMP:" << ntuscope->MEMS_xamp << "   YAMP:" << ntuscope->MEMS_yamp<<endl;
-        cout << "NUMLINE:" << ntuscope->num_lines << "   SPACEPERLINE:" << ntuscope->MEMS_spaceoerkine << endl;
-        cout << "LINEFREQ:" << ntuscope->xfreq << endl;
         if (ntuscope->applychopper == false) {
             if (mapping->ConfigureBoard(mapping->RASTER_ULTRA)) {
                 cout << "Configure Alazar : Success" << endl;
@@ -229,6 +226,29 @@ namespace NTU {
     }
 
     void YSCore::TWODrasterimage() {
+        if (mapping->StartAcquireData()) {
+            cout << "Start Alazar data: Success" << endl;
+        }
+        cv::destroyAllWindows();
+        thread processingThreads = thread(&YSMapping::Trensientstep, mapping);
+        Sleep(500);
+        thread mappingThread = thread(&YSMapping::AcquireData, mapping);
+        thread scanningThread = thread(&YSScan::twoD_raster_run, scanning);
+        thread avgThread = thread(&YSMapping::AverageFunction, mapping);
+        thread saveThread = thread(&YSMapping::SaverasterimageFunction, mapping);
+
+        mappingThread.join();
+        scanningThread.join();
+        processingThreads.join();
+        avgThread.join();
+        saveThread.join();
+
+        mapping->CloseAlazar();
+        scanning->stop();
+
+    }
+
+    void YSCore::TWODultrarasterimage() {
         if (mapping->StartAcquireData()) {
             cout << "Start Alazar data: Success" << endl;
         }

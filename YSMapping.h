@@ -52,6 +52,7 @@ namespace NTU {
         bool StartAcquireData();
         bool AcquireData_RASTER();
         bool AcquireData();
+        bool AcquireData_highspeed();
         void SaverasterimageFunction();
         void SavelissajousimageFunction();
         bool Saveimage_RASTER(cv::Mat final_display_img , vector<U16>& buffer_save, system_clock::time_point starttime_system);
@@ -62,7 +63,9 @@ namespace NTU {
         bool Saveimage_RASTER2CH_highspeed(cv::Mat final_display_img, vector<U16>& buffer_save, system_clock::time_point starttime_system);
         void CloseAlazar();
         void Trensientstep();
+        void Trensientstep_highspeed();
         void Accelerate(U16* Buffer, int bufferIndex, high_resolution_clock::time_point starttime, system_clock::time_point starttime_system);
+        bool Accelerate_highspeed(U16* Buffer, int bufferIndex, high_resolution_clock::time_point starttime, system_clock::time_point starttime_system, uint64_t frame_id, int max_wait_ms);
         void AverageFunction();
         void RepairFunction();
         void Addtext(cv::Mat& IMGDP8, double rate, int Xpixelsize, int Ypixelsize);
@@ -87,6 +90,21 @@ namespace NTU {
         RETURN_CODE retCode; 
         cv::Mat sin_weight;
 
+        //high speed acquire
+        vector<std::unique_ptr<condition_variable>> slotCv;
+        vector<std::unique_ptr<mutex>> slotMtx;
+        vector<std::unique_ptr<atomic<bool>>> slotBusy;
+        struct Job {
+            uint64_t frame_id;                               // buffersCompleted
+            int bufferIndex;                                 // transientBuffers slot
+            high_resolution_clock::time_point t_start;
+            system_clock::time_point           t_start_sys;
+        };
+        deque<Job> jobQ;
+        mutex      jobMtx;
+        condition_variable jobCv;
+        atomic<uint64_t> framesEnqueued{ 0 };
+        atomic<uint64_t> framesProcessed{ 0 };
 
         //average state
         deque<cv::Mat> imageQueue;
