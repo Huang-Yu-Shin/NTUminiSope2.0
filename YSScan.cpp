@@ -1059,8 +1059,8 @@ namespace NTU {
             double freq, yamp,xratio, yratio;
             char comma;
 
-            if (ss >> freq >>comma>> xratio >> comma >> yratio) {
-                if (freq == inputFreq) {
+            if (ss >> freq >> comma >> yamp >>comma>> xratio >> comma >> yratio) {
+                if (freq == inputFreq && yamp == yAmp) {
                     xRatio = xratio;
                     yRatio = yratio;
                     file.close();
