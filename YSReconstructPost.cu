@@ -32,7 +32,7 @@ namespace NTU {
         printf("pixelnum = %d * %d \n", pixelnumX, pixelnumY);
         printf("total sample = %d\n", total_sample);
         printf("sampling rate = %d \n", sampling_rate);
-        printf("freqx = %d , freqy = %d , phase = %d", freqx, freqy, phase);
+        printf("freqx = %d , freqy = %d , phase = %d \n", freqx, freqy, phase);
     }
 
     void ReconstructPost::getDeviceInf() {

@@ -1,4 +1,4 @@
-#include "YSImageMerge.h"
+﻿#include "YSImageMerge.h"
 
 namespace NTU {
 
@@ -191,9 +191,9 @@ namespace NTU {
 			cv::cuda::GpuMat gpu_image;
 			gpu_image.upload(img, stream);
 
-			//cv::cuda::GpuMat DCE;
-			//Dynamic_Contrast_Enhancement_CUDA(gpu_image, DCE, 4);
-			//DCE.copyTo(gpu_image);
+			cv::cuda::GpuMat DCE;
+			Dynamic_Contrast_Enhancement_CUDA(gpu_image, DCE, 4);
+			DCE.copyTo(gpu_image);
 
 			double scale = 65535.0 / (50000.0 - 0.0);
 			double shift = 0.0 * scale;
@@ -630,8 +630,7 @@ namespace NTU {
 				if (!cv::imwrite(savePath.str(), backgroundImage)) {
 					cout << "Error: Failed to save image: " << savePath.str() << endl;
 				}
-
-				progresspercentage = double(rasterimgindex) / double(total_lissajousimage_count) * 100;
+				progresspercentage_rlmergedisplay = double(rasterimgindex) / double(total_lissajousimage_count) * 100;
 			}
 
 			cv::resize(backgroundImage, backgroundImage, cv::Size(512, 512), 0,0, cv::INTER_LINEAR);
@@ -1002,9 +1001,20 @@ namespace NTU {
 
 		cv::cuda::Stream local_stream;
 		cv::cuda::GpuMat gpu_image_ch1, gpu_image_raw_ch1;
-		gpu_image_ch1.upload(sin_image_u16_1, local_stream);
-		gpu_image_raw_ch1.upload(cv::Mat(num_of_line, int(samplesPerRecord), CV_16UC1, h_image_1.data()), local_stream);
-		local_stream.waitForCompletion();
+
+		if (num_of_line > 20) {
+			cv::cuda::GpuMat gpu_image_prepre_1, gpu_image_preprepre_1;
+			gpu_image_preprepre_1.upload(sin_image_u16_1, local_stream);
+			cv::cuda::resize(gpu_image_preprepre_1, gpu_image_prepre_1, cv::Size(1024, 1024), 0, 0, cv::INTER_AREA, local_stream);
+			cv::cuda::resize(gpu_image_prepre_1, gpu_image_ch1, cv::Size(num_of_line, num_of_line), 0, 0, cv::INTER_AREA, local_stream);
+			gpu_image_raw_ch1.upload(cv::Mat(num_of_line, int(samplesPerRecord), CV_16UC1, h_image_1.data()), local_stream);
+			local_stream.waitForCompletion();
+		}
+		else {
+			gpu_image_ch1.upload(sin_image_u16_1, local_stream);
+			gpu_image_raw_ch1.upload(cv::Mat(num_of_line, int(samplesPerRecord), CV_16UC1, h_image_1.data()), local_stream);
+			local_stream.waitForCompletion();
+		}
 
 		// normalize & scale
 		cv::cuda::subtract(65535, gpu_image_ch1, gpu_image_ch1, cv::noArray(), -1, local_stream);
@@ -1130,7 +1140,12 @@ namespace NTU {
 
 			futures.push_back(async(launch::async,
 				[this, bin_path, ch1_path, raw_ch1_path, ch2_path, raw_ch2_path]() {
-					this->ProcessSingleBin_raster_2ch(bin_path, ch1_path, raw_ch1_path, ch2_path, raw_ch2_path);
+					if (raster_reconstruct_mode == false) {
+						this->ProcessSingleBin_raster_2ch(bin_path, ch1_path, raw_ch1_path, ch2_path, raw_ch2_path);
+					}
+					else if (raster_reconstruct_mode == true) {
+						this->ProcessSingleBin_raster_2ch_magnitude(bin_path, ch1_path, raw_ch1_path);
+					}
 				}
 			));
 		}
@@ -1285,6 +1300,133 @@ namespace NTU {
 		if (!cv::imwrite(ch2_path, Img16bit_ch2))     cerr << "Error: Unable to save the image " << ch2_path << endl;
 		if (!cv::imwrite(raw_ch1_path, Img16bit_raw_ch1)) cerr << "Error: Unable to save the image " << raw_ch1_path << endl;
 		if (!cv::imwrite(raw_ch2_path, Img16bit_raw_ch2)) cerr << "Error: Unable to save the image " << raw_ch2_path << endl;
+	}
+
+	void YSImageMerge::ProcessSingleBin_raster_2ch_magnitude(const string& bin_path,const string& out_path, const string& raw_out_path){
+		ifstream file(bin_path, ios::binary);
+		if (!file) {
+			cout << "Error: Unable to read " << bin_path << endl;
+			return;
+		}
+
+		vector<U16> buffer(static_cast<size_t>(num_of_sample) * static_cast<size_t>(channelcount));
+		file.read(reinterpret_cast<char*>(buffer.data()),static_cast<streamsize>(num_of_sample * sizeof(U16) * channelcount));
+		streamsize got = file.gcount();
+		file.close();
+
+		if (got != static_cast<streamsize>(num_of_sample * sizeof(U16) * channelcount)) {
+			cout << "Error: The length of this read is mismatch " << bin_path << endl;
+			return;
+		}
+
+		cv::cuda::GpuMat gpu_image_mag;
+		U16 samplesPerRecord = U16(num_of_sample / num_of_line);
+		U16 recStride = samplesPerRecord * 2; 
+
+		vector<U16> h_image_1(static_cast<size_t>(num_of_sample), 0);
+		vector<U16> h_image_2(static_cast<size_t>(num_of_sample), 0);
+
+		for (int line = 0; line < num_of_line; ++line) {
+			U16* srcA = buffer.data() + U16(line) * recStride;
+			U16* srcB = srcA + samplesPerRecord;
+			U16* dstA = h_image_1.data() + U16(line) * samplesPerRecord;
+			U16* dstB = h_image_2.data() + U16(line) * samplesPerRecord;
+
+			if ((line % 2) == 0) {
+				memcpy(dstA, srcA, sizeof(U16) * int(samplesPerRecord));
+				memcpy(dstB, srcB, sizeof(U16) * int(samplesPerRecord));
+			}
+			else {
+				for (int s = 0; s < int(samplesPerRecord); ++s) {
+					int dstIdx = int(samplesPerRecord) - 1 - s;
+					dstA[dstIdx] = srcA[s];
+					dstB[dstIdx] = srcB[s];
+				}
+			}
+		}
+
+		vector<U16> h_image_mag(static_cast<size_t>(num_of_sample), 0);
+		const size_t N = static_cast<size_t>(num_of_sample);
+		for (size_t i = 0; i < N; ++i) {
+			const double a = static_cast<double>(h_image_1[i]) - 32768.0;
+			const double b =static_cast<double>(h_image_2[i]) -32768.0;
+			double mag = sqrt(a * a + b * b) * sqrt(2);   
+			if (mag > 65535.0) mag = 65535.0;
+			if (mag < 0.0)     mag = 0.0;
+			h_image_mag[i] = static_cast<U16>(mag + 0.5);
+		}
+
+		cv::cuda::Stream local_stream;
+		cv::cuda::GpuMat gpu_image_raw(num_of_line, int(samplesPerRecord), CV_16UC1);
+		gpu_image_raw.upload(cv::Mat(num_of_line, int(samplesPerRecord), CV_16UC1, h_image_mag.data()), local_stream);
+		local_stream.waitForCompletion();
+
+		cv::Mat sin_image_mag(num_of_line, 1024, CV_32FC1, cv::Scalar(0));
+		for (int line = 0; line < num_of_line; ++line) {
+			const U16* src1 = h_image_1.data() + size_t(line) * size_t(samplesPerRecord);
+			const U16* src2 = h_image_2.data() + size_t(line) * size_t(samplesPerRecord);
+			for (int sample = 0; sample < int(samplesPerRecord); ++sample) {
+				float t = float(sample) / float(max(1, int(samplesPerRecord) - 1));
+				float angle = (CV_PI * t - 0.5f * CV_PI);
+				float x = 0.5f * (1.0f + sinf(angle));
+				int   x_idx = int(x * (1024 - 1));
+				if (x_idx < 0 || x_idx >= 1024) continue;
+
+				float a = float(src1[sample]) - 32768.0f;
+				float b = float(src2[sample]) - 32768.0f;
+				float mag = sqrt(a * a + b * b) * sqrt(2.0f);
+
+				sin_image_mag.at<float>(line, x_idx) += mag;
+			}
+		}
+
+		cv::Mat sin_image_u16(num_of_line, 1024, CV_16UC1);
+		for (int y = 0; y < num_of_line; ++y) {
+			for (int x = 0; x < 1024; ++x) {
+				float weight = sin_weight.at<float>(y, x);
+				float v1 = sin_image_mag.at<float>(y, x);
+				if (weight > 0) { v1 /= weight;}
+				v1 = min(max(v1, 0.0f), 65535.0f);
+				sin_image_u16.at<U16>(y, x) = static_cast<U16>(v1);
+			}
+		}
+
+		if (num_of_line > 20) {
+			cv::cuda::GpuMat gpu_image_prepre_1, gpu_image_preprepre_1; 
+			gpu_image_preprepre_1.upload(sin_image_u16, local_stream); 
+			cv::cuda::resize(gpu_image_preprepre_1, gpu_image_prepre_1, cv::Size(1024, 1024), 0, 0, cv::INTER_AREA, local_stream); 
+			cv::cuda::resize(gpu_image_prepre_1, gpu_image_mag, cv::Size(num_of_line, num_of_line), 0, 0, cv::INTER_AREA, local_stream); 
+			local_stream.waitForCompletion();
+		}
+		else {
+			gpu_image_mag.upload(sin_image_u16, local_stream);
+			local_stream.waitForCompletion();
+		}
+
+		size_t p = bin_path.find_last_of("\\/");
+		string bin_filename = (p == string::npos) ? bin_path : bin_path.substr(p + 1);
+		size_t start = bin_filename.find("Image") + 5; 
+		size_t end = bin_filename.find(".bin");
+		string numberStr = bin_filename.substr(start, end - start);
+		int number = stoi(numberStr); 
+		U32 frameorder = savestart_frameorder + (number - 1);
+
+		if (frameorder % 2 == 1) {
+			cv::cuda::flip(gpu_image_mag, gpu_image_mag, 0, local_stream); 
+			cv::cuda::flip(gpu_image_raw, gpu_image_raw, 0, local_stream);
+		}
+
+		cv::Mat Img16bit_mag, Img16bit_raw;
+		gpu_image_mag.download(Img16bit_mag, local_stream);
+		gpu_image_raw.download(Img16bit_raw, local_stream);
+		local_stream.waitForCompletion();
+
+		if (!cv::imwrite(out_path, Img16bit_mag)) {
+			cerr << "Error: Unable to save the magnitude image " << out_path << endl;
+		}
+		if (!cv::imwrite(raw_out_path, Img16bit_raw)) {
+			cerr << "Error: Unable to save the image " << raw_out_path << endl;
+		}
 	}
 
 	//Reconstruct//
@@ -1566,7 +1708,7 @@ namespace NTU {
 				}
 
 				lissajousimgindex++;
-				progresspercentage = double(lissajousimgindex) / double(total_lissajousimage_count) * 100;
+				progresspercentage_reconstruct = double(lissajousimgindex) / double(total_lissajousimage_count) * 100;
 			}
 		}
 		else if (channelcount == 2) {
@@ -1679,7 +1821,7 @@ namespace NTU {
 				}
 
 				lissajousimgindex++;
-				progresspercentage = double(lissajousimgindex) / double(total_lissajousimage_count) * 100;
+				progresspercentage_reconstruct = double(lissajousimgindex) / double(total_lissajousimage_count) * 100;
 			}
 		}
 		
@@ -1725,7 +1867,7 @@ namespace NTU {
 					[this, fullPath, outputFolderPath, img_index, &done, total]() {
 						this->ReconstructOneTiff_1ch(fullPath, outputFolderPath, img_index);
 						done.fetch_add(1, memory_order_relaxed);
-						progresspercentage = double(done.load()) / double(total) * 100.0;
+						progresspercentage_reconstruct = double(done.load()) / double(total) * 100.0;
 					}
 				));
 			}
@@ -1776,7 +1918,7 @@ namespace NTU {
 					[this, fullPath_ch1, fullPath_ch2,outputFolderPath_ch1, outputFolderPath_ch2,img_index, &done, total]() {
 						this->ReconstructOneTiff_2ch(fullPath_ch1, fullPath_ch2,outputFolderPath_ch1, outputFolderPath_ch2,	img_index);
 						done.fetch_add(1, memory_order_relaxed);
-						progresspercentage = double(done.load()) / double(total) * 100.0;
+						progresspercentage_reconstruct = double(done.load()) / double(total) * 100.0;
 					}
 				));
 			}
@@ -2005,6 +2147,173 @@ namespace NTU {
 			}
 		}
 		file.close();
+	}
+
+	void YSImageMerge::ExportROISampleMeanCSV() {
+		auto in_range = [](int v, int lo, int hi) { return (v >= lo) && (v <= hi); };
+		if (!in_range(ROIleftupX, 0, pixelnum - 1) || !in_range(ROIrightbottomX, 0, pixelnum - 1) ||
+			!in_range(ROIleftupY, 0, pixelnum - 1) || !in_range(ROIrightbottomY, 0, pixelnum - 1)) {
+			cout << "Error: ROI out of range."<<endl;
+			return;
+		}
+		if (ROIleftupX > ROIrightbottomX || ROIleftupY > ROIrightbottomY) {
+			cerr << "Error: ROI corner order invalid."<<endl;
+			return;
+		}
+
+		// Store valid filenames
+		string lissajousFolderPathwithtiff;
+		if (channelcount == 1)  lissajousFolderPathwithtiff = LISSAJOUSFolderPath + "\\*.tiff";
+		else if (channelcount == 2) lissajousFolderPathwithtiff = LISSAJOUSFolderPath + "\\CH1\\*.tiff";
+		vector<string> filenames;
+		WIN32_FIND_DATA findFileData;
+		HANDLE hFind = FindFirstFile(lissajousFolderPathwithtiff.c_str(), &findFileData);
+		if (hFind == INVALID_HANDLE_VALUE) {
+			cout << "Error: No .tiff files found in directory " << lissajousFolderPathwithtiff << endl;
+			return;
+		}
+		do {
+			filenames.push_back(findFileData.cFileName);
+		} while (FindNextFile(hFind, &findFileData) != 0);
+
+		FindClose(hFind);
+
+		string outputFolderPath = LISSAJOUSFolderPath;
+		size_t pos = outputFolderPath.find("2DLISSAJOUS_RAW");
+		if (pos != string::npos) {
+			outputFolderPath.replace(pos, strlen("2DLISSAJOUS_RAW"), "2DLISSAJOUS");
+		}
+		DWORD ftyp = GetFileAttributesA(outputFolderPath.c_str());
+		bool folderexist = ftyp != INVALID_FILE_ATTRIBUTES && (ftyp & FILE_ATTRIBUTE_DIRECTORY);
+		if (!folderexist) {
+			if (!CreateDirectory(outputFolderPath.c_str(), NULL)) {
+				DWORD err = GetLastError();
+				if (err != ERROR_ALREADY_EXISTS) {
+					cout << "Error: Failed to create directory " << outputFolderPath << ", code " << err << endl;
+					return;
+				}
+			}
+		}
+
+		// Sort filenames based on the numeric part
+		sort(filenames.begin(), filenames.end(), [this](const string& a, const string& b) {
+			return extractNumber(a) < extractNumber(b);
+			});
+
+		// csv create
+		string csvPath = outputFolderPath + "\\ROI_timeseries.csv";
+		ofstream ofs(csvPath, ios::out | ios::trunc);
+		if (!ofs) {
+			cout << "Error: cannot open CSV for write: " << csvPath << endl;
+			return;
+		}
+		if (channelcount == 1) {
+			ofs << "frame,mean,count\n";
+		}
+		else  if (channelcount == 2){
+			ofs << "frame,mean_ch1,mean_ch2\n";
+		}
+
+		const size_t total_frames = filenames.size();
+		lissajousimgindex = 0;
+		int frameIndex = 0;
+
+		for (const auto& filename : filenames) {
+			cv::Mat im_ch1, im_ch2;
+			if (channelcount == 1) {
+				string fullPath = LISSAJOUSFolderPath + "\\" + filename;
+				im_ch1 = cv::imread(fullPath, cv::IMREAD_UNCHANGED);
+				if (im_ch1.empty() || im_ch1.type() != CV_16UC1) {
+					cout << "Error: TIFF not found or not CV_16UC1 format " << fullPath << endl;
+					continue;
+				}
+			}
+			else if (channelcount == 2){ 
+				string fullPath_ch1 = LISSAJOUSFolderPath + "\\CH1" + "\\" + filename;
+				string fullPath_ch2 = LISSAJOUSFolderPath + "\\CH2" + "\\" + filename;
+				im_ch1 = cv::imread(fullPath_ch1, cv::IMREAD_UNCHANGED);
+				im_ch2 = cv::imread(fullPath_ch2, cv::IMREAD_UNCHANGED);
+				if (im_ch1.empty() || im_ch1.type() != CV_16UC1) {
+					cout << "Error: TIFF not found or not CV_16UC1 format " << fullPath_ch1 << endl;
+					continue;
+				}
+				if (im_ch2.empty() || im_ch2.type() != CV_16UC1) {
+					cout << "Error: TIFF not found or not CV_16UC1 format " << fullPath_ch2 << endl;
+					continue;
+				}
+			}
+
+			num_of_sample = im_ch1.rows * im_ch1.cols;
+			vector<double> buf_ch1(num_of_sample, 0.0);
+			cv::Mat im64_1; 
+			im_ch1.convertTo(im64_1, CV_64FC1);
+			memcpy(buf_ch1.data(), im64_1.ptr<double>(), sizeof(double) * num_of_sample);
+			vector<double> buf_ch2;
+			if (channelcount == 2) {
+				buf_ch2.assign(num_of_sample, 0.0);
+				cv::Mat im64_2; 
+				im_ch2.convertTo(im64_2, CV_64FC1);
+				memcpy(buf_ch2.data(), im64_2.ptr<double>(), sizeof(double) * num_of_sample);
+			}
+
+			if (abs(offset_lissajous) < num_of_sample) {
+				if (offset_lissajous > 0) {
+					for (int i = num_of_sample - 1; i >= offset_lissajous; --i) {
+						buf_ch1[i] = buf_ch1[i - offset_lissajous];
+						if (channelcount == 2) buf_ch2[i] = buf_ch2[i - offset_lissajous];
+					}
+					for (int i = 0; i < offset_lissajous; ++i) {
+						buf_ch1[i] = 0;
+						if (channelcount == 2) buf_ch2[i] = 0;
+					}
+						
+				}
+				else if (offset_lissajous < 0) {
+					for (int i = 0; i < num_of_sample - abs(offset_lissajous); ++i) {
+						buf_ch1[i] = buf_ch1[i + abs(offset_lissajous)];
+						if (channelcount == 2) buf_ch2[i] = buf_ch2[i + abs(offset_lissajous)];
+					}
+					for (int i = num_of_sample - abs(offset_lissajous); i < num_of_sample; ++i) {
+						buf_ch1[i] = 0;
+						if (channelcount == 2) buf_ch2[i] = 0;
+					}
+				}
+			}
+
+			double sum1 = 0.0; int cnt1 = 0;
+			double sum2 = 0.0; int cnt2 = 0;
+			for (int i = 0; i < num_of_sample; ++i) {
+				int x = 0, y = 0;
+				bool inrange = LissajousIdxFromSample(i, samplingrate, pixelnum, pixelnum, double(xfreq), double(yfreq), lissajousphase, x, y);
+				if (inrange == true) {
+					if (x >= ROIleftupX && x <= ROIrightbottomX && y >= ROIleftupY && y <= ROIrightbottomY) {
+						sum1 += buf_ch1[i];
+						++cnt1;
+						if (channelcount == 2) {
+							sum2 += buf_ch2[i];
+							++cnt2;
+						}
+					}
+				}
+			}
+
+			if (channelcount == 1) {
+				const double mean1 = (cnt1 > 0) ? (sum1 / cnt1) : 0.0;
+				ofs << (frameIndex + 1) << "," << mean1 << "\n";
+			}
+			else {
+				const double mean1 = (cnt1 > 0) ? (sum1 / cnt1) : 0.0;
+				const double mean2 = (cnt2 > 0) ? (sum2 / cnt2) : 0.0;
+				ofs << (frameIndex + 1) << "," << mean1 << "," << mean2 << "\n";
+			}
+
+			lissajousimgindex = int(frameIndex) + 1;
+			progresspercentage_extractsample = double(lissajousimgindex) / double(total_frames) * 100.0;
+			++frameIndex;
+		}
+
+		ofs.close();
+		cout << "ROI timeseries CSV saved to: " << csvPath << std::endl;
 	}
 
 	bool YSImageMerge::LissajousIdxFromSample(int sample_idx, double sampling_rate, int widthpixelnum, int heightpixelnum, double xfreq, double yfreq,double lissajous_phase,int& x_out,int& y_out) {

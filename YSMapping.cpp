@@ -136,7 +136,7 @@ namespace NTU {
             ntuscope->Ypixelsize_display= int(double(ntuscope->Xpixelsize_display) * double(ntuscope->MEMS_yamp / ntuscope->MEMS_xamp));
             ntuscope->Xpixelsize_save = ntuscope->Pixelnumx;
             ntuscope->Ypixelsize_save = int(double(ntuscope->Xpixelsize_save) * double(ntuscope->MEMS_yamp / ntuscope->MEMS_xamp));
-            totalsample = int(ntuscope->samplesPerSec / _Gcd(int(ntuscope->xfreq), int(ntuscope->yfreq)));
+            totalsample = int(ntuscope->samplesPerSec / _Gcd(int(ntuscope->xfreq), int(ntuscope->yfreq))*0.94);
             if (_Gcd(int(ntuscope->xfreq), int(ntuscope->yfreq)) > 20) {
                 ntuscope->highspeedmode = true;
             }
@@ -891,7 +891,7 @@ namespace NTU {
 
             auto end_time_acq = high_resolution_clock::now();
             auto duration_ms_acq = duration_cast<nanoseconds>(end_time_acq - start_time);
-
+            ntuscope->acqtime = double(duration_ms_acq.count()) / 1000000000;
             //Copy to transient buffer
             if (success) {
                 frameorder[buffersCompleted % TRANSIENT_BUFFER_COUNT] = buffersCompleted;
@@ -1103,7 +1103,7 @@ namespace NTU {
         //calculate acquisition_rate
         auto end_time = high_resolution_clock::now();
         auto duration_ms = duration_cast<nanoseconds>(end_time - starttime);
-        ntuscope->acqtime = double(duration_ms.count()) / 1000000000;
+        //ntuscope->acqtime = double(duration_ms.count()) / 1000000000;
         ntuscope->refreshtime = double(1000000000) / double(duration_cast<nanoseconds>(end_time - previoustimepoint).count());
         previoustimepoint = end_time;
         
@@ -1215,7 +1215,7 @@ namespace NTU {
         //calculate acquisition_rate
         auto end_time = high_resolution_clock::now();
         auto duration_ms = duration_cast<nanoseconds>(end_time - starttime);
-        ntuscope->acqtime = double(duration_ms.count()) / 1000000000;
+        //ntuscope->acqtime = double(duration_ms.count()) / 1000000000;
         ntuscope->refreshtime = double(1000000000) / double(duration_cast<nanoseconds>(end_time - previoustimepoint).count());
         previoustimepoint = end_time;
 
@@ -1329,7 +1329,7 @@ namespace NTU {
         //Calculate acquisition_rate
         auto end_time = high_resolution_clock::now();
         auto duration_ms = duration_cast<nanoseconds>(end_time - starttime);
-        ntuscope->acqtime = double(duration_ms.count()) / 1000000000;
+        //ntuscope->acqtime = double(duration_ms.count()) / 1000000000;
         ntuscope->refreshtime = double(1000000000) / double(duration_cast<nanoseconds>(end_time - previoustimepoint).count());
         previoustimepoint = end_time;
 
@@ -1552,7 +1552,7 @@ namespace NTU {
             //Calculate acquisition_rate
             auto end_time = high_resolution_clock::now();
             auto duration_ms = duration_cast<nanoseconds>(end_time - starttime);
-            ntuscope->acqtime = double(duration_ms.count()) / 1000000000;
+            //ntuscope->acqtime = double(duration_ms.count()) / 1000000000;
             ntuscope->refreshtime = double(1000000000) / double(duration_cast<nanoseconds>(end_time - previoustimepoint).count());
             previoustimepoint = end_time;
 
@@ -1773,14 +1773,21 @@ namespace NTU {
                 }
             }
 
+            cv::cuda::GpuMat gpu_image_positive;
+            gpu_image.copyTo(gpu_image_positive);
             if (ntuscope->YSapply_signalprocessing == false) {
                 // INITIAL WINDOWING | Zero-negVolt | 32768-0
-                if (ntuscope->channeldisplay == false) {
-                    cv::cuda::subtract(65535, gpu_image, gpu_image, cv::noArray(), -1, stream);
-                    cv::cuda::threshold(gpu_image, gpu_image, 65535, 0, cv::THRESH_TRUNC, stream);
-                }
+                //if (ntuscope->channeldisplay == false) {
+                //    cv::cuda::subtract(65535, gpu_image, gpu_image, cv::noArray(), -1, stream);
+                //    cv::cuda::threshold(gpu_image, gpu_image, 65535, 0, cv::THRESH_TRUNC, stream);
+                //}
+                cv::cuda::subtract(65535, gpu_image, gpu_image, cv::noArray(), -1, stream);
+                cv::cuda::threshold(gpu_image, gpu_image, 65535, 0, cv::THRESH_TRUNC, stream);
                 cv::cuda::subtract(gpu_image, 32768, gpu_image, cv::noArray(), -1, stream);
                 cv::cuda::multiply(gpu_image, 2.0, gpu_image, 1.0, -1, stream);
+
+                cv::cuda::subtract(gpu_image_positive, 32768, gpu_image_positive, cv::noArray(), -1, stream);
+                cv::cuda::multiply(gpu_image_positive, 2.0, gpu_image_positive, 1.0, -1, stream);
             }
             else if (ntuscope->YSapply_signalprocessing == true) {
                 if (ntuscope->channeldisplay == false) {
@@ -1794,7 +1801,7 @@ namespace NTU {
             //Calculate acquisition_rate
             auto end_time = high_resolution_clock::now();
             auto duration_ms = duration_cast<nanoseconds>(end_time - starttime);
-            ntuscope->acqtime = double(duration_ms.count()) / 1000000000;
+            //ntuscope->acqtime = double(duration_ms.count()) / 1000000000;
             ntuscope->refreshtime = double(1000000000) / double(duration_cast<nanoseconds>(end_time - previoustimepoint).count());
             previoustimepoint = end_time;
 
@@ -1824,6 +1831,10 @@ namespace NTU {
                 gpu_image.convertTo(gpu_image, -1, scale, shift, stream);
                 cv::cuda::threshold(gpu_image, gpu_image, 65535, 65535, cv::THRESH_TRUNC, stream);
                 cv::cuda::threshold(gpu_image, gpu_image, 0, 0, cv::THRESH_TOZERO, stream);
+
+                gpu_image_positive.convertTo(gpu_image_positive, -1, scale, shift, stream);
+                cv::cuda::threshold(gpu_image_positive, gpu_image_positive, 65535, 65535, cv::THRESH_TRUNC, stream);
+                cv::cuda::threshold(gpu_image_positive, gpu_image_positive, 0, 0, cv::THRESH_TOZERO, stream);
             }
 
             ////Normalize
@@ -1851,8 +1862,9 @@ namespace NTU {
             }
 
             //Convert to 8-bit
-            cv::cuda::GpuMat gpu_8bit;
+            cv::cuda::GpuMat gpu_8bit,gpu_8bit_positive;
             gpu_image.convertTo(gpu_8bit, CV_8UC1, 1 / 257.0, 0, stream);
+            gpu_image_positive.convertTo(gpu_8bit_positive, CV_8UC1, 1 / 257.0, 0, stream);
             stream.waitForCompletion();
 
             //Constrat IN GPU
@@ -1865,37 +1877,50 @@ namespace NTU {
                 cv::Ptr<cv::cuda::LookUpTable> cudaLookUpTable = cv::cuda::createLookUpTable(LUT_matrix);
                 cudaLookUpTable->transform(gpu_8bit, gpu_8bit, stream);
                 gpu_8bit.cv::cuda::GpuMat::convertTo(gpu_8bit, -1, ntuscope->YSconstrat, ntuscope->YSbrightness - 150, stream);
+                
+                cudaLookUpTable->transform(gpu_8bit_positive, gpu_8bit_positive, stream);
+                gpu_8bit_positive.cv::cuda::GpuMat::convertTo(gpu_8bit_positive, -1, ntuscope->YSconstrat, ntuscope->YSbrightness - 150, stream);
                 stream.waitForCompletion();
             }
 
             //Filter apply
             ApplyFilter(gpu_8bit, stream);
+            ApplyFilter(gpu_8bit_positive, stream);
             stream.waitForCompletion();
 
             //Resize
-            cv::cuda::GpuMat gpu_8bitresizedImage;
+            cv::cuda::GpuMat gpu_8bitresizedImage, gpu_8bitresizedImage_positive;
             if (scanmode == RASTER_ULTRA) {
                 cv::cuda::resize(gpu_8bit, gpu_8bitresizedImage, cv::Size(ntuscope->Xpixelsize_display, ntuscope->Ypixelsize_display), 0, 0, cv::INTER_NEAREST);
             }
             else {
                 cv::cuda::resize(gpu_8bit, gpu_8bitresizedImage, cv::Size(ntuscope->Xpixelsize_display, ntuscope->Ypixelsize_display), 0, 0, cv::INTER_AREA);
+                cv::cuda::resize(gpu_8bit_positive, gpu_8bitresizedImage_positive, cv::Size(ntuscope->Xpixelsize_display, ntuscope->Ypixelsize_display), 0, 0, cv::INTER_AREA);
             }
             stream.waitForCompletion();
 
             //Convert to RGB
-            cv::cuda::GpuMat gpu_8bitRGB;
+            cv::cuda::GpuMat gpu_8bitRGB,gpu_8bitRGB_positive;
             gpu_8bitRGB.create(gpu_8bitresizedImage.size(), CV_8UC3);
             if (gpu_8bit.channels() == 1) {
                 cv::cuda::cvtColor(gpu_8bitresizedImage, gpu_8bitRGB, cv::COLOR_GRAY2BGR, 0, stream);
                 stream.waitForCompletion();
             }
+            gpu_8bitRGB_positive.create(gpu_8bitresizedImage_positive.size(), CV_8UC3);
+            if (gpu_8bit_positive.channels() == 1) {
+                cv::cuda::cvtColor(gpu_8bitresizedImage_positive, gpu_8bitRGB_positive, cv::COLOR_GRAY2BGR, 0, stream);
+                stream.waitForCompletion();
+            }
 
             //Display img generate
-            cv::Mat finalImage;
+            cv::Mat finalImage,finalImage_positive;
             gpu_8bitRGB.download(finalImage);
+            gpu_8bitRGB_positive.download(finalImage_positive);
 
             Addtext(finalImage, ntuscope->refreshtime, ntuscope->Xpixelsize_display, ntuscope->Ypixelsize_display);
+            Addtext(finalImage_positive, ntuscope->refreshtime, ntuscope->Xpixelsize_display, ntuscope->Ypixelsize_display);
             cv::imshow("Real-Time Image", finalImage);
+            cv::imshow("Real-Time Image(+)", finalImage_positive);
             cv::waitKey(1);
         }
 
@@ -1918,7 +1943,7 @@ namespace NTU {
         //Calculate acquisition_rate
         auto end_time = high_resolution_clock::now();
         auto duration_ms = duration_cast<nanoseconds>(end_time - starttime);
-        ntuscope->acqtime = double(duration_ms.count()) / 1000000000;
+        //ntuscope->acqtime = double(duration_ms.count()) / 1000000000;
         ntuscope->refreshtime = double(1000000000) / double(duration_cast<nanoseconds>(end_time - previoustimepoint).count());
         previoustimepoint = end_time;
 
@@ -3236,7 +3261,6 @@ namespace NTU {
         cv::destroyAllWindows();
         cout << "Close Alazar: Success" << endl;
     }
-
 }
 
 #pragma managed

@@ -62,7 +62,9 @@ namespace NTU {
 		int samplingrate = 0;
 		int chopperfreq = 0;
 		double chopperphase = 0;
-		double progresspercentage = 0;
+		double progresspercentage_rlmergedisplay = 0;
+		double progresspercentage_reconstruct = 0;
+		double progresspercentage_extractsample = 0;
 		int pixelnum = 256;
 		U32 savestart_frameorder = 0;
 
@@ -106,6 +108,7 @@ namespace NTU {
 		bool GetChopperTTLSignal(int sampleIndex, int totalSamples);
 
 		//Transfer to .tiff
+		bool raster_reconstruct_mode = false;
 		void ConvertBinToTiff_lisssajous_parallel();
 		void ProcessSingleBin_lissajous_1ch(const string& bin_path, const string& tiff_path);
 		void ProcessSingleBin_lissajous_2chs(const string& bin_path, const string& tiff_ch1_path, const string& tiff_ch2_path);
@@ -113,6 +116,7 @@ namespace NTU {
 		void ConvertBinToTiff_raster_1ch_parallel();
 		void ConvertBinToTiff_raster_2chs_parallel();
 		void ProcessSingleBin_raster_2ch(const string& bin_path, const string& ch1_path, const string& raw_ch1_path, const string& ch2_path, const string& raw_ch2_path);
+		void ProcessSingleBin_raster_2ch_magnitude(const string& bin_path,const string& out_path, const string& raw_out_path);
 
 		//Scanmode merge
 		bool savestate = 0;
@@ -136,6 +140,13 @@ namespace NTU {
 		void ReconstructAllTiffInFolder_parallel();
 		void ReconstructOneTiff_1ch(const string& fullPath, const string& savePath, int image_index_for_name);
 		void ReconstructOneTiff_2ch(const string& fullPath_ch1, const string& fullPath_ch2, const string& saveDir_ch1, const string& saveDir_ch2, int image_index_for_name);
+
+		//Extract ROI sample
+		int ROIleftupX = 0; 
+		int ROIleftupY = 0;
+		int ROIrightbottomX = 0;
+		int ROIrightbottomY = 0;
+		void ExportROISampleMeanCSV();
 
 		//Extract hymograph
 		cv::Mat rasterImage_EK;                      

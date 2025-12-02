@@ -1,0 +1,4 @@
+xOFFSET = 0.5
+yOFFSET = 1.0
+xRATIO  = 1.1151
+yRATIO  = 0.6864
